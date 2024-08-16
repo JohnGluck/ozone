@@ -65,12 +65,10 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 /**
- * Test that KeyValueHandler fails certain operations when the
- * container is unhealthy.
+ * Test that KeyValueHandler fails certain operations when the container is unhealthy.
  */
 public class TestKeyValueHandlerWithUnhealthyContainer {
-  public static final Logger LOG = LoggerFactory.getLogger(
-      TestKeyValueHandlerWithUnhealthyContainer.class);
+  public static final Logger LOG = LoggerFactory.getLogger(TestKeyValueHandlerWithUnhealthyContainer.class);
 
   private IncrementalReportSender<Container> mockIcrSender;
 
@@ -104,7 +102,8 @@ public class TestKeyValueHandlerWithUnhealthyContainer {
   }
 
   private static Stream<Arguments> getAllClientVersions() {
-    return Arrays.stream(ClientVersion.values()).flatMap(client -> IntStream.range(0, 6)
+    return Arrays.stream(ClientVersion.values())
+        .flatMap(client -> IntStream.range(0, 6)
         .mapToObj(rid -> Arguments.of(client, rid)));
   }
 
@@ -119,9 +118,13 @@ public class TestKeyValueHandlerWithUnhealthyContainer {
           handler.handleGetBlock(
               getDummyCommandRequestProto(clientVersion, ContainerProtos.Type.GetBlock, rid),
               container);
-      assertEquals((replicaIndex > 0 && rid != replicaIndex && clientVersion.toProtoValue() >=
-              ClientVersion.EC_REPLICA_INDEX_REQUIRED_IN_BLOCK_REQUEST.toProtoValue()) ?
-              ContainerProtos.Result.CONTAINER_NOT_FOUND : UNKNOWN_BCSID,
+      assertEquals(
+          replicaIndex > 0
+              && rid != replicaIndex
+              && clientVersion.toProtoValue()
+              >= ClientVersion.EC_REPLICA_INDEX_REQUIRED_IN_BLOCK_REQUEST.toProtoValue()
+              ? ContainerProtos.Result.CONTAINER_NOT_FOUND
+              : UNKNOWN_BCSID,
           response.getResult());
     }
 
@@ -134,8 +137,7 @@ public class TestKeyValueHandlerWithUnhealthyContainer {
 
     ContainerProtos.ContainerCommandResponseProto response =
         handler.handleGetCommittedBlockLength(
-            getDummyCommandRequestProto(
-                ContainerProtos.Type.GetCommittedBlockLength),
+            getDummyCommandRequestProto(ContainerProtos.Type.GetCommittedBlockLength),
             container);
     assertEquals(UNKNOWN_BCSID, response.getResult());
   }
@@ -147,8 +149,7 @@ public class TestKeyValueHandlerWithUnhealthyContainer {
 
     ContainerProtos.ContainerCommandResponseProto response =
         handler.handleReadChunk(
-            getDummyCommandRequestProto(
-                ContainerProtos.Type.ReadChunk),
+            getDummyCommandRequestProto(ContainerProtos.Type.ReadChunk),
             container, null);
     assertEquals(UNKNOWN_BCSID, response.getResult());
   }
@@ -160,14 +161,19 @@ public class TestKeyValueHandlerWithUnhealthyContainer {
     KeyValueHandler handler = getDummyHandler();
     for (int rid = 0; rid <= 5; rid++) {
       ContainerProtos.ContainerCommandResponseProto response =
-          handler.handleReadChunk(getDummyCommandRequestProto(clientVersion, ContainerProtos.Type.ReadChunk, rid),
-              container, null);
-      assertEquals((replicaIndex > 0 && rid != replicaIndex &&
-              clientVersion.toProtoValue() >= ClientVersion.EC_REPLICA_INDEX_REQUIRED_IN_BLOCK_REQUEST.toProtoValue()) ?
-              ContainerProtos.Result.CONTAINER_NOT_FOUND : UNKNOWN_BCSID,
+          handler.handleReadChunk(
+              getDummyCommandRequestProto(clientVersion, ContainerProtos.Type.ReadChunk, rid),
+              container,
+              null);
+      assertEquals(
+          replicaIndex > 0
+              && rid != replicaIndex
+              && clientVersion.toProtoValue()
+              >= ClientVersion.EC_REPLICA_INDEX_REQUIRED_IN_BLOCK_REQUEST.toProtoValue()
+              ? ContainerProtos.Result.CONTAINER_NOT_FOUND
+              : UNKNOWN_BCSID,
           response.getResult());
     }
-
   }
 
   @Test
@@ -177,8 +183,7 @@ public class TestKeyValueHandlerWithUnhealthyContainer {
 
     ContainerProtos.ContainerCommandResponseProto response =
         handler.handleFinalizeBlock(
-            getDummyCommandRequestProto(
-                ContainerProtos.Type.FinalizeBlock),
+            getDummyCommandRequestProto(ContainerProtos.Type.FinalizeBlock),
             container);
     assertEquals(CONTAINER_UNHEALTHY, response.getResult());
   }
@@ -190,27 +195,21 @@ public class TestKeyValueHandlerWithUnhealthyContainer {
 
     ContainerProtos.ContainerCommandResponseProto response =
         handler.handleGetSmallFile(
-            getDummyCommandRequestProto(
-                ContainerProtos.Type.GetSmallFile),
+            getDummyCommandRequestProto(ContainerProtos.Type.GetSmallFile),
             container);
     assertEquals(UNKNOWN_BCSID, response.getResult());
   }
 
   @Test
   void testNPEFromPutBlock() throws IOException {
-    KeyValueContainer container = new KeyValueContainer(
-        mock(KeyValueContainerData.class),
-        new OzoneConfiguration());
+    KeyValueContainer container = new KeyValueContainer(mock(KeyValueContainerData.class), new OzoneConfiguration());
     KeyValueHandler subject = getDummyHandler();
 
     BlockID blockID = getTestBlockID(1);
     ContainerProtos.ContainerCommandRequestProto writeChunkRequest =
-        getWriteChunkRequest(MockPipeline.createSingleNodePipeline(),
-            blockID, 123);
+        getWriteChunkRequest(MockPipeline.createSingleNodePipeline(), blockID, 123);
     ContainerProtos.ContainerCommandResponseProto response =
-        subject.handle(
-            getPutBlockRequest(writeChunkRequest),
-            container, null);
+        subject.handle(getPutBlockRequest(writeChunkRequest), container, null);
     assertEquals(CONTAINER_INTERNAL_ERROR, response.getResult());
   }
 
@@ -220,21 +219,16 @@ public class TestKeyValueHandlerWithUnhealthyContainer {
     KeyValueContainerData mockContainerData = mock(KeyValueContainerData.class);
     HddsVolume mockVolume = mock(HddsVolume.class);
     when(mockContainerData.getVolume()).thenReturn(mockVolume);
-    KeyValueContainer container = new KeyValueContainer(
-        mockContainerData, new OzoneConfiguration());
+    KeyValueContainer container = new KeyValueContainer(mockContainerData, new OzoneConfiguration());
 
-    // When volume is failed, the call to mark the container unhealthy should
-    // be ignored.
+    // When volume is failed, the call to mark the container unhealthy should be ignored.
     when(mockVolume.isFailed()).thenReturn(true);
-    handler.markContainerUnhealthy(container,
-        ContainerTestUtils.getUnhealthyScanResult());
+    handler.markContainerUnhealthy(container, ContainerTestUtils.getUnhealthyScanResult());
     verify(mockIcrSender, never()).send(any());
 
-    // When volume is healthy, ICR should be sent when container is marked
-    // unhealthy.
+    // When volume is healthy, ICR should be sent when container is marked unhealthy.
     when(mockVolume.isFailed()).thenReturn(false);
-    handler.markContainerUnhealthy(container,
-        ContainerTestUtils.getUnhealthyScanResult());
+    handler.markContainerUnhealthy(container, ContainerTestUtils.getUnhealthyScanResult());
     verify(mockIcrSender, atMostOnce()).send(any());
   }
 
@@ -254,27 +248,28 @@ public class TestKeyValueHandlerWithUnhealthyContainer {
         stateMachine.getDatanodeDetails().getUuidString(),
         mock(ContainerSet.class),
         mock(MutableVolumeSet.class),
-        mock(ContainerMetrics.class), mockIcrSender);
+        mock(ContainerMetrics.class),
+        mockIcrSender);
   }
 
   private KeyValueContainer getMockUnhealthyContainer() {
     KeyValueContainerData containerData = mock(KeyValueContainerData.class);
-    when(containerData.getState()).thenReturn(
-        ContainerProtos.ContainerDataProto.State.UNHEALTHY);
+    when(containerData.getState())
+        .thenReturn(ContainerProtos.ContainerDataProto.State.UNHEALTHY);
     when(containerData.getBlockCommitSequenceId()).thenReturn(100L);
-    when(containerData.getProtoBufMessage()).thenReturn(ContainerProtos
-        .ContainerDataProto.newBuilder().setContainerID(1).build());
+    when(containerData.getProtoBufMessage())
+        .thenReturn(ContainerProtos.ContainerDataProto.newBuilder().setContainerID(1).build());
     return new KeyValueContainer(containerData, new OzoneConfiguration());
   }
 
   private KeyValueContainer getMockContainerWithReplicaIndex(int replicaIndex) {
     KeyValueContainerData containerData = mock(KeyValueContainerData.class);
-    when(containerData.getState()).thenReturn(
-        ContainerProtos.ContainerDataProto.State.CLOSED);
+    when(containerData.getState())
+        .thenReturn(ContainerProtos.ContainerDataProto.State.CLOSED);
     when(containerData.getBlockCommitSequenceId()).thenReturn(100L);
     when(containerData.getReplicaIndex()).thenReturn(replicaIndex);
-    when(containerData.getProtoBufMessage()).thenReturn(ContainerProtos
-        .ContainerDataProto.newBuilder().setContainerID(1).build());
+    when(containerData.getProtoBufMessage())
+        .thenReturn(ContainerProtos.ContainerDataProto.newBuilder().setContainerID(1).build());
     return new KeyValueContainer(containerData, new OzoneConfiguration());
   }
 }

@@ -98,8 +98,8 @@ function ozonecmd_case
         echo "Usage: ozone classpath <ARTIFACTNAME>"
         echo "Where the artifact name is one of:"
         echo ""
-        ls -1 ${OZONE_HOME}/share/ozone/classpath/ | sed 's/.classpath//'
-        exit -1
+        find ${OZONE_HOME}/share/ozone/classpath/ -type f -exec basename {} \; | sed 's/.classpath//' | sort
+        exit 1
       fi
     ;;
     datanode)
@@ -228,8 +228,8 @@ function ozonecmd_case
       OZONE_RUN_ARTIFACT_NAME="ozone-tools"
     ;;
     checknative)
-        OZONE_CLASSNAME=org.apache.hadoop.ozone.shell.checknative.CheckNative
-        OZONE_RUN_ARTIFACT_NAME="ozone-tools"
+      OZONE_CLASSNAME=org.apache.hadoop.ozone.shell.checknative.CheckNative
+      OZONE_RUN_ARTIFACT_NAME="ozone-tools"
     ;;
     *)
       OZONE_CLASSNAME="${subcmd}"
@@ -281,7 +281,6 @@ fi
 
 OZONE_SUBCMD=$1
 shift
-
 
 if ozone_need_reexec ozone "${OZONE_SUBCMD}"; then
   ozone_uservar_su ozone "${OZONE_SUBCMD}" \
