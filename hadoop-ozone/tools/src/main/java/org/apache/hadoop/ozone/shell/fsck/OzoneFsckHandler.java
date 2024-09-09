@@ -94,6 +94,8 @@ public class OzoneFsckHandler implements AutoCloseable {
   private void scanVolumes() throws IOException {
     Iterator<? extends OzoneVolume> volumes = client.getObjectStore().listVolumes(address.getVolumeName());
 
+    writer.write("Scanning volumes\n");
+
     while (volumes.hasNext()) {
       scanBuckets(volumes.next());
     }
@@ -102,6 +104,8 @@ public class OzoneFsckHandler implements AutoCloseable {
   private void scanBuckets(OzoneVolume volume) throws IOException {
     Iterator<? extends OzoneBucket> buckets = volume.listBuckets(address.getBucketName());
 
+    writer.write("Scanning buckets for volume " + volume.getName() + "\n");
+
     while (buckets.hasNext()) {
       scanKeys(buckets.next());
     }
@@ -109,6 +113,8 @@ public class OzoneFsckHandler implements AutoCloseable {
 
   private void scanKeys(OzoneBucket bucket) throws IOException {
     Iterator<? extends OzoneKey> keys = bucket.listKeys(address.getKeyName());
+
+    writer.write("Scanning keys for bucket " + bucket.getName() + "\n");
 
     while (keys.hasNext()) {
       scanKey(keys.next());
