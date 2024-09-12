@@ -79,7 +79,7 @@ public class KeyValueContainerCheck {
   private final String metadataPath;
   private final HddsVolume volume;
   private final KeyValueContainer container;
-  private static final DirectBufferPool BUFFER_POOL = new DirectBufferPool();
+  public static final DirectBufferPool BUFFER_POOL = new DirectBufferPool();
 
   public KeyValueContainerCheck(String metadataPath, ConfigurationSource conf, long containerID, HddsVolume volume,
       KeyValueContainer container) {
@@ -336,7 +336,7 @@ public class KeyValueContainerCheck {
     return ScanResult.healthy();
   }
 
-  private static ScanResult verifyChecksum(BlockData block, ContainerProtos.ChunkInfo chunk, File chunkFile,
+  public static ScanResult verifyChecksum(BlockData block, ContainerProtos.ChunkInfo chunk, File chunkFile,
       ContainerLayoutVersion layout, ByteBuffer buffer, DataTransferThrottler throttler, Canceler canceler) {
     ChecksumData checksumData = ChecksumData.getFromProtoBuf(chunk.getChecksumData());
     int checksumCount = checksumData.getChecksums().size();
