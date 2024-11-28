@@ -19,18 +19,18 @@
 
 package org.apache.hadoop.hdds.scm.server;
 
+import static org.apache.hadoop.hdds.protocol.proto.HddsProtos.NodeType.SCM;
+
+import com.google.common.base.Preconditions;
 import java.io.IOException;
 import java.lang.reflect.Proxy;
 import java.math.BigInteger;
 import java.security.cert.X509Certificate;
 import java.util.ArrayList;
-
-import java.util.List;
 import java.util.Date;
+import java.util.List;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
-
-import com.google.common.base.Preconditions;
 import org.apache.hadoop.hdds.protocol.proto.HddsProtos.NodeType;
 import org.apache.hadoop.hdds.protocol.proto.SCMRatisProtocol;
 import org.apache.hadoop.hdds.scm.ha.SCMHAInvocationHandler;
@@ -43,8 +43,6 @@ import org.apache.hadoop.hdds.utils.db.Table;
 import org.apache.hadoop.hdds.utils.db.TableIterator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import static org.apache.hadoop.hdds.protocol.proto.HddsProtos.NodeType.SCM;
 
 /**
  * A Certificate Store class that persists certificates issued by SCM CA.
@@ -88,6 +86,7 @@ public final class SCMCertStore implements CertificateStore {
    * @param certificate - Certificate to persist.
    * @throws IOException - on Failure.
    */
+  @Override
   public void storeValidScmCertificate(BigInteger serialID,
       X509Certificate certificate) throws IOException {
     lock.lock();
@@ -105,6 +104,7 @@ public final class SCMCertStore implements CertificateStore {
     }
   }
 
+  @Override
   public void checkValidCertID(BigInteger serialID) throws IOException {
     lock.lock();
     try {

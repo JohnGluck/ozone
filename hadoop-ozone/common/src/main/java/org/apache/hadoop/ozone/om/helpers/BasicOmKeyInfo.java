@@ -17,16 +17,15 @@
  */
 package org.apache.hadoop.ozone.om.helpers;
 
+import static org.apache.hadoop.ozone.OzoneConsts.ETAG;
+
 import java.io.IOException;
 import java.util.Objects;
-
 import org.apache.commons.lang3.StringUtils;
 import org.apache.hadoop.hdds.client.ECReplicationConfig;
 import org.apache.hadoop.hdds.client.ReplicationConfig;
 import org.apache.hadoop.ozone.protocol.proto.OzoneManagerProtocolProtos.BasicKeyInfo;
 import org.apache.hadoop.ozone.protocol.proto.OzoneManagerProtocolProtos.ListKeysRequest;
-
-import static org.apache.hadoop.ozone.OzoneConsts.ETAG;
 
 /**
  * Lightweight OmKeyInfo class.
@@ -260,6 +259,7 @@ public final class BasicOmKeyInfo {
     return builder.build();
   }
 
+  @Override
   public boolean equals(Object o) {
     if (this == o) {
       return true;
@@ -280,6 +280,7 @@ public final class BasicOmKeyInfo {
         ownerName.equals(basicOmKeyInfo.ownerName);
   }
 
+  @Override
   public int hashCode() {
     return Objects.hash(volumeName, bucketName, keyName);
   }

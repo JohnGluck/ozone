@@ -312,6 +312,7 @@ public interface OzoneManagerProtocol
    * @throws IOException
    * @deprecated use {@link OzoneManagerProtocol#getKeyInfo} instead.
    */
+  @Override
   @Deprecated
   OmKeyInfo lookupKey(OmKeyArgs args) throws IOException;
 
@@ -324,6 +325,7 @@ public interface OzoneManagerProtocol
    * @return KeyInfoWithVolumeContext includes info that client uses to talk
    *         to containers and S3 volume context info if assumeS3Context is set.
    */
+  @Override
   KeyInfoWithVolumeContext getKeyInfo(OmKeyArgs args, boolean assumeS3Context)
       throws IOException;
 
@@ -951,6 +953,7 @@ public interface OzoneManagerProtocol
    *                     invalid arguments
    * @deprecated use {@link OzoneManagerProtocol#getKeyInfo} instead.
    */
+  @Override
   @Deprecated
   OmKeyInfo lookupFile(OmKeyArgs keyArgs) throws IOException;
 
@@ -965,6 +968,7 @@ public interface OzoneManagerProtocol
    * @param numEntries Number of entries to list from the start key
    * @return list of file status
    */
+  @Override
   List<OzoneFileStatus> listStatus(OmKeyArgs keyArgs, boolean recursive,
       String startKey, long numEntries) throws IOException;
 
@@ -981,6 +985,7 @@ public interface OzoneManagerProtocol
    *                             this is needed in context of ListKeys
    * @return list of file status
    */
+  @Override
   List<OzoneFileStatus> listStatus(OmKeyArgs keyArgs, boolean recursive,
                                    String startKey, long numEntries,
                                    boolean allowPartialPrefixes)
@@ -999,6 +1004,7 @@ public interface OzoneManagerProtocol
    *                             this is needed in context of ListKeys
    * @return list of file status
    */
+  @Override
   List<OzoneFileStatusLight> listStatusLight(OmKeyArgs keyArgs,
       boolean recursive, String startKey, long numEntries,
       boolean allowPartialPrefixes) throws IOException;
@@ -1150,6 +1156,7 @@ public interface OzoneManagerProtocol
    * @param args Key args
    * @return Tags associated with the key.
    */
+  @Override
   Map<String, String> getObjectTagging(OmKeyArgs args) throws IOException;
 
   /**

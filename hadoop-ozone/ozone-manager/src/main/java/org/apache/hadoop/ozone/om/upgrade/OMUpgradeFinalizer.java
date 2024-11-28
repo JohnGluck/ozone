@@ -45,6 +45,7 @@ public class OMUpgradeFinalizer extends BasicUpgradeFinalizer<OzoneManager,
         om.getOmStorage());
   }
 
+  @Override
   public void runPrefinalizeStateActions(Storage storage, OzoneManager om)
       throws IOException {
     super.runPrefinalizeStateActions(

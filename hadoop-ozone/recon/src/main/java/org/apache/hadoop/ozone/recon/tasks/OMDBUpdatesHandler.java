@@ -318,6 +318,7 @@ public class OMDBUpdatesHandler extends ManagedWriteBatch.Handler {
      */
   }
 
+  @Override
   public void markCommitWithTimestamp(final byte[] xid, final byte[] ts)
       throws RocksDBException {
     /**

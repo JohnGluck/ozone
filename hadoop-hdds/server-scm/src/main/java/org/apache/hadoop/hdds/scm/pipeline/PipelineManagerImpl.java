@@ -492,6 +492,7 @@ public class PipelineManagerImpl implements PipelineManager {
    * @throws IOException throws exception in case of failure
    * @deprecated Do not use this method, onTimeout is not honored.
    */
+  @Override
   @Deprecated
   public void closePipeline(Pipeline pipeline, boolean onTimeout)
           throws IOException {
@@ -503,6 +504,7 @@ public class PipelineManagerImpl implements PipelineManager {
    * @param pipelineID ID of the Pipeline to be closed
    * @throws IOException In case of exception while closing the Pipeline
    */
+  @Override
   public void closePipeline(PipelineID pipelineID) throws IOException {
     HddsProtos.PipelineID pipelineIDProtobuf = pipelineID.getProtobuf();
     // close containers.
@@ -527,6 +529,7 @@ public class PipelineManagerImpl implements PipelineManager {
    * @param pipelineID ID of the Pipeline to be deleted
    * @throws IOException In case of exception while deleting the Pipeline
    */
+  @Override
   public void deletePipeline(PipelineID pipelineID) throws IOException {
     removePipeline(getPipeline(pipelineID));
   }
@@ -761,7 +764,7 @@ public class PipelineManagerImpl implements PipelineManager {
 
       if (pipeline == null) {
         try {
-          Thread.sleep((long)100);
+          Thread.sleep(100);
         } catch (InterruptedException e) {
           Thread.currentThread().interrupt();
         }

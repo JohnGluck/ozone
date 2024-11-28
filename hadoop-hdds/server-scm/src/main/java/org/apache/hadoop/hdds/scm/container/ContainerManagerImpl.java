@@ -17,6 +17,12 @@
 
 package org.apache.hadoop.hdds.scm.container;
 
+import static java.util.Comparator.reverseOrder;
+import static org.apache.hadoop.hdds.scm.ha.SequenceIdGenerator.CONTAINER_ID;
+import static org.apache.hadoop.hdds.utils.CollectionUtils.findTopN;
+
+import com.google.common.annotations.VisibleForTesting;
+import com.google.common.base.Preconditions;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -30,16 +36,13 @@ import java.util.Random;
 import java.util.Set;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
-
-import com.google.common.annotations.VisibleForTesting;
-import com.google.common.base.Preconditions;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.hdds.client.ECReplicationConfig;
 import org.apache.hadoop.hdds.client.ReplicationConfig;
 import org.apache.hadoop.hdds.protocol.proto.HddsProtos;
 import org.apache.hadoop.hdds.protocol.proto.HddsProtos.ContainerInfoProto;
-import org.apache.hadoop.hdds.protocol.proto.HddsProtos.LifeCycleState;
 import org.apache.hadoop.hdds.protocol.proto.HddsProtos.LifeCycleEvent;
+import org.apache.hadoop.hdds.protocol.proto.HddsProtos.LifeCycleState;
 import org.apache.hadoop.hdds.scm.ScmConfigKeys;
 import org.apache.hadoop.hdds.scm.container.metrics.SCMContainerManagerMetrics;
 import org.apache.hadoop.hdds.scm.container.replication.ContainerReplicaPendingOps;
@@ -52,10 +55,6 @@ import org.apache.hadoop.ozone.common.statemachine.InvalidStateTransitionExcepti
 import org.apache.hadoop.util.Time;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import static java.util.Comparator.reverseOrder;
-import static org.apache.hadoop.hdds.scm.ha.SequenceIdGenerator.CONTAINER_ID;
-import static org.apache.hadoop.hdds.utils.CollectionUtils.findTopN;
 
 /**
  * {@link ContainerManager} implementation in SCM server.
@@ -459,6 +458,7 @@ public class ContainerManagerImpl implements ContainerManager {
   }
 
   // Remove this after fixing Recon
+  @Override
   @VisibleForTesting
   public ContainerStateManager getContainerStateManager() {
     return containerStateManager;

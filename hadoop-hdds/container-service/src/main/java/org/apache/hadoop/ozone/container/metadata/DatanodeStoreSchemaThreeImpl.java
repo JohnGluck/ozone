@@ -17,6 +17,14 @@
  */
 package org.apache.hadoop.ozone.container.metadata;
 
+import static org.apache.hadoop.ozone.container.metadata.DatanodeSchemaThreeDBDefinition.getContainerKeyPrefix;
+
+import java.io.File;
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
 import org.apache.hadoop.hdds.StringUtils;
 import org.apache.hadoop.hdds.conf.ConfigurationSource;
 import org.apache.hadoop.hdds.protocol.proto.StorageContainerDatanodeProtocolProtos.DeletedBlocksTransaction;
@@ -34,15 +42,6 @@ import org.apache.hadoop.ozone.container.common.interfaces.BlockIterator;
 import org.apache.hadoop.ozone.container.common.statemachine.DatanodeConfiguration;
 import org.apache.hadoop.ozone.container.upgrade.VersionedDatanodeFeatures;
 import org.rocksdb.LiveFileMetaData;
-
-import java.io.File;
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-
-import static org.apache.hadoop.ozone.container.metadata.DatanodeSchemaThreeDBDefinition.getContainerKeyPrefix;
 
 /**
  * Constructs a datanode store in accordance with schema version 3, which uses
@@ -155,6 +154,7 @@ public class DatanodeStoreSchemaThreeImpl extends DatanodeStoreWithIncrementalCh
     return new File(metaDir, DUMP_DIR);
   }
 
+  @Override
   public void compactionIfNeeded() throws Exception {
     // Calculate number of files per level and size per level
     RocksDatabase rocksDB = ((RDBStore)getStore()).getDb();

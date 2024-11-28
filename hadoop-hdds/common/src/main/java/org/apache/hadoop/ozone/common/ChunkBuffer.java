@@ -89,6 +89,7 @@ public interface ChunkBuffer extends UncheckedAutoCloseable {
   /** Similar to {@link ByteBuffer#clear()}. */
   ChunkBuffer clear();
 
+  @Override
   default void close() {
   }
 
