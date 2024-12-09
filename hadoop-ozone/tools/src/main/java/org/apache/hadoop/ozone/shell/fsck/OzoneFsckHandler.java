@@ -18,9 +18,6 @@
 
 package org.apache.hadoop.ozone.shell.fsck;
 
-import static org.apache.hadoop.hdds.protocol.proto.HddsProtos.ReplicationFactor.ONE;
-import static org.apache.hadoop.hdds.protocol.proto.HddsProtos.ReplicationType.STAND_ALONE;
-
 import java.io.IOException;
 import java.util.Collections;
 import java.util.HashSet;
@@ -29,9 +26,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
+
 import org.apache.hadoop.hdds.client.ReplicationConfig;
 import org.apache.hadoop.hdds.client.StandaloneReplicationConfig;
-import org.apache.hadoop.hdds.conf.OzoneConfiguration;
 import org.apache.hadoop.hdds.protocol.DatanodeDetails;
 import org.apache.hadoop.hdds.protocol.datanode.proto.ContainerProtos.BlockData;
 import org.apache.hadoop.hdds.protocol.datanode.proto.ContainerProtos.ChunkInfo;
@@ -61,6 +58,9 @@ import org.apache.hadoop.ozone.om.helpers.OmKeyLocationInfoGroup;
 import org.apache.hadoop.ozone.om.protocol.OzoneManagerProtocol;
 import org.apache.hadoop.ozone.shell.fsck.writer.OzoneFsckWriter;
 import org.apache.hadoop.security.token.Token;
+
+import static org.apache.hadoop.hdds.protocol.proto.HddsProtos.ReplicationFactor.ONE;
+import static org.apache.hadoop.hdds.protocol.proto.HddsProtos.ReplicationType.STAND_ALONE;
 
 /**
  * OzoneFsckHandler is responsible for checking the integrity of keys in an Ozone filesystem.
@@ -97,7 +97,7 @@ public class OzoneFsckHandler implements AutoCloseable {
       OzoneFsckVerboseSettings verboseSettings,
       boolean deleteCorruptedKeys,
       OzoneClient client,
-      OzoneConfiguration ozoneConfiguration
+      ContainerOperationClient containerOperationClient
   ) throws IOException {
     this.pathPrefix = pathPrefix;
     this.writer = writer;
@@ -105,7 +105,7 @@ public class OzoneFsckHandler implements AutoCloseable {
     this.deleteCorruptedKeys = deleteCorruptedKeys;
     this.client = client;
     this.omClient = client.getObjectStore().getClientProxy().getOzoneManagerClient();
-    this.containerOperationClient = new ContainerOperationClient(ozoneConfiguration);
+    this.containerOperationClient = containerOperationClient;
     this.xceiverClientManager = containerOperationClient.getXceiverClientManager();
   }
 

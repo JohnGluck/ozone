@@ -18,15 +18,12 @@
 
 package org.apache.hadoop.ozone.shell.fsck.writer;
 
-import static org.apache.hadoop.ozone.shell.fsck.writer.KeyState.DAMAGED_BLOCKS;
-import static org.apache.hadoop.ozone.shell.fsck.writer.KeyState.NO_BLOCKS;
-import static org.apache.hadoop.ozone.shell.fsck.writer.OzoneFsckWriter.formatKeyName;
-import static org.apache.hadoop.ozone.shell.fsck.writer.OzoneFsckWriter.printKeyType;
-
-import com.fasterxml.jackson.core.JsonGenerator;
 import java.io.IOException;
 import java.util.List;
 import java.util.Set;
+import java.util.concurrent.atomic.AtomicBoolean;
+
+import com.fasterxml.jackson.core.JsonGenerator;
 import org.apache.commons.io.FileUtils;
 import org.apache.hadoop.hdds.protocol.DatanodeDetails;
 import org.apache.hadoop.hdds.protocol.datanode.proto.ContainerProtos.BlockData;
@@ -37,8 +34,15 @@ import org.apache.hadoop.hdds.protocol.proto.HddsProtos.BlockID;
 import org.apache.hadoop.ozone.om.helpers.OmKeyInfo;
 import org.apache.hadoop.ozone.om.helpers.OmKeyLocationInfo;
 
+import static org.apache.hadoop.ozone.shell.fsck.writer.KeyState.DAMAGED_BLOCKS;
+import static org.apache.hadoop.ozone.shell.fsck.writer.KeyState.NO_BLOCKS;
+import static org.apache.hadoop.ozone.shell.fsck.writer.OzoneFsckWriter.formatKeyName;
+import static org.apache.hadoop.ozone.shell.fsck.writer.OzoneFsckWriter.printKeyType;
+
 public abstract class AbstractJacksonOzoneFsckWriter implements OzoneFsckWriter {
   private final JsonGenerator generator;
+
+  private final AtomicBoolean closed = new AtomicBoolean(false);
 
   protected AbstractJacksonOzoneFsckWriter(JsonGenerator generator) throws IOException {
     this.generator = generator;
@@ -58,6 +62,7 @@ public abstract class AbstractJacksonOzoneFsckWriter implements OzoneFsckWriter 
     innerInfoPrinter.print();
 
     generator.writeEndObject();
+    generator.flush();
   }
 
   @Override
@@ -134,7 +139,9 @@ public abstract class AbstractJacksonOzoneFsckWriter implements OzoneFsckWriter 
 
   @Override
   public void close() throws IOException {
-    generator.writeEndArray();
-    generator.close();
+    if (closed.compareAndSet(false, true)) {
+      generator.writeEndArray();
+      generator.close();
+    }
   }
 }

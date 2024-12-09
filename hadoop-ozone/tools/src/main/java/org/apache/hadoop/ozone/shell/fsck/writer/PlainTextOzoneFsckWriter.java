@@ -18,15 +18,11 @@
 
 package org.apache.hadoop.ozone.shell.fsck.writer;
 
-import static org.apache.commons.io.FileUtils.byteCountToDisplaySize;
-import static org.apache.hadoop.ozone.shell.fsck.writer.KeyState.DAMAGED_BLOCKS;
-import static org.apache.hadoop.ozone.shell.fsck.writer.KeyState.NO_BLOCKS;
-import static org.apache.hadoop.ozone.shell.fsck.writer.OzoneFsckWriter.printKeyType;
-
 import java.io.IOException;
 import java.io.Writer;
 import java.util.List;
 import java.util.Set;
+
 import org.apache.hadoop.hdds.protocol.DatanodeDetails;
 import org.apache.hadoop.hdds.protocol.datanode.proto.ContainerProtos.BlockData;
 import org.apache.hadoop.hdds.protocol.datanode.proto.ContainerProtos.ChunkInfo;
@@ -35,6 +31,11 @@ import org.apache.hadoop.hdds.protocol.datanode.proto.ContainerProtos.DatanodeBl
 import org.apache.hadoop.hdds.protocol.proto.HddsProtos.BlockID;
 import org.apache.hadoop.ozone.om.helpers.OmKeyInfo;
 import org.apache.hadoop.ozone.om.helpers.OmKeyLocationInfo;
+
+import static org.apache.commons.io.FileUtils.byteCountToDisplaySize;
+import static org.apache.hadoop.ozone.shell.fsck.writer.KeyState.DAMAGED_BLOCKS;
+import static org.apache.hadoop.ozone.shell.fsck.writer.KeyState.NO_BLOCKS;
+import static org.apache.hadoop.ozone.shell.fsck.writer.OzoneFsckWriter.printKeyType;
 
 /** A writer implementation for the Ozone Filesystem Check (Fsck) that outputs information in plain text format. */
 public class PlainTextOzoneFsckWriter implements OzoneFsckWriter {
@@ -144,6 +145,7 @@ public class PlainTextOzoneFsckWriter implements OzoneFsckWriter {
 
   @Override
   public void close() throws IOException {
+    writer.flush();
     writer.close();
   }
 }

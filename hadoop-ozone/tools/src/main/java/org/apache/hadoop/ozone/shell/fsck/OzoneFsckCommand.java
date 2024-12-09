@@ -30,6 +30,7 @@ import jakarta.annotation.Nullable;
 import org.apache.hadoop.hdds.cli.HddsVersionProvider;
 import org.apache.hadoop.hdds.cli.SubcommandWithParent;
 import org.apache.hadoop.hdds.conf.OzoneConfiguration;
+import org.apache.hadoop.hdds.scm.cli.ContainerOperationClient;
 import org.apache.hadoop.ozone.client.OzoneClient;
 import org.apache.hadoop.ozone.client.OzoneClientException;
 import org.apache.hadoop.ozone.shell.Handler;
@@ -91,6 +92,7 @@ public class OzoneFsckCommand extends Handler implements SubcommandWithParent {
   private boolean keys;
 
   @CommandLine.Option(names = {"--verbosity-level"},
+      defaultValue = "KEY",
       description = "Controls a verbosity of the presented output."
           + " By default printed information only about a key itself."
           + " Possible values: KEY, CONTAINER, BLOCK, CHUNK.\n"
@@ -135,6 +137,7 @@ public class OzoneFsckCommand extends Handler implements SubcommandWithParent {
         .build();
 
     OzoneConfiguration ozoneConfiguration = getConf();
+    ContainerOperationClient containerOperationClient = new ContainerOperationClient(ozoneConfiguration);
 
     try (OzoneFsckWriter writer = createReportWriter(output, outputFormat);
          OzoneFsckHandler handler = new OzoneFsckHandler(
@@ -143,7 +146,7 @@ public class OzoneFsckCommand extends Handler implements SubcommandWithParent {
              verboseSettings,
              delete,
              client,
-             ozoneConfiguration
+             containerOperationClient
     )) {
       handler.scan();
     } catch (Exception e) {

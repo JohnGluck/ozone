@@ -18,19 +18,20 @@
 
 package org.apache.hadoop.ozone.shell.fsck.writer;
 
-import static org.apache.hadoop.hdds.protocol.datanode.proto.ContainerProtos.ChunkInfo;
-import static org.apache.hadoop.ozone.shell.fsck.writer.KeyType.DIRECTORY;
-import static org.apache.hadoop.ozone.shell.fsck.writer.KeyType.FILE;
-
 import java.io.IOException;
 import java.util.List;
 import java.util.Set;
+
 import org.apache.hadoop.hdds.protocol.DatanodeDetails;
 import org.apache.hadoop.hdds.protocol.datanode.proto.ContainerProtos.BlockData;
 import org.apache.hadoop.hdds.protocol.datanode.proto.ContainerProtos.ContainerDataProto;
 import org.apache.hadoop.hdds.protocol.proto.HddsProtos.BlockID;
 import org.apache.hadoop.ozone.om.helpers.OmKeyInfo;
 import org.apache.hadoop.ozone.om.helpers.OmKeyLocationInfo;
+
+import static org.apache.hadoop.hdds.protocol.datanode.proto.ContainerProtos.ChunkInfo;
+import static org.apache.hadoop.ozone.shell.fsck.writer.KeyType.DIRECTORY;
+import static org.apache.hadoop.ozone.shell.fsck.writer.KeyType.FILE;
 
 /**
  * An interface for writing various information from the Ozone File System Check (Fsck) operation.
