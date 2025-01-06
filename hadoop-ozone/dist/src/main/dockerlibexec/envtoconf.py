@@ -52,7 +52,7 @@ class Simple(object):
   def process_envs(self):
     """Process environment variables"""
     for key in os.environ.keys():
-      if key == self.conf_container_prefix:
+      if key.startswith(self.conf_container_prefix):
         conf_variables=json.loads(os.environ[key])
         for conf_key in conf_variables:
           self.process_env_var(conf_key, conf_variables[conf_key])

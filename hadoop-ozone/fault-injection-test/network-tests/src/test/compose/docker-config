@@ -14,7 +14,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-OZONE_CONF_CONTAINER='{
+OZONE_CONF_CONTAINER_NETWORK_TEST='{
 "OZONE-SITE.XML_ozone.om.address": "om",
 "OZONE-SITE.XML_ozone.om.http-address": "om:9874",
 "OZONE-SITE.XML_ozone.scm.names": "scm",
