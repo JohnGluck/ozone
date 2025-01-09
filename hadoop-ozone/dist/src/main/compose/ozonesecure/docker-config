@@ -50,7 +50,6 @@ OZONE_CONF_CONTAINER_SECURE='{
 "OZONE-SITE.XML_ozone.acl.enabled": "true",
 "OZONE-SITE.XML_ozone.acl.authorizer.class": "org.apache.hadoop.ozone.security.acl.OzoneNativeAuthorizer",
 "OZONE-SITE.XML_ozone.administrators": "testuser,recon,om",
-"OZONE-SITE.XML_ozone.s3.administrators": "testuser,recon,om",
 "OZONE-SITE.XML_ozone.recon.administrators": "testuser2",
 "OZONE-SITE.XML_ozone.s3.administrators": "testuser,s3g",
 

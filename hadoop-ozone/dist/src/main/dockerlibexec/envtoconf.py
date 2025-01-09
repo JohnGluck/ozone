@@ -81,7 +81,7 @@ class Simple(object):
     else:
       fmt = extension
 
-    if extension and extension in self.known_formats:
+    if extension and extension.lower() in self.known_formats:
       if name not in self.configurables.keys():
         with open(self.destination_file_path(name, extension) + ".raw", "w") as myfile:
           myfile.write("")
