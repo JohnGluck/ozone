@@ -18,12 +18,9 @@
 
 package org.apache.hadoop.ozone.recon.scm;
 
-import static org.apache.hadoop.hdds.recon.ReconConfig.ConfigStrings.OZONE_RECON_SECURITY_CLIENT_DATANODE_CONTAINER_PROTOCOL_ACL;
-
 import java.util.Collections;
 import java.util.List;
 import java.util.function.Supplier;
-
 import org.apache.hadoop.hdds.annotation.InterfaceAudience;
 import org.apache.hadoop.hdds.annotation.InterfaceStability;
 import org.apache.hadoop.ozone.protocol.ReconDatanodeProtocol;
@@ -31,6 +28,7 @@ import org.apache.hadoop.security.authorize.PolicyProvider;
 import org.apache.hadoop.security.authorize.Service;
 import org.apache.ratis.util.MemoizedSupplier;
 
+import static org.apache.hadoop.hdds.recon.ReconConfig.ConfigStrings.OZONE_RECON_SECURITY_CLIENT_DATANODE_CONTAINER_PROTOCOL_ACL;
 
 /**
  * {@link PolicyProvider} for Recon protocols.

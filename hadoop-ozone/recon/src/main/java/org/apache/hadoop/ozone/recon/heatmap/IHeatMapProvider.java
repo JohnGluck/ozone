@@ -19,16 +19,15 @@
 
 package org.apache.hadoop.ozone.recon.heatmap;
 
+import java.net.InetSocketAddress;
+import java.util.List;
+import javax.ws.rs.core.Response;
 import org.apache.hadoop.hdds.conf.OzoneConfiguration;
 import org.apache.hadoop.hdds.scm.server.OzoneStorageContainerManager;
 import org.apache.hadoop.ozone.recon.api.types.EntityMetaData;
 import org.apache.hadoop.ozone.recon.api.types.HealthCheckResponse;
 import org.apache.hadoop.ozone.recon.recovery.ReconOMMetadataManager;
 import org.apache.hadoop.ozone.recon.spi.ReconNamespaceSummaryManager;
-
-import javax.ws.rs.core.Response;
-import java.net.InetSocketAddress;
-import java.util.List;
 
 /**
  * This interface is to provide heatmap data.

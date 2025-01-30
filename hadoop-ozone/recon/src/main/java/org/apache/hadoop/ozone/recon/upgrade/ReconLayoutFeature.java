@@ -19,12 +19,11 @@
 
 package org.apache.hadoop.ozone.recon.upgrade;
 
-import org.reflections.Reflections;
-
 import java.util.Arrays;
 import java.util.EnumMap;
 import java.util.Optional;
 import java.util.Set;
+import org.reflections.Reflections;
 
 /**
  * Enum representing Recon layout features with their version, description,

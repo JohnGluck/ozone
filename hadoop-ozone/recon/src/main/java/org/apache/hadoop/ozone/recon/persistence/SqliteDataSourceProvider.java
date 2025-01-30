@@ -19,11 +19,9 @@
 package org.apache.hadoop.ozone.recon.persistence;
 
 import javax.sql.DataSource;
-
-import org.sqlite.SQLiteDataSource;
-
 import com.google.inject.Inject;
 import com.google.inject.Provider;
+import org.sqlite.SQLiteDataSource;
 
 /**
  * Provide a {@link javax.sql.DataSource} for the application.

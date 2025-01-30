@@ -16,17 +16,15 @@
  */
 package org.apache.hadoop.ozone.security;
 
-import com.google.common.base.Preconditions;
-import org.apache.commons.lang3.RandomStringUtils;
-import org.apache.hadoop.ozone.OzoneConsts;
-
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.util.function.BiConsumer;
-
 import javax.crypto.Cipher;
 import javax.crypto.NoSuchPaddingException;
 import javax.crypto.spec.SecretKeySpec;
+import com.google.common.base.Preconditions;
+import org.apache.commons.lang3.RandomStringUtils;
+import org.apache.hadoop.ozone.OzoneConsts;
 
 /**
  * Symmetric Key structure for GDPR.

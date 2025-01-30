@@ -20,7 +20,6 @@ package org.apache.hadoop.ozone.recon.scm;
 
 import java.io.IOException;
 import java.util.concurrent.TimeoutException;
-
 import org.apache.hadoop.hdds.conf.ConfigurationSource;
 import org.apache.hadoop.hdds.protocol.DatanodeDetails;
 import org.apache.hadoop.hdds.protocol.proto.StorageContainerDatanodeProtocolProtos.PipelineReport;

@@ -14,13 +14,15 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
+
 package org.apache.hadoop.ozone.om.ha;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.hadoop.metrics2.impl.MetricsCollectorImpl;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  * Tests for {@link OMHAMetrics}.

@@ -18,11 +18,10 @@
 
 package org.apache.hadoop.ozone.recon.metrics;
 
-import org.apache.hadoop.hdds.annotation.InterfaceAudience;
-
 import java.util.Map;
 import java.util.SortedMap;
 import java.util.TreeMap;
+import org.apache.hadoop.hdds.annotation.InterfaceAudience;
 
 /**
  * Class for wrapping a metric response from

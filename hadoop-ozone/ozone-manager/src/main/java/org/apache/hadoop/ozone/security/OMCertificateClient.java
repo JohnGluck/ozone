@@ -19,6 +19,9 @@
 
 package org.apache.hadoop.ozone.security;
 
+import java.io.IOException;
+import java.security.KeyPair;
+import java.util.function.Consumer;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.hadoop.hdds.HddsUtils;
 import org.apache.hadoop.hdds.protocol.proto.HddsProtos;
@@ -33,11 +36,6 @@ import org.apache.hadoop.ozone.om.OMStorage;
 import org.apache.hadoop.security.UserGroupInformation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.io.IOException;
-import java.security.KeyPair;
-import java.util.function.Consumer;
-
 
 /**
  * Certificate client for OzoneManager.

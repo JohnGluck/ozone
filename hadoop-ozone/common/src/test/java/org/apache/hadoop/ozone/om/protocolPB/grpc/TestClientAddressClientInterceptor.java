@@ -30,9 +30,9 @@ import org.mockito.MockedStatic;
 
 import static org.mockito.Mockito.eq;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.mockStatic;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import static org.mockito.Mockito.mockStatic;
 
 /**
  * Test OM GRPC client interceptor to define client ip and hostname headers.

@@ -18,9 +18,9 @@
 
 package org.apache.hadoop.ozone.om.upgrade;
 
-import static org.apache.hadoop.ozone.om.upgrade.OMLayoutFeature.INITIAL_VERSION;
-
 import org.apache.hadoop.ozone.om.OzoneManager;
+
+import static org.apache.hadoop.ozone.om.upgrade.OMLayoutFeature.INITIAL_VERSION;
 
 /**
  * Mock OM Request class for testing annotation.

@@ -17,9 +17,9 @@
 
 package org.apache.hadoop.ozone.om;
 
+import java.io.IOException;
 import org.apache.hadoop.hdds.conf.OzoneConfiguration;
 import org.apache.hadoop.security.authentication.client.AuthenticationException;
-import java.io.IOException;
 
 /**
  * This interface is used by the OzoneManagerStarter class to allow the

@@ -19,7 +19,6 @@
 package org.apache.hadoop.ozone.recon.scm;
 
 import java.util.UUID;
-
 import org.apache.hadoop.hdds.protocol.proto.HddsProtos.ContainerReplicaHistoryProto;
 
 /**

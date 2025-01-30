@@ -17,10 +17,9 @@
  */
 package org.apache.hadoop.ozone.recon.spi;
 
-import org.apache.hadoop.ozone.recon.metrics.Metric;
-
 import java.net.HttpURLConnection;
 import java.util.List;
+import org.apache.hadoop.ozone.recon.metrics.Metric;
 
 /**
  * Interface to access Ozone metrics.

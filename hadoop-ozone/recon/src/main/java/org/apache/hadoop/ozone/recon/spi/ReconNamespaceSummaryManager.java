@@ -18,13 +18,12 @@
 
 package org.apache.hadoop.ozone.recon.spi;
 
+import java.io.IOException;
 import org.apache.hadoop.hdds.annotation.InterfaceStability;
 import org.apache.hadoop.hdds.utils.db.BatchOperation;
 import org.apache.hadoop.hdds.utils.db.RDBBatchOperation;
 import org.apache.hadoop.ozone.om.OMMetadataManager;
 import org.apache.hadoop.ozone.recon.api.types.NSSummary;
-
-import java.io.IOException;
 
 /**
  * Interface for DB operations on NSSummary.

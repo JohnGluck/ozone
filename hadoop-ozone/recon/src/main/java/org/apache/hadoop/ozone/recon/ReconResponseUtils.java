@@ -18,10 +18,9 @@
 
 package org.apache.hadoop.ozone.recon;
 
-import com.google.inject.Singleton;
-
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import com.google.inject.Singleton;
 
 /**
  * Recon API Response Utility class.

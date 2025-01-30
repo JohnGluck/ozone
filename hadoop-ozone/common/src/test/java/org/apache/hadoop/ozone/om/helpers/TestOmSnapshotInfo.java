@@ -18,15 +18,12 @@
 
 package org.apache.hadoop.ozone.om.helpers;
 
+import java.util.UUID;
 import org.apache.hadoop.ozone.om.helpers.SnapshotInfo.SnapshotStatus;
-
 import org.apache.hadoop.ozone.protocol.proto.OzoneManagerProtocolProtos;
 import org.apache.hadoop.ozone.protocol.proto.OzoneManagerProtocolProtos.SnapshotStatusProto;
-
 import org.apache.hadoop.util.Time;
 import org.junit.jupiter.api.Test;
-
-import java.util.UUID;
 
 import static org.apache.hadoop.hdds.HddsUtils.toProtobuf;
 import static org.junit.jupiter.api.Assertions.assertEquals;

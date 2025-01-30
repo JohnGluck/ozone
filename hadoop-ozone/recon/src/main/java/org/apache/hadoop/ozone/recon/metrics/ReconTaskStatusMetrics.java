@@ -18,6 +18,7 @@
 
 package org.apache.hadoop.ozone.recon.metrics;
 
+import java.util.List;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import org.apache.hadoop.metrics2.MetricsCollector;
@@ -31,8 +32,6 @@ import org.apache.hadoop.metrics2.lib.Interns;
 import org.apache.hadoop.ozone.OzoneConsts;
 import org.hadoop.ozone.recon.schema.tables.daos.ReconTaskStatusDao;
 import org.hadoop.ozone.recon.schema.tables.pojos.ReconTaskStatus;
-
-import java.util.List;
 
 /**
  * Ship ReconTaskStatus table on persistent DB as a metrics.

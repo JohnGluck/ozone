@@ -19,7 +19,6 @@
 package org.apache.hadoop.ozone.recon.scm;
 
 import java.io.IOException;
-
 import org.apache.hadoop.hdds.protocol.DatanodeDetails;
 import org.apache.hadoop.hdds.server.events.EventHandler;
 import org.apache.hadoop.hdds.server.events.EventPublisher;

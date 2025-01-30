@@ -18,6 +18,7 @@
 
 package org.apache.hadoop.ozone.om.response.volume;
 
+import java.nio.file.Path;
 import org.apache.hadoop.hdds.conf.OzoneConfiguration;
 import org.apache.hadoop.hdds.utils.db.BatchOperation;
 import org.apache.hadoop.ozone.om.OMConfigKeys;
@@ -26,8 +27,6 @@ import org.apache.hadoop.ozone.om.OmMetadataManagerImpl;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.io.TempDir;
-
-import java.nio.file.Path;
 
 /**
  * Base test class for OM volume response.

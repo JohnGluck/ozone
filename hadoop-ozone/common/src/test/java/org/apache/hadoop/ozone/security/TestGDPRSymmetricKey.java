@@ -16,11 +16,10 @@
  */
 package org.apache.hadoop.ozone.security;
 
+import java.security.SecureRandom;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.hadoop.ozone.OzoneConsts;
 import org.junit.jupiter.api.Test;
-
-import java.security.SecureRandom;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;

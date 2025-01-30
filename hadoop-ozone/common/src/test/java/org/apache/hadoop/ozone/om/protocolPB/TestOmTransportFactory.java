@@ -18,17 +18,15 @@
 
 package org.apache.hadoop.ozone.om.protocolPB;
 
-
+import java.io.IOException;
+import java.util.Collections;
+import java.util.ServiceLoader;
 import org.apache.hadoop.hdds.conf.ConfigurationSource;
 import org.apache.hadoop.hdds.conf.OzoneConfiguration;
 import org.apache.hadoop.security.UserGroupInformation;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.MockedStatic;
-
-import java.io.IOException;
-import java.util.Collections;
-import java.util.ServiceLoader;
 
 import static java.util.Collections.singletonList;
 import static org.apache.hadoop.ozone.om.OMConfigKeys.OZONE_OM_TRANSPORT_CLASS;

@@ -17,6 +17,8 @@
 
 package org.apache.hadoop.ozone.om;
 
+import java.util.Iterator;
+import java.util.Map;
 import org.apache.hadoop.hdds.utils.db.cache.CacheKey;
 import org.apache.hadoop.hdds.utils.db.cache.CacheValue;
 import org.apache.hadoop.metrics2.MetricsCollector;
@@ -25,9 +27,6 @@ import org.apache.hadoop.metrics2.MetricsRecordBuilder;
 import org.apache.hadoop.ozone.om.BucketUtilizationMetrics.BucketMetricsInfo;
 import org.apache.hadoop.ozone.om.helpers.OmBucketInfo;
 import org.junit.jupiter.api.Test;
-
-import java.util.Iterator;
-import java.util.Map;
 
 import static org.apache.hadoop.ozone.OzoneConsts.QUOTA_RESET;
 import static org.mockito.ArgumentMatchers.any;

@@ -17,14 +17,13 @@
 package org.apache.hadoop.ozone.security.acl;
 
 import org.apache.hadoop.ozone.protocol.proto.OzoneManagerProtocolProtos;
+import org.apache.hadoop.ozone.security.acl.OzoneObj.ResourceType;
 import org.junit.jupiter.api.Test;
 
 import static org.apache.hadoop.ozone.OzoneConsts.OZONE_URI_DELIMITER;
 import static org.apache.hadoop.ozone.protocol.proto.OzoneManagerProtocolProtos.OzoneObj.ObjectType.KEY;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
-
-import org.apache.hadoop.ozone.security.acl.OzoneObj.ResourceType;
 
 /**
  * Test class for {@link OzoneObjInfo}.

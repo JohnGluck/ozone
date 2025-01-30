@@ -21,7 +21,6 @@ package org.apache.hadoop.ozone.recon.scm;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-
 import org.apache.hadoop.hdds.protocol.proto.HddsProtos.ContainerReplicaHistoryListProto;
 import org.apache.hadoop.hdds.protocol.proto.HddsProtos.ContainerReplicaHistoryProto;
 import org.apache.hadoop.hdds.utils.db.Codec;

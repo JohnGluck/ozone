@@ -20,7 +20,6 @@ package org.apache.hadoop.ozone.recon.scm;
 
 import java.util.List;
 import java.util.Optional;
-
 import org.apache.hadoop.hdds.protocol.DatanodeDetails;
 import org.apache.hadoop.hdds.protocol.proto.HddsProtos.Node;
 import org.apache.hadoop.hdds.scm.container.ContainerManager;

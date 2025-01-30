@@ -18,19 +18,18 @@
 
 package org.apache.hadoop.ozone.om.response.key;
 
-import static org.apache.hadoop.hdds.protocol.proto.HddsProtos.ReplicationFactor.ONE;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-
+import java.io.IOException;
+import java.util.ArrayList;
+import jakarta.annotation.Nonnull;
 import org.apache.hadoop.hdds.client.RatisReplicationConfig;
 import org.apache.hadoop.ozone.om.helpers.BucketLayout;
 import org.apache.hadoop.ozone.om.helpers.OmBucketInfo;
 import org.apache.hadoop.ozone.om.helpers.OmKeyInfo;
 import org.apache.hadoop.ozone.om.request.OMRequestTestUtils;
 import org.apache.hadoop.ozone.protocol.proto.OzoneManagerProtocolProtos.OMResponse;
-import jakarta.annotation.Nonnull;
 
-import java.io.IOException;
-import java.util.ArrayList;
+import static org.apache.hadoop.hdds.protocol.proto.HddsProtos.ReplicationFactor.ONE;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 /**
  * Tests OMKeyCreateResponseWithFSO.

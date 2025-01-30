@@ -18,6 +18,9 @@
 
 package org.apache.hadoop.ozone.recon.upgrade;
 
+import java.sql.Connection;
+import java.sql.SQLException;
+import javax.sql.DataSource;
 import org.apache.hadoop.ozone.recon.scm.ReconStorageContainerManagerFacade;
 import org.jooq.DSLContext;
 import org.jooq.exception.DataAccessException;
@@ -26,14 +29,8 @@ import org.jooq.impl.SQLDataType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-
-import javax.sql.DataSource;
-import java.sql.Connection;
-import java.sql.SQLException;
-
 import static org.hadoop.ozone.recon.codegen.SqlDbUtils.TABLE_EXISTS_CHECK;
 import static org.hadoop.ozone.recon.schema.ReconTaskSchemaDefinition.RECON_TASK_STATUS_TABLE_NAME;
-
 
 /**
  * Upgrade action for TASK_STATUS_STATISTICS feature layout change, which adds

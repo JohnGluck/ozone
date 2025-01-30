@@ -17,6 +17,10 @@
  */
 package org.apache.hadoop.ozone.recon.security;
 
+import java.io.IOException;
+import java.net.InetAddress;
+import java.security.KeyPair;
+import java.util.function.Consumer;
 import org.apache.hadoop.hdds.protocol.proto.HddsProtos;
 import org.apache.hadoop.hdds.protocol.proto.SCMSecurityProtocolProtos.SCMGetCertResponseProto;
 import org.apache.hadoop.hdds.protocolPB.SCMSecurityProtocolClientSideTranslatorPB;
@@ -29,11 +33,6 @@ import org.apache.hadoop.ozone.recon.scm.ReconStorageConfig;
 import org.apache.hadoop.security.UserGroupInformation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.io.IOException;
-import java.net.InetAddress;
-import java.security.KeyPair;
-import java.util.function.Consumer;
 
 import static org.apache.hadoop.hdds.security.x509.exception.CertificateException.ErrorCode.CSR_ERROR;
 

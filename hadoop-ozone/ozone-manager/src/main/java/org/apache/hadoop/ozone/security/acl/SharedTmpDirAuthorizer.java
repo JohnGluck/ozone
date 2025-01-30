@@ -14,12 +14,12 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
+
 package org.apache.hadoop.ozone.security.acl;
 
+import java.util.Objects;
 import org.apache.hadoop.ozone.OFSPath;
 import org.apache.hadoop.ozone.om.exceptions.OMException;
-
-import java.util.Objects;
 
 /**
  * SharedTmp implementation of {@link IAccessAuthorizer}.

@@ -18,13 +18,12 @@
 
 package org.apache.hadoop.ozone.security.acl;
 
+import java.util.Collections;
 import org.apache.hadoop.hdds.server.OzoneAdmins;
 import org.apache.hadoop.ozone.om.exceptions.OMException;
 import org.apache.hadoop.security.UserGroupInformation;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
-
-import java.util.Collections;
 
 import static java.util.Arrays.asList;
 import static org.apache.hadoop.ozone.OzoneConfigKeys.OZONE_ADMINISTRATORS_WILDCARD;

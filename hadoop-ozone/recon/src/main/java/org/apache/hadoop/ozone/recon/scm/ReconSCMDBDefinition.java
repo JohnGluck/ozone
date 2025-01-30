@@ -20,7 +20,6 @@ package org.apache.hadoop.ozone.recon.scm;
 
 import java.util.Map;
 import java.util.UUID;
-
 import org.apache.hadoop.hdds.protocol.DatanodeDetails;
 import org.apache.hadoop.hdds.scm.metadata.SCMDBDefinition;
 import org.apache.hadoop.hdds.utils.db.Codec;

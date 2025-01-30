@@ -18,6 +18,8 @@
 
 package org.apache.hadoop.ozone.om.response.security;
 
+import java.io.IOException;
+import java.nio.file.Path;
 import org.apache.hadoop.hdds.conf.ConfigurationSource;
 import org.apache.hadoop.hdds.conf.OzoneConfiguration;
 import org.apache.hadoop.hdds.utils.db.BatchOperation;
@@ -27,8 +29,6 @@ import org.apache.hadoop.ozone.om.OmMetadataManagerImpl;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.io.TempDir;
-import java.io.IOException;
-import java.nio.file.Path;
 
 /** Base test class for delegation token response. */
 @SuppressWarnings("visibilitymodifier")

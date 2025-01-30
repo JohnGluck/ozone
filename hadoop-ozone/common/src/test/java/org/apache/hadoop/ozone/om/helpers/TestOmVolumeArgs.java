@@ -19,7 +19,6 @@
 package org.apache.hadoop.ozone.om.helpers;
 
 import java.util.Collections;
-
 import org.apache.hadoop.ozone.OzoneAcl;
 import org.apache.hadoop.ozone.security.acl.IAccessAuthorizer;
 import org.apache.hadoop.security.UserGroupInformation;

@@ -16,13 +16,12 @@
  */
 package org.apache.hadoop.ozone.security;
 
-import org.apache.hadoop.ozone.om.S3Batcher;
-import org.apache.hadoop.ozone.om.S3SecretStore;
-import org.apache.hadoop.ozone.om.helpers.S3SecretValue;
-
 import java.io.IOException;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import org.apache.hadoop.ozone.om.S3Batcher;
+import org.apache.hadoop.ozone.om.S3SecretStore;
+import org.apache.hadoop.ozone.om.helpers.S3SecretValue;
 
 /**
  * Map based implementation of {@link S3SecretStore}.

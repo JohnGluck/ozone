@@ -19,7 +19,6 @@
 package org.apache.hadoop.ozone.recon.fsck;
 
 import java.util.List;
-
 import org.apache.hadoop.ozone.recon.api.types.KeyMetadata;
 
 /**

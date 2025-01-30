@@ -18,9 +18,8 @@
 
 package org.apache.hadoop.ozone.recon.scm;
 
-import org.apache.hadoop.hdds.scm.safemode.SafeModeManager;
-
 import java.util.concurrent.atomic.AtomicBoolean;
+import org.apache.hadoop.hdds.scm.safemode.SafeModeManager;
 
 /**
  * Recon's stub implementation of SCM's SafeMode manager.

@@ -18,14 +18,13 @@
 
 package org.apache.hadoop.ozone.om.upgrade;
 
+import java.io.IOException;
+import org.apache.hadoop.ozone.upgrade.LayoutVersionManager;
+
 import static org.apache.hadoop.ozone.om.upgrade.OMLayoutFeature.INITIAL_VERSION;
 import static org.mockito.Mockito.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
-
-import java.io.IOException;
-
-import org.apache.hadoop.ozone.upgrade.LayoutVersionManager;
 
 /**
  * Test util class. To be removed.

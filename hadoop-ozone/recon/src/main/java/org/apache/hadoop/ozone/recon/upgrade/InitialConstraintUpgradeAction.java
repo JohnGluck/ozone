@@ -19,6 +19,10 @@
 
 package org.apache.hadoop.ozone.recon.upgrade;
 
+import java.sql.Connection;
+import java.sql.SQLException;
+import java.util.Arrays;
+import javax.sql.DataSource;
 import com.google.common.annotations.VisibleForTesting;
 import org.apache.hadoop.ozone.recon.scm.ReconStorageContainerManagerFacade;
 import org.hadoop.ozone.recon.schema.ContainerSchemaDefinition;
@@ -26,11 +30,6 @@ import org.jooq.DSLContext;
 import org.jooq.impl.DSL;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import javax.sql.DataSource;
-import java.sql.Connection;
-import java.sql.SQLException;
-import java.util.Arrays;
 
 import static org.apache.hadoop.ozone.recon.upgrade.ReconLayoutFeature.INITIAL_VERSION;
 import static org.apache.hadoop.ozone.recon.upgrade.ReconUpgradeAction.UpgradeActionType.FINALIZE;

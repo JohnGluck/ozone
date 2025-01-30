@@ -17,11 +17,10 @@
  */
 package org.apache.hadoop.ozone.recon.scm;
 
+import java.util.List;
 import org.apache.hadoop.hdds.scm.server.ContainerReportQueue;
 import org.apache.hadoop.hdds.scm.server.SCMDatanodeHeartbeatDispatcher;
 import org.apache.hadoop.hdds.scm.server.SCMDatanodeHeartbeatDispatcher.ContainerReport;
-
-import java.util.List;
 
 /**
  * Customized queue to handle multiple ICR report together.

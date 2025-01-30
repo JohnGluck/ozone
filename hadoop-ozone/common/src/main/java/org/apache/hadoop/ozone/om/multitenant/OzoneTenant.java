@@ -19,7 +19,6 @@ package org.apache.hadoop.ozone.om.multitenant;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import org.apache.hadoop.ozone.om.multitenant.impl.AccountNameSpaceImpl;
 import org.apache.hadoop.ozone.om.multitenant.impl.SingleVolumeTenantNamespace;
 

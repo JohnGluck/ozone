@@ -21,7 +21,6 @@ package org.apache.hadoop.ozone.recon.recovery;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
-
 import org.apache.hadoop.hdds.conf.OzoneConfiguration;
 import org.apache.hadoop.hdds.utils.db.Table;
 import org.apache.hadoop.ozone.om.OMMetadataManager;

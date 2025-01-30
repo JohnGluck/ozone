@@ -17,6 +17,7 @@
  */
 package org.apache.hadoop.ozone.recon.persistence;
 
+import com.google.inject.Provider;
 import org.aopalliance.intercept.MethodInterceptor;
 import org.aopalliance.intercept.MethodInvocation;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
@@ -24,7 +25,6 @@ import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.UnexpectedRollbackException;
 import org.springframework.transaction.support.DefaultTransactionDefinition;
 
-import com.google.inject.Provider;
 
 /**
  * A {@link MethodInterceptor} that implements nested transactions.

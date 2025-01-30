@@ -17,17 +17,15 @@
  */
 package org.apache.hadoop.ozone.recon.persistence;
 
-import static org.hadoop.ozone.recon.codegen.JooqCodeGenerator.RECON_SCHEMA_NAME;
-import static org.hadoop.ozone.recon.codegen.SqlDbUtils.createNewDerbyDatabase;
-
 import javax.sql.DataSource;
-
+import com.google.inject.Inject;
+import com.google.inject.Provider;
 import org.apache.derby.jdbc.EmbeddedDataSource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.google.inject.Inject;
-import com.google.inject.Provider;
+import static org.hadoop.ozone.recon.codegen.JooqCodeGenerator.RECON_SCHEMA_NAME;
+import static org.hadoop.ozone.recon.codegen.SqlDbUtils.createNewDerbyDatabase;
 
 /**
  * Provide a {@link javax.sql.DataSource} for the application.

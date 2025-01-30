@@ -16,10 +16,9 @@
  */
 package org.apache.hadoop.ozone.security.acl;
 
-import org.apache.hadoop.ozone.om.helpers.OzoneFileStatus;
-
 import java.io.IOException;
 import java.util.Iterator;
+import org.apache.hadoop.ozone.om.helpers.OzoneFileStatus;
 
 /**
  * Interface used to lists immediate children(sub-paths) for a given keyPrefix.

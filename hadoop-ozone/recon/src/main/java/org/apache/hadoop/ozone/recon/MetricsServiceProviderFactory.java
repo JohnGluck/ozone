@@ -18,6 +18,8 @@
 
 package org.apache.hadoop.ozone.recon;
 
+import javax.inject.Inject;
+import javax.inject.Singleton;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.hadoop.hdds.conf.OzoneConfiguration;
 import org.apache.hadoop.hdds.recon.ReconConfigKeys;
@@ -25,9 +27,6 @@ import org.apache.hadoop.ozone.recon.spi.MetricsServiceProvider;
 import org.apache.hadoop.ozone.recon.spi.impl.PrometheusServiceProviderImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import javax.inject.Inject;
-import javax.inject.Singleton;
 
 /**
  * Factory class that is used to get the instance of configured Metrics Service

@@ -18,14 +18,6 @@
 
 package org.apache.hadoop.ozone.recon.codec;
 
-import org.apache.hadoop.hdds.utils.db.IntegerCodec;
-import org.apache.hadoop.hdds.utils.db.LongCodec;
-import org.apache.hadoop.hdds.utils.db.ShortCodec;
-import org.apache.hadoop.hdds.utils.db.StringCodec;
-import org.apache.hadoop.ozone.recon.ReconConstants;
-import org.apache.hadoop.ozone.recon.api.types.NSSummary;
-import org.apache.hadoop.hdds.utils.db.Codec;
-
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.DataInputStream;
@@ -33,6 +25,13 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.HashSet;
 import java.util.Set;
+import org.apache.hadoop.hdds.utils.db.Codec;
+import org.apache.hadoop.hdds.utils.db.IntegerCodec;
+import org.apache.hadoop.hdds.utils.db.LongCodec;
+import org.apache.hadoop.hdds.utils.db.ShortCodec;
+import org.apache.hadoop.hdds.utils.db.StringCodec;
+import org.apache.hadoop.ozone.recon.ReconConstants;
+import org.apache.hadoop.ozone.recon.api.types.NSSummary;
 
 /**
  * Codec to serialize/deserialize {@link NSSummary}.

@@ -20,7 +20,6 @@ package org.apache.hadoop.ozone.recon.api.types;
 import java.time.Instant;
 import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
-
 import javax.xml.bind.annotation.adapters.XmlAdapter;
 
 /**
