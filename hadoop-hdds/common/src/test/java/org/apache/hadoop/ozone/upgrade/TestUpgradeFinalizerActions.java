@@ -18,6 +18,20 @@
 
 package org.apache.hadoop.ozone.upgrade;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Paths;
+import java.util.EnumMap;
+import java.util.Optional;
+import java.util.Properties;
+import org.apache.hadoop.hdds.upgrade.HDDSUpgradeAction;
+import org.apache.hadoop.hdds.upgrade.test.MockComponent;
+import org.apache.hadoop.hdds.upgrade.test.MockComponent.MockDnUpgradeAction;
+import org.apache.hadoop.hdds.upgrade.test.MockComponent.MockScmUpgradeAction;
+import org.apache.hadoop.ozone.common.Storage;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.io.TempDir;
+
 import static org.apache.hadoop.hdds.protocol.proto.HddsProtos.NodeType.SCM;
 import static org.apache.hadoop.ozone.upgrade.LayoutFeature.UpgradeActionType.ON_FIRST_UPGRADE_START;
 import static org.apache.hadoop.ozone.upgrade.LayoutFeature.UpgradeActionType.VALIDATE_IN_PREFINALIZE;
@@ -29,21 +43,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
-
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.Paths;
-import java.util.EnumMap;
-import java.util.Optional;
-import java.util.Properties;
-
-import org.apache.hadoop.hdds.upgrade.HDDSUpgradeAction;
-import org.apache.hadoop.hdds.upgrade.test.MockComponent;
-import org.apache.hadoop.hdds.upgrade.test.MockComponent.MockDnUpgradeAction;
-import org.apache.hadoop.hdds.upgrade.test.MockComponent.MockScmUpgradeAction;
-import org.apache.hadoop.ozone.common.Storage;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.io.TempDir;
 
 /**
  * Class to test upgrade related actions.

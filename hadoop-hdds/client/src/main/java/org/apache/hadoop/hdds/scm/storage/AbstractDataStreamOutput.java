@@ -18,6 +18,10 @@
 
 package org.apache.hadoop.hdds.scm.storage;
 
+import java.io.IOException;
+import java.io.InterruptedIOException;
+import java.util.Map;
+import java.util.Objects;
 import com.google.common.base.Preconditions;
 import org.apache.hadoop.hdds.scm.client.HddsClientUtils;
 import org.apache.hadoop.hdds.scm.container.common.helpers.StorageContainerException;
@@ -25,11 +29,6 @@ import org.apache.hadoop.io.retry.RetryPolicy;
 import org.apache.hadoop.ozone.client.io.ByteBufferOutputStream;
 import org.apache.ratis.protocol.exceptions.AlreadyClosedException;
 import org.apache.ratis.protocol.exceptions.RaftRetryFailureException;
-
-import java.io.IOException;
-import java.io.InterruptedIOException;
-import java.util.Map;
-import java.util.Objects;
 
 /**
  * This class is used for error handling methods.

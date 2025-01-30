@@ -15,19 +15,19 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
+
 package org.apache.hadoop.hdds.utils.db;
 
-import com.google.protobuf.InvalidProtocolBufferException;
-import com.google.protobuf.MessageLite;
-import com.google.protobuf.Parser;
-import org.apache.ratis.util.function.CheckedFunction;
-
-import jakarta.annotation.Nonnull;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
+import com.google.protobuf.InvalidProtocolBufferException;
+import com.google.protobuf.MessageLite;
+import com.google.protobuf.Parser;
+import jakarta.annotation.Nonnull;
+import org.apache.ratis.util.function.CheckedFunction;
 
 /**
  * Codecs to serialize/deserialize Protobuf v2 messages.

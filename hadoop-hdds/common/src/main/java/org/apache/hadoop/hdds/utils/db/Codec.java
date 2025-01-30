@@ -15,10 +15,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.apache.hadoop.hdds.utils.db;
 
-import jakarta.annotation.Nonnull;
 import java.io.IOException;
+import jakarta.annotation.Nonnull;
 
 /**
  * Codec interface to serialize/deserialize objects to/from bytes.

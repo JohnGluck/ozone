@@ -15,11 +15,11 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
+
 package org.apache.hadoop.hdds.scm.container.common.helpers;
 
-import org.apache.hadoop.hdds.protocol.datanode.proto.ContainerProtos;
-
 import java.io.IOException;
+import org.apache.hadoop.hdds.protocol.datanode.proto.ContainerProtos;
 
 /**
  * Exceptions thrown from the Storage Container.

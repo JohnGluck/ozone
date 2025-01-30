@@ -15,16 +15,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.apache.hadoop.hdds.scm.protocolPB;
 
-import com.google.protobuf.ByteString;
-import org.apache.hadoop.io.Text;
-import org.apache.hadoop.hdds.protocol.proto.HddsProtos.TokenProto;
-import org.apache.hadoop.security.token.Token;
-import org.apache.hadoop.security.token.TokenIdentifier;
+package org.apache.hadoop.hdds.scm.protocolPB;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import com.google.protobuf.ByteString;
+import org.apache.hadoop.hdds.protocol.proto.HddsProtos.TokenProto;
+import org.apache.hadoop.io.Text;
+import org.apache.hadoop.security.token.Token;
+import org.apache.hadoop.security.token.TokenIdentifier;
 
 /**
  * Helper class for converting protobuf objects.

@@ -20,7 +20,6 @@ package org.apache.hadoop.hdds.upgrade;
 
 import java.util.EnumMap;
 import java.util.Optional;
-
 import org.apache.hadoop.ozone.upgrade.LayoutFeature;
 
 /**

@@ -17,11 +17,10 @@
 
 package org.apache.hadoop.ozone.lease;
 
-import org.apache.hadoop.util.Time;
-
 import java.util.Objects;
 import java.util.concurrent.Callable;
 import java.util.concurrent.atomic.AtomicLong;
+import org.apache.hadoop.util.Time;
 
 /**
  * This class represents the lease created on a resource. Callback can be

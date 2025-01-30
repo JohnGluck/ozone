@@ -18,12 +18,11 @@
 
 package org.apache.hadoop.ozone.upgrade;
 
-import static org.apache.hadoop.ozone.upgrade.UpgradeFinalizer.Status.FINALIZATION_REQUIRED;
-
 import java.io.IOException;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import static org.apache.hadoop.ozone.upgrade.UpgradeFinalizer.Status.FINALIZATION_REQUIRED;
 
 /**
  * DefaultUpgradeFinalizationExecutor for driving the main part of finalization.

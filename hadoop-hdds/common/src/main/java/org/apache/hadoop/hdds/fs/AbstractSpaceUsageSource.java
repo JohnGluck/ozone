@@ -15,15 +15,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.apache.hadoop.hdds.fs;
 
-import org.apache.hadoop.util.Time;
-import org.slf4j.Logger;
+package org.apache.hadoop.hdds.fs;
 
 import java.io.File;
 import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.util.function.LongSupplier;
+import org.apache.hadoop.util.Time;
+import org.slf4j.Logger;
 
 /**
  * Convenience parent class for {@code SpaceUsageSource} implementations.

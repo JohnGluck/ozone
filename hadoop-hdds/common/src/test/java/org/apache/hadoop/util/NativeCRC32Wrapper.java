@@ -15,11 +15,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.apache.hadoop.util;
 
-import org.apache.hadoop.fs.ChecksumException;
-
 import java.nio.ByteBuffer;
+import org.apache.hadoop.fs.ChecksumException;
 
 /**
  * This class wraps the NativeCRC32 class in hadoop-common, because the class

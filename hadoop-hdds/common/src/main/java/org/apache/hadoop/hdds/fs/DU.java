@@ -15,12 +15,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.apache.hadoop.hdds.fs;
 
-import org.apache.hadoop.ozone.OzoneConsts;
-import org.apache.hadoop.util.Shell;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+package org.apache.hadoop.hdds.fs;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -29,6 +25,10 @@ import java.io.UncheckedIOException;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicLong;
+import org.apache.hadoop.ozone.OzoneConsts;
+import org.apache.hadoop.util.Shell;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Uses the unix 'du' program to calculate space usage.  Can be slow if there

@@ -18,13 +18,12 @@
 
 package org.apache.hadoop.hdds.scm.pipeline;
 
+import java.util.UUID;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.apache.hadoop.hdds.protocol.proto.HddsProtos;
 import org.apache.hadoop.hdds.utils.db.Codec;
 import org.apache.hadoop.hdds.utils.db.DelegatedCodec;
 import org.apache.hadoop.hdds.utils.db.UuidCodec;
-
-import java.util.UUID;
 
 /**
  * ID for the pipeline, the ID is based on UUID.

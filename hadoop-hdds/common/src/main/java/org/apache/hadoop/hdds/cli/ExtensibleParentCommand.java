@@ -15,13 +15,13 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-package org.apache.hadoop.hdds.cli;
 
-import picocli.CommandLine;
+package org.apache.hadoop.hdds.cli;
 
 import java.util.ServiceLoader;
 import java.util.SortedMap;
 import java.util.TreeMap;
+import picocli.CommandLine;
 
 /**
  * Interface for parent commands that accept subcommands to be dynamically registered.

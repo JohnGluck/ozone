@@ -18,11 +18,10 @@
 
 package org.apache.hadoop.ozone.conf;
 
+import java.util.concurrent.TimeUnit;
 import org.apache.hadoop.hdds.conf.Config;
 import org.apache.hadoop.hdds.conf.ConfigGroup;
 import org.apache.hadoop.hdds.conf.ConfigType;
-
-import java.util.concurrent.TimeUnit;
 
 import static org.apache.hadoop.hdds.conf.ConfigTag.DATANODE;
 import static org.apache.hadoop.hdds.conf.ConfigTag.OM;

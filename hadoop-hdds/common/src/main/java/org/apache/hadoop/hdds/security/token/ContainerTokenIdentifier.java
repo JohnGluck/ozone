@@ -15,13 +15,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.apache.hadoop.hdds.security.token;
 
-import org.apache.hadoop.hdds.annotation.InterfaceAudience;
-import org.apache.hadoop.hdds.protocol.proto.StorageContainerLocationProtocolProtos.ContainerTokenSecretProto;
-import org.apache.hadoop.hdds.scm.container.ContainerID;
-import org.apache.hadoop.io.Text;
-import org.apache.hadoop.ozone.util.ProtobufUtils;
+package org.apache.hadoop.hdds.security.token;
 
 import java.io.DataInput;
 import java.io.DataInputStream;
@@ -30,6 +25,11 @@ import java.io.IOException;
 import java.time.Instant;
 import java.util.Objects;
 import java.util.UUID;
+import org.apache.hadoop.hdds.annotation.InterfaceAudience;
+import org.apache.hadoop.hdds.protocol.proto.StorageContainerLocationProtocolProtos.ContainerTokenSecretProto;
+import org.apache.hadoop.hdds.scm.container.ContainerID;
+import org.apache.hadoop.io.Text;
+import org.apache.hadoop.ozone.util.ProtobufUtils;
 
 /**
  * Token identifier for container operations, similar to block token.

@@ -18,11 +18,9 @@
 
 package org.apache.hadoop.hdds.scm.storage;
 
-import com.google.common.base.Preconditions;
 import java.io.IOException;
 import java.io.InputStream;
-
-
+import com.google.common.base.Preconditions;
 
 /**
  * An {@link ByteReaderStrategy} implementation which supports byte[] as the

@@ -18,8 +18,8 @@
 
 package org.apache.hadoop.hdds.utils.db;
 
-import jakarta.annotation.Nonnull;
 import java.nio.ByteBuffer;
+import jakarta.annotation.Nonnull;
 
 /**
  * Codec to serialize/deserialize {@link Integer}.

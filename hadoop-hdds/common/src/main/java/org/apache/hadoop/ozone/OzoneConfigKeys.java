@@ -18,17 +18,15 @@
 
 package org.apache.hadoop.ozone;
 
+import java.util.concurrent.TimeUnit;
 import org.apache.hadoop.hdds.annotation.InterfaceAudience;
 import org.apache.hadoop.hdds.annotation.InterfaceStability;
 import org.apache.hadoop.hdds.client.ReplicationFactor;
 import org.apache.hadoop.hdds.client.ReplicationType;
 import org.apache.hadoop.hdds.scm.ScmConfigKeys;
 import org.apache.hadoop.http.HttpConfig;
-
 import org.apache.ratis.proto.RaftProtos.ReplicationLevel;
 import org.apache.ratis.util.TimeDuration;
-
-import java.util.concurrent.TimeUnit;
 
 /**
  * This class contains constants for configuration keys used in Ozone.

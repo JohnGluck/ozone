@@ -16,6 +16,9 @@
  */
 package org.apache.ozone.annotations;
 
+import java.util.List;
+import java.util.Map.Entry;
+import java.util.Set;
 import javax.annotation.processing.AbstractProcessor;
 import javax.annotation.processing.RoundEnvironment;
 import javax.annotation.processing.SupportedAnnotationTypes;
@@ -34,9 +37,6 @@ import javax.lang.model.type.ExecutableType;
 import javax.lang.model.type.TypeMirror;
 import javax.lang.model.util.SimpleAnnotationValueVisitor8;
 import javax.tools.Diagnostic;
-import java.util.List;
-import java.util.Map.Entry;
-import java.util.Set;
 
 /**
  * This class is an annotation processor that is hooked into the java compiler
@@ -102,7 +102,7 @@ public class RequestFeatureValidatorProcessor extends AbstractProcessor {
 
   @Override
   public boolean process(Set<? extends TypeElement> annotations,
-      RoundEnvironment roundEnv) {
+                         RoundEnvironment roundEnv) {
     for (TypeElement annotation : annotations) {
       if (!annotation.getSimpleName().contentEquals(ANNOTATION_SIMPLE_NAME)) {
         continue;

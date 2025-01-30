@@ -15,13 +15,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.apache.hadoop.hdds.fs;
 
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.io.TempDir;
+package org.apache.hadoop.hdds.fs;
 
 import java.io.File;
 import java.io.IOException;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.io.TempDir;
 
 import static org.apache.hadoop.hdds.fs.TestDU.createFile;
 import static org.assertj.core.api.Assertions.assertThat;

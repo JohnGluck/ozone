@@ -15,14 +15,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.apache.hadoop.hdds.utils;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
-
 import org.apache.hadoop.util.ThreadUtil;
-
 import org.slf4j.LoggerFactory;
 
 /**

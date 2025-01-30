@@ -18,24 +18,23 @@
 
 package org.apache.hadoop.hdds.ratis.retrypolicy;
 
+import java.time.Duration;
+import java.util.concurrent.TimeUnit;
 import org.apache.hadoop.hdds.conf.ConfigurationSource;
 import org.apache.hadoop.hdds.ratis.conf.RatisClientConfig;
 import org.apache.ratis.client.retry.RequestTypeDependentRetryPolicy;
 import org.apache.ratis.proto.RaftProtos;
 import org.apache.ratis.protocol.exceptions.GroupMismatchException;
 import org.apache.ratis.protocol.exceptions.NotReplicatedException;
+import org.apache.ratis.protocol.exceptions.ResourceUnavailableException;
 import org.apache.ratis.protocol.exceptions.StateMachineException;
 import org.apache.ratis.protocol.exceptions.TimeoutIOException;
-import org.apache.ratis.protocol.exceptions.ResourceUnavailableException;
 import org.apache.ratis.retry.ExceptionDependentRetry;
 import org.apache.ratis.retry.ExponentialBackoffRetry;
 import org.apache.ratis.retry.MultipleLinearRandomRetry;
 import org.apache.ratis.retry.RetryPolicies;
 import org.apache.ratis.retry.RetryPolicy;
 import org.apache.ratis.util.TimeDuration;
-
-import java.time.Duration;
-import java.util.concurrent.TimeUnit;
 
 /**
  * Table mapping exception type to retry policy used for the exception in

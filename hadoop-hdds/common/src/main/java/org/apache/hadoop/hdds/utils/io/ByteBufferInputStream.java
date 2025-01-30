@@ -15,14 +15,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.apache.hadoop.hdds.utils.io;
 
-
-import jakarta.annotation.Nonnull;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.ByteBuffer;
 import java.util.Objects;
+import jakarta.annotation.Nonnull;
 
 /** Warp a {@link ByteBuffer} as an {@link InputStream}. */
 public class ByteBufferInputStream extends InputStream {

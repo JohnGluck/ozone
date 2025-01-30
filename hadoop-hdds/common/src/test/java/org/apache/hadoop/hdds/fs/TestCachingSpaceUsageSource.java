@@ -15,13 +15,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.apache.hadoop.hdds.fs;
 
-import org.apache.commons.lang3.RandomUtils;
-import org.apache.hadoop.hdds.fs.MockSpaceUsageCheckParams.Builder;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.io.TempDir;
-import org.mockito.stubbing.Answer;
+package org.apache.hadoop.hdds.fs;
 
 import java.io.File;
 import java.time.Duration;
@@ -29,6 +24,11 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicLong;
+import org.apache.commons.lang3.RandomUtils;
+import org.apache.hadoop.hdds.fs.MockSpaceUsageCheckParams.Builder;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.io.TempDir;
+import org.mockito.stubbing.Answer;
 
 import static org.apache.hadoop.hdds.fs.MockSpaceUsageCheckParams.newBuilder;
 import static org.junit.jupiter.api.Assertions.assertEquals;

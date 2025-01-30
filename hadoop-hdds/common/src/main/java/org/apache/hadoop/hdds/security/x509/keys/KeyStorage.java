@@ -16,11 +16,8 @@
  * limitations under the License.
  *
  */
-package org.apache.hadoop.hdds.security.x509.keys;
 
-import org.apache.hadoop.hdds.security.SecurityConfig;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+package org.apache.hadoop.hdds.security.x509.keys;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
@@ -32,6 +29,9 @@ import java.security.KeyPair;
 import java.security.PrivateKey;
 import java.security.PublicKey;
 import java.util.Set;
+import org.apache.hadoop.hdds.security.SecurityConfig;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import static java.nio.file.Files.readAllBytes;
 import static java.nio.file.attribute.PosixFilePermissions.asFileAttribute;

@@ -15,10 +15,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.apache.hadoop.hdds.conf;
 
-import org.apache.hadoop.ozone.OzoneConfigKeys;
-import org.apache.hadoop.util.StringUtils;
+package org.apache.hadoop.hdds.conf;
 
 import java.util.Collection;
 import java.util.Enumeration;
@@ -27,6 +25,8 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
+import org.apache.hadoop.ozone.OzoneConfigKeys;
+import org.apache.hadoop.util.StringUtils;
 
 import static org.apache.hadoop.ozone.OzoneConfigKeys.OZONE_SECURITY_CRYPTO_COMPLIANCE_MODE_UNRESTRICTED;
 

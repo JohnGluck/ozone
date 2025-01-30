@@ -16,15 +16,14 @@
  * limitations under the License.
  *
  */
+
 package org.apache.hadoop.hdds.security.x509.keys;
 
 import java.security.KeyPair;
 import java.security.KeyPairGenerator;
 import java.security.NoSuchAlgorithmException;
 import java.security.NoSuchProviderException;
-
 import org.apache.hadoop.hdds.security.SecurityConfig;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

@@ -15,13 +15,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.apache.hadoop.hdds.protocol;
 
-import org.apache.hadoop.hdds.protocol.proto.HddsProtos;
-import org.apache.ozone.test.GenericTestUtils;
 import java.util.Random;
 import java.util.UUID;
 import java.util.concurrent.ThreadLocalRandom;
+import org.apache.hadoop.hdds.protocol.proto.HddsProtos;
+import org.apache.ozone.test.GenericTestUtils;
 
 import static org.apache.hadoop.hdds.protocol.DatanodeDetails.Port.Name.ALL_PORTS;
 

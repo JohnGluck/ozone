@@ -15,8 +15,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.apache.hadoop.ozone;
 
+package org.apache.hadoop.ozone;
 
 /**
  * Base class defining the version in the entire system.

@@ -18,6 +18,7 @@
  * Some portions of this file Copyright (c) 2004-2006 Intel Corportation
  * and licensed under the BSD license.
  */
+
 package org.apache.hadoop.ozone.common;
 
 /**

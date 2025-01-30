@@ -17,13 +17,12 @@
 
 package org.apache.hadoop.ozone.common;
 
+import java.util.HashSet;
+import java.util.Set;
 import org.apache.commons.collections.SetUtils;
 import org.apache.hadoop.ozone.common.statemachine.InvalidStateTransitionException;
 import org.apache.hadoop.ozone.common.statemachine.StateMachine;
 import org.junit.jupiter.api.Test;
-
-import java.util.HashSet;
-import java.util.Set;
 
 import static org.apache.hadoop.ozone.common.TestStateMachine.STATES.CLEANUP;
 import static org.apache.hadoop.ozone.common.TestStateMachine.STATES.CLOSED;

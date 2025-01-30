@@ -15,13 +15,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.apache.hadoop.hdds.scm.storage;
 
+import java.io.IOException;
 import org.apache.hadoop.fs.CanUnbuffer;
 import org.apache.hadoop.fs.Seekable;
-
-import java.io.IOException;
-
 
 /**
  * A stream that can be a part of a {@link MultipartInputStream}.

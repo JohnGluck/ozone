@@ -15,12 +15,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.apache.hadoop.hdds.utils.io;
 
-import jakarta.annotation.Nonnull;
 import java.io.FilterOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import jakarta.annotation.Nonnull;
 
 /**
  * An {@link FilterOutputStream} recording the length of bytes written.

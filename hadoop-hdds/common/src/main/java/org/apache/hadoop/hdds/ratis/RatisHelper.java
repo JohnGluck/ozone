@@ -30,7 +30,7 @@ import java.util.UUID;
 import java.util.function.BiFunction;
 import java.util.function.BooleanSupplier;
 import java.util.stream.Collectors;
-
+import javax.net.ssl.TrustManager;
 import com.google.common.annotations.VisibleForTesting;
 import org.apache.hadoop.hdds.DFSConfigKeysLegacy;
 import org.apache.hadoop.hdds.StringUtils;
@@ -43,7 +43,6 @@ import org.apache.hadoop.hdds.ratis.retrypolicy.RetryPolicyCreator;
 import org.apache.hadoop.hdds.scm.ScmConfigKeys;
 import org.apache.hadoop.hdds.scm.pipeline.Pipeline;
 import org.apache.hadoop.hdds.security.SecurityConfig;
-
 import org.apache.ratis.RaftConfigKeys;
 import org.apache.ratis.client.RaftClient;
 import org.apache.ratis.client.RaftClientConfigKeys;
@@ -72,8 +71,6 @@ import org.apache.ratis.util.JvmPauseMonitor;
 import org.apache.ratis.util.TimeDuration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import javax.net.ssl.TrustManager;
 
 import static java.util.concurrent.TimeUnit.MILLISECONDS;
 import static org.apache.ratis.util.Preconditions.assertTrue;

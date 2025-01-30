@@ -18,14 +18,13 @@
 
 package org.apache.hadoop.hdds.client;
 
-import com.google.common.base.Strings;
-import org.apache.hadoop.ozone.OzoneConsts;
-import org.apache.ratis.util.Preconditions;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import com.google.common.base.Strings;
+import org.apache.hadoop.ozone.OzoneConsts;
+import org.apache.ratis.util.Preconditions;
 
 /**
  * represents an OzoneQuota Object that can be applied to

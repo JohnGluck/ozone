@@ -18,6 +18,12 @@
 
 package org.apache.hadoop.hdds.upgrade;
 
+import java.util.Optional;
+import org.apache.hadoop.hdds.upgrade.test.MockComponent;
+import org.apache.hadoop.hdds.upgrade.test.MockComponent.MockDnUpgradeAction;
+import org.apache.hadoop.hdds.upgrade.test.MockComponent.MockScmUpgradeAction;
+import org.junit.jupiter.api.Test;
+
 import static org.apache.hadoop.hdds.upgrade.HDDSLayoutFeature.DATANODE_SCHEMA_V2;
 import static org.apache.hadoop.hdds.upgrade.HDDSLayoutFeature.INITIAL_VERSION;
 import static org.apache.hadoop.hdds.upgrade.HDDSLayoutVersionManager.maxLayoutVersion;
@@ -32,13 +38,6 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-
-import java.util.Optional;
-
-import org.apache.hadoop.hdds.upgrade.test.MockComponent;
-import org.apache.hadoop.hdds.upgrade.test.MockComponent.MockDnUpgradeAction;
-import org.apache.hadoop.hdds.upgrade.test.MockComponent.MockScmUpgradeAction;
-import org.junit.jupiter.api.Test;
 
 /**
  * Class to test HDDS upgrade action registrations.

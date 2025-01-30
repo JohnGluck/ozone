@@ -15,14 +15,14 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-package org.apache.hadoop.hdds.cli;
 
-import org.apache.hadoop.hdds.conf.OzoneConfiguration;
-import org.apache.ratis.util.MemoizedSupplier;
-import picocli.CommandLine;
+package org.apache.hadoop.hdds.cli;
 
 import java.io.PrintWriter;
 import java.util.function.Supplier;
+import org.apache.hadoop.hdds.conf.OzoneConfiguration;
+import org.apache.ratis.util.MemoizedSupplier;
+import picocli.CommandLine;
 
 /** Base functionality for all Ozone subcommands. */
 @CommandLine.Command(

@@ -15,13 +15,13 @@
   * See the License for the specific language governing permissions and
   * limitations under the License.
   */
-package org.apache.hadoop.ozone.common;
 
-import org.apache.hadoop.hdds.annotation.InterfaceAudience;
-import org.apache.hadoop.hdds.annotation.InterfaceStability;
+package org.apache.hadoop.ozone.common;
 
 import java.io.File;
 import java.io.IOException;
+import org.apache.hadoop.hdds.annotation.InterfaceAudience;
+import org.apache.hadoop.hdds.annotation.InterfaceStability;
 
 /**
  * The exception is thrown when file system state is inconsistent

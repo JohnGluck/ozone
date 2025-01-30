@@ -18,12 +18,11 @@
 
 package org.apache.hadoop.ozone.client.io;
 
-import org.apache.hadoop.hdds.scm.storage.ByteBufferStreamOutput;
-
-import jakarta.annotation.Nonnull;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.nio.ByteBuffer;
+import jakarta.annotation.Nonnull;
+import org.apache.hadoop.hdds.scm.storage.ByteBufferStreamOutput;
 
 /**
  * A {@link ByteBufferStreamOutput} supporting {@link OutputStream}.

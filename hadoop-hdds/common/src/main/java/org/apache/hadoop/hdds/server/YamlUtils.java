@@ -15,15 +15,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.apache.hadoop.hdds.server;
 
+import java.io.InputStream;
+import java.util.Arrays;
 import org.yaml.snakeyaml.LoaderOptions;
 import org.yaml.snakeyaml.Yaml;
 import org.yaml.snakeyaml.inspector.TagInspector;
 import org.yaml.snakeyaml.inspector.TrustedPrefixesTagInspector;
-
-import java.io.InputStream;
-import java.util.Arrays;
 
 /**
  * YAML utilities.

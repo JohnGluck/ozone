@@ -18,15 +18,15 @@
 
 package org.apache.hadoop.hdds.upgrade.test;
 
+import org.apache.hadoop.hdds.upgrade.HDDSUpgradeAction;
+import org.apache.hadoop.ozone.upgrade.UpgradeActionHdds;
+
 import static org.apache.hadoop.hdds.upgrade.HDDSLayoutFeature.DATANODE_SCHEMA_V2;
 import static org.apache.hadoop.hdds.upgrade.HDDSLayoutFeature.INITIAL_VERSION;
 import static org.apache.hadoop.ozone.upgrade.LayoutFeature.UpgradeActionType.ON_FINALIZE;
 import static org.apache.hadoop.ozone.upgrade.LayoutFeature.UpgradeActionType.ON_FIRST_UPGRADE_START;
 import static org.apache.hadoop.ozone.upgrade.UpgradeActionHdds.Component.DATANODE;
 import static org.apache.hadoop.ozone.upgrade.UpgradeActionHdds.Component.SCM;
-
-import org.apache.hadoop.hdds.upgrade.HDDSUpgradeAction;
-import org.apache.hadoop.ozone.upgrade.UpgradeActionHdds;
 
 /**
  * Mock classes to test upgrade action registration.

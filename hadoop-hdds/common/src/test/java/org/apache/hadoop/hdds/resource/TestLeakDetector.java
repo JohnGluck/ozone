@@ -15,13 +15,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.apache.hadoop.hdds.resource;
 
+import java.util.concurrent.atomic.AtomicInteger;
 import org.apache.hadoop.hdds.utils.LeakDetector;
 import org.apache.ratis.util.UncheckedAutoCloseable;
 import org.junit.jupiter.api.Test;
-
-import java.util.concurrent.atomic.AtomicInteger;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 

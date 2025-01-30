@@ -18,14 +18,13 @@
 
 package org.apache.hadoop.ozone.common.statemachine;
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
 import com.google.common.collect.ImmutableSet;
-
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
 
 /**
  * Template class that wraps simple event driven state machine.

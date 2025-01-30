@@ -18,14 +18,6 @@
 
 package org.apache.hadoop.hdds.security.token;
 
-import com.google.common.annotations.VisibleForTesting;
-import org.apache.hadoop.hdds.annotation.InterfaceAudience;
-import org.apache.hadoop.hdds.client.BlockID;
-import org.apache.hadoop.hdds.protocol.proto.HddsProtos.BlockTokenSecretProto;
-import org.apache.hadoop.hdds.protocol.proto.HddsProtos.BlockTokenSecretProto.AccessModeProto;
-import org.apache.hadoop.io.Text;
-import org.apache.hadoop.ozone.util.ProtobufUtils;
-
 import java.io.DataInput;
 import java.io.DataInputStream;
 import java.io.DataOutput;
@@ -34,6 +26,13 @@ import java.time.Instant;
 import java.util.EnumSet;
 import java.util.Objects;
 import java.util.Set;
+import com.google.common.annotations.VisibleForTesting;
+import org.apache.hadoop.hdds.annotation.InterfaceAudience;
+import org.apache.hadoop.hdds.client.BlockID;
+import org.apache.hadoop.hdds.protocol.proto.HddsProtos.BlockTokenSecretProto;
+import org.apache.hadoop.hdds.protocol.proto.HddsProtos.BlockTokenSecretProto.AccessModeProto;
+import org.apache.hadoop.io.Text;
+import org.apache.hadoop.ozone.util.ProtobufUtils;
 
 /**
  * Block token identifier for Ozone/HDDS. Ozone block access token is similar

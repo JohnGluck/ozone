@@ -14,13 +14,12 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
+
 package org.apache.hadoop.hdds;
-
-
-import org.apache.hadoop.net.NetUtils;
 
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
+import org.apache.hadoop.net.NetUtils;
 
 /**
  * Basic information about nodes in an HA setup.

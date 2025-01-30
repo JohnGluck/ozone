@@ -15,15 +15,15 @@
 * See the License for the specific language governing permissions and
 * limitations under the License.
 */
+
 package org.apache.hadoop.hdds.security.ssl;
 
-import org.apache.hadoop.hdds.annotation.InterfaceAudience;
-import org.apache.hadoop.hdds.annotation.InterfaceStability;
-
-import javax.net.ssl.KeyManager;
-import javax.net.ssl.TrustManager;
 import java.io.IOException;
 import java.security.GeneralSecurityException;
+import javax.net.ssl.KeyManager;
+import javax.net.ssl.TrustManager;
+import org.apache.hadoop.hdds.annotation.InterfaceAudience;
+import org.apache.hadoop.hdds.annotation.InterfaceStability;
 
 /**
  * Interface that gives access to {@link KeyManager} and {@link TrustManager}

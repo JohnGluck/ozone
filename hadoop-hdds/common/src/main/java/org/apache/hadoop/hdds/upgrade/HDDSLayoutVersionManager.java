@@ -18,19 +18,16 @@
 
 package org.apache.hadoop.hdds.upgrade;
 
-
-import static org.apache.hadoop.ozone.upgrade.UpgradeActionHdds.Component.SCM;
-
 import java.io.IOException;
 import java.util.Set;
-
+import com.google.common.annotations.VisibleForTesting;
 import org.apache.hadoop.ozone.upgrade.AbstractLayoutVersionManager;
 import org.apache.hadoop.ozone.upgrade.UpgradeActionHdds;
 import org.reflections.Reflections;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.google.common.annotations.VisibleForTesting;
+import static org.apache.hadoop.ozone.upgrade.UpgradeActionHdds.Component.SCM;
 
 /**
  * Class to manage layout versions and features for Storage Container Manager

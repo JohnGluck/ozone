@@ -15,17 +15,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.apache.hadoop.hdds.security.token;
 
-import com.google.common.base.Strings;
-import org.apache.hadoop.hdds.annotation.InterfaceAudience;
-import org.apache.hadoop.security.UserGroupInformation;
-import org.apache.hadoop.security.token.TokenIdentifier;
+package org.apache.hadoop.hdds.security.token;
 
 import java.io.IOException;
 import java.time.Instant;
 import java.util.Objects;
 import java.util.UUID;
+import com.google.common.base.Strings;
+import org.apache.hadoop.hdds.annotation.InterfaceAudience;
+import org.apache.hadoop.security.UserGroupInformation;
+import org.apache.hadoop.security.token.TokenIdentifier;
 
 /**
  * Base class for short-lived tokens (block, container).

@@ -18,9 +18,8 @@
 
 package org.apache.hadoop.hdds.scm.storage;
 
-import org.apache.hadoop.hdds.scm.XceiverClientSpi;
-
 import java.util.List;
+import org.apache.hadoop.hdds.scm.XceiverClientSpi;
 
 /**
  * This class executes watchForCommit on ratis pipeline and releases

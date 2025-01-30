@@ -15,14 +15,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.apache.hadoop.ozone.util;
 
-import org.apache.hadoop.metrics2.annotation.Metric;
-import org.apache.hadoop.metrics2.lib.MetricsRegistry;
+package org.apache.hadoop.ozone.util;
 
 import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.Map;
+import org.apache.hadoop.metrics2.annotation.Metric;
+import org.apache.hadoop.metrics2.lib.MetricsRegistry;
 
 /**
  * Utility class for initializing PerformanceMetrics in a MetricsSource.

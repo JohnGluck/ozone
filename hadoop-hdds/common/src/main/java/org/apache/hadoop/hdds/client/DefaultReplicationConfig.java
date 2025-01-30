@@ -15,12 +15,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.apache.hadoop.hdds.client;
 
+import java.util.Objects;
 import net.jcip.annotations.Immutable;
 import org.apache.hadoop.hdds.protocol.proto.HddsProtos;
-
-import java.util.Objects;
 
 /**
  * Replication configuration for EC replication.

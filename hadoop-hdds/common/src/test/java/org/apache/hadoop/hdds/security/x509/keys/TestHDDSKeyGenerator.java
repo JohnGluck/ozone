@@ -19,9 +19,6 @@
 
 package org.apache.hadoop.hdds.security.x509.keys;
 
-import static org.apache.hadoop.hdds.HddsConfigKeys.OZONE_METADATA_DIRS;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-
 import java.io.File;
 import java.security.KeyPair;
 import java.security.NoSuchAlgorithmException;
@@ -34,6 +31,9 @@ import org.apache.hadoop.hdds.security.SecurityConfig;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
+
+import static org.apache.hadoop.hdds.HddsConfigKeys.OZONE_METADATA_DIRS;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  * Test class for HDDS Key Generator.

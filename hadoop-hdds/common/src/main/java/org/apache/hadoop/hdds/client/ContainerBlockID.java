@@ -14,12 +14,12 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
+
 package org.apache.hadoop.hdds.client;
 
+import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.apache.hadoop.hdds.protocol.proto.HddsProtos;
-
-import java.util.Objects;
 
 /**
  * BlockID returned by SCM during allocation of block (containerID + localID).

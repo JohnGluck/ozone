@@ -18,12 +18,11 @@
 
 package org.apache.hadoop.ozone.container.common.helpers;
 
-import com.google.common.base.Preconditions;
-import org.apache.hadoop.hdds.protocol.datanode.proto.ContainerProtos;
-
 import java.io.IOException;
 import java.util.Map;
 import java.util.TreeMap;
+import com.google.common.base.Preconditions;
+import org.apache.hadoop.hdds.protocol.datanode.proto.ContainerProtos;
 import org.apache.hadoop.ozone.common.Checksum;
 import org.apache.hadoop.ozone.common.ChecksumData;
 import org.apache.ratis.thirdparty.com.google.protobuf.ByteString;

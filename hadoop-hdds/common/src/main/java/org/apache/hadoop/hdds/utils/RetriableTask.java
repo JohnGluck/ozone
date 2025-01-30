@@ -15,15 +15,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.apache.hadoop.hdds.utils;
 
+import java.io.IOException;
+import java.util.concurrent.Callable;
 import org.apache.hadoop.io.retry.RetryPolicy;
 import org.apache.hadoop.util.ThreadUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.io.IOException;
-import java.util.concurrent.Callable;
 
 /**
  * {@code Callable} implementation that retries a delegate task according to

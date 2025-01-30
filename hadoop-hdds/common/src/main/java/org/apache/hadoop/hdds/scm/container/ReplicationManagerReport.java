@@ -15,9 +15,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.apache.hadoop.hdds.scm.container;
 
-import org.apache.hadoop.hdds.protocol.proto.HddsProtos;
+package org.apache.hadoop.hdds.scm.container;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -27,6 +26,7 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.LongAdder;
 import java.util.stream.Collectors;
+import org.apache.hadoop.hdds.protocol.proto.HddsProtos;
 
 /**
  * This class is used by ReplicationManager. Each time ReplicationManager runs,

@@ -14,13 +14,13 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
+
 package org.apache.hadoop.ozone.ha;
 
+import java.net.InetSocketAddress;
 import org.apache.hadoop.net.NetUtils;
 import org.apache.hadoop.ozone.util.OzoneNetUtils;
 import org.junit.jupiter.api.Test;
-
-import java.net.InetSocketAddress;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 

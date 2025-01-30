@@ -18,9 +18,8 @@
 
 package org.apache.hadoop.ozone.upgrade;
 
-import org.apache.hadoop.ozone.Versioned;
-
 import java.util.Optional;
+import org.apache.hadoop.ozone.Versioned;
 
 /**
  * Generic Layout feature interface for Ozone.

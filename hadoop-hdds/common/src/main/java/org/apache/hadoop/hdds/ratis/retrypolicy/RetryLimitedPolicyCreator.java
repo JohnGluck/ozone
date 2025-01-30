@@ -18,13 +18,12 @@
 
 package org.apache.hadoop.hdds.ratis.retrypolicy;
 
+import java.util.concurrent.TimeUnit;
 import org.apache.hadoop.hdds.conf.ConfigurationSource;
 import org.apache.hadoop.hdds.ratis.conf.RatisClientConfig;
 import org.apache.ratis.retry.RetryPolicies;
 import org.apache.ratis.retry.RetryPolicy;
 import org.apache.ratis.util.TimeDuration;
-
-import java.util.concurrent.TimeUnit;
 
 /**
  * The creator of RetryLimited policy.

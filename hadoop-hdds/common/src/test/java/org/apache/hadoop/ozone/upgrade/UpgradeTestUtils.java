@@ -16,17 +16,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.apache.hadoop.ozone.upgrade;
 
-import org.apache.hadoop.ozone.upgrade.InjectedUpgradeFinalizationExecutor.UpgradeTestInjectionPoints;
-import org.apache.hadoop.hdds.protocol.proto.HddsProtos;
-import org.apache.hadoop.ozone.common.StorageInfo;
-import org.slf4j.Logger;
+package org.apache.hadoop.ozone.upgrade;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.UUID;
 import java.util.concurrent.CountDownLatch;
+import org.apache.hadoop.hdds.protocol.proto.HddsProtos;
+import org.apache.hadoop.ozone.common.StorageInfo;
+import org.apache.hadoop.ozone.upgrade.InjectedUpgradeFinalizationExecutor.UpgradeTestInjectionPoints;
+import org.slf4j.Logger;
 
 /**
  * Upgrade related test utility methods.

@@ -15,14 +15,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.apache.hadoop.ozone.util;
 
-import org.apache.hadoop.metrics2.lib.MetricsRegistry;
-import org.apache.hadoop.metrics2.lib.MutableQuantiles;
-import org.apache.hadoop.metrics2.lib.MutableRate;
-import org.apache.hadoop.util.Time;
-import org.apache.ratis.util.function.CheckedRunnable;
-import org.apache.ratis.util.function.CheckedSupplier;
+package org.apache.hadoop.ozone.util;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -30,6 +24,12 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
+import org.apache.hadoop.metrics2.lib.MetricsRegistry;
+import org.apache.hadoop.metrics2.lib.MutableQuantiles;
+import org.apache.hadoop.metrics2.lib.MutableRate;
+import org.apache.hadoop.util.Time;
+import org.apache.ratis.util.function.CheckedRunnable;
+import org.apache.ratis.util.function.CheckedSupplier;
 
 /**
  * Encloses helpers to deal with metrics.

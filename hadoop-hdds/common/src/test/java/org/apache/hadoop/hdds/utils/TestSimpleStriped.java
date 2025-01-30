@@ -16,15 +16,15 @@
  *  limitations under the License.
  *
  */
-package org.apache.hadoop.hdds.utils;
 
-import com.google.common.util.concurrent.Striped;
-import org.junit.jupiter.api.Test;
+package org.apache.hadoop.hdds.utils;
 
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
+import com.google.common.util.concurrent.Striped;
+import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;

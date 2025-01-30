@@ -22,13 +22,12 @@ import java.util.concurrent.Callable;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-
-import static org.apache.hadoop.ozone.lease.Lease.messageForResource;
-
 import java.util.concurrent.Semaphore;
 import java.util.concurrent.TimeUnit;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import static org.apache.hadoop.ozone.lease.Lease.messageForResource;
 
 /**
  * LeaseManager is someone who can provide you leases based on your

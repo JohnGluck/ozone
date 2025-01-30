@@ -16,17 +16,17 @@
  * limitations under the License.
  *
  */
-package org.apache.hadoop.hdds.utils;
 
-import org.apache.ratis.util.UncheckedAutoCloseable;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+package org.apache.hadoop.hdds.utils;
 
 import java.lang.ref.ReferenceQueue;
 import java.util.Collections;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicLong;
+import org.apache.ratis.util.UncheckedAutoCloseable;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Simple general resource leak detector using {@link ReferenceQueue} and {@link java.lang.ref.WeakReference} to

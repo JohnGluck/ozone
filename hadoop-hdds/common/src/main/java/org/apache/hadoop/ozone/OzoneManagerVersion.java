@@ -15,12 +15,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.apache.hadoop.ozone;
 
-import org.apache.hadoop.hdds.ComponentVersion;
+package org.apache.hadoop.ozone;
 
 import java.util.Arrays;
 import java.util.Map;
+import org.apache.hadoop.hdds.ComponentVersion;
 
 import static java.util.function.Function.identity;
 import static java.util.stream.Collectors.toMap;

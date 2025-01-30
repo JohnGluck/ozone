@@ -16,14 +16,9 @@
  * limitations under the License.
  *
  */
+
 package org.apache.hadoop.hdds.utils.db;
 
-import org.apache.hadoop.hdds.StringUtils;
-import org.apache.ratis.util.Preconditions;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import jakarta.annotation.Nonnull;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.CharBuffer;
@@ -34,6 +29,11 @@ import java.nio.charset.CoderResult;
 import java.nio.charset.CodingErrorAction;
 import java.util.Objects;
 import java.util.function.Function;
+import jakarta.annotation.Nonnull;
+import org.apache.hadoop.hdds.StringUtils;
+import org.apache.ratis.util.Preconditions;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * An abstract {@link Codec} to serialize/deserialize {@link String}

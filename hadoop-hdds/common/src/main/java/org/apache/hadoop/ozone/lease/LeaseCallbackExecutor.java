@@ -17,10 +17,9 @@
 
 package org.apache.hadoop.ozone.lease;
 
+import java.util.concurrent.Callable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.util.concurrent.Callable;
 
 /**
  * This class is responsible for executing the callbacks of a lease in case of

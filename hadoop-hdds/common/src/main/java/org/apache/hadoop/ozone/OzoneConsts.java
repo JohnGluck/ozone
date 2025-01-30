@@ -18,13 +18,12 @@
 
 package org.apache.hadoop.ozone;
 
-import org.apache.hadoop.hdds.annotation.InterfaceAudience;
-
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.regex.Pattern;
+import org.apache.hadoop.hdds.annotation.InterfaceAudience;
 
 /**
  * Set of constants used in Ozone implementation.

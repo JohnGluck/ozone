@@ -16,13 +16,13 @@
  * limitations under the License.
  *
  */
-package org.apache.hadoop.hdds.utils;
 
-import org.apache.ratis.util.UncheckedAutoCloseable;
+package org.apache.hadoop.hdds.utils;
 
 import java.lang.ref.ReferenceQueue;
 import java.lang.ref.WeakReference;
 import java.util.Set;
+import org.apache.ratis.util.UncheckedAutoCloseable;
 
 /**
  * A token to track resource closure.

@@ -15,13 +15,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.apache.hadoop.hdds.fs;
 
+import java.io.File;
 import org.apache.hadoop.fs.DF;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.io.File;
 
 /**
  * Fast but inaccurate class to tell how much space a directory is using.

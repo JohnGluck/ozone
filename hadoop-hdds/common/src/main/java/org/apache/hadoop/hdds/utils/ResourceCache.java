@@ -15,13 +15,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.apache.hadoop.hdds.utils;
 
+import java.util.Objects;
+import java.util.function.Predicate;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.RemovalListener;
 import com.google.common.cache.Weigher;
-import java.util.Objects;
-import java.util.function.Predicate;
 
 /**
  * Cache with FIFO functionality with limit. If resource usages crosses the

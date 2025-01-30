@@ -18,12 +18,12 @@
  * Some portions of this file Copyright (c) 2004-2006 Intel Corportation
  * and licensed under the BSD license.
  */
-package org.apache.hadoop.ozone.common;
 
-import org.apache.ratis.util.Preconditions;
+package org.apache.hadoop.ozone.common;
 
 import java.nio.ByteBuffer;
 import java.util.zip.Checksum;
+import org.apache.ratis.util.Preconditions;
 
 /**
  * A sub-interface of {@link Checksum}

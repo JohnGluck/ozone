@@ -15,12 +15,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.apache.hadoop.ozone.common;
 
+import java.nio.ByteBuffer;
 import org.apache.commons.lang3.NotImplementedException;
 import org.apache.hadoop.util.NativeCRC32Wrapper;
-
-import java.nio.ByteBuffer;
 
 /**
  * This is a partial implementation to be used only in benchmarks.

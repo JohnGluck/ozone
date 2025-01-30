@@ -18,15 +18,14 @@
 
 package org.apache.hadoop.hdds.client;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import net.jcip.annotations.Immutable;
-import org.apache.hadoop.hdds.protocol.proto.HddsProtos;
-
 import java.util.EnumSet;
 import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import net.jcip.annotations.Immutable;
+import org.apache.hadoop.hdds.protocol.proto.HddsProtos;
 
 /**
  * Replication configuration for EC replication.

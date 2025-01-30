@@ -15,12 +15,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.apache.hadoop.ozone.util;
 
+import java.util.Objects;
 import com.google.protobuf.ByteString;
 import net.jcip.annotations.Immutable;
-
-import java.util.Objects;
 
 /**
  * Class to encapsulate and cache the conversion of a Java String to a ByteString.

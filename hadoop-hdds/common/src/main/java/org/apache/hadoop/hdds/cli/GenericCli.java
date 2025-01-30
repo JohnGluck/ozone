@@ -14,17 +14,16 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
+
 package org.apache.hadoop.hdds.cli;
 
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Map;
-
+import com.google.common.annotations.VisibleForTesting;
 import com.google.common.base.Strings;
 import org.apache.hadoop.fs.Path;
 import org.apache.hadoop.hdds.conf.OzoneConfiguration;
-
-import com.google.common.annotations.VisibleForTesting;
 import org.apache.hadoop.security.UserGroupInformation;
 import picocli.CommandLine;
 import picocli.CommandLine.ExitCode;

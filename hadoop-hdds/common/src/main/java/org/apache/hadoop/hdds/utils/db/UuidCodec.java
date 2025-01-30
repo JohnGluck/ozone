@@ -16,11 +16,12 @@
  * limitations under the License.
  *
  */
+
 package org.apache.hadoop.hdds.utils.db;
 
-import jakarta.annotation.Nonnull;
 import java.nio.ByteBuffer;
 import java.util.UUID;
+import jakarta.annotation.Nonnull;
 
 /**
  * Codec to serialize/deserialize {@link UUID}.

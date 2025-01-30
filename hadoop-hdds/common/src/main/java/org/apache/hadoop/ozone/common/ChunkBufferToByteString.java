@@ -15,16 +15,16 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-package org.apache.hadoop.ozone.common;
 
-import org.apache.hadoop.hdds.scm.ByteStringConversion;
-import org.apache.ratis.thirdparty.com.google.protobuf.ByteString;
-import org.apache.ratis.thirdparty.io.netty.buffer.ByteBuf;
+package org.apache.hadoop.ozone.common;
 
 import java.nio.ByteBuffer;
 import java.util.List;
 import java.util.function.Function;
 import java.util.function.Supplier;
+import org.apache.hadoop.hdds.scm.ByteStringConversion;
+import org.apache.ratis.thirdparty.com.google.protobuf.ByteString;
+import org.apache.ratis.thirdparty.io.netty.buffer.ByteBuf;
 
 /** For converting to {@link ByteString}s. */
 public interface ChunkBufferToByteString {

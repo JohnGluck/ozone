@@ -15,6 +15,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.apache.hadoop.hdds.tracing;
 
 import io.jaegertracing.Configuration;
@@ -25,13 +26,12 @@ import org.apache.hadoop.hdds.conf.MutableConfigurationSource;
 import org.apache.hadoop.hdds.scm.ScmConfigKeys;
 import org.apache.hadoop.hdds.tracing.TestTraceAllMethod.Service;
 import org.apache.hadoop.hdds.tracing.TestTraceAllMethod.ServiceImpl;
+import org.junit.jupiter.api.Test;
 
 import static org.apache.hadoop.hdds.tracing.TracingUtil.createProxy;
 import static org.apache.hadoop.hdds.tracing.TracingUtil.exportCurrentSpan;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.fail;
-
-import org.junit.jupiter.api.Test;
 
 /**
  * Test for {@link TracingUtil}.

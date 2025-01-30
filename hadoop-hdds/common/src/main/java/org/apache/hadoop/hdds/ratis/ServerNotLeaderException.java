@@ -14,15 +14,15 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package org.apache.hadoop.hdds.ratis;
 
-import org.apache.hadoop.hdds.HddsUtils;
-import org.apache.ratis.protocol.RaftPeerId;
-import org.apache.ratis.protocol.exceptions.NotLeaderException;
+package org.apache.hadoop.hdds.ratis;
 
 import java.io.IOException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import org.apache.hadoop.hdds.HddsUtils;
+import org.apache.ratis.protocol.RaftPeerId;
+import org.apache.ratis.protocol.exceptions.NotLeaderException;
 
 /**
  * Exception thrown when a server is not a leader for Ratis group.

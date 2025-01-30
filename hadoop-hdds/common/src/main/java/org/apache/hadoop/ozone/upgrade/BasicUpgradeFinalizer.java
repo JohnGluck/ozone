@@ -18,6 +18,23 @@
 
 package org.apache.hadoop.ozone.upgrade;
 
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+import java.util.Queue;
+import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
+import java.util.function.Function;
+import com.google.common.annotations.VisibleForTesting;
+import org.apache.hadoop.ozone.common.Storage;
+import org.apache.hadoop.ozone.upgrade.LayoutFeature.UpgradeAction;
+import org.apache.hadoop.ozone.upgrade.LayoutFeature.UpgradeActionType;
+import org.apache.hadoop.ozone.upgrade.UpgradeException.ResultCodes;
+import org.apache.ratis.protocol.exceptions.NotLeaderException;
+
 import static org.apache.hadoop.ozone.upgrade.LayoutFeature.UpgradeActionType.ON_FIRST_UPGRADE_START;
 import static org.apache.hadoop.ozone.upgrade.LayoutFeature.UpgradeActionType.VALIDATE_IN_PREFINALIZE;
 import static org.apache.hadoop.ozone.upgrade.UpgradeException.ResultCodes.FIRST_UPGRADE_START_ACTION_FAILED;
@@ -29,25 +46,6 @@ import static org.apache.hadoop.ozone.upgrade.UpgradeFinalizer.Status.FINALIZATI
 import static org.apache.hadoop.ozone.upgrade.UpgradeFinalizer.Status.FINALIZATION_IN_PROGRESS;
 import static org.apache.hadoop.ozone.upgrade.UpgradeFinalizer.Status.FINALIZATION_REQUIRED;
 import static org.apache.hadoop.ozone.upgrade.UpgradeFinalizer.Status.STARTING_FINALIZATION;
-
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.Queue;
-import java.util.concurrent.ConcurrentLinkedQueue;
-import java.util.concurrent.locks.Lock;
-import java.util.concurrent.locks.ReentrantLock;
-import java.util.function.Function;
-import java.util.concurrent.TimeUnit;
-
-import org.apache.hadoop.ozone.common.Storage;
-import org.apache.hadoop.ozone.upgrade.LayoutFeature.UpgradeAction;
-import org.apache.hadoop.ozone.upgrade.LayoutFeature.UpgradeActionType;
-import org.apache.hadoop.ozone.upgrade.UpgradeException.ResultCodes;
-
-import com.google.common.annotations.VisibleForTesting;
-import org.apache.ratis.protocol.exceptions.NotLeaderException;
 
 /**
  * Base UpgradeFinalizer implementation to be extended by services.

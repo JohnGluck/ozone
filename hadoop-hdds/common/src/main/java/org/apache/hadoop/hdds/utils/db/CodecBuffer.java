@@ -15,8 +15,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.apache.hadoop.hdds.utils.db;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.nio.ByteBuffer;
+import java.util.Objects;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.function.BiFunction;
+import java.util.function.IntFunction;
+import java.util.function.ToIntFunction;
 import com.google.protobuf.ByteString;
 import org.apache.hadoop.hdds.StringUtils;
 import org.apache.ratis.thirdparty.io.netty.buffer.ByteBuf;
@@ -32,17 +43,6 @@ import org.apache.ratis.util.UncheckedAutoCloseable;
 import org.apache.ratis.util.function.CheckedFunction;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.nio.ByteBuffer;
-import java.util.Objects;
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.atomic.AtomicInteger;
-import java.util.function.BiFunction;
-import java.util.function.IntFunction;
-import java.util.function.ToIntFunction;
 
 import static org.apache.hadoop.hdds.HddsUtils.formatStackTrace;
 import static org.apache.hadoop.hdds.HddsUtils.getStackTrace;

@@ -17,11 +17,6 @@
 
 package org.apache.hadoop.hdds.scm.container.common.helpers;
 
-import org.apache.hadoop.hdds.protocol.DatanodeDetails;
-import org.apache.hadoop.hdds.protocol.proto.HddsProtos;
-import org.apache.hadoop.hdds.scm.container.ContainerID;
-import org.apache.hadoop.hdds.scm.pipeline.PipelineID;
-
 import java.time.Clock;
 import java.time.ZoneOffset;
 import java.util.Collection;
@@ -32,6 +27,10 @@ import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
+import org.apache.hadoop.hdds.protocol.DatanodeDetails;
+import org.apache.hadoop.hdds.protocol.proto.HddsProtos;
+import org.apache.hadoop.hdds.scm.container.ContainerID;
+import org.apache.hadoop.hdds.scm.pipeline.PipelineID;
 
 /**
  * This class contains set of dns and containers which ozone client provides

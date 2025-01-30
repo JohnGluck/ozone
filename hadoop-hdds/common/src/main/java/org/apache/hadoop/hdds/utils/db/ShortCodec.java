@@ -19,7 +19,6 @@
 package org.apache.hadoop.hdds.utils.db;
 
 import java.nio.ByteBuffer;
-
 import jakarta.annotation.Nonnull;
 
 /**

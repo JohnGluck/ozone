@@ -16,6 +16,7 @@
  * limitations under the License.
  *
  */
+
 package org.apache.hadoop.hdds.security.x509.certificate.utils;
 
 import java.io.IOException;
@@ -26,7 +27,6 @@ import java.security.KeyPair;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-
 import com.google.common.base.Preconditions;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.validator.routines.DomainValidator;

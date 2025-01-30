@@ -15,14 +15,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.apache.hadoop.hdds;
 
 import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
-import java.nio.charset.StandardCharsets;
-
 import com.google.common.base.Preconditions;
 import org.apache.ratis.thirdparty.io.netty.buffer.Unpooled;
+
+import static java.nio.charset.StandardCharsets.UTF_8;
 
 /**
  * Simple utility class to collection string conversion methods.
@@ -31,8 +32,6 @@ public final class StringUtils {
 
   private StringUtils() {
   }
-
-  private static final Charset UTF8 = StandardCharsets.UTF_8;
 
   /**
    * Decode a specific range of bytes of the given byte array to a string
@@ -44,11 +43,11 @@ public final class StringUtils {
    * @return The decoded string
    */
   public static String bytes2String(byte[] bytes, int offset, int length) {
-    return new String(bytes, offset, length, UTF8);
+    return new String(bytes, offset, length, UTF_8);
   }
 
   public static String bytes2String(ByteBuffer bytes) {
-    return bytes2String(bytes, UTF8);
+    return bytes2String(bytes, UTF_8);
   }
 
   public static String bytes2String(ByteBuffer bytes, Charset charset) {
@@ -89,7 +88,7 @@ public final class StringUtils {
    * Converts a string to a byte array using UTF8 encoding.
    */
   public static byte[] string2Bytes(String str) {
-    return str.getBytes(UTF8);
+    return str.getBytes(UTF_8);
   }
 
   public static String appendIfNotPresent(String str, char c) {

@@ -15,13 +15,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.apache.hadoop.ozone.client.io;
 
-import org.apache.hadoop.hdds.protocol.DatanodeDetails;
+package org.apache.hadoop.ozone.client.io;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import org.apache.hadoop.hdds.protocol.DatanodeDetails;
 
 /**
  * Exception used to indicate a problem with a specific block location, allowing

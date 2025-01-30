@@ -18,9 +18,6 @@
 
 package org.apache.hadoop.ozone.upgrade;
 
-import static com.google.common.base.Preconditions.checkArgument;
-import static java.util.stream.Collectors.toList;
-
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -29,11 +26,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.PriorityQueue;
-
+import com.google.common.annotations.VisibleForTesting;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.google.common.annotations.VisibleForTesting;
+import static com.google.common.base.Preconditions.checkArgument;
+import static java.util.stream.Collectors.toList;
 
 /**
  * Generic factory which stores different instances of Type 'T' sharded by

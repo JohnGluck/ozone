@@ -15,11 +15,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.apache.hadoop.hdds.utils.db;
 
-import org.apache.ratis.util.function.CheckedFunction;
-
 import java.nio.ByteBuffer;
+import org.apache.ratis.util.function.CheckedFunction;
 
 /**
  * A function puts data from a source to the {@link ByteBuffer}

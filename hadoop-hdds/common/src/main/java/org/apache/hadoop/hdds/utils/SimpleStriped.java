@@ -19,13 +19,12 @@
 
 package org.apache.hadoop.hdds.utils;
 
-import com.google.common.base.Supplier;
-import com.google.common.util.concurrent.Striped;
-
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
+import com.google.common.base.Supplier;
+import com.google.common.util.concurrent.Striped;
 
 /**
  * A custom factory to force creation of {@link Striped}
@@ -74,7 +73,7 @@ public final class SimpleStriped {
    * @return a new {@code Striped<ReadWriteLock>}
    */
   public static Striped<ReadWriteLock> readWriteLock(int stripes,
-      boolean fair) {
+                                                     boolean fair) {
     return custom(stripes, () -> new ReentrantReadWriteLock(fair));
   }
 

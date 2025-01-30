@@ -18,11 +18,10 @@
 
 package org.apache.hadoop.hdds.scm.storage;
 
-import org.apache.hadoop.fs.Syncable;
-
 import java.io.Closeable;
 import java.io.IOException;
 import java.nio.ByteBuffer;
+import org.apache.hadoop.fs.Syncable;
 
 /**
  * This interface is similar to {@link java.io.OutputStream}

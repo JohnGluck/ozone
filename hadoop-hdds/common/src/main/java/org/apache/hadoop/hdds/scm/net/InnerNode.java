@@ -15,11 +15,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.apache.hadoop.hdds.scm.net;
 
 import java.util.Collection;
 import java.util.List;
-
 import org.apache.hadoop.hdds.protocol.proto.HddsProtos;
 
 /**
@@ -90,7 +90,7 @@ public interface InnerNode extends Node {
    * @return the leaf node corresponding to the given index
    */
   Node getLeaf(int leafIndex, List<String> excludedScopes,
-      Collection<Node> excludedNodes, int ancestorGen);
+               Collection<Node> excludedNodes, int ancestorGen);
 
   @Override
   HddsProtos.NetworkNode toProtobuf(int clientVersion);

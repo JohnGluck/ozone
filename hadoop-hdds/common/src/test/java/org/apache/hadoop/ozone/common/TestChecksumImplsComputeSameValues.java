@@ -15,18 +15,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.apache.hadoop.ozone.common;
 
-import org.apache.commons.lang3.RandomUtils;
-import org.apache.hadoop.util.NativeCRC32Wrapper;
-import org.apache.hadoop.util.PureJavaCrc32;
-import org.apache.hadoop.util.PureJavaCrc32C;
-import org.junit.jupiter.api.Test;
+package org.apache.hadoop.ozone.common;
 
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.zip.CRC32;
+import org.apache.commons.lang3.RandomUtils;
+import org.apache.hadoop.util.NativeCRC32Wrapper;
+import org.apache.hadoop.util.PureJavaCrc32;
+import org.apache.hadoop.util.PureJavaCrc32C;
+import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 

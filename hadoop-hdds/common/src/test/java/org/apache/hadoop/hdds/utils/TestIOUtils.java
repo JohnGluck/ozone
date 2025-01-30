@@ -15,11 +15,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.apache.hadoop.hdds.utils;
 
-import org.junit.jupiter.api.Test;
-
 import java.io.ByteArrayOutputStream;
+import org.junit.jupiter.api.Test;
 
 /**
  * Tests for {@link IOUtils}.

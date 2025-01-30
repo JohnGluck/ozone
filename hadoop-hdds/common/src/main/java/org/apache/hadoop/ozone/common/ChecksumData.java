@@ -15,17 +15,15 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-package org.apache.hadoop.ozone.common;
 
-import com.google.common.base.Preconditions;
+package org.apache.hadoop.ozone.common;
 
 import java.util.Collections;
 import java.util.List;
-
+import com.google.common.base.Preconditions;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.hadoop.hdds.protocol.datanode.proto.ContainerProtos;
-import org.apache.hadoop.hdds.protocol.datanode.proto.ContainerProtos
-    .ChecksumType;
+import org.apache.hadoop.hdds.protocol.datanode.proto.ContainerProtos.ChecksumType;
 import org.apache.ratis.thirdparty.com.google.protobuf.ByteString;
 
 /**
