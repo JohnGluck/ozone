@@ -18,11 +18,10 @@
 
 package org.apache.ozone.lib.util;
 
-import org.apache.hadoop.hdds.annotation.InterfaceAudience;
-
 import java.text.MessageFormat;
 import java.util.List;
 import java.util.regex.Pattern;
+import org.apache.hadoop.hdds.annotation.InterfaceAudience;
 
 /**
  * Utility methods to check preconditions.

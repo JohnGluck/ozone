@@ -17,12 +17,11 @@
 
 package org.apache.hadoop.ozone.om.helpers;
 
+import java.nio.charset.StandardCharsets;
 import org.apache.hadoop.hdds.utils.TransactionInfo;
 import org.apache.hadoop.hdds.utils.db.Codec;
 import org.apache.hadoop.hdds.utils.db.Proto2CodecTestBase;
 import org.junit.jupiter.api.Test;
-
-import java.nio.charset.StandardCharsets;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;

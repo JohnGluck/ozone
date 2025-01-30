@@ -17,12 +17,16 @@
  */
 package org.apache.ozone.fs.http.server;
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.regex.Pattern;
 import org.apache.hadoop.fs.XAttrCodec;
 import org.apache.hadoop.fs.XAttrSetFlag;
 import org.apache.hadoop.hdds.annotation.InterfaceAudience;
+import org.apache.hadoop.hdfs.client.HdfsClientConfigKeys;
+import org.apache.hadoop.util.StringUtils;
 import org.apache.ozone.fs.http.HttpFSConstants;
 import org.apache.ozone.fs.http.HttpFSConstants.Operation;
-import org.apache.hadoop.hdfs.client.HdfsClientConfigKeys;
 import org.apache.ozone.lib.service.FileSystemAccess;
 import org.apache.ozone.lib.wsrs.BooleanParam;
 import org.apache.ozone.lib.wsrs.EnumParam;
@@ -32,11 +36,6 @@ import org.apache.ozone.lib.wsrs.Param;
 import org.apache.ozone.lib.wsrs.ParametersProvider;
 import org.apache.ozone.lib.wsrs.ShortParam;
 import org.apache.ozone.lib.wsrs.StringParam;
-import org.apache.hadoop.util.StringUtils;
-
-import java.util.HashMap;
-import java.util.Map;
-import java.util.regex.Pattern;
 
 /**
  * HttpFS ParametersProvider.

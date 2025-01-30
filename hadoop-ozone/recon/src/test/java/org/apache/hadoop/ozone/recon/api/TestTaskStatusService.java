@@ -18,6 +18,9 @@
 
 package org.apache.hadoop.ozone.recon.api;
 
+import java.util.ArrayList;
+import java.util.List;
+import javax.ws.rs.core.Response;
 import com.google.inject.AbstractModule;
 import com.google.inject.Injector;
 import org.apache.hadoop.ozone.recon.persistence.AbstractReconSqlDBTest;
@@ -27,13 +30,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
-import javax.ws.rs.core.Response;
-
-import java.util.ArrayList;
-import java.util.List;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
-
 
 /**
  * Test for Task Status Service.

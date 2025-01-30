@@ -17,8 +17,7 @@
  */
 package org.apache.ozone.fs.http.server.metrics;
 
-import static org.apache.hadoop.metrics2.impl.MsInfo.SessionId;
-
+import java.util.concurrent.ThreadLocalRandom;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.hdds.annotation.InterfaceAudience;
 import org.apache.hadoop.metrics2.MetricsSystem;
@@ -29,7 +28,7 @@ import org.apache.hadoop.metrics2.lib.MetricsRegistry;
 import org.apache.hadoop.metrics2.lib.MutableCounterLong;
 import org.apache.hadoop.metrics2.source.JvmMetrics;
 
-import java.util.concurrent.ThreadLocalRandom;
+import static org.apache.hadoop.metrics2.impl.MsInfo.SessionId;
 
 /**
  *

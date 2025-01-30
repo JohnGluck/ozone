@@ -16,14 +16,9 @@
  */
 package org.apache.hadoop.ozone.recon.api.filters;
 
-import com.google.inject.Inject;
-import com.google.inject.Singleton;
-import org.apache.hadoop.hdds.conf.OzoneConfiguration;
-import org.apache.hadoop.security.authentication.server.AuthenticationFilter;
-import org.eclipse.jetty.servlet.FilterHolder;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
+import java.io.IOException;
+import java.util.Enumeration;
+import java.util.Map;
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
 import javax.servlet.FilterConfig;
@@ -32,9 +27,13 @@ import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
-import java.io.IOException;
-import java.util.Enumeration;
-import java.util.Map;
+import com.google.inject.Inject;
+import com.google.inject.Singleton;
+import org.apache.hadoop.hdds.conf.OzoneConfiguration;
+import org.apache.hadoop.security.authentication.server.AuthenticationFilter;
+import org.eclipse.jetty.servlet.FilterHolder;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import static org.apache.hadoop.ozone.recon.ReconServerConfigKeys.OZONE_RECON_HTTP_AUTH_CONFIG_PREFIX;
 import static org.apache.hadoop.security.AuthenticationFilterInitializer.getFilterConfigMap;

@@ -18,9 +18,8 @@
 
 package org.apache.ozone.lib.wsrs;
 
-import org.apache.hadoop.hdds.annotation.InterfaceAudience;
-
 import java.text.MessageFormat;
+import org.apache.hadoop.hdds.annotation.InterfaceAudience;
 
 /**
  * Boolean parameter.

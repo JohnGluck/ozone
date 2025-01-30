@@ -17,6 +17,8 @@
  */
 package org.apache.hadoop.ozone.s3.metrics;
 
+import java.io.Closeable;
+import java.util.Map;
 import org.apache.hadoop.hdds.annotation.InterfaceAudience;
 import org.apache.hadoop.hdds.conf.OzoneConfiguration;
 import org.apache.hadoop.hdds.utils.IOUtils;
@@ -33,9 +35,6 @@ import org.apache.hadoop.ozone.OzoneConsts;
 import org.apache.hadoop.ozone.s3.S3GatewayConfigKeys;
 import org.apache.hadoop.ozone.util.PerformanceMetrics;
 import org.apache.hadoop.util.Time;
-
-import java.io.Closeable;
-import java.util.Map;
 
 /**
  * This class maintains S3 Gateway related metrics.

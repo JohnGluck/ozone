@@ -17,9 +17,9 @@
  */
 package org.apache.hadoop.ozone.s3.endpoint;
 
-import org.xml.sax.InputSource;
-import org.xml.sax.XMLReader;
-
+import java.io.InputStream;
+import java.lang.annotation.Annotation;
+import java.lang.reflect.Type;
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.MultivaluedMap;
@@ -28,9 +28,8 @@ import javax.xml.XMLConstants;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.UnmarshallerHandler;
 import javax.xml.parsers.SAXParserFactory;
-import java.io.InputStream;
-import java.lang.annotation.Annotation;
-import java.lang.reflect.Type;
+import org.xml.sax.InputSource;
+import org.xml.sax.XMLReader;
 
 import static org.apache.hadoop.ozone.s3.exception.S3ErrorTable.INVALID_REQUEST;
 import static org.apache.hadoop.ozone.s3.util.S3Consts.S3_XML_NAMESPACE;

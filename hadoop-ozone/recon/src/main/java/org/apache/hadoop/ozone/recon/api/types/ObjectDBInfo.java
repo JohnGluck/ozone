@@ -18,12 +18,11 @@
 
 package org.apache.hadoop.ozone.recon.api.types;
 
+import java.util.List;
+import java.util.Map;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import org.apache.hadoop.ozone.om.helpers.OmDirectoryInfo;
 import org.apache.hadoop.ozone.om.helpers.OmPrefixInfo;
-
-import java.util.List;
-import java.util.Map;
 
 /**
  * Encapsulates the low level DB info common to volume or bucket or dir.

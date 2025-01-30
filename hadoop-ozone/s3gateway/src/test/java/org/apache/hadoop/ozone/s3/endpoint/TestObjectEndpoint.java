@@ -19,9 +19,9 @@
  */
 package org.apache.hadoop.ozone.s3.endpoint;
 
+import org.apache.commons.lang3.tuple.Pair;
 import org.apache.hadoop.ozone.s3.exception.OS3Exception;
 import org.junit.jupiter.api.Test;
-import org.apache.commons.lang3.tuple.Pair;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 

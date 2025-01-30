@@ -17,15 +17,14 @@
  */
 package org.apache.hadoop.ozone.s3.commontypes;
 
-import org.apache.hadoop.ozone.s3.endpoint.S3Owner;
-
+import java.time.Instant;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import org.apache.hadoop.ozone.OzoneConsts;
+import org.apache.hadoop.ozone.s3.endpoint.S3Owner;
 
-import java.time.Instant;
 
 /**
  * Metadata object represents one key in the object store.

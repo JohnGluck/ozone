@@ -18,15 +18,14 @@
 
 package org.apache.ozone.lib.service.security;
 
+import java.io.IOException;
+import java.util.List;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.hdds.annotation.InterfaceAudience;
 import org.apache.ozone.lib.server.BaseService;
 import org.apache.ozone.lib.server.ServiceException;
 import org.apache.ozone.lib.service.Groups;
 import org.apache.ozone.lib.util.ConfigurationUtils;
-
-import java.io.IOException;
-import java.util.List;
 
 /**
  * Service implementation to provide group mappings.

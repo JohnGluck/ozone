@@ -17,13 +17,12 @@
  */
 package org.apache.hadoop.ozone.recon.api.types;
 
-import org.apache.hadoop.ozone.recon.persistence.ContainerHistory;
-
+import java.util.List;
+import java.util.UUID;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
-import java.util.List;
-import java.util.UUID;
+import org.apache.hadoop.ozone.recon.persistence.ContainerHistory;
 
 /**
  * Metadata object that represents a Missing Container.

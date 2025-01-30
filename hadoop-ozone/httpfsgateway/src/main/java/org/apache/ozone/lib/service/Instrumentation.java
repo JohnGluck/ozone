@@ -18,9 +18,8 @@
 
 package org.apache.ozone.lib.service;
 
-import org.apache.hadoop.hdds.annotation.InterfaceAudience;
-
 import java.util.Map;
+import org.apache.hadoop.hdds.annotation.InterfaceAudience;
 
 /**
  * Hadoop server instrumentation implementation.

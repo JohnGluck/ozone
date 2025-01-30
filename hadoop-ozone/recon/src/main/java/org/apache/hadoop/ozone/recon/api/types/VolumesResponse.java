@@ -18,10 +18,9 @@
 
 package org.apache.hadoop.ozone.recon.api.types;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-
 import java.util.ArrayList;
 import java.util.Collection;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Class the represents the API response structure of Volumes.

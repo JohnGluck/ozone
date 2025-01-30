@@ -19,14 +19,12 @@
 package org.apache.hadoop.ozone.recon.spi.impl;
 
 import java.nio.ByteBuffer;
-
-import org.apache.commons.lang3.ArrayUtils;
-import org.apache.commons.lang3.StringUtils;
-import org.apache.hadoop.ozone.recon.api.types.ContainerKeyPrefix;
-import org.apache.hadoop.hdds.utils.db.Codec;
-
 import com.google.common.base.Preconditions;
 import com.google.common.primitives.Longs;
+import org.apache.commons.lang3.ArrayUtils;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.hadoop.hdds.utils.db.Codec;
+import org.apache.hadoop.ozone.recon.api.types.ContainerKeyPrefix;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
 

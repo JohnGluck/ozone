@@ -18,10 +18,9 @@
 
 package org.apache.ozone.lib.service;
 
-import org.apache.hadoop.hdds.annotation.InterfaceAudience;
-
 import java.util.concurrent.Callable;
 import java.util.concurrent.TimeUnit;
+import org.apache.hadoop.hdds.annotation.InterfaceAudience;
 
 /**
  * Scheduler interface.

@@ -20,13 +20,12 @@
 
 package org.apache.hadoop.ozone.client;
 
+import java.io.IOException;
+import java.nio.ByteBuffer;
 import org.apache.hadoop.hdds.scm.storage.ByteBufferStreamOutput;
 import org.apache.hadoop.ozone.OzoneConsts;
 import org.apache.hadoop.ozone.client.io.OzoneDataStreamOutput;
 import org.apache.hadoop.ozone.om.helpers.OmMultipartCommitUploadPartInfo;
-
-import java.io.IOException;
-import java.nio.ByteBuffer;
 
 /**
  * OzoneDataStreamOutput stub for testing.

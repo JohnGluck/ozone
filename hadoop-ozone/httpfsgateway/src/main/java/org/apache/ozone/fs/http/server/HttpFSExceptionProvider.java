@@ -18,6 +18,10 @@
 
 package org.apache.ozone.fs.http.server;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import javax.ws.rs.core.Response;
+import javax.ws.rs.ext.Provider;
 import org.apache.hadoop.hdds.annotation.InterfaceAudience;
 import org.apache.ozone.lib.service.FileSystemAccessException;
 import org.apache.ozone.lib.wsrs.ExceptionProvider;
@@ -25,11 +29,6 @@ import org.glassfish.jersey.server.ContainerException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.MDC;
-
-import javax.ws.rs.core.Response;
-import javax.ws.rs.ext.Provider;
-import java.io.FileNotFoundException;
-import java.io.IOException;
 
 /**
  * JAX-RS <code>ExceptionMapper</code> implementation that maps HttpFSServer's

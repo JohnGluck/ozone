@@ -23,13 +23,12 @@ import java.security.MessageDigest;
 import java.time.ZonedDateTime;
 import java.util.HashMap;
 import java.util.Map;
-
-import org.apache.kerby.util.Hex;
 import org.apache.hadoop.ozone.s3.signature.AWSSignatureProcessor.LowerCaseKeyStringMap;
+import org.apache.kerby.util.Hex;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /**
  * Tests for {@link AuthorizationV4QueryParser}.

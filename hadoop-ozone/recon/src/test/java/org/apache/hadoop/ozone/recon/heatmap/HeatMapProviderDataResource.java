@@ -18,10 +18,9 @@
 
 package org.apache.hadoop.ozone.recon.heatmap;
 
+import java.util.Arrays;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import org.apache.hadoop.ozone.recon.api.types.EntityMetaData;
-
-import java.util.Arrays;
 
 /**
  * This class is used to encapsulate entity's access metadata objects.

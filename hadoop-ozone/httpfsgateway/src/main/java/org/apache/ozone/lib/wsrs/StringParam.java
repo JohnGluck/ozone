@@ -17,10 +17,9 @@
  */
 package org.apache.ozone.lib.wsrs;
 
-import org.apache.hadoop.hdds.annotation.InterfaceAudience;
-
 import java.text.MessageFormat;
 import java.util.regex.Pattern;
+import org.apache.hadoop.hdds.annotation.InterfaceAudience;
 
 /**
  * Strinf parameter.

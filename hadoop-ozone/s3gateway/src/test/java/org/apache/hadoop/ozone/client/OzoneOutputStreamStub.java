@@ -20,13 +20,12 @@
 
 package org.apache.hadoop.ozone.client;
 
+import java.io.IOException;
+import java.io.OutputStream;
 import org.apache.hadoop.ozone.OzoneConsts;
 import org.apache.hadoop.ozone.client.io.KeyMetadataAware;
 import org.apache.hadoop.ozone.client.io.OzoneOutputStream;
 import org.apache.hadoop.ozone.om.helpers.OmMultipartCommitUploadPartInfo;
-
-import java.io.IOException;
-import java.io.OutputStream;
 
 /**
  * OzoneOutputStream stub for testing.

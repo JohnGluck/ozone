@@ -18,10 +18,10 @@
 
 package org.apache.ozone.lib.lang;
 
+import java.text.MessageFormat;
 import org.apache.hadoop.hdds.annotation.InterfaceAudience;
 import org.apache.ozone.lib.util.Check;
 
-import java.text.MessageFormat;
 
 /**
  * Generic exception that requires error codes and uses the a message

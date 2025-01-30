@@ -18,6 +18,8 @@
 
 package org.apache.hadoop.ozone.recon.spi.impl;
 
+import java.io.IOException;
+import javax.inject.Inject;
 import org.apache.hadoop.hdds.utils.db.BatchOperation;
 import org.apache.hadoop.hdds.utils.db.DBStore;
 import org.apache.hadoop.hdds.utils.db.RDBBatchOperation;
@@ -27,12 +29,8 @@ import org.apache.hadoop.ozone.recon.api.types.NSSummary;
 import org.apache.hadoop.ozone.recon.spi.ReconNamespaceSummaryManager;
 import org.apache.hadoop.ozone.recon.tasks.NSSummaryTask;
 
-import static org.apache.hadoop.ozone.recon.spi.impl.ReconDBProvider.truncateTable;
-
-import javax.inject.Inject;
 import static org.apache.hadoop.ozone.recon.spi.impl.ReconDBDefinition.NAMESPACE_SUMMARY;
-
-import java.io.IOException;
+import static org.apache.hadoop.ozone.recon.spi.impl.ReconDBProvider.truncateTable;
 
 /**
  * Wrapper functions for DB operations on recon namespace summary metadata.

@@ -18,6 +18,10 @@
 
 package org.apache.hadoop.ozone.s3secret;
 
+import java.util.Map;
+import javax.inject.Inject;
+import javax.ws.rs.container.ContainerRequestContext;
+import javax.ws.rs.core.Context;
 import com.google.common.annotations.VisibleForTesting;
 import org.apache.hadoop.ozone.audit.AuditAction;
 import org.apache.hadoop.ozone.audit.AuditEventStatus;
@@ -27,11 +31,6 @@ import org.apache.hadoop.ozone.audit.AuditMessage;
 import org.apache.hadoop.ozone.audit.Auditor;
 import org.apache.hadoop.ozone.client.OzoneClient;
 import org.apache.hadoop.ozone.s3.util.AuditUtils;
-
-import javax.inject.Inject;
-import javax.ws.rs.container.ContainerRequestContext;
-import javax.ws.rs.core.Context;
-import java.util.Map;
 
 /**
  * Base implementation of endpoint for working with S3 secret.
@@ -52,7 +51,7 @@ public class S3SecretEndpointBase implements Auditor {
   }
 
   private AuditMessage.Builder auditMessageBaseBuilder(AuditAction op,
-      Map<String, String> auditMap) {
+                                                       Map<String, String> auditMap) {
     AuditMessage.Builder builder = new AuditMessage.Builder()
         .forOperation(op)
         .withParams(auditMap);

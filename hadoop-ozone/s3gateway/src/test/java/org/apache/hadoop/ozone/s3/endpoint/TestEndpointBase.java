@@ -22,14 +22,12 @@
  */
 package org.apache.hadoop.ozone.s3.endpoint;
 
-import org.apache.hadoop.ozone.OzoneConsts;
-import org.apache.hadoop.ozone.s3.exception.OS3Exception;
-
-import javax.ws.rs.core.MultivaluedHashMap;
-import javax.ws.rs.core.MultivaluedMap;
-
 import java.nio.charset.StandardCharsets;
 import java.util.Map;
+import javax.ws.rs.core.MultivaluedHashMap;
+import javax.ws.rs.core.MultivaluedMap;
+import org.apache.hadoop.ozone.OzoneConsts;
+import org.apache.hadoop.ozone.s3.exception.OS3Exception;
 import org.junit.jupiter.api.Test;
 
 import static org.apache.hadoop.ozone.s3.util.S3Consts.CUSTOM_METADATA_HEADER_PREFIX;

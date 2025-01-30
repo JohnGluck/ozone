@@ -18,7 +18,6 @@
 package org.apache.hadoop.ozone.s3;
 
 import java.util.Vector;
-
 import org.apache.hadoop.ozone.s3.EmptyContentTypeFilter.EnumerationWrapper;
 import org.junit.jupiter.api.Test;
 

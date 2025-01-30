@@ -18,12 +18,11 @@
 
 package org.apache.hadoop.ozone.recon.tasks;
 
+import java.io.IOException;
+import java.util.HashMap;
 import org.apache.commons.lang3.tuple.Triple;
 import org.apache.hadoop.hdds.utils.db.Table;
 import org.apache.hadoop.hdds.utils.db.TableIterator;
-
-import java.io.IOException;
-import java.util.HashMap;
 
 /**
  * Interface for handling PUT, DELETE and UPDATE events for size-related

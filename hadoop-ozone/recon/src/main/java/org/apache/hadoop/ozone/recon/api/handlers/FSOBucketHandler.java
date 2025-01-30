@@ -17,6 +17,12 @@
  */
 package org.apache.hadoop.ozone.recon.api.handlers;
 
+import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Set;
 import com.google.common.base.Preconditions;
 import org.apache.hadoop.hdds.scm.server.OzoneStorageContainerManager;
 import org.apache.hadoop.hdds.utils.db.Table;
@@ -32,12 +38,6 @@ import org.apache.hadoop.ozone.recon.recovery.ReconOMMetadataManager;
 import org.apache.hadoop.ozone.recon.spi.ReconNamespaceSummaryManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.io.IOException;
-import java.nio.file.Paths;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Set;
 
 import static org.apache.hadoop.ozone.OzoneConsts.OM_KEY_PREFIX;
 
@@ -77,7 +77,7 @@ public class FSOBucketHandler extends BucketHandler {
   public EntityType determineKeyPath(String keyName)
                                      throws IOException {
     java.nio.file.Path keyPath = Paths.get(keyName);
-    Iterator<java.nio.file.Path> elements = keyPath.iterator();
+    Iterator<Path> elements = keyPath.iterator();
 
     long lastKnownParentId = bucketId;
     OmDirectoryInfo omDirInfo = null;

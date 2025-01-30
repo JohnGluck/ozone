@@ -17,9 +17,8 @@
  */
 package org.apache.hadoop.ozone.recon.api.types;
 
-import org.apache.hadoop.ozone.recon.ReconUtils;
-
 import java.util.TimeZone;
+import org.apache.hadoop.ozone.recon.ReconUtils;
 
 /**
  * Wrapper object for statistics of records of a page in API response.

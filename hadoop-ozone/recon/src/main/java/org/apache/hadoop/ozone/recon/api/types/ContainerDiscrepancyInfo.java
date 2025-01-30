@@ -17,11 +17,10 @@
  */
 package org.apache.hadoop.ozone.recon.api.types;
 
+import java.util.List;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import org.apache.hadoop.hdds.scm.pipeline.Pipeline;
-
-import java.util.List;
 
 /**
  * Metadata object that represents a Container Discrepancy Info.

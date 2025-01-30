@@ -17,9 +17,9 @@
  */
 package org.apache.hadoop.ozone.s3.signature;
 
-import org.apache.hadoop.ozone.audit.AuditAction;
 
 import javax.ws.rs.container.ContainerRequestContext;
+import org.apache.hadoop.ozone.audit.AuditAction;
 
 /**
  * Authentication/authorization actions for S3Gateway.

@@ -250,6 +250,11 @@
       <artifactId>hdds-test-utils</artifactId>
       <scope>test</scope>
     </dependency>
+      <dependency>
+          <groupId>org.jooq</groupId>
+          <artifactId>jooq</artifactId>
+          <scope>test</scope>
+      </dependency>
   </dependencies>
   <build>
     <plugins>

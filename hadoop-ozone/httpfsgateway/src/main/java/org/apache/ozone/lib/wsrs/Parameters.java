@@ -17,11 +17,10 @@
  */
 package org.apache.ozone.lib.wsrs;
 
-import org.apache.hadoop.hdds.annotation.InterfaceAudience;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import org.apache.hadoop.hdds.annotation.InterfaceAudience;
 
 /**
  * Class that contains all parsed JAX-RS parameters.

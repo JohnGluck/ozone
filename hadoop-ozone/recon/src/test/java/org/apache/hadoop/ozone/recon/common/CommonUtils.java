@@ -18,6 +18,10 @@
 
 package org.apache.hadoop.ozone.recon.common;
 
+import java.net.InetSocketAddress;
+import java.util.ArrayList;
+import java.util.Collections;
+import javax.ws.rs.core.Response;
 import org.apache.hadoop.hdds.protocol.StorageType;
 import org.apache.hadoop.hdds.protocol.proto.HddsProtos;
 import org.apache.hadoop.hdds.scm.ha.SCMNodeDetails;
@@ -34,12 +38,6 @@ import org.apache.hadoop.ozone.recon.api.types.ResponseStatus;
 import org.apache.hadoop.ozone.recon.api.types.VolumeObjectDBInfo;
 import org.apache.hadoop.ozone.recon.recovery.ReconOMMetadataManager;
 import org.apache.hadoop.ozone.security.acl.IAccessAuthorizer;
-
-import javax.ws.rs.core.Response;
-
-import java.net.InetSocketAddress;
-import java.util.ArrayList;
-import java.util.Collections;
 
 import static org.apache.hadoop.ozone.OzoneAcl.AclScope.ACCESS;
 import static org.junit.jupiter.api.Assertions.assertEquals;

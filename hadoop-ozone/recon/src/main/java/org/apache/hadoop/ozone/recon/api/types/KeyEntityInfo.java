@@ -18,11 +18,10 @@
 
 package org.apache.hadoop.ozone.recon.api.types;
 
+import java.time.Instant;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import org.apache.hadoop.hdds.client.ReplicationConfig;
-
-import java.time.Instant;
 
 /**
  * POJO object wrapper for metadata of a given key/file.

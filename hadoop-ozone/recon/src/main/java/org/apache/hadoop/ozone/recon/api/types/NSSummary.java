@@ -18,11 +18,10 @@
 
 package org.apache.hadoop.ozone.recon.api.types;
 
-import org.apache.hadoop.ozone.recon.ReconConstants;
-
-import java.util.Set;
-import java.util.HashSet;
 import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
+import org.apache.hadoop.ozone.recon.ReconConstants;
 
 import static org.apache.hadoop.ozone.om.helpers.OzoneFSUtils.removeTrailingSlashIfNeeded;
 

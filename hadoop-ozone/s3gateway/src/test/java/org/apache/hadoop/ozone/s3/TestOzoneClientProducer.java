@@ -18,7 +18,6 @@
 package org.apache.hadoop.ozone.s3;
 
 import java.io.IOException;
-
 import org.apache.hadoop.hdds.conf.OzoneConfiguration;
 import org.apache.hadoop.ozone.OzoneConfigKeys;
 import org.apache.hadoop.ozone.om.OMConfigKeys;

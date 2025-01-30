@@ -18,7 +18,6 @@
 package org.apache.hadoop.ozone.s3;
 
 import javax.enterprise.inject.Produces;
-
 import com.google.common.annotations.VisibleForTesting;
 import org.apache.hadoop.hdds.conf.OzoneConfiguration;
 

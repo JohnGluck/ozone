@@ -17,12 +17,11 @@
  */
 package org.apache.hadoop.ozone.recon.api.types;
 
+import java.util.List;
+import java.util.Map;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import org.apache.hadoop.hdds.protocol.DatanodeDetails;
 import org.apache.hadoop.hdds.scm.container.ContainerID;
-
-import java.util.List;
-import java.util.Map;
 
 /**
  * Class that represents the API Response of decommissioning status info of datanode.

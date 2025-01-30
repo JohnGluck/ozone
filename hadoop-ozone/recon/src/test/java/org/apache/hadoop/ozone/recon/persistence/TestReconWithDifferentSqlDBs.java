@@ -17,19 +17,13 @@
 
 package org.apache.hadoop.ozone.recon.persistence;
 
-import static org.apache.hadoop.ozone.recon.ReconControllerModule.ReconDaoBindingModule.RECON_DAO_LIST;
-import static org.hadoop.ozone.recon.codegen.SqlDbUtils.SQLITE_DRIVER_CLASS;
-import static org.hadoop.ozone.recon.schema.Tables.RECON_TASK_STATUS;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.sql.SQLException;
 import java.util.stream.Stream;
-
+import com.google.inject.Provider;
 import org.hadoop.ozone.recon.schema.tables.daos.ReconTaskStatusDao;
 import org.hadoop.ozone.recon.schema.tables.pojos.ReconTaskStatus;
 import org.jooq.SQLDialect;
@@ -37,7 +31,11 @@ import org.junit.jupiter.api.io.TempDir;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
-import com.google.inject.Provider;
+import static org.apache.hadoop.ozone.recon.ReconControllerModule.ReconDaoBindingModule.RECON_DAO_LIST;
+import static org.hadoop.ozone.recon.codegen.SqlDbUtils.SQLITE_DRIVER_CLASS;
+import static org.hadoop.ozone.recon.schema.Tables.RECON_TASK_STATUS;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 /**
  * Test Recon schema with different DBs.

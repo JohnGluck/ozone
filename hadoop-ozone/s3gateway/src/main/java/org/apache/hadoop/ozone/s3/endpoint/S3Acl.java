@@ -19,6 +19,9 @@
  */
 package org.apache.hadoop.ozone.s3.endpoint;
 
+import java.util.ArrayList;
+import java.util.EnumSet;
+import java.util.List;
 import org.apache.hadoop.ozone.OzoneAcl;
 import org.apache.hadoop.ozone.s3.endpoint.S3BucketAcl.Grant;
 import org.apache.hadoop.ozone.s3.endpoint.S3BucketAcl.Grantee;
@@ -27,10 +30,6 @@ import org.apache.hadoop.ozone.s3.exception.S3ErrorTable;
 import org.apache.hadoop.ozone.security.acl.IAccessAuthorizer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.util.ArrayList;
-import java.util.EnumSet;
-import java.util.List;
 
 import static org.apache.hadoop.ozone.s3.exception.S3ErrorTable.INVALID_ARGUMENT;
 import static org.apache.hadoop.ozone.s3.exception.S3ErrorTable.NOT_IMPLEMENTED;

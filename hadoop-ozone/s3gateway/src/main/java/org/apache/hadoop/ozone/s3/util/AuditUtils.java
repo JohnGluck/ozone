@@ -17,10 +17,10 @@
  */
 package org.apache.hadoop.ozone.s3.util;
 
-import javax.ws.rs.container.ContainerRequestContext;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import javax.ws.rs.container.ContainerRequestContext;
 
 import static org.apache.hadoop.ozone.s3.ClientIpFilter.CLIENT_IP_HEADER;
 

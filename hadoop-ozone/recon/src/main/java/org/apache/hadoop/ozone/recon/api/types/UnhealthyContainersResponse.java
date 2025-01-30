@@ -17,10 +17,9 @@
  */
 package org.apache.hadoop.ozone.recon.api.types;
 
+import java.util.Collection;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import org.hadoop.ozone.recon.schema.ContainerSchemaDefinition.UnHealthyContainerStates;
-
-import java.util.Collection;
 
 /**
  * Class that represents the API Response structure of Unhealthy Containers.

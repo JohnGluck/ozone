@@ -21,7 +21,6 @@ import java.util.BitSet;
 import java.util.EnumSet;
 import java.util.List;
 import java.util.stream.Collectors;
-
 import org.apache.hadoop.ozone.OzoneAcl;
 import org.apache.hadoop.ozone.OzoneAcl.AclScope;
 import org.apache.hadoop.ozone.security.acl.IAccessAuthorizer;

@@ -18,10 +18,9 @@
 
 package org.apache.ozone.lib.service;
 
-import org.apache.hadoop.hdds.annotation.InterfaceAudience;
-
 import java.io.IOException;
 import java.util.List;
+import org.apache.hadoop.hdds.annotation.InterfaceAudience;
 
 /**
  * Groups interface.

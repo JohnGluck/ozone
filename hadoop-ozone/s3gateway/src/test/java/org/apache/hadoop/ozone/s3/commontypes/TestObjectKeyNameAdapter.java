@@ -19,11 +19,11 @@
  */
 package org.apache.hadoop.ozone.s3.commontypes;
 
+import javax.xml.bind.annotation.adapters.XmlAdapter;
+import org.junit.jupiter.api.Test;
+
 import static org.apache.hadoop.ozone.s3.util.S3Consts.ENCODING_TYPE;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-
-import org.junit.jupiter.api.Test;
-import javax.xml.bind.annotation.adapters.XmlAdapter;
 /**
  * Testing on object key name serialization.
  */

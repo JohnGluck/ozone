@@ -19,6 +19,8 @@
 package org.apache.hadoop.ozone.s3secret;
 
 
+import java.io.IOException;
+import java.security.Principal;
 import javax.inject.Inject;
 import javax.ws.rs.container.ContainerRequestContext;
 import javax.ws.rs.container.ContainerRequestFilter;
@@ -28,9 +30,6 @@ import javax.ws.rs.ext.Provider;
 import org.apache.hadoop.hdds.conf.OzoneConfiguration;
 import org.apache.hadoop.hdds.server.OzoneAdmins;
 import org.apache.hadoop.security.UserGroupInformation;
-
-import java.io.IOException;
-import java.security.Principal;
 
 /**
  * Filter that only allows admin to access endpoints annotated with {@link S3AdminEndpoint}.

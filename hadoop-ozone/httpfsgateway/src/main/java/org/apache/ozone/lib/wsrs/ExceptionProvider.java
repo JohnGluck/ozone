@@ -18,13 +18,12 @@
 
 package org.apache.ozone.lib.wsrs;
 
+import javax.ws.rs.core.Response;
+import javax.ws.rs.ext.ExceptionMapper;
 import org.apache.hadoop.hdds.annotation.InterfaceAudience;
 import org.apache.hadoop.util.HttpExceptionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import javax.ws.rs.core.Response;
-import javax.ws.rs.ext.ExceptionMapper;
 
 /**
  * JAX-RS <code>ExceptionMapper</code> implementation that maps exceptions.

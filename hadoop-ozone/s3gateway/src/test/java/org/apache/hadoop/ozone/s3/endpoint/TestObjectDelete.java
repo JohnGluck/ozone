@@ -19,15 +19,14 @@
  */
 package org.apache.hadoop.ozone.s3.endpoint;
 
-import static org.junit.jupiter.api.Assertions.assertFalse;
 import java.io.IOException;
-
 import org.apache.hadoop.ozone.client.OzoneBucket;
 import org.apache.hadoop.ozone.client.OzoneClient;
 import org.apache.hadoop.ozone.client.OzoneClientStub;
 import org.apache.hadoop.ozone.s3.exception.OS3Exception;
-
 import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertFalse;
 
 /**
  * Test delete object.

@@ -19,7 +19,6 @@ package org.apache.hadoop.ozone.recon.spi;
 
 import java.io.IOException;
 import java.util.List;
-
 import org.apache.hadoop.hdds.protocol.proto.HddsProtos;
 import org.apache.hadoop.hdds.scm.container.ContainerInfo;
 import org.apache.hadoop.hdds.scm.container.common.helpers.ContainerWithPipeline;

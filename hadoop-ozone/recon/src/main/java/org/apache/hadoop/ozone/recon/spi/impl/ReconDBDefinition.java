@@ -17,6 +17,8 @@
  *
  */
 package org.apache.hadoop.ozone.recon.spi.impl;
+
+import java.util.Map;
 import org.apache.hadoop.hdds.utils.db.DBColumnFamilyDefinition;
 import org.apache.hadoop.hdds.utils.db.DBDefinition;
 import org.apache.hadoop.hdds.utils.db.IntegerCodec;
@@ -24,11 +26,9 @@ import org.apache.hadoop.hdds.utils.db.LongCodec;
 import org.apache.hadoop.ozone.recon.ReconServerConfigKeys;
 import org.apache.hadoop.ozone.recon.api.types.ContainerKeyPrefix;
 import org.apache.hadoop.ozone.recon.api.types.KeyPrefixContainer;
+import org.apache.hadoop.ozone.recon.api.types.NSSummary;
 import org.apache.hadoop.ozone.recon.codec.NSSummaryCodec;
 import org.apache.hadoop.ozone.recon.scm.ContainerReplicaHistoryList;
-import org.apache.hadoop.ozone.recon.api.types.NSSummary;
-
-import java.util.Map;
 
 /**
  * RocksDB definition for the DB internal to Recon.

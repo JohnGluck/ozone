@@ -20,14 +20,12 @@
 
 package org.apache.hadoop.ozone.s3.endpoint;
 
+import java.util.function.Supplier;
+import javax.ws.rs.container.ContainerRequestContext;
+import javax.ws.rs.core.HttpHeaders;
 import org.apache.hadoop.hdds.conf.OzoneConfiguration;
 import org.apache.hadoop.ozone.client.OzoneClient;
 import org.apache.hadoop.ozone.s3.RequestIdentifier;
-
-import java.util.function.Supplier;
-
-import javax.ws.rs.container.ContainerRequestContext;
-import javax.ws.rs.core.HttpHeaders;
 
 /**
  * Base builder class for S3 endpoints in tests.

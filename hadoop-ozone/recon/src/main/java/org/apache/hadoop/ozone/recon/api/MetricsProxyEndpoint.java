@@ -18,10 +18,13 @@
 
 package org.apache.hadoop.ozone.recon.api;
 
-import org.apache.hadoop.ozone.recon.MetricsServiceProviderFactory;
-import org.apache.hadoop.ozone.recon.spi.MetricsServiceProvider;
-import org.apache.hadoop.ozone.recon.spi.impl.PrometheusServiceProviderImpl;
-
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.net.HttpURLConnection;
+import java.nio.ByteBuffer;
+import java.nio.channels.Channels;
+import java.nio.channels.ReadableByteChannel;
+import java.nio.channels.WritableByteChannel;
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.DefaultValue;
@@ -33,17 +36,11 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
-
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.net.HttpURLConnection;
-import java.nio.ByteBuffer;
-import java.nio.channels.Channels;
-import java.nio.channels.ReadableByteChannel;
-import java.nio.channels.WritableByteChannel;
+import org.apache.hadoop.ozone.recon.MetricsServiceProviderFactory;
+import org.apache.hadoop.ozone.recon.spi.MetricsServiceProvider;
+import org.apache.hadoop.ozone.recon.spi.impl.PrometheusServiceProviderImpl;
 
 import static org.apache.hadoop.ozone.recon.spi.impl.PrometheusServiceProviderImpl.PROMETHEUS_INSTANT_QUERY_API;
-
 
 /**
  * Endpoint to fetch metrics data from Prometheus HTTP endpoint.

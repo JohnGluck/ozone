@@ -18,10 +18,7 @@
 
 package org.apache.hadoop.ozone.recon.api;
 
-import org.apache.hadoop.ozone.recon.api.types.EntityReadAccessHeatMapResponse;
-import org.apache.hadoop.ozone.recon.api.types.FeatureProvider;
-import org.apache.hadoop.ozone.recon.heatmap.HeatMapServiceImpl;
-
+import java.util.List;
 import javax.inject.Inject;
 import javax.ws.rs.DefaultValue;
 import javax.ws.rs.GET;
@@ -31,13 +28,13 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-
-import java.util.List;
+import org.apache.hadoop.ozone.recon.api.types.EntityReadAccessHeatMapResponse;
+import org.apache.hadoop.ozone.recon.api.types.FeatureProvider;
+import org.apache.hadoop.ozone.recon.heatmap.HeatMapServiceImpl;
 
 import static org.apache.hadoop.ozone.recon.ReconConstants.RECON_ACCESS_METADATA_START_DATE;
 import static org.apache.hadoop.ozone.recon.ReconConstants.RECON_ENTITY_PATH;
 import static org.apache.hadoop.ozone.recon.ReconConstants.RECON_ENTITY_TYPE;
-
 
 /**
  * Endpoint for querying access metadata from HeatMapProvider interface

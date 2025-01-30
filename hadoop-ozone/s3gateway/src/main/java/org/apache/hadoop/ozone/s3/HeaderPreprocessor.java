@@ -17,6 +17,7 @@
  */
 package org.apache.hadoop.ozone.s3;
 
+import java.io.IOException;
 import javax.annotation.Priority;
 import javax.ws.rs.container.ContainerRequestContext;
 import javax.ws.rs.container.ContainerRequestFilter;
@@ -24,7 +25,6 @@ import javax.ws.rs.container.PreMatching;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.ext.Provider;
-import java.io.IOException;
 
 /**
  * Filter to adjust request headers for compatible reasons.

@@ -18,13 +18,12 @@
 
 package org.apache.hadoop.ozone.recon.api.types;
 
+import java.util.List;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import org.apache.hadoop.fs.FileEncryptionInfo;
 import org.apache.hadoop.hdds.client.ReplicationConfig;
 import org.apache.hadoop.ozone.om.helpers.OmKeyInfo;
 import org.apache.hadoop.ozone.om.helpers.OmKeyLocationInfoGroup;
-
-import java.util.List;
 
 /**
  * Encapsulates the low level key info.

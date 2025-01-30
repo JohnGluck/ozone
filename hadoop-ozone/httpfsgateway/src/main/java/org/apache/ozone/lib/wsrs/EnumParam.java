@@ -18,10 +18,9 @@
 
 package org.apache.ozone.lib.wsrs;
 
+import java.util.Arrays;
 import org.apache.hadoop.hdds.annotation.InterfaceAudience;
 import org.apache.hadoop.util.StringUtils;
-
-import java.util.Arrays;
 
 /**
  * Enum parameter.

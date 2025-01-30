@@ -18,9 +18,8 @@
  */
 package org.apache.hadoop.ozone.s3.util;
 
-import org.apache.hadoop.hdds.annotation.InterfaceAudience;
-
 import java.util.regex.Pattern;
+import org.apache.hadoop.hdds.annotation.InterfaceAudience;
 
 /**
  * Set of constants used for S3 implementation.

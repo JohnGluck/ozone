@@ -18,16 +18,15 @@
 
 package org.apache.ozone.lib.wsrs;
 
-import org.apache.hadoop.hdds.annotation.InterfaceAudience;
-import org.apache.ozone.fs.http.server.FSOperations;
-import org.apache.ozone.fs.http.server.HttpFSServerWebApp;
-import org.apache.ozone.fs.http.server.metrics.HttpFSServerMetrics;
-import org.apache.hadoop.io.IOUtils;
-
-import javax.ws.rs.core.StreamingOutput;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import javax.ws.rs.core.StreamingOutput;
+import org.apache.hadoop.hdds.annotation.InterfaceAudience;
+import org.apache.hadoop.io.IOUtils;
+import org.apache.ozone.fs.http.server.FSOperations;
+import org.apache.ozone.fs.http.server.HttpFSServerWebApp;
+import org.apache.ozone.fs.http.server.metrics.HttpFSServerMetrics;
 
 /**
  * This entity represents an input stream.

@@ -17,13 +17,12 @@
  */
 package org.apache.hadoop.ozone.recon.api.types;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import org.apache.hadoop.hdds.scm.pipeline.Pipeline;
-
+import java.util.List;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
-import java.util.List;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import org.apache.hadoop.hdds.scm.pipeline.Pipeline;
 
 /**
  * Metadata object that represents a Container.

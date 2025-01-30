@@ -18,11 +18,10 @@
 
 package org.apache.ozone.lib.server;
 
+import java.util.Map;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.hdds.annotation.InterfaceAudience;
 import org.apache.ozone.lib.util.ConfigurationUtils;
-
-import java.util.Map;
 
 /**
  * Convenience class implementing the {@link Service} interface.

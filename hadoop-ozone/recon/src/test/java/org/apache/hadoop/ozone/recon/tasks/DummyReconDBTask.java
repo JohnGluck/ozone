@@ -20,7 +20,6 @@ package org.apache.hadoop.ozone.recon.tasks;
 
 import java.util.Collection;
 import java.util.Collections;
-
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.Pair;
 import org.apache.hadoop.ozone.om.OMMetadataManager;

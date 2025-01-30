@@ -17,6 +17,9 @@
  */
 package org.apache.hadoop.ozone.s3;
 
+import java.io.IOException;
+import java.net.URI;
+import java.util.Arrays;
 import javax.annotation.Priority;
 import javax.inject.Inject;
 import javax.ws.rs.container.ContainerRequestContext;
@@ -26,12 +29,6 @@ import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.core.UriBuilder;
 import javax.ws.rs.ext.Provider;
-
-import java.io.IOException;
-import java.net.URI;
-import java.util.Arrays;
-
-
 import com.google.common.annotations.VisibleForTesting;
 import org.apache.hadoop.fs.InvalidRequestException;
 import org.apache.hadoop.hdds.conf.OzoneConfiguration;

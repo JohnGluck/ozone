@@ -20,7 +20,6 @@ package org.apache.ozone.lib.wsrs;
 import java.util.Arrays;
 import java.util.EnumSet;
 import java.util.Iterator;
-
 import org.apache.hadoop.hdds.annotation.InterfaceAudience;
 import org.apache.hadoop.util.StringUtils;
 

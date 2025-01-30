@@ -18,10 +18,9 @@
 
 package org.apache.hadoop.ozone.recon.api.types;
 
+import java.util.Arrays;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import org.apache.hadoop.ozone.recon.ReconConstants;
-
-import java.util.Arrays;
 
 /**
  * HTTP Response wrapped for a file size distribution request.

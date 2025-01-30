@@ -17,10 +17,9 @@
  */
 package org.apache.hadoop.ozone.s3.commontypes;
 
-import org.apache.hadoop.ozone.s3.util.S3Utils;
-
-import javax.xml.bind.annotation.adapters.XmlAdapter;
 import java.io.UnsupportedEncodingException;
+import javax.xml.bind.annotation.adapters.XmlAdapter;
+import org.apache.hadoop.ozone.s3.util.S3Utils;
 
 
 /**

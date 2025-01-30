@@ -17,6 +17,8 @@
  */
 package org.apache.hadoop.ozone.s3;
 
+import java.io.IOException;
+import java.io.OutputStream;
 import javax.ws.rs.container.ContainerRequestContext;
 import javax.ws.rs.container.ContainerRequestFilter;
 import javax.ws.rs.container.ContainerResponseContext;
@@ -24,16 +26,12 @@ import javax.ws.rs.container.ContainerResponseFilter;
 import javax.ws.rs.container.ResourceInfo;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.ext.Provider;
-
 import io.opentracing.Scope;
 import io.opentracing.ScopeManager;
 import io.opentracing.Span;
 import io.opentracing.noop.NoopSpan;
 import io.opentracing.util.GlobalTracer;
 import org.apache.hadoop.ozone.client.io.WrappedOutputStream;
-
-import java.io.IOException;
-import java.io.OutputStream;
 
 /**
  * Filter used to add jaeger tracing span.

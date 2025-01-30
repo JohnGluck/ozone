@@ -17,11 +17,11 @@
  */
 package org.apache.hadoop.ozone.s3.commontypes;
 
+import java.time.Instant;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
-import java.time.Instant;
 
 /**
  * Metadata object represents one bucket.

@@ -17,12 +17,11 @@
  */
 package org.apache.hadoop.ozone.recon.api.types;
 
+import java.util.List;
+import java.util.stream.Collectors;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.common.base.Preconditions;
 import org.apache.hadoop.ozone.OzoneAcl;
-
-import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * Metadata object represents one Ozone ACL.

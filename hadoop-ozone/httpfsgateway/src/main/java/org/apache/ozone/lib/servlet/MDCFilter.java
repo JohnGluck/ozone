@@ -18,9 +18,8 @@
 
 package org.apache.ozone.lib.servlet;
 
-import org.apache.hadoop.hdds.annotation.InterfaceAudience;
-import org.slf4j.MDC;
-
+import java.io.IOException;
+import java.security.Principal;
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
 import javax.servlet.FilterConfig;
@@ -28,8 +27,8 @@ import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
-import java.io.IOException;
-import java.security.Principal;
+import org.apache.hadoop.hdds.annotation.InterfaceAudience;
+import org.slf4j.MDC;
 
 /**
  * Filter that sets request contextual information for the slf4j MDC.

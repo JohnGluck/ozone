@@ -17,18 +17,6 @@
  */
 package org.apache.ozone.fs.http.server;
 
-import org.apache.hadoop.conf.Configuration;
-import org.apache.hadoop.hdds.annotation.InterfaceAudience;
-import org.apache.ozone.hdfs.web.WebHdfsConstants;
-import org.apache.hadoop.security.authentication.server.AuthenticationFilter;
-import org.apache.hadoop.security.authentication.util.RandomSignerSecretProvider;
-import org.apache.hadoop.security.authentication.util.SignerSecretProvider;
-import org.apache.hadoop.security.token.delegation.web.DelegationTokenAuthenticationFilter;
-import org.apache.hadoop.security.token.delegation.web.KerberosDelegationTokenAuthenticationHandler;
-
-import javax.servlet.FilterConfig;
-import javax.servlet.ServletException;
-
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Reader;
@@ -37,6 +25,16 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Map;
 import java.util.Properties;
+import javax.servlet.FilterConfig;
+import javax.servlet.ServletException;
+import org.apache.hadoop.conf.Configuration;
+import org.apache.hadoop.hdds.annotation.InterfaceAudience;
+import org.apache.hadoop.security.authentication.server.AuthenticationFilter;
+import org.apache.hadoop.security.authentication.util.RandomSignerSecretProvider;
+import org.apache.hadoop.security.authentication.util.SignerSecretProvider;
+import org.apache.hadoop.security.token.delegation.web.DelegationTokenAuthenticationFilter;
+import org.apache.hadoop.security.token.delegation.web.KerberosDelegationTokenAuthenticationHandler;
+import org.apache.ozone.hdfs.web.WebHdfsConstants;
 
 /**
  * Subclass of hadoop-auth <code>AuthenticationFilter</code> that obtains its

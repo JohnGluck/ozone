@@ -18,11 +18,10 @@
 
 package org.apache.ozone.lib.service;
 
+import java.io.IOException;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.FileSystem;
 import org.apache.hadoop.hdds.annotation.InterfaceAudience;
-
-import java.io.IOException;
 
 /**
  * Interface for accessing the filesystem.

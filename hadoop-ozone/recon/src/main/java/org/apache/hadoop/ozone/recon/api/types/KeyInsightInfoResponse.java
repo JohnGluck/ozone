@@ -18,12 +18,11 @@
 
 package org.apache.hadoop.ozone.recon.api.types;
 
+import java.util.ArrayList;
+import java.util.List;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import org.apache.hadoop.ozone.om.helpers.RepeatedOmKeyInfo;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * HTTP Response wrapped for keys insights.

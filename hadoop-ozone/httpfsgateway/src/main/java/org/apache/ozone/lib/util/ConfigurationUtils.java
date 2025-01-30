@@ -18,12 +18,11 @@
 
 package org.apache.ozone.lib.util;
 
-import org.apache.hadoop.conf.Configuration;
-import org.apache.hadoop.hdds.annotation.InterfaceAudience;
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Map;
+import org.apache.hadoop.conf.Configuration;
+import org.apache.hadoop.hdds.annotation.InterfaceAudience;
 
 /**
  * Configuration utilities.

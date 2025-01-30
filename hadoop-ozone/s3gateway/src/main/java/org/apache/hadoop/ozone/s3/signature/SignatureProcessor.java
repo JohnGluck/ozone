@@ -18,7 +18,6 @@
 package org.apache.hadoop.ozone.s3.signature;
 
 import java.time.format.DateTimeFormatter;
-
 import org.apache.hadoop.ozone.s3.exception.OS3Exception;
 
 /**

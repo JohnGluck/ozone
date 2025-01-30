@@ -17,9 +17,8 @@
  */
 package org.apache.hadoop.ozone.recon.api.types;
 
-import org.apache.hadoop.hdds.client.ReplicationConfig;
-
 import java.util.UUID;
+import org.apache.hadoop.hdds.client.ReplicationConfig;
 
 /**
  * Metadata object that contains pipeline information of a Datanode.

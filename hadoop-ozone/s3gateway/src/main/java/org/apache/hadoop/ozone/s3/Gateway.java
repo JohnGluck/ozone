@@ -20,7 +20,6 @@ package org.apache.hadoop.ozone.s3;
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.util.concurrent.Callable;
-
 import com.google.common.annotations.VisibleForTesting;
 import org.apache.hadoop.hdds.cli.GenericCli;
 import org.apache.hadoop.hdds.cli.HddsVersionProvider;
@@ -32,7 +31,6 @@ import org.apache.hadoop.ozone.OzoneSecurityUtil;
 import org.apache.hadoop.ozone.s3.metrics.S3GatewayMetrics;
 import org.apache.hadoop.ozone.util.OzoneNetUtils;
 import org.apache.hadoop.ozone.util.OzoneVersionInfo;
-
 import org.apache.hadoop.ozone.util.ShutdownHookManager;
 import org.apache.hadoop.security.SecurityUtil;
 import org.apache.hadoop.security.UserGroupInformation;
@@ -71,8 +69,6 @@ public class Gateway extends GenericCli implements Callable<Void> {
             new OzoneConfiguration());
     new Gateway().run(args);
   }
-
-
 
   @Override
   public Void call() throws Exception {

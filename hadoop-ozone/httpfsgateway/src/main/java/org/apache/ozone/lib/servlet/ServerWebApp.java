@@ -18,18 +18,17 @@
 
 package org.apache.ozone.lib.servlet;
 
+import java.net.InetAddress;
+import java.net.InetSocketAddress;
+import java.net.UnknownHostException;
+import java.text.MessageFormat;
+import javax.servlet.ServletContextEvent;
+import javax.servlet.ServletContextListener;
 import com.google.common.annotations.VisibleForTesting;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.hdds.annotation.InterfaceAudience;
 import org.apache.ozone.lib.server.Server;
 import org.apache.ozone.lib.server.ServerException;
-
-import javax.servlet.ServletContextEvent;
-import javax.servlet.ServletContextListener;
-import java.net.InetAddress;
-import java.net.InetSocketAddress;
-import java.net.UnknownHostException;
-import java.text.MessageFormat;
 
 /**
  * {@link Server} subclass that implements <code>ServletContextListener</code>

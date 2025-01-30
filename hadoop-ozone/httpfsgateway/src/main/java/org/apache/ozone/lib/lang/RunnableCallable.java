@@ -18,10 +18,10 @@
 
 package org.apache.ozone.lib.lang;
 
+import java.util.concurrent.Callable;
 import org.apache.hadoop.hdds.annotation.InterfaceAudience;
 import org.apache.ozone.lib.util.Check;
 
-import java.util.concurrent.Callable;
 
 /**
  * Adapter class that allows <code>Runnable</code>s and <code>Callable</code>s

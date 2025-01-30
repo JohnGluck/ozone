@@ -19,20 +19,18 @@
  */
 package org.apache.hadoop.ozone.s3.endpoint;
 
-import javax.xml.bind.JAXBException;
 import java.io.IOException;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
-
+import javax.xml.bind.JAXBException;
+import com.google.common.collect.Sets;
 import org.apache.hadoop.ozone.client.OzoneBucket;
 import org.apache.hadoop.ozone.client.OzoneClient;
 import org.apache.hadoop.ozone.client.OzoneClientStub;
 import org.apache.hadoop.ozone.client.OzoneKey;
 import org.apache.hadoop.ozone.s3.endpoint.MultiDeleteRequest.DeleteObject;
 import org.apache.hadoop.ozone.s3.exception.OS3Exception;
-
-import com.google.common.collect.Sets;
 import org.junit.jupiter.api.Test;
 
 import static java.util.Collections.singleton;
