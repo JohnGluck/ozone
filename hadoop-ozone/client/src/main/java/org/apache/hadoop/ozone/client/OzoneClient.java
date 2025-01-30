@@ -18,14 +18,12 @@
 
 package org.apache.hadoop.ozone.client;
 
+import java.io.Closeable;
+import java.io.IOException;
+import com.google.common.annotations.VisibleForTesting;
 import org.apache.hadoop.hdds.conf.ConfigurationSource;
 import org.apache.hadoop.hdds.conf.OzoneConfiguration;
 import org.apache.hadoop.ozone.client.protocol.ClientProtocol;
-
-import java.io.Closeable;
-import java.io.IOException;
-
-import com.google.common.annotations.VisibleForTesting;
 import org.apache.ratis.util.UncheckedAutoCloseable;
 
 /**

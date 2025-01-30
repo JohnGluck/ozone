@@ -18,7 +18,6 @@
 package org.apache.hadoop.ozone.om;
 
 import java.util.concurrent.TimeUnit;
-
 import org.apache.hadoop.hdds.client.ReplicationFactor;
 import org.apache.hadoop.hdds.client.ReplicationType;
 import org.apache.hadoop.ozone.om.helpers.BucketLayout;

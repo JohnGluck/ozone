@@ -15,16 +15,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.apache.hadoop.ozone.client.io;
 
-import org.apache.hadoop.fs.StreamCapabilities;
-import org.apache.hadoop.fs.Syncable;
-import org.apache.ratis.util.function.CheckedFunction;
-
-import jakarta.annotation.Nonnull;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.Objects;
+import jakarta.annotation.Nonnull;
+import org.apache.hadoop.fs.StreamCapabilities;
+import org.apache.hadoop.fs.Syncable;
+import org.apache.ratis.util.function.CheckedFunction;
 
 /**
  * An {@link OutputStream} first write data to a buffer up to the capacity.

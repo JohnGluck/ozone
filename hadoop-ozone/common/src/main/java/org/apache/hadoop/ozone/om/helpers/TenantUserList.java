@@ -20,7 +20,6 @@ package org.apache.hadoop.ozone.om.helpers;
 
 import java.util.List;
 import java.util.Objects;
-
 import org.apache.hadoop.ozone.protocol.proto.OzoneManagerProtocolProtos.TenantListUserResponse;
 import org.apache.hadoop.ozone.protocol.proto.OzoneManagerProtocolProtos.UserAccessIdInfo;
 

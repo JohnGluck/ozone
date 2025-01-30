@@ -18,19 +18,19 @@
 
 package org.apache.hadoop.ozone.client.rpc;
 
-
+import java.util.LinkedList;
+import java.util.List;
 import org.apache.hadoop.hdds.protocol.proto.HddsProtos;
 import org.apache.hadoop.ozone.OzoneManagerVersion;
 import org.apache.hadoop.ozone.om.helpers.ServiceInfo;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.EnumSource;
-import java.util.LinkedList;
-import java.util.List;
 
 import static org.apache.hadoop.ozone.client.rpc.RpcClient.validateOmVersion;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
 /**
  * Run RPC Client tests.
  */

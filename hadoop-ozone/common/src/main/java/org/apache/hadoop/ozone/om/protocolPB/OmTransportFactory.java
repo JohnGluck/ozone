@@ -15,12 +15,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.apache.hadoop.ozone.om.protocolPB;
 
 import java.io.IOException;
 import java.util.Iterator;
 import java.util.ServiceLoader;
-
 import org.apache.hadoop.hdds.conf.ConfigurationSource;
 import org.apache.hadoop.security.UserGroupInformation;
 import org.slf4j.Logger;

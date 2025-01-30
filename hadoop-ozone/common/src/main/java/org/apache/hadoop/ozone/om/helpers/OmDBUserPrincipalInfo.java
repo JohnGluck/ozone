@@ -15,16 +15,16 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
+
 package org.apache.hadoop.ozone.om.helpers;
 
+import java.util.HashSet;
+import java.util.Set;
 import org.apache.hadoop.hdds.utils.db.Codec;
 import org.apache.hadoop.hdds.utils.db.DelegatedCodec;
 import org.apache.hadoop.hdds.utils.db.Proto2Codec;
 import org.apache.hadoop.ozone.protocol.proto.OzoneManagerProtocolProtos;
 import org.apache.hadoop.ozone.protocol.proto.OzoneManagerProtocolProtos.TenantUserPrincipalInfo;
-
-import java.util.HashSet;
-import java.util.Set;
 
 /**
  * This class is used for storing info related to the Kerberos principal.

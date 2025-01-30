@@ -18,14 +18,13 @@
 
 package org.apache.hadoop.ozone.om.helpers;
 
-import org.apache.hadoop.hdds.security.x509.certificate.client.CACertificateProvider;
-import org.apache.hadoop.ozone.OzoneSecurityUtil;
-
 import java.io.IOException;
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
 import java.util.Collections;
 import java.util.List;
+import org.apache.hadoop.hdds.security.x509.certificate.client.CACertificateProvider;
+import org.apache.hadoop.ozone.OzoneSecurityUtil;
 
 /**
  * Wrapper class for service discovery, design for broader usage such as

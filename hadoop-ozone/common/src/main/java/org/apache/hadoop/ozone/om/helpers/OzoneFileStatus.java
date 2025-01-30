@@ -20,7 +20,6 @@ package org.apache.hadoop.ozone.om.helpers;
 
 import java.io.IOException;
 import java.util.Objects;
-
 import org.apache.hadoop.ozone.protocol.proto.OzoneManagerProtocolProtos.OzoneFileStatusProto;
 import org.apache.hadoop.ozone.protocol.proto.OzoneManagerProtocolProtos.OzoneFileStatusProto.Builder;
 

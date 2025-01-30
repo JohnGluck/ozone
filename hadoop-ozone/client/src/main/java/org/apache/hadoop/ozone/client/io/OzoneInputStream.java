@@ -17,13 +17,12 @@
 
 package org.apache.hadoop.ozone.client.io;
 
-import org.apache.hadoop.fs.ByteBufferReadable;
-import org.apache.hadoop.fs.CanUnbuffer;
-import org.apache.hadoop.fs.Seekable;
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.ByteBuffer;
+import org.apache.hadoop.fs.ByteBufferReadable;
+import org.apache.hadoop.fs.CanUnbuffer;
+import org.apache.hadoop.fs.Seekable;
 
 /**
  * OzoneInputStream is used to read data from Ozone.

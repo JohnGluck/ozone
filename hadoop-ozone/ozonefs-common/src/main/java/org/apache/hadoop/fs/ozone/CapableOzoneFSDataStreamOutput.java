@@ -15,13 +15,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.apache.hadoop.fs.ozone;
 
 import org.apache.hadoop.fs.StreamCapabilities;
 import org.apache.hadoop.hdds.scm.storage.ByteBufferStreamOutput;
 import org.apache.hadoop.ozone.client.io.KeyDataStreamOutput;
 import org.apache.hadoop.util.StringUtils;
-
 
 /**
  * This class is used to workaround Hadoop2 compatibility issues.

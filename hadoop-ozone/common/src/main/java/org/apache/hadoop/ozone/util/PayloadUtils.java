@@ -17,12 +17,11 @@
 
 package org.apache.hadoop.ozone.util;
 
+import java.util.Random;
 import com.google.protobuf.Proto2Utils;
 import org.apache.ratis.thirdparty.com.google.protobuf.ByteString;
 import org.apache.ratis.thirdparty.com.google.protobuf.UnsafeByteOperations;
 import org.apache.ratis.util.Preconditions;
-
-import java.util.Random;
 
 /**
  * Utility class for payload operations.

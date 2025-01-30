@@ -19,9 +19,8 @@
 package org.apache.hadoop.ozone.om.exceptions;
 
 import java.io.IOException;
-
-import org.apache.ratis.protocol.exceptions.NotLeaderException;
 import org.apache.ratis.protocol.RaftPeerId;
+import org.apache.ratis.protocol.exceptions.NotLeaderException;
 
 /**
  * Exception thrown by

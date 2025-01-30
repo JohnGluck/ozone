@@ -18,12 +18,10 @@
 
 package org.apache.hadoop.ozone.om.helpers;
 
-import org.apache.hadoop.hdds.client.ReplicationConfig;
-import org.apache.hadoop.ozone.protocol.proto.OzoneManagerProtocolProtos
-    .PartInfo;
-
 import java.util.ArrayList;
 import java.util.List;
+import org.apache.hadoop.hdds.client.ReplicationConfig;
+import org.apache.hadoop.ozone.protocol.proto.OzoneManagerProtocolProtos.PartInfo;
 
 /**
  * Class which is response for the list parts of a multipart upload key.

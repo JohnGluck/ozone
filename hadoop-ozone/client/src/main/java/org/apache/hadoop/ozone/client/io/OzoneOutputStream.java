@@ -17,15 +17,14 @@
 
 package org.apache.hadoop.ozone.client.io;
 
-import org.apache.hadoop.crypto.CryptoOutputStream;
-import org.apache.hadoop.fs.Syncable;
-import org.apache.hadoop.ozone.om.helpers.OmMultipartCommitUploadPartInfo;
-
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+import org.apache.hadoop.crypto.CryptoOutputStream;
+import org.apache.hadoop.fs.Syncable;
+import org.apache.hadoop.ozone.om.helpers.OmMultipartCommitUploadPartInfo;
 
 /**
  * OzoneOutputStream is used to write data into Ozone.

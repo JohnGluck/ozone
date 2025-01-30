@@ -15,12 +15,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.apache.hadoop.ozone.client.checksum;
 
-import org.apache.hadoop.hdds.scm.OzoneClientConfig;
+package org.apache.hadoop.ozone.client.checksum;
 
 import java.io.IOException;
 import java.nio.ByteBuffer;
+import org.apache.hadoop.hdds.scm.OzoneClientConfig;
 
 /**
  * Base class for computing block checksum which is a function of chunk

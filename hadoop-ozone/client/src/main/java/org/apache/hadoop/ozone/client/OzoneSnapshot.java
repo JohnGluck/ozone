@@ -16,10 +16,9 @@
  */
 package org.apache.hadoop.ozone.client;
 
+import java.util.UUID;
 import org.apache.hadoop.ozone.om.helpers.SnapshotInfo;
 import org.apache.hadoop.ozone.om.helpers.SnapshotInfo.SnapshotStatus;
-
-import java.util.UUID;
 
 /**
  * A class that encapsulates OzoneSnapshot.

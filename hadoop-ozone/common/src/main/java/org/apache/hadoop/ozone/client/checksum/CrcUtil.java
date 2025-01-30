@@ -18,12 +18,11 @@
 
 package org.apache.hadoop.ozone.client.checksum;
 
+import java.io.IOException;
+import java.util.Arrays;
 import org.apache.hadoop.hdds.annotation.InterfaceAudience;
 import org.apache.hadoop.hdds.annotation.InterfaceStability;
 import org.apache.hadoop.util.DataChecksum;
-
-import java.io.IOException;
-import java.util.Arrays;
 
 /**
  * This class provides utilities for working with CRCs.

@@ -18,10 +18,9 @@
 
 package org.apache.hadoop.fs.ozone;
 
-import org.apache.hadoop.fs.StorageStatistics.CommonStatisticNames;
-
 import java.util.HashMap;
 import java.util.Map;
+import org.apache.hadoop.fs.StorageStatistics.CommonStatisticNames;
 
 /**
  * Statistic which are collected in OzoneFileSystem.

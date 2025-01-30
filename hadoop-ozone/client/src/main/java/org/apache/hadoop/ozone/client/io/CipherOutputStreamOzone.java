@@ -18,11 +18,10 @@
 
 package org.apache.hadoop.ozone.client.io;
 
-import javax.crypto.Cipher;
-import javax.crypto.CipherOutputStream;
-
 import java.io.OutputStream;
 import java.util.Map;
+import javax.crypto.Cipher;
+import javax.crypto.CipherOutputStream;
 
 /**
  * Wrap javax.crypto.CipherOutputStream with the method to return wrapped

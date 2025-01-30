@@ -18,13 +18,12 @@
 
 package org.apache.hadoop.ozone.om.ha;
 
+import java.net.InetSocketAddress;
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.net.NetUtils;
 import org.apache.hadoop.security.SecurityUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.net.InetSocketAddress;
 
 /**
  * Class to store OM proxy information.

@@ -19,7 +19,6 @@
 package org.apache.hadoop.ozone.client;
 
 import java.time.Instant;
-
 import org.apache.hadoop.hdds.client.ReplicationConfig;
 import org.apache.hadoop.hdds.client.ReplicationFactor;
 import org.apache.hadoop.hdds.client.ReplicationType;

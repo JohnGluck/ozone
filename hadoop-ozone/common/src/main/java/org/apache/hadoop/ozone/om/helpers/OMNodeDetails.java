@@ -17,24 +17,23 @@
 
 package org.apache.hadoop.ozone.om.helpers;
 
-import org.apache.hadoop.hdds.conf.OzoneConfiguration;
-import org.apache.hadoop.net.NetUtils;
-import org.apache.hadoop.ozone.OmUtils;
-import org.apache.hadoop.ozone.ha.ConfUtils;
-import org.apache.hadoop.ozone.protocol.proto.OzoneManagerAdminProtocolProtos.OMNodeInfo;
-import org.apache.hadoop.ozone.protocol.proto.OzoneManagerAdminProtocolProtos.NodeState;
-import org.apache.hadoop.hdds.NodeDetails;
-import org.apache.http.client.utils.URIBuilder;
-
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.net.URL;
+import org.apache.hadoop.hdds.NodeDetails;
+import org.apache.hadoop.hdds.conf.OzoneConfiguration;
+import org.apache.hadoop.net.NetUtils;
+import org.apache.hadoop.ozone.OmUtils;
+import org.apache.hadoop.ozone.ha.ConfUtils;
+import org.apache.hadoop.ozone.protocol.proto.OzoneManagerAdminProtocolProtos.NodeState;
+import org.apache.hadoop.ozone.protocol.proto.OzoneManagerAdminProtocolProtos.OMNodeInfo;
+import org.apache.http.client.utils.URIBuilder;
 
+import static org.apache.hadoop.ozone.OzoneConsts.OZONE_DB_CHECKPOINT_HTTP_ENDPOINT;
 import static org.apache.hadoop.ozone.OzoneConsts.OZONE_DB_CHECKPOINT_INCLUDE_SNAPSHOT_DATA;
 import static org.apache.hadoop.ozone.OzoneConsts.OZONE_DB_CHECKPOINT_REQUEST_FLUSH;
-import static org.apache.hadoop.ozone.OzoneConsts.OZONE_DB_CHECKPOINT_HTTP_ENDPOINT;
 import static org.apache.hadoop.ozone.om.OMConfigKeys.OZONE_OM_ADDRESS_KEY;
 import static org.apache.hadoop.ozone.om.OMConfigKeys.OZONE_OM_RATIS_PORT_DEFAULT;
 import static org.apache.hadoop.ozone.om.OMConfigKeys.OZONE_OM_RATIS_PORT_KEY;
@@ -50,8 +49,8 @@ public final class OMNodeDetails extends NodeDetails {
    * Constructs OMNodeDetails object.
    */
   private OMNodeDetails(String serviceId, String nodeId,
-      InetSocketAddress rpcAddr, int rpcPort, int ratisPort,
-      String httpAddress, String httpsAddress) {
+                        InetSocketAddress rpcAddr, int rpcPort, int ratisPort,
+                        String httpAddress, String httpsAddress) {
     super(serviceId, nodeId, rpcAddr, ratisPort, httpAddress, httpsAddress);
     this.rpcPort = rpcPort;
   }

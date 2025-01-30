@@ -18,12 +18,11 @@
 
 package org.apache.hadoop.ozone.client;
 
+import java.util.ArrayList;
+import java.util.List;
 import org.apache.hadoop.hdds.client.ReplicationConfig;
 import org.apache.hadoop.hdds.client.ReplicationFactor;
 import org.apache.hadoop.hdds.client.ReplicationType;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Class that represents Multipart upload List parts response.

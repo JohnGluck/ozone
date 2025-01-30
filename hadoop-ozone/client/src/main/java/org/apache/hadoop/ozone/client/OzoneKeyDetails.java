@@ -18,15 +18,14 @@
 
 package org.apache.hadoop.ozone.client;
 
+import java.io.IOException;
+import java.util.List;
+import java.util.Map;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.apache.hadoop.fs.FileEncryptionInfo;
 import org.apache.hadoop.hdds.client.ReplicationConfig;
 import org.apache.hadoop.ozone.client.io.OzoneInputStream;
 import org.apache.ratis.util.function.CheckedSupplier;
-
-import java.io.IOException;
-import java.util.List;
-import java.util.Map;
 
 /**
  * A class that encapsulates OzoneKeyLocation.

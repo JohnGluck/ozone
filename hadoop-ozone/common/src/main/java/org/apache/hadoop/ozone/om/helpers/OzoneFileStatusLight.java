@@ -18,10 +18,9 @@
 
 package org.apache.hadoop.ozone.om.helpers;
 
-import org.apache.hadoop.ozone.protocol.proto.OzoneManagerProtocolProtos.OzoneFileStatusProtoLight;
-
 import java.io.IOException;
 import java.util.Objects;
+import org.apache.hadoop.ozone.protocol.proto.OzoneManagerProtocolProtos.OzoneFileStatusProtoLight;
 
 import static org.apache.hadoop.ozone.OzoneConsts.OZONE_URI_DELIMITER;
 

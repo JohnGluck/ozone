@@ -15,16 +15,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.apache.hadoop.fs.ozone;
 
+import java.io.OutputStream;
 import org.apache.hadoop.crypto.CryptoOutputStream;
 import org.apache.hadoop.fs.StreamCapabilities;
 import org.apache.hadoop.fs.impl.StoreImplementationUtils;
 import org.apache.hadoop.ozone.client.io.ECKeyOutputStream;
 import org.apache.hadoop.ozone.client.io.KeyOutputStream;
 import org.apache.hadoop.util.StringUtils;
-
-import java.io.OutputStream;
 
 /**
  * This class is used to workaround Hadoop2 compatibility issues.

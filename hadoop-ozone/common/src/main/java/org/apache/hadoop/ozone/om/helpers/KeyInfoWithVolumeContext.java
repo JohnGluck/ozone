@@ -15,12 +15,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.apache.hadoop.ozone.om.helpers;
 
-import org.apache.hadoop.ozone.protocol.proto.OzoneManagerProtocolProtos.GetKeyInfoResponse;
+package org.apache.hadoop.ozone.om.helpers;
 
 import java.io.IOException;
 import java.util.Optional;
+import org.apache.hadoop.ozone.protocol.proto.OzoneManagerProtocolProtos.GetKeyInfoResponse;
 
 /**
  * Encloses a {@link OmKeyInfo} and optionally a volume context.

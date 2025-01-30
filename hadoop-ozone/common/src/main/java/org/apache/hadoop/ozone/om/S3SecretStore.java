@@ -14,11 +14,11 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
+
 package org.apache.hadoop.ozone.om;
 
-import org.apache.hadoop.ozone.om.helpers.S3SecretValue;
-
 import java.io.IOException;
+import org.apache.hadoop.ozone.om.helpers.S3SecretValue;
 
 /**
  * S3 secret store interface.

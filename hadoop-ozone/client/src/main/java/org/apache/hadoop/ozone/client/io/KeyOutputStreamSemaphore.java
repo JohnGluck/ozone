@@ -14,14 +14,14 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package org.apache.hadoop.ozone.client.io;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+package org.apache.hadoop.ozone.client.io;
 
 import java.io.IOException;
 import java.io.InterruptedIOException;
 import java.util.concurrent.Semaphore;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Helper class that streamlines request semaphore usage in KeyOutputStream.

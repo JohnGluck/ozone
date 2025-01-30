@@ -15,16 +15,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.apache.hadoop.ozone.om;
 
-import com.google.common.cache.Cache;
-import com.google.common.cache.CacheBuilder;
-import org.apache.hadoop.ozone.om.helpers.S3SecretValue;
+package org.apache.hadoop.ozone.om;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import com.google.common.cache.Cache;
+import com.google.common.cache.CacheBuilder;
+import org.apache.hadoop.ozone.om.helpers.S3SecretValue;
 
 /**
  * S3 secret cache implementation based on in-memory cache.

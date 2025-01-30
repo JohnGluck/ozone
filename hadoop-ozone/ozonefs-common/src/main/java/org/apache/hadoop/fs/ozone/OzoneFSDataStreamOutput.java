@@ -15,14 +15,14 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-package org.apache.hadoop.fs.ozone;
 
-import org.apache.hadoop.hdds.scm.storage.ByteBufferStreamOutput;
-import org.apache.hadoop.hdds.tracing.TracingUtil;
-import org.apache.hadoop.ozone.client.io.ByteBufferOutputStream;
+package org.apache.hadoop.fs.ozone;
 
 import java.io.IOException;
 import java.nio.ByteBuffer;
+import org.apache.hadoop.hdds.scm.storage.ByteBufferStreamOutput;
+import org.apache.hadoop.hdds.tracing.TracingUtil;
+import org.apache.hadoop.ozone.client.io.ByteBufferOutputStream;
 
 /**
  * The ByteBuffer output stream for Ozone file system.

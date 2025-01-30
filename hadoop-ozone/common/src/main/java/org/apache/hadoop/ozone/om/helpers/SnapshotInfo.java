@@ -1,5 +1,3 @@
-package org.apache.hadoop.ozone.om.helpers;
-
 /*
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -18,7 +16,18 @@ package org.apache.hadoop.ozone.om.helpers;
  *  limitations under the License.
  */
 
+package org.apache.hadoop.ozone.om.helpers;
+
+import java.time.Instant;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.LinkedHashMap;
+import java.util.Map;
+import java.util.Objects;
+import java.util.UUID;
 import com.google.common.annotations.VisibleForTesting;
+import com.google.common.base.Preconditions;
 import com.google.protobuf.ByteString;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.hadoop.hdds.utils.db.Codec;
@@ -29,18 +38,6 @@ import org.apache.hadoop.ozone.OzoneConsts;
 import org.apache.hadoop.ozone.audit.Auditable;
 import org.apache.hadoop.ozone.protocol.proto.OzoneManagerProtocolProtos;
 import org.apache.hadoop.ozone.protocol.proto.OzoneManagerProtocolProtos.SnapshotStatusProto;
-
-import com.google.common.base.Preconditions;
-
-import java.time.format.DateTimeFormatter;
-import java.time.Instant;
-import java.time.ZonedDateTime;
-import java.time.ZoneId;
-
-import java.util.Objects;
-import java.util.UUID;
-import java.util.Map;
-import java.util.LinkedHashMap;
 
 import static org.apache.hadoop.hdds.HddsUtils.fromProtobuf;
 import static org.apache.hadoop.hdds.HddsUtils.toProtobuf;

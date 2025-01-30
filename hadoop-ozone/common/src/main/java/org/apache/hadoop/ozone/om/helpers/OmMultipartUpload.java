@@ -19,7 +19,6 @@
 package org.apache.hadoop.ozone.om.helpers;
 
 import java.time.Instant;
-
 import org.apache.hadoop.hdds.client.ReplicationConfig;
 
 import static org.apache.hadoop.ozone.OzoneConsts.OM_KEY_PREFIX;

@@ -18,12 +18,11 @@
 
 package org.apache.hadoop.ozone.om.helpers;
 
-import org.apache.hadoop.ozone.protocol.proto.OzoneManagerProtocolProtos.Part;
-
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import org.apache.hadoop.ozone.protocol.proto.OzoneManagerProtocolProtos.Part;
 
 /**
  * This class represents multipart list, which is required for

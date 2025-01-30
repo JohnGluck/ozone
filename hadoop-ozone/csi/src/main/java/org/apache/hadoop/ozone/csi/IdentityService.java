@@ -15,19 +15,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.apache.hadoop.ozone.csi;
 
-import org.apache.hadoop.ozone.util.OzoneVersionInfo;
+package org.apache.hadoop.ozone.csi;
 
 import com.google.protobuf.BoolValue;
 import csi.v1.Csi.GetPluginCapabilitiesResponse;
 import csi.v1.Csi.GetPluginInfoResponse;
 import csi.v1.Csi.PluginCapability;
 import csi.v1.Csi.PluginCapability.Service;
-import static csi.v1.Csi.PluginCapability.Service.Type.CONTROLLER_SERVICE;
 import csi.v1.Csi.ProbeResponse;
 import csi.v1.IdentityGrpc.IdentityImplBase;
 import io.grpc.stub.StreamObserver;
+import org.apache.hadoop.ozone.util.OzoneVersionInfo;
+
+import static csi.v1.Csi.PluginCapability.Service.Type.CONTROLLER_SERVICE;
 
 /**
  * Implementation of the CSI identity service.
@@ -36,7 +37,7 @@ public class IdentityService extends IdentityImplBase {
 
   @Override
   public void getPluginInfo(csi.v1.Csi.GetPluginInfoRequest request,
-      StreamObserver<csi.v1.Csi.GetPluginInfoResponse> responseObserver) {
+      StreamObserver<GetPluginInfoResponse> responseObserver) {
     GetPluginInfoResponse response = GetPluginInfoResponse.newBuilder()
         .setName("org.apache.hadoop.ozone")
         .setVendorVersion(OzoneVersionInfo.OZONE_VERSION_INFO.getVersion())

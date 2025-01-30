@@ -18,21 +18,20 @@
 
 package org.apache.hadoop.fs.ozone;
 
-import com.google.common.annotations.VisibleForTesting;
-import org.apache.hadoop.hdds.annotation.InterfaceAudience;
-import org.apache.hadoop.hdds.annotation.InterfaceStability;
-import org.apache.hadoop.fs.StorageStatistics;
-import org.apache.hadoop.ozone.OzoneConsts;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
+import java.util.Collections;
+import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
-import java.util.EnumMap;
-import java.util.Collections;
 import java.util.NoSuchElementException;
 import java.util.concurrent.atomic.AtomicLong;
+import com.google.common.annotations.VisibleForTesting;
+import org.apache.hadoop.fs.StorageStatistics;
+import org.apache.hadoop.hdds.annotation.InterfaceAudience;
+import org.apache.hadoop.hdds.annotation.InterfaceStability;
+import org.apache.hadoop.ozone.OzoneConsts;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Storage statistics for OzoneFileSystem.

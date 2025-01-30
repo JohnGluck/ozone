@@ -18,15 +18,13 @@
 
 package org.apache.hadoop.fs.ozone;
 
+import java.io.IOException;
+import java.io.OutputStream;
 import io.opentracing.Span;
 import io.opentracing.util.GlobalTracer;
 import org.apache.hadoop.fs.Syncable;
 import org.apache.hadoop.hdds.tracing.TracingUtil;
 import org.apache.hadoop.ozone.client.io.OzoneOutputStream;
-
-import java.io.IOException;
-import java.io.OutputStream;
-
 
 /**
  * The output stream for Ozone file system.

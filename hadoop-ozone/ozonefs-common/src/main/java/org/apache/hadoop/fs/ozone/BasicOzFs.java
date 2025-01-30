@@ -21,7 +21,6 @@ package org.apache.hadoop.fs.ozone;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
-
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.DelegateToFileSystem;
 import org.apache.hadoop.hdds.annotation.InterfaceAudience;

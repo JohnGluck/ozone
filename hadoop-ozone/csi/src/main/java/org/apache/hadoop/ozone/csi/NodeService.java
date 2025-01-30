@@ -15,6 +15,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.apache.hadoop.ozone.csi;
 
 import java.io.IOException;
@@ -24,9 +25,6 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.concurrent.TimeUnit;
-
-import org.apache.hadoop.ozone.csi.CsiServer.CsiConfig;
-
 import csi.v1.Csi.NodeGetCapabilitiesRequest;
 import csi.v1.Csi.NodeGetCapabilitiesResponse;
 import csi.v1.Csi.NodeGetInfoRequest;
@@ -38,6 +36,7 @@ import csi.v1.Csi.NodeUnpublishVolumeResponse;
 import csi.v1.NodeGrpc.NodeImplBase;
 import io.grpc.stub.StreamObserver;
 import org.apache.commons.io.IOUtils;
+import org.apache.hadoop.ozone.csi.CsiServer.CsiConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

@@ -15,16 +15,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.apache.hadoop.ozone.util;
 
-import com.google.common.annotations.VisibleForTesting;
-import org.apache.hadoop.ozone.OzoneConsts;
-
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import com.google.common.annotations.VisibleForTesting;
+import org.apache.hadoop.ozone.OzoneConsts;
 
 /**
  * Wrapper class for handling Ozone prefix path lookup of ACL APIs

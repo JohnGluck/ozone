@@ -25,7 +25,6 @@ import org.apache.hadoop.hdds.utils.RatisVersionInfo;
 import org.apache.hadoop.hdds.utils.VersionInfo;
 import org.apache.hadoop.ozone.OzoneConsts;
 import org.apache.hadoop.util.ClassUtil;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

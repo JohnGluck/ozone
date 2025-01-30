@@ -19,7 +19,6 @@
 package org.apache.hadoop.ozone.om;
 
 import java.time.Duration;
-
 import org.apache.hadoop.hdds.conf.Config;
 import org.apache.hadoop.hdds.conf.ConfigGroup;
 import org.apache.hadoop.hdds.conf.ConfigTag;

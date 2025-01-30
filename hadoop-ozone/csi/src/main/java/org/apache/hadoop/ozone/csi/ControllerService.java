@@ -15,12 +15,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.apache.hadoop.ozone.csi;
 
 import java.io.IOException;
-
-import org.apache.hadoop.ozone.client.OzoneClient;
-
 import csi.v1.ControllerGrpc.ControllerImplBase;
 import csi.v1.Csi.CapacityRange;
 import csi.v1.Csi.ControllerGetCapabilitiesRequest;
@@ -34,6 +32,7 @@ import csi.v1.Csi.DeleteVolumeRequest;
 import csi.v1.Csi.DeleteVolumeResponse;
 import csi.v1.Csi.Volume;
 import io.grpc.stub.StreamObserver;
+import org.apache.hadoop.ozone.client.OzoneClient;
 
 /**
  * CSI controller service.

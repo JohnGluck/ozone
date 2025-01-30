@@ -15,20 +15,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.apache.hadoop.ozone;
 
 import org.apache.hadoop.fs.FsServerDefaults;
 import org.apache.hadoop.hdds.annotation.InterfaceAudience;
 import org.apache.hadoop.hdds.annotation.InterfaceStability;
-
 import org.apache.hadoop.ozone.protocol.proto.OzoneManagerProtocolProtos.FsServerDefaultsProto;
 import org.apache.hadoop.ozone.protocol.proto.OzoneManagerProtocolProtos.FsServerDefaultsProto.Builder;
 
-
-/****************************************************
+/**
  * Provides server default configuration values to clients.
- *
- ****************************************************/
+ */
 @InterfaceAudience.Public
 @InterfaceStability.Evolving
 public class OzoneFsServerDefaults extends FsServerDefaults {

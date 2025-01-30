@@ -18,14 +18,13 @@
 
 package org.apache.hadoop.ozone.client;
 
+import java.time.Instant;
+import java.util.HashMap;
+import java.util.Map;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.apache.hadoop.hdds.client.ReplicationConfig;
 import org.apache.hadoop.hdds.client.ReplicationType;
 import org.apache.hadoop.ozone.om.helpers.OmKeyInfo;
-
-import java.time.Instant;
-import java.util.Map;
-import java.util.HashMap;
 
 /**
  * A class that encapsulates OzoneKey.

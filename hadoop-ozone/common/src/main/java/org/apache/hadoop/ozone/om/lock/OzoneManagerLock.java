@@ -18,7 +18,6 @@
 
 package org.apache.hadoop.ozone.om.lock;
 
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -28,9 +27,9 @@ import java.util.Map;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
-
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.util.concurrent.Striped;
+import org.apache.hadoop.hdds.conf.ConfigurationSource;
 import org.apache.hadoop.hdds.utils.SimpleStriped;
 import org.apache.hadoop.ipc.ProcessingDetails.Timing;
 import org.apache.hadoop.ipc.Server;
@@ -38,13 +37,11 @@ import org.apache.hadoop.util.Time;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import org.apache.hadoop.hdds.conf.ConfigurationSource;
-
+import static org.apache.hadoop.hdds.utils.CompositeKey.combineKeys;
 import static org.apache.hadoop.ozone.OzoneConfigKeys.OZONE_MANAGER_FAIR_LOCK;
 import static org.apache.hadoop.ozone.OzoneConfigKeys.OZONE_MANAGER_FAIR_LOCK_DEFAULT;
 import static org.apache.hadoop.ozone.OzoneConfigKeys.OZONE_MANAGER_STRIPED_LOCK_SIZE_DEFAULT;
 import static org.apache.hadoop.ozone.OzoneConfigKeys.OZONE_MANAGER_STRIPED_LOCK_SIZE_PREFIX;
-import static org.apache.hadoop.hdds.utils.CompositeKey.combineKeys;
 
 /**
  * Provides different locks to handle concurrency in OzoneMaster.

@@ -18,9 +18,8 @@
 
 package org.apache.hadoop.ozone.snapshot;
 
-import org.apache.hadoop.ozone.om.helpers.SnapshotInfo;
-
 import java.util.List;
+import org.apache.hadoop.ozone.om.helpers.SnapshotInfo;
 
 /**
  * POJO for list snapshot info API.

@@ -15,18 +15,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.apache.hadoop.ozone.om.helpers;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
-
+import com.google.common.base.Preconditions;
 import org.apache.hadoop.hdds.client.DefaultReplicationConfig;
 import org.apache.hadoop.hdds.protocol.StorageType;
 import org.apache.hadoop.ozone.OzoneConsts;
 import org.apache.hadoop.ozone.audit.Auditable;
 import org.apache.hadoop.ozone.protocol.proto.OzoneManagerProtocolProtos.BucketArgs;
-
-import com.google.common.base.Preconditions;
 import org.apache.hadoop.ozone.protocolPB.OMPBHelper;
 
 /**

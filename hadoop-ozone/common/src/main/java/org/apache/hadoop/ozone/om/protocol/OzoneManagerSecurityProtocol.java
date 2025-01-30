@@ -15,15 +15,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.apache.hadoop.ozone.om.protocol;
 
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.io.retry.Idempotent;
 import org.apache.hadoop.ozone.om.OMConfigKeys;
+import org.apache.hadoop.ozone.om.exceptions.OMException;
 import org.apache.hadoop.ozone.security.OzoneTokenIdentifier;
 import org.apache.hadoop.security.KerberosInfo;
 import org.apache.hadoop.security.token.Token;
-import org.apache.hadoop.ozone.om.exceptions.OMException;
 
 /**
  * Security protocol for a secure OzoneManager.

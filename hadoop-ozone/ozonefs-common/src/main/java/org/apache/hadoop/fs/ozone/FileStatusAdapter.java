@@ -15,15 +15,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.apache.hadoop.fs.ozone;
 
-import org.apache.hadoop.fs.BlockLocation;
-import org.apache.hadoop.fs.Path;
+package org.apache.hadoop.fs.ozone;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-
+import org.apache.hadoop.fs.BlockLocation;
+import org.apache.hadoop.fs.Path;
 
 /**
  * Class to hold the internal information of a FileStatus.

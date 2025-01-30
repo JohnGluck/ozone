@@ -15,8 +15,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.apache.hadoop.ozone.om.helpers;
 
+import java.util.Objects;
 import io.netty.util.internal.StringUtil;
 import org.apache.hadoop.ipc.CallerContext;
 import org.apache.hadoop.ipc.IdentityProvider;
@@ -24,8 +26,6 @@ import org.apache.hadoop.ipc.Schedulable;
 import org.apache.hadoop.security.UserGroupInformation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.util.Objects;
 
 import static org.apache.hadoop.ozone.OzoneConsts.OM_S3_CALLER_CONTEXT_PREFIX;
 

@@ -17,6 +17,8 @@
 
 package org.apache.hadoop.ozone.om.helpers;
 
+import java.io.IOException;
+import java.nio.ByteBuffer;
 import com.google.protobuf.TextFormat;
 import org.apache.hadoop.hdds.utils.io.ByteBufferInputStream;
 import org.apache.hadoop.ozone.protocol.proto.OzoneManagerProtocolProtos.OMRequest;
@@ -28,9 +30,6 @@ import org.apache.ratis.thirdparty.com.google.protobuf.ByteString;
 import org.apache.ratis.thirdparty.com.google.protobuf.UnsafeByteOperations;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.io.IOException;
-import java.nio.ByteBuffer;
 
 /**
  * Helper methods for converting between proto 2 (OM) and proto 3 (Ratis) messages.
