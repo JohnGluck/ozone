@@ -18,6 +18,8 @@
 
 package org.apache.hadoop.ozone.container.common;
 
+import java.util.UUID;
+import java.util.concurrent.atomic.AtomicLong;
 import org.apache.hadoop.conf.StorageUnit;
 import org.apache.hadoop.hdds.conf.OzoneConfiguration;
 import org.apache.hadoop.hdds.protocol.datanode.proto.ContainerProtos;
@@ -29,9 +31,6 @@ import org.apache.hadoop.ozone.container.upgrade.VersionedDatanodeFeatures;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.mock;
-
-import java.util.UUID;
-import java.util.concurrent.atomic.AtomicLong;
 
 /**
  * This class is used to test the KeyValueContainerData.

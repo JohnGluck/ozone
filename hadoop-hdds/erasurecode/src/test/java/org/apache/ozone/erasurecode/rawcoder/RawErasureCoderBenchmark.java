@@ -15,12 +15,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.apache.ozone.erasurecode.rawcoder;
-
-import com.google.common.base.Preconditions;
-
-import org.apache.hadoop.hdds.client.ECReplicationConfig;
-import org.apache.hadoop.util.StopWatch;
 
 import java.io.IOException;
 import java.nio.ByteBuffer;
@@ -35,6 +31,9 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
+import com.google.common.base.Preconditions;
+import org.apache.hadoop.hdds.client.ECReplicationConfig;
+import org.apache.hadoop.util.StopWatch;
 
 /**
  * A benchmark tool to test the performance of different erasure coders.

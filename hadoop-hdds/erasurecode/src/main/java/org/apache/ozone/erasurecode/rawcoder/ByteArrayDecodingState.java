@@ -15,8 +15,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.apache.ozone.erasurecode.rawcoder;
 
+package org.apache.ozone.erasurecode.rawcoder;
 
 import java.nio.ByteBuffer;
 

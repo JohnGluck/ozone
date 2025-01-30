@@ -15,14 +15,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.apache.ozone.erasurecode.rawcoder;
 
-import org.apache.ozone.erasurecode.ECChunk;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+package org.apache.ozone.erasurecode.rawcoder;
 
 import java.io.IOException;
 import java.nio.ByteBuffer;
+import org.apache.ozone.erasurecode.ECChunk;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.fail;
 

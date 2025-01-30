@@ -15,8 +15,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.apache.ozone.erasurecode;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
 import org.apache.hadoop.hdds.client.ECReplicationConfig;
 import org.apache.ozone.erasurecode.rawcoder.NativeRSRawErasureCoderFactory;
 import org.apache.ozone.erasurecode.rawcoder.NativeXORRawErasureCoderFactory;
@@ -26,10 +30,6 @@ import org.apache.ozone.erasurecode.rawcoder.RawErasureDecoder;
 import org.apache.ozone.erasurecode.rawcoder.RawErasureEncoder;
 import org.apache.ozone.erasurecode.rawcoder.XORRawErasureCoderFactory;
 import org.junit.jupiter.api.Test;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;

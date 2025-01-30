@@ -15,6 +15,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.apache.hadoop.ozone.container.replication;
 
 import java.util.ArrayList;
@@ -23,10 +24,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 import java.util.UUID;
-
 import org.apache.hadoop.hdds.protocol.DatanodeDetails;
 import org.apache.hadoop.hdds.protocol.MockDatanodeDetails;
-
 import org.junit.jupiter.api.Test;
 
 import static org.apache.hadoop.ozone.protocol.commands.ReplicateContainerCommand.fromSources;

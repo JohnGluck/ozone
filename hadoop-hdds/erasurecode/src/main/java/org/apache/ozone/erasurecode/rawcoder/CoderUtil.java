@@ -15,12 +15,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.apache.ozone.erasurecode.rawcoder;
 
-import org.apache.ozone.erasurecode.ECChunk;
+package org.apache.ozone.erasurecode.rawcoder;
 
 import java.nio.ByteBuffer;
 import java.util.Arrays;
+import org.apache.ozone.erasurecode.ECChunk;
 
 /**
  * Helpful utilities for implementing some raw erasure coders.

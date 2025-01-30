@@ -18,6 +18,9 @@
 
 package org.apache.hadoop.ozone.container.upgrade;
 
+import java.net.InetSocketAddress;
+import java.nio.file.Path;
+import java.util.Collections;
 import org.apache.hadoop.hdds.HddsConfigKeys;
 import org.apache.hadoop.hdds.conf.OzoneConfiguration;
 import org.apache.hadoop.hdds.protocol.datanode.proto.ContainerProtos;
@@ -34,10 +37,6 @@ import org.apache.hadoop.ozone.container.common.statemachine.DatanodeStateMachin
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
-
-import java.net.InetSocketAddress;
-import java.nio.file.Path;
-import java.util.Collections;
 
 import static org.apache.hadoop.hdds.protocol.datanode.proto.ContainerProtos.ContainerDataProto.State.OPEN;
 import static org.junit.jupiter.api.Assertions.assertEquals;

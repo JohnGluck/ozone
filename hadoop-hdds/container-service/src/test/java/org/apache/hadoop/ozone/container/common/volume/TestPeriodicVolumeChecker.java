@@ -18,6 +18,11 @@
 
 package org.apache.hadoop.ozone.container.common.volume;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.time.Duration;
+import java.util.concurrent.TimeUnit;
 import org.apache.hadoop.hdds.conf.OzoneConfiguration;
 import org.apache.hadoop.hdds.scm.ScmConfigKeys;
 import org.apache.hadoop.ozone.OzoneConfigKeys;
@@ -30,12 +35,6 @@ import org.junit.jupiter.api.Timeout;
 import org.junit.jupiter.api.io.TempDir;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.time.Duration;
-import java.util.concurrent.TimeUnit;
 
 import static org.apache.hadoop.hdfs.server.datanode.checker.VolumeCheckResult.HEALTHY;
 import static org.apache.hadoop.ozone.container.common.volume.TestStorageVolumeChecker.makeVolumes;

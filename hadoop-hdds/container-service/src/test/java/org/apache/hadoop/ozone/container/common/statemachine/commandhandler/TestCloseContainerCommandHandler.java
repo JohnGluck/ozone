@@ -14,8 +14,11 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
+
 package org.apache.hadoop.ozone.container.common.statemachine.commandhandler;
 
+import java.io.IOException;
+import java.util.UUID;
 import java.util.concurrent.TimeoutException;
 import org.apache.hadoop.hdds.conf.OzoneConfiguration;
 import org.apache.hadoop.hdds.protocol.DatanodeDetails;
@@ -37,15 +40,12 @@ import org.apache.hadoop.ozone.protocol.commands.CloseContainerCommand;
 import org.apache.ozone.test.GenericTestUtils;
 import org.junit.jupiter.api.Test;
 
-import java.io.IOException;
-import java.util.UUID;
-
 import static java.util.Collections.singletonMap;
 import static org.apache.hadoop.ozone.OzoneConsts.GB;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.any;
 import static org.mockito.Mockito.eq;
 import static org.mockito.Mockito.mock;

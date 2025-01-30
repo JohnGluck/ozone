@@ -15,11 +15,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.apache.ozone.erasurecode.rawcoder.util;
 
-import org.apache.hadoop.hdds.annotation.InterfaceAudience;
-
 import java.nio.ByteBuffer;
+import org.apache.hadoop.hdds.annotation.InterfaceAudience;
 
 /**
  * Utilities for implementing Reed-Solomon code, used by RS coder. Some of the

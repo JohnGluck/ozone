@@ -15,17 +15,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.apache.ozone.erasurecode.rawcoder;
 
+import java.nio.ByteBuffer;
+import java.util.Arrays;
 import org.apache.hadoop.HadoopIllegalArgumentException;
 import org.apache.hadoop.hdds.annotation.InterfaceAudience;
 import org.apache.hadoop.hdds.client.ECReplicationConfig;
 import org.apache.ozone.erasurecode.rawcoder.util.DumpUtil;
 import org.apache.ozone.erasurecode.rawcoder.util.GF256;
 import org.apache.ozone.erasurecode.rawcoder.util.RSUtil;
-
-import java.nio.ByteBuffer;
-import java.util.Arrays;
 
 /**
  * A raw erasure decoder in RS code scheme in pure Java in case native one

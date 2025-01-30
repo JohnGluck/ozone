@@ -15,17 +15,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.apache.ozone.erasurecode.rawcoder;
 
+import java.io.IOException;
+import java.nio.ByteBuffer;
+import java.util.concurrent.locks.ReentrantReadWriteLock;
 import org.apache.hadoop.hdds.annotation.InterfaceAudience;
 import org.apache.hadoop.hdds.client.ECReplicationConfig;
 import org.apache.hadoop.util.PerformanceAdvisory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.io.IOException;
-import java.nio.ByteBuffer;
-import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 /**
  * Abstract native raw decoder for all native coders to extend with.

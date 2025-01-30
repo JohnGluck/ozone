@@ -15,14 +15,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.apache.ozone.erasurecode;
 
-import org.apache.hadoop.hdds.conf.ConfigurationSource;
-import org.apache.hadoop.hdds.conf.OzoneConfiguration;
+package org.apache.ozone.erasurecode;
 
 import java.nio.ByteBuffer;
 import java.util.Arrays;
 import java.util.Random;
+import org.apache.hadoop.hdds.conf.ConfigurationSource;
+import org.apache.hadoop.hdds.conf.OzoneConfiguration;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 

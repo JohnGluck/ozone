@@ -15,18 +15,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.apache.hadoop.ozone.container.stream;
 
-import io.netty.buffer.ByteBuf;
-import io.netty.buffer.Unpooled;
-import jakarta.annotation.Nonnull;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.io.TempDir;
+package org.apache.hadoop.ozone.container.stream;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import io.netty.buffer.ByteBuf;
+import io.netty.buffer.Unpooled;
+import jakarta.annotation.Nonnull;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.io.TempDir;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;

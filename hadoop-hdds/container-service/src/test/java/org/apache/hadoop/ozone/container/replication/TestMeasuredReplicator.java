@@ -15,13 +15,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.apache.hadoop.ozone.container.replication;
 
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
-
 import org.apache.hadoop.ozone.container.replication.AbstractReplicationTask.Status;
-
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

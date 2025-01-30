@@ -15,15 +15,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.apache.ozone.erasurecode.rawcoder;
 
+import java.io.IOException;
+import java.nio.ByteBuffer;
 import org.apache.hadoop.hdds.annotation.InterfaceAudience;
 import org.apache.hadoop.hdds.client.ECReplicationConfig;
 import org.apache.hadoop.io.erasurecode.ErasureCoderOptions;
 import org.apache.hadoop.io.erasurecode.rawcoder.HadoopNativeECAccessorUtil;
-
-import java.io.IOException;
-import java.nio.ByteBuffer;
 
 /**
  * A XOR raw decoder using Intel ISA-L library.

@@ -15,12 +15,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.apache.ozone.erasurecode.rawcoder;
 
+import java.nio.ByteBuffer;
 import org.apache.hadoop.hdds.annotation.InterfaceAudience;
 import org.apache.hadoop.hdds.client.ECReplicationConfig;
-
-import java.nio.ByteBuffer;
 
 /**
  * A raw encoder in XOR code scheme in pure Java, adapted from HDFS-RAID.

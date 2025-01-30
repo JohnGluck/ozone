@@ -15,15 +15,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.apache.ozone.erasurecode;
 
-import com.google.common.annotations.VisibleForTesting;
-import org.apache.hadoop.hdds.annotation.InterfaceAudience;
-import org.apache.ozone.erasurecode.rawcoder.NativeRSRawErasureCoderFactory;
-import org.apache.ozone.erasurecode.rawcoder.NativeXORRawErasureCoderFactory;
-import org.apache.ozone.erasurecode.rawcoder.RawErasureCoderFactory;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+package org.apache.ozone.erasurecode;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -31,6 +24,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.ServiceLoader;
 import java.util.Set;
+import com.google.common.annotations.VisibleForTesting;
+import org.apache.hadoop.hdds.annotation.InterfaceAudience;
+import org.apache.ozone.erasurecode.rawcoder.NativeRSRawErasureCoderFactory;
+import org.apache.ozone.erasurecode.rawcoder.NativeXORRawErasureCoderFactory;
+import org.apache.ozone.erasurecode.rawcoder.RawErasureCoderFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * This class registers all coder implementations.

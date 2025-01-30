@@ -18,6 +18,8 @@
 
 package org.apache.hadoop.ozone.container.keyvalue;
 
+import java.io.File;
+import java.io.RandomAccessFile;
 import org.apache.hadoop.hdds.client.BlockID;
 import org.apache.hadoop.hdds.conf.OzoneConfiguration;
 import org.apache.hadoop.hdds.protocol.datanode.proto.ContainerProtos;
@@ -32,9 +34,6 @@ import org.apache.hadoop.ozone.container.keyvalue.helpers.BlockUtils;
 import org.apache.hadoop.ozone.container.keyvalue.helpers.KeyValueContainerLocationUtil;
 import org.apache.hadoop.ozone.container.ozoneimpl.ContainerScannerConfiguration;
 
-import java.io.File;
-import java.io.RandomAccessFile;
-
 import static org.apache.hadoop.ozone.container.common.interfaces.Container.ScanResult.FailureType.DELETED_CONTAINER;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -44,7 +43,6 @@ import static org.mockito.Mockito.anyLong;
 import static org.mockito.Mockito.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
-
 
 /**
  * Basic sanity test for the KeyValueContainerCheck class.

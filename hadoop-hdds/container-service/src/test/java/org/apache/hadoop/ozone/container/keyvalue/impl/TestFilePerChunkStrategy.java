@@ -18,6 +18,7 @@
 
 package org.apache.hadoop.ozone.container.keyvalue.impl;
 
+import java.io.File;
 import org.apache.hadoop.hdds.client.BlockID;
 import org.apache.hadoop.ozone.OzoneConsts;
 import org.apache.hadoop.ozone.common.ChunkBuffer;
@@ -28,8 +29,6 @@ import org.apache.hadoop.ozone.container.keyvalue.KeyValueContainer;
 import org.apache.hadoop.ozone.container.keyvalue.helpers.ChunkUtils;
 import org.apache.hadoop.ozone.container.keyvalue.interfaces.ChunkManager;
 import org.junit.jupiter.api.Test;
-
-import java.io.File;
 
 import static org.apache.hadoop.ozone.container.common.ContainerTestUtils.COMMIT_STAGE;
 import static org.apache.hadoop.ozone.container.common.ContainerTestUtils.WRITE_STAGE;

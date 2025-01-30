@@ -15,12 +15,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.apache.hadoop.ozone.container.replication;
 
+import java.io.OutputStream;
 import org.apache.hadoop.hdds.protocol.datanode.proto.ContainerProtos.CopyContainerResponseProto;
 import org.apache.ratis.thirdparty.com.google.protobuf.ByteString;
-
-import java.io.OutputStream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 

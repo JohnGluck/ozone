@@ -18,10 +18,8 @@
 package org.apache.hadoop.ozone.container.common.report;
 
 import java.util.concurrent.ScheduledExecutorService;
-
 import org.apache.hadoop.hdds.conf.OzoneConfiguration;
 import org.apache.hadoop.ozone.container.common.statemachine.StateContext;
-
 import org.junit.jupiter.api.Test;
 
 import static org.mockito.Mockito.any;
