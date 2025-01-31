@@ -17,6 +17,7 @@
 
 package org.apache.ozone.annotations;
 
+import java.util.Set;
 import javax.annotation.processing.AbstractProcessor;
 import javax.annotation.processing.ProcessingEnvironment;
 import javax.annotation.processing.RoundEnvironment;
@@ -28,7 +29,6 @@ import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.type.TypeMirror;
 import javax.tools.Diagnostic.Kind;
-import java.util.Set;
 
 /**
  * Annotation Processor that verifies if the methods that are marked with
