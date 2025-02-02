@@ -17,13 +17,14 @@
 
 package org.apache.hadoop.ozone.container.common.helpers;
 
-import static org.apache.hadoop.ozone.container.common.helpers.CommandHandlerMetrics.CommandMetricsMetricsInfo.AvgRunTimeMs;
-import static org.apache.hadoop.ozone.container.common.helpers.CommandHandlerMetrics.CommandMetricsMetricsInfo.CommandReceivedCount;
-import static org.apache.hadoop.ozone.container.common.helpers.CommandHandlerMetrics.CommandMetricsMetricsInfo.InvocationCount;
-import static org.apache.hadoop.ozone.container.common.helpers.CommandHandlerMetrics.CommandMetricsMetricsInfo.QueueWaitingTaskCount;
-import static org.apache.hadoop.ozone.container.common.helpers.CommandHandlerMetrics.CommandMetricsMetricsInfo.ThreadPoolActivePoolSize;
-import static org.apache.hadoop.ozone.container.common.helpers.CommandHandlerMetrics.CommandMetricsMetricsInfo.ThreadPoolMaxPoolSize;
-import static org.apache.hadoop.ozone.container.common.helpers.CommandHandlerMetrics.CommandMetricsMetricsInfo.TotalRunTimeMs;
+import static org.apache.hadoop.ozone.container.common.helpers.CommandHandlerMetricsInfo.AvgRunTimeMs;
+import static org.apache.hadoop.ozone.container.common.helpers.CommandHandlerMetricsInfo.Command;
+import static org.apache.hadoop.ozone.container.common.helpers.CommandHandlerMetricsInfo.CommandReceivedCount;
+import static org.apache.hadoop.ozone.container.common.helpers.CommandHandlerMetricsInfo.InvocationCount;
+import static org.apache.hadoop.ozone.container.common.helpers.CommandHandlerMetricsInfo.QueueWaitingTaskCount;
+import static org.apache.hadoop.ozone.container.common.helpers.CommandHandlerMetricsInfo.ThreadPoolActivePoolSize;
+import static org.apache.hadoop.ozone.container.common.helpers.CommandHandlerMetricsInfo.ThreadPoolMaxPoolSize;
+import static org.apache.hadoop.ozone.container.common.helpers.CommandHandlerMetricsInfo.TotalRunTimeMs;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -31,7 +32,6 @@ import java.util.concurrent.atomic.AtomicInteger;
 import org.apache.hadoop.hdds.annotation.InterfaceAudience;
 import org.apache.hadoop.hdds.protocol.proto.StorageContainerDatanodeProtocolProtos.SCMCommandProto.Type;
 import org.apache.hadoop.metrics2.MetricsCollector;
-import org.apache.hadoop.metrics2.MetricsInfo;
 import org.apache.hadoop.metrics2.MetricsRecordBuilder;
 import org.apache.hadoop.metrics2.MetricsSource;
 import org.apache.hadoop.metrics2.MetricsSystem;
@@ -43,28 +43,6 @@ import org.apache.hadoop.ozone.container.common.statemachine.commandhandler.Comm
  */
 @InterfaceAudience.Private
 public final class CommandHandlerMetrics implements MetricsSource {
-  enum CommandMetricsMetricsInfo implements MetricsInfo {
-    Command("The type of the SCM command"),
-    TotalRunTimeMs("The total runtime of the command handler in milliseconds"),
-    AvgRunTimeMs("Average run time of the command handler in milliseconds"),
-    QueueWaitingTaskCount("The number of queued tasks waiting for execution"),
-    InvocationCount("The number of times the command handler has been invoked"),
-    ThreadPoolActivePoolSize("The number of active threads in the thread pool"),
-    ThreadPoolMaxPoolSize("The maximum number of threads in the thread pool"),
-    CommandReceivedCount(
-        "The number of received SCM commands for each command type");
-
-    private final String desc;
-    CommandMetricsMetricsInfo(String desc) {
-      this.desc = desc;
-    }
-
-    @Override
-    public String description() {
-      return desc;
-    }
-  }
-
   public static final String SOURCE_NAME =
       CommandHandlerMetrics.class.getSimpleName();
   private final Map<Type, CommandHandler> handlerMap;
@@ -105,8 +83,7 @@ public final class CommandHandlerMetrics implements MetricsSource {
       CommandHandler commandHandler = entry.getValue();
       MetricsRecordBuilder builder = collector.addRecord(SOURCE_NAME)
           .setContext("CommandHandlerMetrics")
-          .tag(CommandMetricsMetricsInfo.Command,
-              commandHandler.getCommandType().name());
+          .tag(Command, commandHandler.getCommandType().name());
 
       builder.addGauge(TotalRunTimeMs, commandHandler.getTotalRunTime());
       builder.addGauge(AvgRunTimeMs, commandHandler.getAverageRunTime());
