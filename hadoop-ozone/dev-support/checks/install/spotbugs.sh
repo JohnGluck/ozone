@@ -17,7 +17,7 @@
 # This script installs SpotBugs.
 # Requires _install_tool from _lib.sh.  Use `source` for both scripts, because it modifies $PATH.
 
-: ${SPOTBUGS_VERSION:=3.1.12}
+: ${SPOTBUGS_VERSION:=4.8.6}
 
 _install_spotbugs() {
   curl -LSs "https://repo.maven.apache.org/maven2/com/github/spotbugs/spotbugs/${SPOTBUGS_VERSION}/spotbugs-${SPOTBUGS_VERSION}.tgz" | tar -xz -f -
