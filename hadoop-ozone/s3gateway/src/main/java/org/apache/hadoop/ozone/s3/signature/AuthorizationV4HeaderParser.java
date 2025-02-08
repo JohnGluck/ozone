@@ -17,27 +17,20 @@
  */
 package org.apache.hadoop.ozone.s3.signature;
 
-import java.time.LocalDate;
-import java.time.format.DateTimeParseException;
-import java.util.Collection;
-
-import org.apache.hadoop.ozone.s3.signature.SignatureInfo.Version;
-import org.apache.hadoop.util.StringUtils;
-
-import com.google.common.annotations.VisibleForTesting;
-
 import static java.time.temporal.ChronoUnit.DAYS;
-
-import org.apache.commons.codec.DecoderException;
-import org.apache.commons.codec.binary.Hex;
-
 import static org.apache.commons.lang3.StringUtils.isEmpty;
 import static org.apache.commons.lang3.StringUtils.isNotEmpty;
 import static org.apache.hadoop.ozone.s3.signature.SignatureProcessor.AWS4_SIGNING_ALGORITHM;
 import static org.apache.hadoop.ozone.s3.signature.SignatureProcessor.DATE_FORMATTER;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import com.google.common.annotations.VisibleForTesting;
+import java.time.LocalDate;
+import java.time.format.DateTimeParseException;
+import java.util.Collection;
+import org.apache.commons.codec.DecoderException;
+import org.apache.commons.codec.binary.Hex;
+import org.apache.hadoop.ozone.s3.signature.SignatureInfo.Version;
+import org.apache.hadoop.util.StringUtils;
 
 /**
  * Class to parse v4 auth information from header.
@@ -111,7 +104,7 @@ public class AuthorizationV4HeaderParser implements SignatureParser {
           signedHeadersStr.substring(SIGNEDHEADERS.length());
       Collection<String> signedHeaders =
           StringUtils.getStringCollection(parsedSignedHeaders, ";");
-      if (signedHeaders.size() == 0) {
+      if (signedHeaders.isEmpty()) {
         throw new MalformedResourceException("No signed headers found.",
             authHeader);
       }

@@ -237,7 +237,7 @@ public abstract class AbstractKeyDeletingService extends BackgroundService
         keysToUpdateList.add(keyToUpdate.build());
       }
 
-      if (keysToUpdateList.size() > 0) {
+      if (!keysToUpdateList.isEmpty()) {
         purgeKeysRequest.addAllKeysToUpdate(keysToUpdateList);
       }
     }

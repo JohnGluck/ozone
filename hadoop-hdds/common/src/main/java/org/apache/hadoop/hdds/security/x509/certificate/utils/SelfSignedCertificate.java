@@ -19,6 +19,11 @@
 
 package org.apache.hadoop.hdds.security.x509.certificate.utils;
 
+import static org.apache.hadoop.hdds.security.x509.exception.CertificateException.ErrorCode.CERTIFICATE_ERROR;
+import static org.apache.hadoop.hdds.security.x509.exception.CertificateException.ErrorCode.CSR_ERROR;
+
+import com.google.common.annotations.VisibleForTesting;
+import com.google.common.base.Preconditions;
 import java.io.IOException;
 import java.math.BigInteger;
 import java.net.InetAddress;
@@ -30,7 +35,6 @@ import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.validator.routines.DomainValidator;
 import org.apache.hadoop.hdds.security.SecurityConfig;
@@ -38,9 +42,6 @@ import org.apache.hadoop.hdds.security.exception.SCMSecurityException;
 import org.apache.hadoop.hdds.security.x509.exception.CertificateException;
 import org.apache.hadoop.ozone.OzoneSecurityUtil;
 import org.apache.hadoop.util.Time;
-
-import com.google.common.annotations.VisibleForTesting;
-import com.google.common.base.Preconditions;
 import org.bouncycastle.asn1.ASN1EncodableVector;
 import org.bouncycastle.asn1.ASN1Object;
 import org.bouncycastle.asn1.ASN1ObjectIdentifier;
@@ -62,9 +63,6 @@ import org.bouncycastle.operator.OperatorCreationException;
 import org.bouncycastle.operator.jcajce.JcaContentSignerBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import static org.apache.hadoop.hdds.security.x509.exception.CertificateException.ErrorCode.CERTIFICATE_ERROR;
-import static org.apache.hadoop.hdds.security.x509.exception.CertificateException.ErrorCode.CSR_ERROR;
 
 /**
  * A Self Signed Certificate with CertificateServer basic constraint can be used
@@ -148,10 +146,14 @@ public final class SelfSignedCertificate {
       int keyUsageFlag = KeyUsage.keyCertSign | KeyUsage.cRLSign;
       KeyUsage keyUsage = new KeyUsage(keyUsageFlag);
       builder.addExtension(Extension.keyUsage, true, keyUsage);
-      if (altNames != null && altNames.size() >= 1) {
-        builder.addExtension(new Extension(Extension.subjectAlternativeName,
-            false, new GeneralNames(altNames.toArray(
-                new GeneralName[altNames.size()])).getEncoded()));
+      if (altNames != null && !altNames.isEmpty()) {
+        builder.addExtension(
+            new Extension(
+                Extension.subjectAlternativeName,
+                false,
+                new GeneralNames(altNames.toArray(new GeneralName[0])).getEncoded()
+            )
+        );
       }
     }
     try {

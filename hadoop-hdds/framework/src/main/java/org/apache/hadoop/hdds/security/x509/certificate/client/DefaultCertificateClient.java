@@ -436,7 +436,7 @@ public abstract class DefaultCertificateClient implements CertificateClient {
       if (cert != null) {
         chain.add(cert);
       }
-      Preconditions.checkState(chain.size() > 0, "Empty trust chain");
+      Preconditions.checkState(!chain.isEmpty(), "Empty trust chain");
     }
     return chain;
   }

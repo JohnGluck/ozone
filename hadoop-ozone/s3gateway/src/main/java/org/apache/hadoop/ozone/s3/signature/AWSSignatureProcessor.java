@@ -131,13 +131,12 @@ public class AWSSignatureProcessor implements SignatureProcessor {
             String> rawHeaders
     ) {
 
-      //header map is MUTABLE. It's better to save it here. (with lower case
-      // keys!!!)
+      // The Header map is MUTABLE. It's better to save it here. (with lower case keys!!!)
       final LowerCaseKeyStringMap headers =
           new LowerCaseKeyStringMap();
 
       for (Entry<String, List<String>> headerEntry : rawHeaders.entrySet()) {
-        if (0 < headerEntry.getValue().size()) {
+        if (!headerEntry.getValue().isEmpty()) {
           String headerKey = headerEntry.getKey();
           if (headers.containsKey(headerKey)) {
             //multiple headers from the same type are combined

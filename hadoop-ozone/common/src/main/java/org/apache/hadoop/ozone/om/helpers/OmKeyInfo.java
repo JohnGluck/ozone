@@ -197,8 +197,7 @@ public final class OmKeyInfo extends WithParentObjectId
   }
 
   public synchronized OmKeyLocationInfoGroup getLatestVersionLocations() {
-    return keyLocationVersions.size() == 0 ? null :
-        keyLocationVersions.get(keyLocationVersions.size() - 1);
+    return keyLocationVersions.isEmpty() ? null : keyLocationVersions.get(keyLocationVersions.size() - 1);
   }
 
   public List<OmKeyLocationInfoGroup> getKeyLocationVersions() {
@@ -342,7 +341,7 @@ public final class OmKeyInfo extends WithParentObjectId
   public synchronized void appendNewBlocks(
       List<OmKeyLocationInfo> newLocationList, boolean updateTime)
       throws IOException {
-    if (keyLocationVersions.size() == 0) {
+    if (keyLocationVersions.isEmpty()) {
       throw new IOException("Appending new block, but no version exist");
     }
     OmKeyLocationInfoGroup currentLatestVersion =
@@ -372,7 +371,7 @@ public final class OmKeyInfo extends WithParentObjectId
       keyLocationVersions.clear();
     }
 
-    if (keyLocationVersions.size() == 0) {
+    if (keyLocationVersions.isEmpty()) {
       // no version exist, these blocks are the very first version.
       keyLocationVersions.add(new OmKeyLocationInfoGroup(0, newLocationList));
       latestVersionNum = 0;
@@ -675,8 +674,9 @@ public final class OmKeyInfo extends WithParentObjectId
    */
   private KeyInfo getProtobuf(boolean ignorePipeline, String fullKeyName,
                               int clientVersion, boolean latestVersionBlocks) {
-    long latestVersion = keyLocationVersions.size() == 0 ? -1 :
-        keyLocationVersions.get(keyLocationVersions.size() - 1).getVersion();
+    long latestVersion = keyLocationVersions.isEmpty()
+                             ? -1
+                             : keyLocationVersions.get(keyLocationVersions.size() - 1).getVersion();
 
     List<KeyLocationList> keyLocations = new ArrayList<>();
     if (!latestVersionBlocks) {

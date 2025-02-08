@@ -218,7 +218,7 @@ final class JsonUtil {
       final List<LocatedBlock> array) throws IOException {
     if (array == null) {
       return null;
-    } else if (array.size() == 0) {
+    } else if (array.isEmpty()) {
       return EMPTY_OBJECT_ARRAY;
     } else {
       final Object[] a = new Object[array.size()];
@@ -289,11 +289,7 @@ final class JsonUtil {
     for (StorageType t : StorageType.getTypesSupportingQuota()) {
       long tQuota = quotaUsage.getTypeQuota(t);
       if (tQuota != HdfsConstants.QUOTA_RESET) {
-        Map<String, Long> type = typeQuota.get(t.toString());
-        if (type == null) {
-          type = new TreeMap<>();
-          typeQuota.put(t.toString(), type);
-        }
+        Map<String, Long> type = typeQuota.computeIfAbsent(t.toString(), k -> new TreeMap<>());
         type.put("quota", quotaUsage.getTypeQuota(t));
         type.put("consumed", quotaUsage.getTypeConsumed(t));
       }
@@ -364,7 +360,7 @@ final class JsonUtil {
       final XAttrCodec encoding) throws IOException {
     if (array == null) {
       return null;
-    } else if (array.size() == 0) {
+    } else if (array.isEmpty()) {
       return EMPTY_OBJECT_ARRAY;
     } else {
       final Object[] a = new Object[array.size()];

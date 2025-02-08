@@ -17,12 +17,11 @@
  */
 package org.apache.hadoop.hdds.scm.container.replication;
 
-import com.google.common.util.concurrent.Striped;
-import org.apache.hadoop.hdds.client.ReplicationType;
-import org.apache.hadoop.hdds.protocol.DatanodeDetails;
-import org.apache.hadoop.hdds.scm.container.ContainerID;
-import org.apache.hadoop.ozone.protocol.commands.SCMCommand;
+import static org.apache.hadoop.hdds.scm.container.replication.ContainerReplicaOp.PendingOpType;
+import static org.apache.hadoop.hdds.scm.container.replication.ContainerReplicaOp.PendingOpType.ADD;
+import static org.apache.hadoop.hdds.scm.container.replication.ContainerReplicaOp.PendingOpType.DELETE;
 
+import com.google.common.util.concurrent.Striped;
 import java.time.Clock;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -33,10 +32,10 @@ import java.util.concurrent.atomic.AtomicLong;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
-
-import static org.apache.hadoop.hdds.scm.container.replication.ContainerReplicaOp.PendingOpType;
-import static org.apache.hadoop.hdds.scm.container.replication.ContainerReplicaOp.PendingOpType.ADD;
-import static org.apache.hadoop.hdds.scm.container.replication.ContainerReplicaOp.PendingOpType.DELETE;
+import org.apache.hadoop.hdds.client.ReplicationType;
+import org.apache.hadoop.hdds.protocol.DatanodeDetails;
+import org.apache.hadoop.hdds.scm.container.ContainerID;
+import org.apache.hadoop.ozone.protocol.commands.SCMCommand;
 
 /**
  * Class to track pending replication operations across the cluster. For
@@ -234,7 +233,7 @@ public class ContainerReplicaPendingOps {
             updateTimeoutMetrics(op);
           }
         }
-        if (ops.size() == 0) {
+        if (ops.isEmpty()) {
           pendingOps.remove(containerID);
         }
       } finally {
@@ -305,7 +304,7 @@ public class ContainerReplicaPendingOps {
             decrementCounter(op.getOpType(), replicaIndex);
           }
         }
-        if (ops.size() == 0) {
+        if (ops.isEmpty()) {
           pendingOps.remove(containerID);
         }
       }

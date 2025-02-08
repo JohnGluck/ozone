@@ -162,7 +162,7 @@ public final class ReloadingX509TrustManager implements X509TrustManager, Certif
   }
 
   private boolean isAlreadyUsing(List<X509Certificate> newRootCaCerts) {
-    return newRootCaCerts.size() > 0 &&
+    return !newRootCaCerts.isEmpty() &&
         currentRootCACerts.size() == newRootCaCerts.size() &&
         newRootCaCerts.stream()
             .allMatch(

@@ -392,9 +392,8 @@ public class ContainerHealthTask extends ReconScmTask {
           LOG.debug("Successfully changed container {} state from CLOSED to DELETING.",
               containerInfo.containerID());
         }
-        if (containerInfo.getState() == HddsProtos.LifeCycleState.DELETING &&
-            containerManager.getContainerReplicas(containerInfo.containerID())
-                .size() == 0
+        if (containerInfo.getState() == HddsProtos.LifeCycleState.DELETING
+                && containerManager.getContainerReplicas(containerInfo.containerID()).isEmpty()
         ) {
           containerManager.updateContainerState(containerInfo.containerID(),
               HddsProtos.LifeCycleEvent.CLEANUP);

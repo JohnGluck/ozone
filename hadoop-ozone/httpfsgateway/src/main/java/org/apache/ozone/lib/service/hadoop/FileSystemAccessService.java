@@ -18,25 +18,7 @@
 
 package org.apache.ozone.lib.service.hadoop;
 
-import org.apache.hadoop.conf.Configuration;
-import org.apache.hadoop.fs.CommonConfigurationKeysPublic;
-import org.apache.hadoop.fs.FileSystem;
-import org.apache.hadoop.fs.Path;
-import org.apache.hadoop.fs.permission.FsPermission;
-import org.apache.hadoop.hdds.annotation.InterfaceAudience;
-import org.apache.ozone.lib.server.BaseService;
-import org.apache.ozone.lib.server.ServiceException;
-import org.apache.ozone.lib.service.FileSystemAccess;
-import org.apache.ozone.lib.service.FileSystemAccessException;
-import org.apache.ozone.lib.service.Instrumentation;
-import org.apache.ozone.lib.service.Scheduler;
-import org.apache.ozone.lib.util.Check;
-import org.apache.ozone.lib.util.ConfigurationUtils;
-import org.apache.hadoop.security.UserGroupInformation;
-import org.apache.hadoop.util.StringUtils;
-import org.apache.hadoop.util.VersionInfo;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import static org.apache.hadoop.fs.CommonConfigurationKeysPublic.HADOOP_SECURITY_AUTHENTICATION;
 
 import java.io.File;
 import java.io.IOException;
@@ -49,8 +31,25 @@ import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
-
-import static org.apache.hadoop.fs.CommonConfigurationKeysPublic.HADOOP_SECURITY_AUTHENTICATION;
+import org.apache.hadoop.conf.Configuration;
+import org.apache.hadoop.fs.CommonConfigurationKeysPublic;
+import org.apache.hadoop.fs.FileSystem;
+import org.apache.hadoop.fs.Path;
+import org.apache.hadoop.fs.permission.FsPermission;
+import org.apache.hadoop.hdds.annotation.InterfaceAudience;
+import org.apache.hadoop.security.UserGroupInformation;
+import org.apache.hadoop.util.StringUtils;
+import org.apache.hadoop.util.VersionInfo;
+import org.apache.ozone.lib.server.BaseService;
+import org.apache.ozone.lib.server.ServiceException;
+import org.apache.ozone.lib.service.FileSystemAccess;
+import org.apache.ozone.lib.service.FileSystemAccessException;
+import org.apache.ozone.lib.service.Instrumentation;
+import org.apache.ozone.lib.service.Scheduler;
+import org.apache.ozone.lib.util.Check;
+import org.apache.ozone.lib.util.ConfigurationUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Provides authenticated filesystem access.
@@ -349,7 +348,7 @@ public class FileSystemAccessService extends BaseService
 
   protected void validateNamenode(String namenode)
       throws FileSystemAccessException {
-    if (nameNodeWhitelist.size() > 0 && !nameNodeWhitelist.contains("*")) {
+    if (!nameNodeWhitelist.isEmpty() && !nameNodeWhitelist.contains("*")) {
       if (!nameNodeWhitelist.contains(
           StringUtils.toLowerCase(namenode))) {
         throw new FileSystemAccessException(FileSystemAccessException.ERROR.H05,
@@ -375,8 +374,8 @@ public class FileSystemAccessService extends BaseService
       throw new FileSystemAccessException(FileSystemAccessException.ERROR.H04);
     }
     if (conf.get(CommonConfigurationKeysPublic.FS_DEFAULT_NAME_KEY) == null ||
-        conf.getTrimmed(CommonConfigurationKeysPublic.FS_DEFAULT_NAME_KEY)
-            .length() == 0) {
+            conf.getTrimmed(CommonConfigurationKeysPublic.FS_DEFAULT_NAME_KEY).isEmpty()) {
+
       throw new FileSystemAccessException(FileSystemAccessException.ERROR.H06,
                                           CommonConfigurationKeysPublic
                                               .FS_DEFAULT_NAME_KEY);

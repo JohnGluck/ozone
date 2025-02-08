@@ -56,7 +56,7 @@ public abstract class OMPrefixAclRequest extends OMClientRequest {
   public OMClientResponse validateAndUpdateCache(OzoneManager ozoneManager, ExecutionContext context) {
     final long trxnLogIndex = context.getIndex();
 
-    OmPrefixInfo omPrefixInfo = null;
+    OmPrefixInfo omPrefixInfo;
 
     OMResponse.Builder omResponse = onInit();
     OMClientResponse omClientResponse = null;
@@ -66,7 +66,7 @@ public abstract class OMPrefixAclRequest extends OMClientRequest {
     boolean lockAcquired = false;
     String prefixPath = null;
     OzoneObj resolvedPrefixObj = null;
-    OMPrefixAclOpResult operationResult = null;
+    OMPrefixAclOpResult operationResult;
     boolean opResult = false;
     Result result = null;
 
@@ -116,8 +116,7 @@ public abstract class OMPrefixAclRequest extends OMClientRequest {
       // As for remove acl list, for a prefix if after removing acl from
       // the existing acl list, if list size becomes zero, delete the
       // prefix from prefix table.
-      if (getOmRequest().hasRemoveAclRequest() &&
-          omPrefixInfo.getAcls().size() == 0) {
+      if (getOmRequest().hasRemoveAclRequest() && omPrefixInfo.getAcls().isEmpty()) {
         omMetadataManager.getPrefixTable().addCacheEntry(
             new CacheKey<>(prefixPath),
             CacheValue.get(trxnLogIndex));

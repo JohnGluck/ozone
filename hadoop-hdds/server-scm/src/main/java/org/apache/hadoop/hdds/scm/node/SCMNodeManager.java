@@ -1234,9 +1234,9 @@ public class SCMNodeManager implements NodeManager {
       decimalFormat.setRoundingMode(RoundingMode.HALF_UP);
 
       double usedPerc = ((double) scmUsed / capacity) * 100;
-      usedPerc = usedPerc > 100.0 ? 100.0 : usedPerc;
+      usedPerc = Math.min(usedPerc, 100.0);
       double nonUsedPerc = ((double) scmNonUsed / capacity) * 100;
-      nonUsedPerc = nonUsedPerc > 100.0 ? 100.0 : nonUsedPerc;
+      nonUsedPerc = Math.min(nonUsedPerc, 100.0);
       usedPercentage = decimalFormat.format(usedPerc);
       nonUsedPercentage = decimalFormat.format(nonUsedPerc);
     }
@@ -1260,7 +1260,7 @@ public class SCMNodeManager implements NodeManager {
   }
 
   private void nodeUsageStatistics(Map<String, String> nodeStatics) {
-    if (nodeStateManager.getAllNodes().size() < 1) {
+    if (nodeStateManager.getAllNodes().isEmpty()) {
       return;
     }
     float[] usages = new float[nodeStateManager.getAllNodes().size()];
@@ -1311,7 +1311,7 @@ public class SCMNodeManager implements NodeManager {
   }
 
   private void nodeSpaceStatistics(Map<String, String> nodeStatics) {
-    if (nodeStateManager.getAllNodes().size() < 1) {
+    if (nodeStateManager.getAllNodes().isEmpty()) {
       return;
     }
     long capacityByte = 0;

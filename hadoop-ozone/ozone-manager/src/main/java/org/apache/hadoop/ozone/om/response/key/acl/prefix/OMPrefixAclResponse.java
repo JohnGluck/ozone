@@ -56,8 +56,7 @@ public class OMPrefixAclResponse extends OMClientResponse {
   public void addToDBBatch(OMMetadataManager omMetadataManager,
       BatchOperation batchOperation) throws IOException {
 
-    if (getOMResponse().hasRemoveAclResponse() &&
-        prefixInfo.getAcls().size() == 0) {
+    if (getOMResponse().hasRemoveAclResponse() && prefixInfo.getAcls().isEmpty()) {
       // if acl list size is zero, delete the entry.
       omMetadataManager.getPrefixTable().deleteWithBatch(batchOperation,
           prefixInfo.getName());

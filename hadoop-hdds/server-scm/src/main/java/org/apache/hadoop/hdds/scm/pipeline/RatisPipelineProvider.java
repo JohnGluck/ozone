@@ -166,8 +166,8 @@ public class RatisPipelineProvider
       break;
     case THREE:
       List<DatanodeDetails> excludeDueToEngagement = filterPipelineEngagement();
-      if (excludeDueToEngagement.size() > 0) {
-        if (excludedNodes.size() == 0) {
+      if (!excludeDueToEngagement.isEmpty()) {
+        if (excludedNodes.isEmpty()) {
           excludedNodes = excludeDueToEngagement;
         } else {
           excludedNodes.addAll(excludeDueToEngagement);
@@ -233,9 +233,9 @@ public class RatisPipelineProvider
   }
 
   private List<DatanodeDetails> filterPipelineEngagement() {
-    List<DatanodeDetails> healthyNodes =
-        getNodeManager().getNodes(NodeStatus.inServiceHealthy());
-    List<DatanodeDetails> excluded = healthyNodes.stream()
+    List<DatanodeDetails> healthyNodes = getNodeManager().getNodes(NodeStatus.inServiceHealthy());
+
+    return healthyNodes.stream()
         .map(d ->
             new DnWithPipelines(d,
                 PipelinePlacementPolicy
@@ -243,9 +243,8 @@ public class RatisPipelineProvider
                     getPipelineStateManager(), d)))
         .filter(d ->
             (d.getPipelines() >= getNodeManager().pipelineLimit(d.getDn())))
-        .map(d -> d.getDn())
+        .map(DnWithPipelines::getDn)
         .collect(Collectors.toList());
-    return excluded;
   }
 
   @Override

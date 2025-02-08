@@ -198,11 +198,12 @@ public class OMTenantRevokeUserAccessIdRequest extends OMClientRequest {
           .getPrincipalToAccessIdsTable().getIfExist(userPrincipal);
       Preconditions.checkNotNull(principalInfo);
       principalInfo.removeAccessId(accessId);
-      CacheValue<OmDBUserPrincipalInfo> cacheValue =
-          principalInfo.getAccessIds().size() > 0
+
+      CacheValue<OmDBUserPrincipalInfo> cacheValue = !principalInfo.getAccessIds().isEmpty()
               ? CacheValue.get(transactionLogIndex, principalInfo)
               // Invalidate (remove) the entry if accessIds set is empty
               : CacheValue.get(transactionLogIndex);
+
       omMetadataManager.getPrincipalToAccessIdsTable().addCacheEntry(
           new CacheKey<>(userPrincipal), cacheValue);
 

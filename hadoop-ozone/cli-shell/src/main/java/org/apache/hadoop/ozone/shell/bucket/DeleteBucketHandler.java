@@ -18,6 +18,17 @@
 
 package org.apache.hadoop.ozone.shell.bucket;
 
+import static org.apache.hadoop.fs.FileSystem.FS_DEFAULT_NAME_KEY;
+import static org.apache.hadoop.hdds.scm.net.NetConstants.PATH_SEPARATOR_STR;
+import static org.apache.hadoop.ozone.OzoneConsts.OZONE_OFS_URI_SCHEME;
+import static org.apache.hadoop.ozone.om.helpers.BucketLayout.OBJECT_STORE;
+
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.Scanner;
 import org.apache.hadoop.fs.FileSystem;
 import org.apache.hadoop.fs.Path;
 import org.apache.hadoop.hdds.conf.OzoneConfiguration;
@@ -26,21 +37,8 @@ import org.apache.hadoop.ozone.client.OzoneClient;
 import org.apache.hadoop.ozone.client.OzoneKey;
 import org.apache.hadoop.ozone.client.OzoneVolume;
 import org.apache.hadoop.ozone.shell.OzoneAddress;
-
 import picocli.CommandLine;
 import picocli.CommandLine.Command;
-
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.Scanner;
-
-import static org.apache.hadoop.fs.FileSystem.FS_DEFAULT_NAME_KEY;
-import static org.apache.hadoop.hdds.scm.net.NetConstants.PATH_SEPARATOR_STR;
-import static org.apache.hadoop.ozone.OzoneConsts.OZONE_OFS_URI_SCHEME;
-import static org.apache.hadoop.ozone.om.helpers.BucketLayout.OBJECT_STORE;
 
 /**
  * Delete bucket Handler.
@@ -116,7 +114,7 @@ public class DeleteBucketHandler extends BucketHandler {
           }
         }
         // delete if any remaining keys left
-        if (keys.size() > 0) {
+        if (!keys.isEmpty()) {
           bucket.deleteKeys(keys);
         }
       }

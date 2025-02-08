@@ -193,7 +193,7 @@ public class MutableVolumeSet implements VolumeSet {
 
     // First checking if we have any volumes, if all volumes are failed the
     // volumeMap size will be zero, and we throw Exception.
-    if (volumeMap.size() == 0) {
+    if (volumeMap.isEmpty()) {
       throw new DiskOutOfSpaceException("No storage locations configured");
     }
   }
@@ -223,7 +223,7 @@ public class MutableVolumeSet implements VolumeSet {
       throw new IOException("Interrupted while running disk check", e);
     }
 
-    if (failedVolumes.size() > 0) {
+    if (!failedVolumes.isEmpty()) {
       LOG.warn("checkAllVolumes got {} failed volumes - {}",
           failedVolumes.size(), failedVolumes);
       handleVolumeFailures(failedVolumes);
@@ -270,7 +270,7 @@ public class MutableVolumeSet implements VolumeSet {
 
     volumeChecker.checkVolume(
         volume, (healthyVolumes, failedVolumes) -> {
-          if (failedVolumes.size() > 0) {
+          if (!failedVolumes.isEmpty()) {
             LOG.warn("checkVolumeAsync callback got {} failed volumes: {}",
                 failedVolumes.size(), failedVolumes);
           } else {
@@ -331,9 +331,7 @@ public class MutableVolumeSet implements VolumeSet {
         LOG.warn("Volume : {} already exists in VolumeMap", volumeRoot);
         success = false;
       } else {
-        if (failedVolumeMap.containsKey(volumeRoot)) {
-          failedVolumeMap.remove(volumeRoot);
-        }
+        failedVolumeMap.remove(volumeRoot);
 
         StorageVolume volume =
             volumeFactory.createVolume(volumeRoot, storageType);
@@ -445,7 +443,7 @@ public class MutableVolumeSet implements VolumeSet {
     boolean hasEnoughVolumes;
     if (maxVolumeFailuresTolerated ==
         StorageVolumeChecker.MAX_VOLUME_FAILURE_TOLERATED_LIMIT) {
-      hasEnoughVolumes = getVolumesList().size() >= 1;
+      hasEnoughVolumes = !getVolumesList().isEmpty();
     } else {
       hasEnoughVolumes = getFailedVolumesList().size() <= maxVolumeFailuresTolerated;
     }

@@ -18,17 +18,16 @@
 
 package org.apache.hadoop.ozone.container.common.volume;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.apache.hadoop.ozone.container.common.interfaces.VolumeChoosingPolicy;
-import org.apache.hadoop.util.DiskChecker.DiskOutOfSpaceException;
+import static org.apache.hadoop.ozone.container.common.volume.VolumeChoosingUtil.logIfSomeVolumesOutOfSpace;
+import static org.apache.hadoop.ozone.container.common.volume.VolumeChoosingUtil.throwDiskOutOfSpace;
 
 import java.io.IOException;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
-
-import static org.apache.hadoop.ozone.container.common.volume.VolumeChoosingUtil.logIfSomeVolumesOutOfSpace;
-import static org.apache.hadoop.ozone.container.common.volume.VolumeChoosingUtil.throwDiskOutOfSpace;
+import org.apache.hadoop.ozone.container.common.interfaces.VolumeChoosingPolicy;
+import org.apache.hadoop.util.DiskChecker.DiskOutOfSpaceException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Choose volumes in round-robin order.
@@ -47,7 +46,7 @@ public class RoundRobinVolumeChoosingPolicy implements VolumeChoosingPolicy {
       long maxContainerSize) throws IOException {
 
     // No volumes available to choose from
-    if (volumes.size() < 1) {
+    if (volumes.isEmpty()) {
       throw new DiskOutOfSpaceException("No more available volumes");
     }
 

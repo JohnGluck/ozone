@@ -17,27 +17,6 @@
 
 package org.apache.hadoop.hdds.scm.ha;
 
-import com.google.common.base.Preconditions;
-import org.apache.hadoop.hdds.conf.OzoneConfiguration;
-import org.apache.hadoop.hdds.scm.ScmConfigKeys;
-import org.apache.hadoop.hdds.scm.ScmUtils;
-import org.apache.hadoop.hdds.scm.server.SCMStorageConfig;
-import org.apache.hadoop.hdds.utils.HddsServerUtil;
-import org.apache.hadoop.net.NetUtils;
-import org.apache.hadoop.ozone.common.Storage;
-import org.apache.hadoop.ozone.ha.ConfUtils;
-import org.apache.hadoop.ozone.util.OzoneNetUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import java.io.IOException;
-import java.net.InetAddress;
-import java.net.InetSocketAddress;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
-
 import static org.apache.hadoop.hdds.scm.ScmConfigKeys.OZONE_SCM_ADDRESS_KEY;
 import static org.apache.hadoop.hdds.scm.ScmConfigKeys.OZONE_SCM_BLOCK_CLIENT_ADDRESS_KEY;
 import static org.apache.hadoop.hdds.scm.ScmConfigKeys.OZONE_SCM_BLOCK_CLIENT_BIND_HOST_KEY;
@@ -64,6 +43,26 @@ import static org.apache.hadoop.hdds.scm.ScmConfigKeys.OZONE_SCM_SECURITY_SERVIC
 import static org.apache.hadoop.hdds.scm.ScmConfigKeys.OZONE_SCM_SERVICE_IDS_KEY;
 import static org.apache.hadoop.ozone.OzoneConfigKeys.OZONE_FLEXIBLE_FQDN_RESOLUTION_ENABLED;
 import static org.apache.hadoop.ozone.OzoneConfigKeys.OZONE_FLEXIBLE_FQDN_RESOLUTION_ENABLED_DEFAULT;
+
+import com.google.common.base.Preconditions;
+import java.io.IOException;
+import java.net.InetAddress;
+import java.net.InetSocketAddress;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
+import org.apache.hadoop.hdds.conf.OzoneConfiguration;
+import org.apache.hadoop.hdds.scm.ScmConfigKeys;
+import org.apache.hadoop.hdds.scm.ScmUtils;
+import org.apache.hadoop.hdds.scm.server.SCMStorageConfig;
+import org.apache.hadoop.hdds.utils.HddsServerUtil;
+import org.apache.hadoop.net.NetUtils;
+import org.apache.hadoop.ozone.common.Storage;
+import org.apache.hadoop.ozone.ha.ConfUtils;
+import org.apache.hadoop.ozone.util.OzoneNetUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * SCM HA node details.
@@ -202,7 +201,7 @@ public class SCMHANodeDetails {
 
       // TODO: need to fall back to ozone.scm.names in case scm node ids are
       // not defined.
-      if (scmNodeIds.size() == 0) {
+      if (scmNodeIds.isEmpty()) {
         throw new IllegalArgumentException(
             String.format("Configuration does not have any value set for %s " +
                 "for the service %s. List of SCM Node ID's should be " +

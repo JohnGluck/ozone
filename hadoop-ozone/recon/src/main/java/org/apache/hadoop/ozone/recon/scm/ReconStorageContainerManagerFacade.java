@@ -566,9 +566,9 @@ public class ReconStorageContainerManagerFacade
                 getListOfContainers(startContainerId,
                     Long.valueOf(containerCountPerCall).intValue(),
                     HddsProtos.LifeCycleState.CLOSED);
-            if (null != listOfContainers && listOfContainers.size() > 0) {
-              LOG.info("Got list of containers from SCM : " +
-                  listOfContainers.size());
+            if (null != listOfContainers && !listOfContainers.isEmpty()) {
+              LOG.info("Got list of containers from SCM : {}", listOfContainers.size());
+
               listOfContainers.forEach(containerInfo -> {
                 long containerID = containerInfo.getContainerID();
                 boolean isContainerPresentAtRecon =

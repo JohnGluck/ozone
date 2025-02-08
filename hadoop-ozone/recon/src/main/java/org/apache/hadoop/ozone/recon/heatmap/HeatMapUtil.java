@@ -89,7 +89,7 @@ public class HeatMapUtil {
     List<EntityReadAccessHeatMapResponse> bucketList =
         children.stream().filter(entity -> entity.getLabel().
             equalsIgnoreCase(split[1])).collect(Collectors.toList());
-    if (bucketList.size() > 0) {
+    if (!bucketList.isEmpty()) {
       bucketEntity = bucketList.get(0);
     }
     if (children.contains(bucketEntity)) {
@@ -182,11 +182,11 @@ public class HeatMapUtil {
   private void setEntityLevelAccessCount(
       EntityReadAccessHeatMapResponse entity) {
     List<EntityReadAccessHeatMapResponse> children = entity.getChildren();
-    children.stream().forEach(child -> {
+    children.forEach(child -> {
       entity.setAccessCount(entity.getAccessCount() + child.getAccessCount());
     });
     // This is being taken as whole number
-    if (entity.getAccessCount() > 0 && children.size() > 0) {
+    if (entity.getAccessCount() > 0 && !children.isEmpty()) {
       entity.setAccessCount(entity.getAccessCount() / children.size());
     }
   }
@@ -195,14 +195,13 @@ public class HeatMapUtil {
       EntityReadAccessHeatMapResponse bucket) {
     List<EntityReadAccessHeatMapResponse>
         children = initializeEntityMinMaxCount(bucket);
-    children.stream().forEach(path -> {
+    children.forEach(path -> {
       long readAccessCount = path.getAccessCount();
       bucket.setMinAccessCount(
           path.getAccessCount() < bucket.getMinAccessCount() ? readAccessCount :
               bucket.getMinAccessCount());
-      bucket.setMaxAccessCount(
-          readAccessCount > bucket.getMaxAccessCount() ? readAccessCount :
-              bucket.getMaxAccessCount());
+
+      bucket.setMaxAccessCount(Math.max(readAccessCount, bucket.getMaxAccessCount()));
     });
   }
 
@@ -210,7 +209,7 @@ public class HeatMapUtil {
       EntityReadAccessHeatMapResponse volumeInfo) {
     List<EntityReadAccessHeatMapResponse> children =
         volumeInfo.getChildren();
-    children.stream().forEach(bucket -> {
+    children.forEach(bucket -> {
       volumeInfo.setSize(volumeInfo.getSize() + bucket.getSize());
       updateBucketLevelMinMaxAccessCount(bucket);
     });
@@ -220,7 +219,7 @@ public class HeatMapUtil {
       EntityReadAccessHeatMapResponse rootEntity) {
     List<EntityReadAccessHeatMapResponse> children =
         rootEntity.getChildren();
-    children.stream().forEach(volume -> {
+    children.forEach(volume -> {
       updateVolumeSize(volume);
       updateVolumeLevelMinMaxAccessCount(volume);
       setEntityLevelAccessCount(volume);
@@ -234,10 +233,10 @@ public class HeatMapUtil {
       EntityReadAccessHeatMapResponse entity) {
     List<EntityReadAccessHeatMapResponse> children =
         entity.getChildren();
-    if (children.size() == 0) {
+    if (children.isEmpty()) {
       entity.setMaxAccessCount(entity.getMinAccessCount());
     }
-    if (children.size() > 0) {
+    if (!children.isEmpty()) {
       entity.setMinAccessCount(Long.MAX_VALUE);
     }
     return children;
@@ -250,14 +249,9 @@ public class HeatMapUtil {
     children.stream().forEach(child -> {
       long bucketMinAccessCount = child.getMinAccessCount();
       long bucketMaxAccessCount = child.getMaxAccessCount();
-      volume.setMinAccessCount(
-          bucketMinAccessCount < volume.getMinAccessCount() ?
-              bucketMinAccessCount :
-              volume.getMinAccessCount());
-      volume.setMaxAccessCount(
-          bucketMaxAccessCount > volume.getMaxAccessCount() ?
-              bucketMaxAccessCount :
-              volume.getMaxAccessCount());
+
+      volume.setMinAccessCount(Math.min(bucketMinAccessCount, volume.getMinAccessCount()));
+      volume.setMaxAccessCount(Math.max(bucketMaxAccessCount, volume.getMaxAccessCount()));
     });
   }
 
@@ -273,10 +267,10 @@ public class HeatMapUtil {
 
   private void updateEntityAccessRatio(EntityReadAccessHeatMapResponse entity) {
     long delta = entity.getMaxAccessCount() - entity.getMinAccessCount();
-    List<EntityReadAccessHeatMapResponse> children =
-        entity.getChildren();
-    children.stream().forEach(path -> {
-      if (path.getChildren().size() != 0) {
+    List<EntityReadAccessHeatMapResponse> children = entity.getChildren();
+
+    children.forEach(path -> {
+      if (!path.getChildren().isEmpty()) {
         updateEntityAccessRatio(path);
       } else {
         path.setColor(1.000);
@@ -413,14 +407,13 @@ public class HeatMapUtil {
       try {
         entitySize = getEntitySize(path);
       } catch (IOException e) {
-        LOG.error("IOException while getting key size for key : " +
-            "{} - {}", path, e);
+        LOG.error("IOException while getting key size for key : {}", path, e);
       }
       EntityReadAccessHeatMapResponse volumeEntity = null;
       List<EntityReadAccessHeatMapResponse> volumeList =
           children.stream().filter(entity -> entity.getLabel().
               equalsIgnoreCase(split[0])).collect(Collectors.toList());
-      if (volumeList.size() > 0) {
+      if (!volumeList.isEmpty()) {
         volumeEntity = volumeList.get(0);
       }
       if (null != volumeEntity) {
@@ -450,8 +443,8 @@ public class HeatMapUtil {
     if (null != heatMapProvider) {
       List<EntityMetaData> entityMetaDataList = heatMapProvider
           .retrieveData(normalizePath, entityType, startDate);
-      if (null != entityMetaDataList &&
-          (CollectionUtils.isNotEmpty(entityMetaDataList))) {
+
+      if ((CollectionUtils.isNotEmpty(entityMetaDataList))) {
         // Transforms and return heatmap data by grouping access metadata of
         // entities in their respective buckets and volumes in tree structure.
         // Refer the javadoc for more details.ß

@@ -620,7 +620,7 @@ public class BasicRootedOzoneClientAdapterImpl
    */
   @Override
   public boolean deleteObjects(List<String> keyNameList) {
-    if (keyNameList.size() == 0) {
+    if (keyNameList.isEmpty()) {
       return true;
     }
     // Sanity check. Support only deleting a list of keys in the same bucket

@@ -18,6 +18,14 @@
 
 package org.apache.hadoop.hdds.scm.pipeline;
 
+import static org.apache.hadoop.hdds.conf.ConfigTag.SCM;
+import static org.apache.hadoop.hdds.scm.node.NodeStatus.inServiceHealthy;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.NavigableSet;
 import org.apache.hadoop.hdds.client.ECReplicationConfig;
 import org.apache.hadoop.hdds.client.ReplicationConfig;
 import org.apache.hadoop.hdds.conf.Config;
@@ -37,15 +45,6 @@ import org.apache.hadoop.hdds.scm.container.common.helpers.ExcludeList;
 import org.apache.hadoop.hdds.scm.node.NodeManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.NavigableSet;
-
-import static org.apache.hadoop.hdds.conf.ConfigTag.SCM;
-import static org.apache.hadoop.hdds.scm.node.NodeStatus.inServiceHealthy;
 
 /**
  * Writable Container provider to obtain a writable container for EC pipelines.
@@ -124,7 +123,7 @@ public class WritableECContainerProvider
         PipelineRequestInformation.Builder.getBuilder()
             .setSize(size)
             .build();
-    while (existingPipelines.size() > 0) {
+    while (!existingPipelines.isEmpty()) {
       int pipelineIndex =
           pipelineChoosePolicy.choosePipelineIndex(existingPipelines, pri);
       if (pipelineIndex < 0) {
@@ -198,10 +197,7 @@ public class WritableECContainerProvider
       long size, String owner, ExcludeList excludeList)
       throws IOException {
 
-    List<DatanodeDetails> excludedNodes = Collections.emptyList();
-    if (excludeList.getDatanodes().size() > 0) {
-      excludedNodes = new ArrayList<>(excludeList.getDatanodes());
-    }
+    List<DatanodeDetails> excludedNodes = new ArrayList<>(excludeList.getDatanodes());
 
     Pipeline newPipeline = pipelineManager.createPipeline(repConfig,
         excludedNodes, Collections.emptyList());
@@ -250,9 +246,10 @@ public class WritableECContainerProvider
     NavigableSet<ContainerID> containers =
         pipelineManager.getContainersInPipeline(pipeline.getId());
     // Assume 1 container per pipeline for EC
-    if (containers.size() == 0) {
+    if (containers.isEmpty()) {
       return null;
     }
+
     ContainerID containerID = containers.first();
     return containerManager.getContainer(containerID);
   }

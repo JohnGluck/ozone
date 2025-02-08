@@ -18,16 +18,6 @@
 
 package org.apache.hadoop.hdds.scm.ha;
 
-import org.apache.hadoop.hdds.conf.ConfigurationException;
-import org.apache.hadoop.hdds.conf.ConfigurationSource;
-import org.apache.hadoop.ozone.ha.ConfUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.OptionalInt;
-
 import static org.apache.hadoop.hdds.HddsUtils.getHostNameFromConfigKeys;
 import static org.apache.hadoop.hdds.HddsUtils.getPortNumberFromConfigKeys;
 import static org.apache.hadoop.hdds.scm.ScmConfigKeys.OZONE_SCM_ADDRESS_KEY;
@@ -47,6 +37,15 @@ import static org.apache.hadoop.hdds.scm.ScmConfigKeys.OZONE_SCM_SECURITY_SERVIC
 import static org.apache.hadoop.hdds.scm.ScmConfigKeys.OZONE_SCM_SECURITY_SERVICE_PORT_KEY;
 import static org.apache.hadoop.ozone.OzoneConsts.SCM_DUMMY_NODEID;
 import static org.apache.hadoop.ozone.OzoneConsts.SCM_DUMMY_SERVICE_ID;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.OptionalInt;
+import org.apache.hadoop.hdds.conf.ConfigurationException;
+import org.apache.hadoop.hdds.conf.ConfigurationSource;
+import org.apache.hadoop.ozone.ha.ConfUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Class which builds SCM Node Information.
@@ -78,7 +77,7 @@ public class SCMNodeInfo {
     if (scmServiceId != null) {
       ArrayList< String > scmNodeIds = new ArrayList<>(
           SCMHAUtils.getSCMNodeIds(conf, scmServiceId));
-      if (scmNodeIds.size() == 0) {
+      if (scmNodeIds.isEmpty()) {
         throw new ConfigurationException(
             String.format("Configuration does not have any value set for %s " +
                     "for the SCM serviceId %s. List of SCM Node ID's should " +

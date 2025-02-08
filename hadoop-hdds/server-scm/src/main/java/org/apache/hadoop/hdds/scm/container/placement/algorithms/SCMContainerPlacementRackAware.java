@@ -19,6 +19,7 @@ package org.apache.hadoop.hdds.scm.container.placement.algorithms;
 
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.base.Preconditions;
+import java.util.Collections;
 import org.apache.hadoop.hdds.conf.ConfigurationSource;
 import org.apache.hadoop.hdds.protocol.DatanodeDetails;
 import org.apache.hadoop.hdds.scm.SCMCommonPlacementPolicy;
@@ -148,7 +149,7 @@ public final class SCMContainerPlacementRackAware
     }
     DatanodeDetails favoredNode;
     int favorIndex = 0;
-    if (mutableUsedNodes.size() == 0) {
+    if (mutableUsedNodes.isEmpty()) {
       // choose all nodes for a new pipeline case
       // choose first datanode from scope ROOT or from favoredNodes if not null
       favoredNode = favoredNodeNum > favorIndex ?
@@ -177,8 +178,13 @@ public final class SCMContainerPlacementRackAware
         favorIndex++;
       } else {
         mutableExcludedNodes.add(firstNode);
-        secondNode = chooseNode(mutableExcludedNodes, Arrays.asList(firstNode),
-            Arrays.asList(firstNode), metadataSizeRequired, dataSizeRequired);
+        secondNode = chooseNode(
+            mutableExcludedNodes,
+            Collections.singletonList(firstNode),
+            Collections.singletonList(firstNode),
+            metadataSizeRequired,
+            dataSizeRequired
+        );
       }
       chosenNodes.add(secondNode);
       nodesRequired--;

@@ -370,30 +370,25 @@ public class ContainerStateMap {
     // If we cannot meet any one condition we return EMPTY_SET immediately.
     // Since when we intersect these sets, the result will be empty if any
     // one is empty.
-    final NavigableSet<ContainerID> stateSet =
-        lifeCycleStateMap.getCollection(state);
-    if (stateSet.size() == 0) {
+    final NavigableSet<ContainerID> stateSet = lifeCycleStateMap.getCollection(state);
+    if (stateSet.isEmpty()) {
       return EMPTY_SET;
     }
 
-    final NavigableSet<ContainerID> ownerSet =
-        ownerMap.getCollection(owner);
-    if (ownerSet.size() == 0) {
+    final NavigableSet<ContainerID> ownerSet = ownerMap.getCollection(owner);
+    if (ownerSet.isEmpty()) {
       return EMPTY_SET;
     }
 
-    final NavigableSet<ContainerID> factorSet =
-        repConfigMap.getCollection(repConfig);
-    if (factorSet.size() == 0) {
+    final NavigableSet<ContainerID> factorSet = repConfigMap.getCollection(repConfig);
+    if (factorSet.isEmpty()) {
       return EMPTY_SET;
     }
 
-    final NavigableSet<ContainerID> typeSet =
-        typeMap.getCollection(repConfig.getReplicationType());
-    if (typeSet.size() == 0) {
+    final NavigableSet<ContainerID> typeSet = typeMap.getCollection(repConfig.getReplicationType());
+    if (typeSet.isEmpty()) {
       return EMPTY_SET;
     }
-
 
     // if we add more constraints we will just add those sets here..
     final NavigableSet<ContainerID>[] sets = sortBySize(stateSet,

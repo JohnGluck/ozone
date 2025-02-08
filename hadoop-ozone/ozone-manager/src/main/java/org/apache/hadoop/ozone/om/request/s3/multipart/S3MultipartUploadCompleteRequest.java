@@ -102,6 +102,7 @@ public class S3MultipartUploadCompleteRequest extends OMKeyRequest {
         return new MultipartCommitRequestPart(eTag, partKeyInfo == null ? null :
             dbPartETag.get(), StringUtils.equals(eTag, dbPartETag.get()) || StringUtils.equals(eTag, dbPartName));
       };
+
   private BiFunction<OzoneManagerProtocolProtos.Part, PartKeyInfo, MultipartCommitRequestPart> partNameBasedValidator =
       (part, partKeyInfo) -> {
         String partName = part.getPartName();
@@ -158,7 +159,7 @@ public class S3MultipartUploadCompleteRequest extends OMKeyRequest {
     final String requestedBucket = bucketName;
     String keyName = keyArgs.getKeyName();
     String uploadID = keyArgs.getMultipartUploadID();
-    String multipartKey = null;
+    String multipartKey;
 
     ozoneManager.getMetrics().incNumCompleteMultipartUploads();
 
@@ -169,7 +170,7 @@ public class S3MultipartUploadCompleteRequest extends OMKeyRequest {
         getOmRequest());
     OMClientResponse omClientResponse = null;
     Exception exception = null;
-    Result result = null;
+    Result result;
     try {
       multipartKey = omMetadataManager.getMultipartKey(volumeName,
           bucketName, keyName, uploadID);
@@ -262,7 +263,7 @@ public class S3MultipartUploadCompleteRequest extends OMKeyRequest {
             OMException.ResultCodes.NO_SUCH_MULTIPART_UPLOAD_ERROR);
       }
 
-      if (partsList.size() > 0) {
+      if (!partsList.isEmpty()) {
         final OmMultipartKeyInfo.PartKeyInfoMap partKeyInfoMap
             = multipartKeyInfo.getPartKeyInfoMap();
         if (partKeyInfoMap.size() == 0) {

@@ -19,7 +19,14 @@
 
 package org.apache.hadoop.hdds.utils.db;
 
+import static org.apache.hadoop.hdds.utils.HddsServerUtil.toIOException;
+
 import com.google.common.base.Preconditions;
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.List;
 import org.apache.hadoop.hdds.utils.db.managed.ManagedDBOptions;
 import org.eclipse.jetty.util.StringUtil;
 import org.rocksdb.ColumnFamilyDescriptor;
@@ -28,14 +35,6 @@ import org.rocksdb.OptionsUtil;
 import org.rocksdb.RocksDBException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.List;
-
-import static org.apache.hadoop.hdds.utils.HddsServerUtil.toIOException;
 
 /**
  * A Class that controls the standard config options of RocksDB.
@@ -118,7 +117,7 @@ public final class DBConfigFromFile {
       List<ColumnFamilyDescriptor> cfDescs) throws IOException {
     Preconditions.checkNotNull(dbFileName);
     Preconditions.checkNotNull(cfDescs);
-    Preconditions.checkArgument(cfDescs.size() > 0);
+    Preconditions.checkArgument(!cfDescs.isEmpty());
 
     //TODO: Add Documentation on how to support RocksDB Mem Env.
     Env env = Env.getDefault();

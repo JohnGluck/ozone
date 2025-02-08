@@ -17,7 +17,18 @@
 
 package org.apache.hadoop.hdds.scm.container.placement.algorithms;
 
+import static org.apache.hadoop.hdds.scm.exceptions.SCMException.ResultCodes.FAILED_TO_FIND_SUITABLE_NODE;
+
 import com.google.common.annotations.VisibleForTesting;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.LinkedHashSet;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import org.apache.hadoop.hdds.conf.ConfigurationSource;
 import org.apache.hadoop.hdds.protocol.DatanodeDetails;
 import org.apache.hadoop.hdds.scm.ContainerPlacementStatus;
@@ -29,18 +40,6 @@ import org.apache.hadoop.hdds.scm.node.NodeManager;
 import org.apache.hadoop.hdds.scm.pipeline.PipelineStateManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.LinkedHashSet;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
-import static org.apache.hadoop.hdds.scm.exceptions.SCMException.ResultCodes.FAILED_TO_FIND_SUITABLE_NODE;
 
 /**
  * Container placement policy that scatter datanodes on different racks
@@ -127,7 +126,7 @@ public final class SCMContainerPlacementRackScatter
         skippedRacks.clear();
       }
 
-      if (mutableFavoredNodes.size() > 0) {
+      if (!mutableFavoredNodes.isEmpty()) {
         List<DatanodeDetails> chosenFavoredNodesInForLoop = new ArrayList<>();
         for (DatanodeDetails favoredNode : mutableFavoredNodes) {
           Node curRack = getRackOfDatanodeDetails(favoredNode);

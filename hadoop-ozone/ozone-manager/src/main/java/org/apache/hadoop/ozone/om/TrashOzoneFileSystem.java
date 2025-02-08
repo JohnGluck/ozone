@@ -399,12 +399,11 @@ public class TrashOzoneFileSystem extends FileSystem {
             }
           }
         }
-        if (keyPathList.size() > 0) {
-          if (!processKeyPath(keyPathList)) {
-            return false;
-          }
+        if (!keyPathList.isEmpty()) {
+          return processKeyPath(keyPathList);
+        } else {
+          return true;
         }
-        return true;
       } else {
         LOG.trace("iterating file: {}", path);
         keyPathList.add(pathKey);
