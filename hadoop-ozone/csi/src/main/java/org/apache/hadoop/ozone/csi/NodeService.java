@@ -49,7 +49,7 @@ public class NodeService extends NodeImplBase {
   private static final Logger LOG = LoggerFactory.getLogger(NodeService.class);
 
   private final String mountCommand;
-  private String s3Endpoint;
+  private final String s3Endpoint;
 
   public NodeService(CsiConfig configuration) {
     this.s3Endpoint = configuration.getS3gAddress();
@@ -135,9 +135,8 @@ public class NodeService extends NodeImplBase {
   @Override
   public void nodeGetInfo(NodeGetInfoRequest request,
       StreamObserver<NodeGetInfoResponse> responseObserver) {
-    NodeGetInfoResponse response = null;
     try {
-      response = NodeGetInfoResponse.newBuilder()
+      NodeGetInfoResponse response = NodeGetInfoResponse.newBuilder()
           .setNodeId(InetAddress.getLocalHost().getHostName())
           .build();
       responseObserver.onNext(response);
@@ -145,6 +144,5 @@ public class NodeService extends NodeImplBase {
     } catch (UnknownHostException e) {
       responseObserver.onError(e);
     }
-
   }
 }

@@ -233,19 +233,24 @@ public final class ServerUtils {
    * @throws IllegalArgumentException If the configuration value is not defined
    */
   public static String getPermissions(String key, ConfigurationSource conf) {
-    String configName = "";
+    String configName;
 
     // Assign the appropriate config name based on the KEY
-    if (key.equals(ReconConfigKeys.OZONE_RECON_DB_DIR)) {
-      configName = ReconConfigKeys.OZONE_RECON_DB_DIRS_PERMISSIONS;
-    } else if (key.equals(ScmConfigKeys.OZONE_SCM_DB_DIRS)) {
-      configName = ScmConfigKeys.OZONE_SCM_DB_DIRS_PERMISSIONS;
-    } else if (key.equals(OzoneConfigKeys.OZONE_OM_DB_DIRS)) {
-      configName = OzoneConfigKeys.OZONE_OM_DB_DIRS_PERMISSIONS;
-    } else {
-      // If the permissions are not defined for the config, we make it fall
-      // back to the default permissions for metadata files and directories
-      configName = OzoneConfigKeys.OZONE_METADATA_DIRS_PERMISSIONS;
+    switch (key) {
+      case ReconConfigKeys.OZONE_RECON_DB_DIR:
+        configName = ReconConfigKeys.OZONE_RECON_DB_DIRS_PERMISSIONS;
+        break;
+      case ScmConfigKeys.OZONE_SCM_DB_DIRS:
+        configName = ScmConfigKeys.OZONE_SCM_DB_DIRS_PERMISSIONS;
+        break;
+      case OzoneConfigKeys.OZONE_OM_DB_DIRS:
+        configName = OzoneConfigKeys.OZONE_OM_DB_DIRS_PERMISSIONS;
+        break;
+      default:
+        // If the permissions are not defined for the config, we make it fall
+        // back to the default permissions for metadata files and directories
+        configName = OzoneConfigKeys.OZONE_METADATA_DIRS_PERMISSIONS;
+        break;
     }
 
     String configValue = conf.get(configName);

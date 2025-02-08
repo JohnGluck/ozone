@@ -839,7 +839,7 @@ public class BasicOzoneFileSystem extends FileSystem {
     LOG.trace("getFileStatus() path:{}", f);
     Path qualifiedPath = f.makeQualified(uri, workingDir);
     String key = pathToKey(qualifiedPath);
-    FileStatus fileStatus = null;
+    FileStatus fileStatus;
     try {
       fileStatus = convertFileStatus(
           adapter.getFileStatus(key, uri, qualifiedPath, getUsername()));

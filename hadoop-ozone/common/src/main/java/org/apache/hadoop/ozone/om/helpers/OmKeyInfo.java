@@ -114,7 +114,7 @@ public final class OmKeyInfo extends WithParentObjectId
   // generation unchanged.
   // This allows a key to be created an committed atomically if the original has not
   // been modified.
-  private Long expectedDataGeneration = null;
+  private Long expectedDataGeneration;
 
   private OmKeyInfo(Builder b) {
     super(b);

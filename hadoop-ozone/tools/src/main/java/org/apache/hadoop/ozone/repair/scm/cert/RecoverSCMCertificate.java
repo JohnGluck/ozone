@@ -17,7 +17,26 @@
  */
 package org.apache.hadoop.ozone.repair.scm.cert;
 
+import static org.apache.hadoop.hdds.scm.metadata.SCMDBDefinition.VALID_SCM_CERTS;
+import static org.apache.hadoop.hdds.security.x509.certificate.client.DefaultCertificateClient.CERT_FILE_NAME_FORMAT;
+import static org.apache.hadoop.ozone.om.helpers.OzoneFSUtils.removeTrailingSlashIfNeeded;
+
 import jakarta.annotation.Nonnull;
+import java.io.IOException;
+import java.math.BigInteger;
+import java.net.InetAddress;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Paths;
+import java.security.cert.CertPath;
+import java.security.cert.CertificateException;
+import java.security.cert.CertificateFactory;
+import java.security.cert.X509Certificate;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 import org.apache.hadoop.hdds.conf.OzoneConfiguration;
 import org.apache.hadoop.hdds.security.SecurityConfig;
 import org.apache.hadoop.hdds.security.x509.certificate.authority.CAType;
@@ -30,32 +49,11 @@ import org.apache.hadoop.hdds.utils.db.managed.ManagedRocksIterator;
 import org.apache.hadoop.ozone.OzoneConsts;
 import org.apache.hadoop.ozone.debug.DBDefinitionFactory;
 import org.apache.hadoop.ozone.debug.RocksDBUtils;
-import java.security.cert.CertificateFactory;
-
 import org.apache.hadoop.ozone.repair.RepairTool;
 import org.rocksdb.ColumnFamilyDescriptor;
 import org.rocksdb.ColumnFamilyHandle;
 import org.rocksdb.RocksDBException;
 import picocli.CommandLine;
-
-import java.io.IOException;
-import java.math.BigInteger;
-import java.net.InetAddress;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Paths;
-import java.security.cert.CertPath;
-import java.security.cert.CertificateException;
-import java.security.cert.X509Certificate;
-import java.util.Map;
-import java.util.HashMap;
-import java.util.List;
-import java.util.ArrayList;
-import java.util.Optional;
-import java.util.Arrays;
-
-import static org.apache.hadoop.hdds.scm.metadata.SCMDBDefinition.VALID_SCM_CERTS;
-import static org.apache.hadoop.hdds.security.x509.certificate.client.DefaultCertificateClient.CERT_FILE_NAME_FORMAT;
-import static org.apache.hadoop.ozone.om.helpers.OzoneFSUtils.removeTrailingSlashIfNeeded;
 
 /**
  * In case of accidental deletion of SCM certificates from local storage,
@@ -94,7 +92,7 @@ public class RecoverSCMCertificate extends RepairTool {
       List<ColumnFamilyDescriptor> cfDescList = RocksDBUtils.getColumnFamilyDescriptors(dbPath);
       final List<ColumnFamilyHandle> cfHandleList = new ArrayList<>();
       byte[] tableNameBytes = tableName.getBytes(StandardCharsets.UTF_8);
-      ColumnFamilyHandle cfHandle = null;
+      ColumnFamilyHandle cfHandle;
       try (ManagedRocksDB db = ManagedRocksDB.openReadOnly(dbPath, cfDescList,
           cfHandleList)) {
         cfHandle = getColumnFamilyHandle(cfHandleList, tableNameBytes);

@@ -275,10 +275,9 @@ public class NodeEndpoint {
     if (null == nodeByUuid) {
       throw new NodeNotFoundException("Node  not found !!!");
     }
-    NodeStatus nodeStatus = null;
     AtomicBoolean isContainerOrPipeLineOpen = new AtomicBoolean(false);
     try {
-      nodeStatus = nodeManager.getNodeStatus(nodeByUuid);
+      NodeStatus nodeStatus = nodeManager.getNodeStatus(nodeByUuid);
       if (nodeStatus.isDead()) {
         checkContainers(nodeByUuid, isContainerOrPipeLineOpen);
         if (isContainerOrPipeLineOpen.get()) {

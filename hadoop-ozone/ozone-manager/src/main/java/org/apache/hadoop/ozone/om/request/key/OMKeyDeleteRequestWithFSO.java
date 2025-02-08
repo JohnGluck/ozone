@@ -96,8 +96,8 @@ public class OMKeyDeleteRequestWithFSO extends OMKeyDeleteRequest {
     Exception exception = null;
     boolean acquiredLock = false;
     OMClientResponse omClientResponse = null;
-    Result result = null;
-    OmBucketInfo omBucketInfo = null;
+    Result result;
+    OmBucketInfo omBucketInfo;
     try {
       mergeOmLockDetails(omMetadataManager.getLock()
           .acquireWriteLock(BUCKET_LOCK, volumeName, bucketName));
@@ -159,7 +159,7 @@ public class OMKeyDeleteRequestWithFSO extends OMKeyDeleteRequest {
       omBucketInfo.incrUsedNamespace(-1L);
 
       // If omKeyInfo has hsync metadata, delete its corresponding open key as well
-      String dbOpenKey = null;
+      String dbOpenKey;
       String hsyncClientId = omKeyInfo.getMetadata().get(OzoneConsts.HSYNC_CLIENT_ID);
       if (hsyncClientId != null) {
         Table<String, OmKeyInfo> openKeyTable = omMetadataManager.getOpenKeyTable(getBucketLayout());

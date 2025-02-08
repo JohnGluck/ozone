@@ -187,7 +187,7 @@ public class OMKeySetTimesRequest extends OMKeyRequest {
     String volume = null;
     String bucket = null;
     String key;
-    boolean operationResult = false;
+    boolean operationResult;
     Result result;
     try {
       if (getModificationTime() < -1) {

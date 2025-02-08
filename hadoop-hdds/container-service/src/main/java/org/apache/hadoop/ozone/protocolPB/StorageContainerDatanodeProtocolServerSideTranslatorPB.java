@@ -73,7 +73,7 @@ public class StorageContainerDatanodeProtocolServerSideTranslatorPB
         .getContainerReport();
     NodeReportProto dnNodeReport = request.getNodeReport();
     PipelineReportsProto pipelineReport = request.getPipelineReports();
-    LayoutVersionProto layoutInfo = null;
+    LayoutVersionProto layoutInfo;
     if (request.hasDataNodeLayoutVersion()) {
       layoutInfo = request.getDataNodeLayoutVersion();
     } else {

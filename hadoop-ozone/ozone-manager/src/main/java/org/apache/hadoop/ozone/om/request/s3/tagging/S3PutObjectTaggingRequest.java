@@ -109,7 +109,7 @@ public class S3PutObjectTaggingRequest extends OMKeyRequest {
     boolean acquiredLock = false;
     OMClientResponse omClientResponse = null;
     IOException exception = null;
-    Result result = null;
+    Result result;
     try {
       mergeOmLockDetails(
           omMetadataManager.getLock()

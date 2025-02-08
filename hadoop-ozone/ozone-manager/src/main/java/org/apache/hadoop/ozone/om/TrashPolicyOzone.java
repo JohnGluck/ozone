@@ -17,6 +17,10 @@
  */
 package org.apache.hadoop.ozone.om;
 
+import static org.apache.hadoop.fs.CommonConfigurationKeysPublic.FS_TRASH_CHECKPOINT_INTERVAL_DEFAULT;
+import static org.apache.hadoop.fs.CommonConfigurationKeysPublic.FS_TRASH_CHECKPOINT_INTERVAL_KEY;
+
+import com.google.common.util.concurrent.ThreadFactoryBuilder;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.text.DateFormat;
@@ -27,22 +31,17 @@ import java.util.Date;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
-
-import com.google.common.util.concurrent.ThreadFactoryBuilder;
 import org.apache.hadoop.conf.Configuration;
+import org.apache.hadoop.fs.FileAlreadyExistsException;
 import org.apache.hadoop.fs.FileStatus;
 import org.apache.hadoop.fs.FileSystem;
 import org.apache.hadoop.fs.Path;
-import org.apache.hadoop.fs.FileAlreadyExistsException;
 import org.apache.hadoop.fs.ozone.OzoneTrashPolicy;
 import org.apache.hadoop.hdds.conf.OzoneConfiguration;
 import org.apache.hadoop.ozone.conf.OMClientConfig;
 import org.apache.hadoop.util.Time;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import static org.apache.hadoop.fs.CommonConfigurationKeysPublic.FS_TRASH_CHECKPOINT_INTERVAL_KEY;
-import static org.apache.hadoop.fs.CommonConfigurationKeysPublic.FS_TRASH_CHECKPOINT_INTERVAL_DEFAULT;
 
 /**
  * TrashPolicy for Ozone Specific Trash Operations.Through this implementation
@@ -61,10 +60,7 @@ public class TrashPolicyOzone extends OzoneTrashPolicy {
       new SimpleDateFormat("yyMMddHHmm");
   private long emptierInterval;
 
-  private OzoneManager om;
-
-  public TrashPolicyOzone() {
-  }
+  private final OzoneManager om;
 
   @Override
   public void initialize(Configuration conf, FileSystem fs) {
@@ -257,7 +253,7 @@ public class TrashPolicyOzone extends OzoneTrashPolicy {
     LOG.debug("TrashPolicyOzone#deleteCheckpoint for trashRoot: {}",
             trashRoot);
 
-    FileStatus[] dirs = null;
+    FileStatus[] dirs;
     try {
       dirs = fs.listStatus(trashRoot); // scan trash sub-directories
     } catch (FileNotFoundException fnfe) {
@@ -265,8 +261,8 @@ public class TrashPolicyOzone extends OzoneTrashPolicy {
     }
 
     long now = Time.now();
-    for (int i = 0; i < dirs.length; i++) {
-      Path path = dirs[i].getPath();
+    for (FileStatus fileStatus : dirs) {
+      Path path = fileStatus.getPath();
       String dir = path.toUri().getPath();
       String name = path.getName();
       if (name.equals(CURRENT.getName())) {         // skip current

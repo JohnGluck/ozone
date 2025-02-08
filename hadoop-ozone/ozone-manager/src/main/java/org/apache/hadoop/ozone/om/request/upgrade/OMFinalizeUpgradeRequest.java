@@ -67,7 +67,7 @@ public class OMFinalizeUpgradeRequest extends OMClientRequest {
     OMResponse.Builder responseBuilder =
         OmResponseUtil.getOMResponseBuilder(getOmRequest());
     responseBuilder.setCmdType(FinalizeUpgrade);
-    OMClientResponse response = null;
+    OMClientResponse response;
     Exception exception = null;
 
     try {

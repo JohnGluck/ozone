@@ -936,8 +936,7 @@ public class BlockOutputStream extends OutputStream {
     }
 
     final List<ChunkBuffer> byteBufferList;
-    CompletableFuture<ContainerCommandResponseProto>
-        validateFuture = null;
+    CompletableFuture<ContainerCommandResponseProto> validateFuture;
     XceiverClientReply asyncReply;
     try {
       BlockData blockData = null;

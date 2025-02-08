@@ -71,7 +71,7 @@ public final class OzoneUtils {
    */
   public static void verifyMaxKeyLength(String length)
       throws IllegalArgumentException {
-    int maxKey = 0;
+    int maxKey;
     try {
       maxKey = Integer.parseInt(length);
     } catch (NumberFormatException nfe) {

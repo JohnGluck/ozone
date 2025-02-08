@@ -73,7 +73,7 @@ public final class HttpRequestLog {
     if (isLog4JLogger) {
       Log4JLogger httpLog4JLog = (Log4JLogger) logger;
       org.apache.log4j.Logger httpLogger = httpLog4JLog.getLogger();
-      Appender appender = null;
+      Appender appender;
 
       try {
         appender = httpLogger.getAppender(appenderName);

@@ -120,7 +120,7 @@ public final class OzoneClientUtils {
   public static ReplicationConfig resolveClientSideReplicationConfig(
       short replication, ReplicationConfig clientConfiguredReplConfig,
       ReplicationConfig bucketReplConfig, ConfigurationSource config) {
-    ReplicationConfig clientDeterminedReplConfig = null;
+    ReplicationConfig clientDeterminedReplConfig;
 
     boolean isECBucket = bucketReplConfig != null && bucketReplConfig
         .getReplicationType() == HddsProtos.ReplicationType.EC;

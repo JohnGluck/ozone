@@ -1503,7 +1503,7 @@ public class RpcClient implements ClientProtocol {
       throws IOException {
     // check crypto protocol version
     OzoneKMSUtil.checkCryptoProtocolVersion(feInfo);
-    KeyProvider.KeyVersion decrypted = null;
+    KeyProvider.KeyVersion decrypted;
     try {
 
       // After HDDS-5881 the user will not be different,

@@ -1312,7 +1312,8 @@ public class OmMetadataManagerImpl implements OMMetadataManager,
         cacheKeyMap.put(key, omKeyInfo);
       }
     }
-    long readFromRDbStartNs, readFromRDbStopNs = 0;
+    long readFromRDbStartNs;
+    long readFromRDbStopNs;
     // Get maxKeys from DB if it has.
     try (TableIterator<String, ? extends KeyValue<String, OmKeyInfo>>
              keyIter = getKeyTable(getBucketLayout()).iterator()) {

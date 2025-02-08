@@ -874,15 +874,14 @@ public class KeyManagerImpl implements KeyManager {
     Preconditions.checkNotNull(bucketName);
     Preconditions.checkNotNull(keyName);
     Preconditions.checkNotNull(uploadID);
-    boolean isTruncated = false;
+    boolean isTruncated;
     int nextPartNumberMarker = 0;
-    BucketLayout bucketLayout = BucketLayout.DEFAULT;
 
     String buckKey = metadataManager.
           getBucketKey(volumeName, bucketName);
     OmBucketInfo buckInfo =
           metadataManager.getBucketTable().get(buckKey);
-    bucketLayout = buckInfo.getBucketLayout();
+    BucketLayout bucketLayout = buckInfo.getBucketLayout();
 
     metadataManager.getLock().acquireReadLock(BUCKET_LOCK, volumeName,
         bucketName);
@@ -1082,13 +1081,12 @@ public class KeyManagerImpl implements KeyManager {
     BucketLayout bucketLayout = BucketLayout.DEFAULT;
     String buckKey =
         metadataManager.getBucketKey(volume, bucket);
-    OmBucketInfo buckInfo = null;
+    OmBucketInfo buckInfo;
     try {
-      buckInfo =
-          metadataManager.getBucketTable().get(buckKey);
+      buckInfo = metadataManager.getBucketTable().get(buckKey);
       bucketLayout = buckInfo.getBucketLayout();
     } catch (IOException e) {
-      LOG.error("Failed to get bucket for the key: " + buckKey, e);
+      LOG.error("Failed to get bucket for the key: {}", buckKey, e);
     }
 
     metadataManager.getLock().acquireReadLock(BUCKET_LOCK, volume, bucket);
@@ -1421,12 +1419,12 @@ public class KeyManagerImpl implements KeyManager {
     final String volumeName = args.getVolumeName();
     final String bucketName = args.getBucketName();
     final String keyName = args.getKeyName();
-    OzoneFileStatus fileStatus = null;
+    OzoneFileStatus fileStatus;
     metadataManager.getLock().acquireReadLock(BUCKET_LOCK, volumeName,
             bucketName);
     try {
       // Check if this is the root of the filesystem.
-      if (keyName.length() == 0) {
+      if (keyName.isEmpty()) {
         OMFileRequest.validateBucket(metadataManager, volumeName, bucketName);
         return new OzoneFileStatus();
       }

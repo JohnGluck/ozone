@@ -183,9 +183,9 @@ public class OMAllocateBlockRequest extends OMKeyRequest {
         getOmRequest());
     OMClientResponse omClientResponse = null;
 
-    OmKeyInfo openKeyInfo = null;
+    OmKeyInfo openKeyInfo;
     Exception exception = null;
-    OmBucketInfo omBucketInfo = null;
+    OmBucketInfo omBucketInfo;
     boolean acquiredLock = false;
 
     try {
@@ -258,8 +258,13 @@ public class OMAllocateBlockRequest extends OMKeyRequest {
       exception = ex;
       omClientResponse = new OMAllocateBlockResponse(createErrorOMResponse(
           omResponse, exception), getBucketLayout());
-      LOG.error("Allocate Block failed. Volume:{}, Bucket:{}, OpenKey:{}. " +
-          "Exception:{}", volumeName, bucketName, openKeyName, exception);
+      LOG.error(
+          "Allocate Block failed. Volume:{}, Bucket:{}, OpenKey:{}. Exception:",
+          volumeName,
+          bucketName,
+          openKeyName,
+          exception
+      );
     } finally {
       if (acquiredLock) {
         mergeOmLockDetails(

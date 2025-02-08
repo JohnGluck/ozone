@@ -143,9 +143,9 @@ public final class OzoneManagerRatisUtils {
     // handles it appropriately.
     Type cmdType = omRequest.getCmdType();
     OzoneManagerProtocolProtos.KeyArgs keyArgs;
-    BucketLayout bucketLayout = BucketLayout.DEFAULT;
-    String volumeName = "";
-    String bucketName = "";
+    BucketLayout bucketLayout;
+    String volumeName;
+    String bucketName;
 
     switch (cmdType) {
     case CreateVolume:

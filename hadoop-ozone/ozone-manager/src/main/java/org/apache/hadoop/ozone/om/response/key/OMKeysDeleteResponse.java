@@ -80,18 +80,14 @@ public class OMKeysDeleteResponse extends AbstractOMKeyDeleteResponse {
   @Override
   public void addToDBBatch(OMMetadataManager omMetadataManager,
                            BatchOperation batchOperation) throws IOException {
-    String volumeName = "";
-    String bucketName = "";
-    String keyName = "";
     Table<String, OmKeyInfo> keyTable =
         omMetadataManager.getKeyTable(getBucketLayout());
     for (OmKeyInfo omKeyInfo : omKeyInfoList) {
-      volumeName = omKeyInfo.getVolumeName();
-      bucketName = omKeyInfo.getBucketName();
-      keyName = omKeyInfo.getKeyName();
+      String volumeName = omKeyInfo.getVolumeName();
+      String bucketName = omKeyInfo.getBucketName();
+      String keyName = omKeyInfo.getKeyName();
 
-      String deleteKey = omMetadataManager.getOzoneKey(volumeName, bucketName,
-          keyName);
+      String deleteKey = omMetadataManager.getOzoneKey(volumeName, bucketName, keyName);
 
       addDeletionToBatch(omMetadataManager, batchOperation, keyTable,
           deleteKey, omKeyInfo);

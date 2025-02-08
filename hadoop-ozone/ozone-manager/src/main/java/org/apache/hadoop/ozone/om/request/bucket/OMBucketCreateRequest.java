@@ -178,7 +178,7 @@ public class OMBucketCreateRequest extends OMClientRequest {
 
     OMResponse.Builder omResponse = OmResponseUtil.getOMResponseBuilder(
         getOmRequest());
-    OmBucketInfo omBucketInfo = null;
+    OmBucketInfo omBucketInfo;
 
     // bucketInfo.hasBucketLayout() would be true when the request proto
     // specifies a bucket layout.
@@ -374,7 +374,7 @@ public class OMBucketCreateRequest extends OMClientRequest {
       }
     }
 
-    long totalBucketQuota = 0;
+    long totalBucketQuota;
     if (quotaInBytes > 0) {
       totalBucketQuota = quotaInBytes;
     } else {

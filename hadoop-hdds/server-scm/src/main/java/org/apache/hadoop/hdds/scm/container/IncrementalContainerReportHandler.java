@@ -82,7 +82,7 @@ public class IncrementalContainerReportHandler extends
       for (ContainerReplicaProto replicaProto :
           report.getReport().getReportList()) {
         ContainerID id = ContainerID.valueOf(replicaProto.getContainerID());
-        ContainerInfo container = null;
+        ContainerInfo container;
         try {
           try {
             container = getContainerManager().getContainer(id);

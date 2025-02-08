@@ -155,7 +155,7 @@ public class FilePerBlockStrategy implements ChunkManager {
 
     HddsVolume volume = containerData.getVolume();
 
-    FileChannel channel = null;
+    FileChannel channel;
     boolean overwrite;
     try {
       channel = files.getChannel(chunkFile, doSyncWrite);

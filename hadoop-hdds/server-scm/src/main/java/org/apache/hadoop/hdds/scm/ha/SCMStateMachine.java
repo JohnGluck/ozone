@@ -410,10 +410,9 @@ public class SCMStateMachine extends BaseStateMachine {
     installingDBCheckpoint = null;
     installingSecretKeys = null;
 
-    TermIndex termIndex = null;
+    TermIndex termIndex;
     try {
-      termIndex =
-          scm.getScmHAManager().installCheckpoint(checkpoint);
+      termIndex = scm.getScmHAManager().installCheckpoint(checkpoint);
     } catch (Exception e) {
       LOG.error("Failed to reinitialize SCMStateMachine.", e);
       throw new IOException(e);

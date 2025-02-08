@@ -192,8 +192,8 @@ public class OMFileCreateRequest extends OMKeyRequest {
 
     boolean acquiredLock = false;
 
-    OmKeyInfo omKeyInfo = null;
-    OmBucketInfo omBucketInfo = null;
+    OmKeyInfo omKeyInfo;
+    OmBucketInfo omBucketInfo;
     final List<OmKeyLocationInfo> locations = new ArrayList<>();
     List<OmKeyInfo> missingParentInfos;
 
@@ -201,7 +201,7 @@ public class OMFileCreateRequest extends OMKeyRequest {
     OMResponse.Builder omResponse = OmResponseUtil.getOMResponseBuilder(
         getOmRequest());
     Exception exception = null;
-    Result result = null;
+    Result result;
     try {
       // acquire lock
       mergeOmLockDetails(omMetadataManager.getLock()
@@ -210,7 +210,7 @@ public class OMFileCreateRequest extends OMKeyRequest {
 
       validateBucketAndVolume(omMetadataManager, volumeName, bucketName);
 
-      if (keyName.length() == 0) {
+      if (keyName.isEmpty()) {
         // Check if this is the root of the filesystem.
         throw new OMException("Can not write to directory: " + keyName,
             OMException.ResultCodes.NOT_A_FILE);

@@ -281,7 +281,7 @@ public class LegacyBucketHandler extends BucketHandler {
    */
   @Override
   public long getDirObjectId(String[] names, int cutoff) throws IOException {
-    long dirObjectId = getBucketObjectId(names);
+    long dirObjectId;
     StringBuilder bld = new StringBuilder();
     for (int i = 0; i < cutoff; ++i) {
       bld.append(OM_KEY_PREFIX)

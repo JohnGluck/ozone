@@ -128,7 +128,7 @@ public class S3GetSecretRequest extends OMClientRequest {
 
   @Override
   public OMClientResponse validateAndUpdateCache(OzoneManager ozoneManager, ExecutionContext context) {
-    OMClientResponse omClientResponse = null;
+    OMClientResponse omClientResponse;
     OMResponse.Builder omResponse = OmResponseUtil.getOMResponseBuilder(
         getOmRequest());
     Exception exception = null;

@@ -52,7 +52,6 @@ public class CSMMetrics {
   private @Metric MutableRate transactionLatencyMs;
   private final EnumMap<Type, MutableRate> opsLatencyMs;
   private final EnumMap<Type, MutableRate> opsQueueingDelay;
-  private MetricsRegistry registry = null;
 
   // Failure Metrics
   private @Metric MutableCounterLong numWriteStateMachineFails;
@@ -78,7 +77,7 @@ public class CSMMetrics {
     this.gid = gid;
     this.opsLatencyMs = new EnumMap<>(ContainerProtos.Type.class);
     this.opsQueueingDelay = new EnumMap<>(ContainerProtos.Type.class);
-    this.registry = new MetricsRegistry(CSMMetrics.class.getSimpleName());
+    MetricsRegistry registry = new MetricsRegistry(CSMMetrics.class.getSimpleName());
     for (ContainerProtos.Type type : ContainerProtos.Type.values()) {
       opsLatencyMs.put(type, registry.newRate(type.toString() + "Ms", type + " op"));
       opsQueueingDelay.put(type, registry.newRate("queueingDelay" + type.toString() + "Ns", type + " op"));

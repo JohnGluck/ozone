@@ -911,9 +911,8 @@ public class ReconUtils {
    * Validates volume or bucket names according to specific rules.
    *
    * @param resName The name to validate (volume or bucket).
-   * @return A Response object if validation fails, or null if the name is valid.
    */
-  public static Response validateNames(String resName)
+  public static void validateNames(String resName)
       throws IllegalArgumentException {
     if (resName.length() < OzoneConsts.OZONE_MIN_BUCKET_NAME_LENGTH ||
         resName.length() > OzoneConsts.OZONE_MAX_BUCKET_NAME_LENGTH) {
@@ -937,9 +936,6 @@ public class ReconUtils {
           "Bucket or Volume name can only contain lowercase " +
               "letters, numbers, hyphens, underscores, and periods");
     }
-
-    // If all checks pass, the name is valid
-    return null;
   }
 
   /**

@@ -105,7 +105,7 @@ public class OMDBInsightEndpoint {
   private static final Logger LOG =
       LoggerFactory.getLogger(OMDBInsightEndpoint.class);
   private final GlobalStatsDao globalStatsDao;
-  private ReconNamespaceSummaryManagerImpl reconNamespaceSummaryManager;
+  private final ReconNamespaceSummaryManagerImpl reconNamespaceSummaryManager;
   private final OzoneStorageContainerManager reconSCM;
 
 
@@ -197,7 +197,6 @@ public class OMDBInsightEndpoint {
       boolean keysFound = false; // Flag to track if any keys are found
       String lastKey = null;
       Map<String, OmKeyInfo> obsKeys = Collections.emptyMap();
-      Map<String, OmKeyInfo> fsoKeys = Collections.emptyMap();
 
       // Validate startPrefix if it's provided
       if (isNotBlank(startPrefix) && !validateStartPrefix(startPrefix)) {
@@ -226,7 +225,8 @@ public class OMDBInsightEndpoint {
         String effectivePrevKey = skipPrevKeyDone ? "" : prevKey;
         // If limit = -1 then we need to fetch all keys without limit
         int effectiveLimit = limit == -1 ? limit : limit - obsKeys.size();
-        fsoKeys = searchOpenKeysInFSO(startPrefix, effectiveLimit, effectivePrevKey);
+        Map<String, OmKeyInfo> fsoKeys = searchOpenKeysInFSO(startPrefix, effectiveLimit, effectivePrevKey);
+
         for (Map.Entry<String, OmKeyInfo> entry : fsoKeys.entrySet()) {
           keysFound = true;
           KeyEntityInfo keyEntityInfo = createKeyEntityInfoFromOmKeyInfo(entry.getKey(), entry.getValue());
@@ -462,7 +462,7 @@ public class OMDBInsightEndpoint {
     // Initialize the response object to hold the key information
     KeyInsightInfoResponse deletedKeyInsightInfo = new KeyInsightInfoResponse();
 
-    boolean keysFound = false;
+    boolean keysFound;
 
     try {
       // Validate startPrefix if it's provided
@@ -1161,7 +1161,7 @@ public class OMDBInsightEndpoint {
 
     // Fetch the immediate parentID which could be a directory or the bucket itself
     BucketHandler handler = getBucketHandler(reconNamespaceSummaryManager, omMetadataManager, bucketInfo);
-    long dirObjectId = -1;
+    long dirObjectId;
     try {
       OmDirectoryInfo dirInfo = handler.getDirInfo(names);
       if (null != dirInfo) {

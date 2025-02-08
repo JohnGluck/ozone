@@ -65,7 +65,7 @@ public class OMKeySetTimesRequestWithFSO extends OMKeySetTimesRequest {
   @Override
   public OMClientResponse validateAndUpdateCache(OzoneManager ozoneManager, ExecutionContext context) {
     final long trxnLogIndex = context.getIndex();
-    OmKeyInfo omKeyInfo = null;
+    OmKeyInfo omKeyInfo;
 
     OzoneManagerProtocolProtos.OMResponse.Builder omResponse = onInit();
     OMClientResponse omClientResponse = null;
@@ -75,9 +75,9 @@ public class OMKeySetTimesRequestWithFSO extends OMKeySetTimesRequest {
     boolean lockAcquired = false;
     String volume = null;
     String bucket = null;
-    String key = null;
-    boolean operationResult = false;
-    Result result = null;
+    String key;
+    boolean operationResult;
+    Result result;
     try {
       volume = getVolumeName();
       bucket = getBucketName();

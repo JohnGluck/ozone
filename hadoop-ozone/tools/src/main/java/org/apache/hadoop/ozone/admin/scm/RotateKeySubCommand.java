@@ -46,7 +46,7 @@ public class RotateKeySubCommand extends ScmSubcommand {
   protected void execute(ScmClient scmClient) throws IOException {
     try (ScmClient client = new ContainerOperationClient(
         parent.getParent().getOzoneConf())) {
-      boolean status = false;
+      boolean status;
       try {
         status = client.rotateSecretKeys(force);
       } catch (IOException e) {

@@ -155,7 +155,7 @@ public class OMKeyCommitRequest extends OMKeyRequest {
 
     Exception exception = null;
     OmKeyInfo omKeyInfo = null;
-    OmBucketInfo omBucketInfo = null;
+    OmBucketInfo omBucketInfo;
     OMClientResponse omClientResponse = null;
     boolean bucketLockAcquired = false;
     Result result;
@@ -205,7 +205,7 @@ public class OMKeyCommitRequest extends OMKeyRequest {
               " as there is already directory in the given path", NOT_A_FILE);
         }
         // Ensure the parent exist.
-        if (!"".equals(OzoneFSUtils.getParent(keyName))
+        if (!OzoneFSUtils.getParent(keyName).isEmpty()
             && !checkDirectoryAlreadyExists(volumeName, bucketName,
             OzoneFSUtils.getParent(keyName), omMetadataManager)) {
           throw new OMException("Cannot create file : " + keyName
@@ -329,11 +329,9 @@ public class OMKeyCommitRequest extends OMKeyRequest {
             correctedSpace);
         // using pseudoObjId as objectId can be same in case of overwrite key
         long pseudoObjId = ozoneManager.getObjectIdFromTxId(trxnLogIndex);
-        String delKeyName = omMetadataManager.getOzoneDeletePathKey(
-            pseudoObjId, dbOzoneKey);
-        if (null == oldKeyVersionsToDeleteMap) {
-          oldKeyVersionsToDeleteMap = new HashMap<>();
-        }
+        String delKeyName = omMetadataManager.getOzoneDeletePathKey(pseudoObjId, dbOzoneKey);
+
+        oldKeyVersionsToDeleteMap = new HashMap<>();
 
         // Remove any block from oldVerKeyInfo that share the same container ID
         // and local ID with omKeyInfo blocks'.
@@ -479,8 +477,13 @@ public class OMKeyCommitRequest extends OMKeyRequest {
               bucketName, keyName);
       break;
     case FAILURE:
-      LOG.error("Key committed failed. Volume:{}, Bucket:{}, Key:{}. " +
-          "Exception:{}", volumeName, bucketName, keyName, exception);
+      LOG.error(
+          "Key committed failed. Volume:{}, Bucket:{}, Key:{}. Exception:",
+          volumeName,
+          bucketName,
+          keyName,
+          exception
+      );
       if (commitKeyRequest.getKeyArgs().hasEcReplicationConfig()) {
         omMetrics.incEcKeyCreateFailsTotal();
       }

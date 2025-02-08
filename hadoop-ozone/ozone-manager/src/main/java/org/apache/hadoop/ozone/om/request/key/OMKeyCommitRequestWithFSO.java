@@ -98,7 +98,7 @@ public class OMKeyCommitRequestWithFSO extends OMKeyCommitRequest {
 
     Exception exception = null;
     OmKeyInfo omKeyInfo = null;
-    OmBucketInfo omBucketInfo = null;
+    OmBucketInfo omBucketInfo;
     OMClientResponse omClientResponse = null;
     boolean bucketLockAcquired = false;
     Result result;
@@ -120,7 +120,7 @@ public class OMKeyCommitRequestWithFSO extends OMKeyCommitRequest {
     OMMetadataManager omMetadataManager = ozoneManager.getMetadataManager();
 
     try {
-      String dbOpenFileKey = null;
+      String dbOpenFileKey;
 
       List<OmKeyLocationInfo>
           locationInfoList = getOmKeyLocationInfos(ozoneManager, commitKeyArgs);
@@ -260,11 +260,9 @@ public class OMKeyCommitRequestWithFSO extends OMKeyCommitRequest {
             .getOzoneKey(volumeName, bucketName, fileName);
         // using pseudoObjId as objectId can be same in case of overwrite key
         long pseudoObjId = ozoneManager.getObjectIdFromTxId(trxnLogIndex);
-        delKeyName = omMetadataManager.getOzoneDeletePathKey(
-            pseudoObjId, delKeyName);
-        if (null == oldKeyVersionsToDeleteMap) {
-          oldKeyVersionsToDeleteMap = new HashMap<>();
-        }
+        delKeyName = omMetadataManager.getOzoneDeletePathKey(pseudoObjId, delKeyName);
+
+        oldKeyVersionsToDeleteMap = new HashMap<>();
 
         // Remove any block from oldVerKeyInfo that share the same container ID
         // and local ID with omKeyInfo blocks'.

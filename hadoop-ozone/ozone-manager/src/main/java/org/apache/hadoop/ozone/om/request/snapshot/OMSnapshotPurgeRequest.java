@@ -77,7 +77,7 @@ public class OMSnapshotPurgeRequest extends OMClientRequest {
     SnapshotChainManager snapshotChainManager =
         omMetadataManager.getSnapshotChainManager();
 
-    OMClientResponse omClientResponse = null;
+    OMClientResponse omClientResponse;
 
     OzoneManagerProtocolProtos.OMResponse.Builder omResponse =
         OmResponseUtil.getOMResponseBuilder(getOmRequest());

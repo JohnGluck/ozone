@@ -316,8 +316,7 @@ public class ECBlockOutputStreamEntry extends BlockOutputStreamEntry {
         // for creating empty containers at DNs ( Refer: HDDS-6794).
         continue;
       }
-      CompletableFuture<ContainerProtos.ContainerCommandResponseProto>
-          responseFuture = null;
+      CompletableFuture<ContainerProtos.ContainerCommandResponseProto> responseFuture;
       if (forPutBlock) {
         responseFuture = stream.getCurrentPutBlkResponseFuture();
       } else {

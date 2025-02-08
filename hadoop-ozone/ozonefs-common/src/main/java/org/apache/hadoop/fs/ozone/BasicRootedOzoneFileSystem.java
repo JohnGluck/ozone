@@ -1080,7 +1080,7 @@ public class BasicRootedOzoneFileSystem extends FileSystem {
     if (key.equals("NONE")) {
       throw new FileNotFoundException("File not found. path /NONE.");
     }
-    FileStatusAdapter fileStatus = null;
+    FileStatusAdapter fileStatus;
     try {
       fileStatus = 
         adapter.getFileStatus(key, uri, qualifiedPath, getUsername());

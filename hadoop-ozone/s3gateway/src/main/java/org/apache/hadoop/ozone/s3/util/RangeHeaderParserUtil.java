@@ -18,11 +18,10 @@
  */
 package org.apache.hadoop.ozone.s3.util;
 
-import java.util.regex.Matcher;
-
-import org.apache.hadoop.hdds.annotation.InterfaceAudience;
-
 import static org.apache.hadoop.ozone.s3.util.S3Consts.RANGE_HEADER_MATCH_PATTERN;
+
+import java.util.regex.Matcher;
+import org.apache.hadoop.hdds.annotation.InterfaceAudience;
 /**
  * Utility class for S3.
  */
@@ -39,22 +38,21 @@ public final class RangeHeaderParserUtil {
    *
    * @return RangeHeader
    */
-  public static RangeHeader parseRangeHeader(String rangeHeaderVal, long
-      length) {
+  public static RangeHeader parseRangeHeader(String rangeHeaderVal, long length) {
     long start = 0;
-    long end = 0;
+    long end;
     boolean noStart = false;
     boolean readFull = false;
     boolean inValidRange = false;
     RangeHeader rangeHeader;
     Matcher matcher = RANGE_HEADER_MATCH_PATTERN.matcher(rangeHeaderVal);
     if (matcher.matches()) {
-      if (!matcher.group("start").equals("")) {
+      if (!matcher.group("start").isEmpty()) {
         start = Long.parseLong(matcher.group("start"));
       } else {
         noStart = true;
       }
-      if (!matcher.group("end").equals("")) {
+      if (!matcher.group("end").isEmpty()) {
         end = Long.parseLong(matcher.group("end"));
       } else {
         end = length - 1;
@@ -84,7 +82,6 @@ public final class RangeHeaderParserUtil {
     } else {
       // Byte specification is not matching or start and endoffset provided
       // are not matching with regex.
-      start = 0;
       end = length - 1;
       readFull = true;
     }

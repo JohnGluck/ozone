@@ -129,7 +129,7 @@ public class OMBucketSetPropertyRequest extends OMClientRequest {
 
     OMResponse.Builder omResponse = OmResponseUtil.getOMResponseBuilder(
         getOmRequest());
-    OmBucketInfo omBucketInfo = null;
+    OmBucketInfo omBucketInfo;
 
     AuditLogger auditLogger = ozoneManager.getAuditLogger();
     OzoneManagerProtocolProtos.UserInfo userInfo = getOmRequest().getUserInfo();

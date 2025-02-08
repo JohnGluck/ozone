@@ -46,7 +46,7 @@ public final class ChecksumByteBufferFactory {
     private static final MethodHandle NEW_CRC32C_MH;
 
     static {
-      MethodHandle newCRC32C = null;
+      MethodHandle newCRC32C;
       try {
         newCRC32C = MethodHandles.publicLookup()
             .findConstructor(

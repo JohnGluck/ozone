@@ -17,26 +17,21 @@
  */
 package org.apache.hadoop.ozone.s3.signature;
 
-import java.io.UnsupportedEncodingException;
-import java.time.LocalDate;
-import java.time.ZonedDateTime;
-import java.time.format.DateTimeParseException;
-import java.util.Map;
-
-import org.apache.commons.codec.DecoderException;
-import org.apache.commons.codec.binary.Hex;
-import org.apache.hadoop.ozone.s3.signature.SignatureInfo.Version;
-
-import com.google.common.annotations.VisibleForTesting;
 import static java.time.temporal.ChronoUnit.SECONDS;
 import static org.apache.commons.lang3.StringUtils.isEmpty;
 import static org.apache.hadoop.ozone.s3.signature.SignatureProcessor.AWS4_SIGNING_ALGORITHM;
 import static org.apache.hadoop.ozone.s3.signature.SignatureProcessor.DATE_FORMATTER;
 import static org.apache.hadoop.ozone.s3.util.S3Utils.urlDecode;
 
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import com.google.common.annotations.VisibleForTesting;
+import java.io.UnsupportedEncodingException;
+import java.time.LocalDate;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeParseException;
+import java.util.Map;
+import org.apache.commons.codec.DecoderException;
+import org.apache.commons.codec.binary.Hex;
+import org.apache.hadoop.ozone.s3.signature.SignatureInfo.Version;
 
 /**
  * Parser for getting auth info from query parameters.
@@ -74,8 +69,7 @@ public class AuthorizationV4QueryParser implements SignatureParser {
 
     final String rawCredential = queryParameters.get("X-Amz-Credential");
 
-    Credential credential =
-        null;
+    Credential credential;
     try {
       credential = new Credential(urlDecode(rawCredential));
     } catch (UnsupportedEncodingException e) {

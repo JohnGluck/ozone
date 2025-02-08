@@ -60,7 +60,7 @@ public abstract class OMKeyAclRequestWithFSO extends OMKeyAclRequest {
   @Override
   public OMClientResponse validateAndUpdateCache(OzoneManager ozoneManager, ExecutionContext context) {
     final long trxnLogIndex = context.getIndex();
-    OmKeyInfo omKeyInfo = null;
+    OmKeyInfo omKeyInfo;
 
     OzoneManagerProtocolProtos.OMResponse.Builder omResponse = onInit();
     OMClientResponse omClientResponse = null;
@@ -70,9 +70,9 @@ public abstract class OMKeyAclRequestWithFSO extends OMKeyAclRequest {
     boolean lockAcquired = false;
     String volume = null;
     String bucket = null;
-    String key = null;
+    String key;
     boolean operationResult = false;
-    Result result = null;
+    Result result;
     try {
       ObjectParser objectParser = new ObjectParser(getPath(),
           OzoneManagerProtocolProtos.OzoneObj.ObjectType.KEY);

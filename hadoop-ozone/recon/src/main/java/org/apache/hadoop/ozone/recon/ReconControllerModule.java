@@ -17,11 +17,19 @@
  */
 package org.apache.hadoop.ozone.recon;
 
+import static org.apache.hadoop.hdds.scm.cli.ContainerOperationClient.newContainerRpcClient;
+import static org.apache.hadoop.ozone.OmUtils.getOzoneManagerServiceId;
+import static org.apache.hadoop.ozone.recon.ReconServerConfigKeys.OZONE_RECON_DB_DIR;
+
 import com.google.common.collect.ImmutableList;
 import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
 import com.google.inject.Singleton;
 import com.google.inject.multibindings.Multibinder;
+import java.io.File;
+import java.io.IOException;
+import java.lang.reflect.Constructor;
+import java.util.List;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.hadoop.hdds.conf.OzoneConfiguration;
 import org.apache.hadoop.hdds.scm.protocol.StorageContainerLocationProtocol;
@@ -51,10 +59,10 @@ import org.apache.hadoop.ozone.recon.spi.impl.StorageContainerServiceProviderImp
 import org.apache.hadoop.ozone.recon.tasks.ContainerKeyMapperTask;
 import org.apache.hadoop.ozone.recon.tasks.FileSizeCountTask;
 import org.apache.hadoop.ozone.recon.tasks.NSSummaryTask;
+import org.apache.hadoop.ozone.recon.tasks.OmTableInsightTask;
 import org.apache.hadoop.ozone.recon.tasks.ReconOmTask;
 import org.apache.hadoop.ozone.recon.tasks.ReconTaskController;
 import org.apache.hadoop.ozone.recon.tasks.ReconTaskControllerImpl;
-import org.apache.hadoop.ozone.recon.tasks.OmTableInsightTask;
 import org.apache.hadoop.ozone.recon.tasks.updater.ReconTaskStatusUpdaterManager;
 import org.apache.hadoop.security.UserGroupInformation;
 import org.apache.ratis.protocol.ClientId;
@@ -69,15 +77,6 @@ import org.jooq.Configuration;
 import org.jooq.DAO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.io.File;
-import java.io.IOException;
-import java.lang.reflect.Constructor;
-import java.util.List;
-
-import static org.apache.hadoop.hdds.scm.cli.ContainerOperationClient.newContainerRpcClient;
-import static org.apache.hadoop.ozone.OmUtils.getOzoneManagerServiceId;
-import static org.apache.hadoop.ozone.recon.ReconServerConfigKeys.OZONE_RECON_DB_DIR;
 
 /**
  * Guice controller that defines concrete bindings.
@@ -183,9 +182,8 @@ public class ReconControllerModule extends AbstractModule {
   }
 
   @Provides
-  StorageContainerLocationProtocol getSCMProtocol(
-      final OzoneConfiguration configuration) {
-    StorageContainerLocationProtocol storageContainerLocationProtocol = null;
+  StorageContainerLocationProtocol getSCMProtocol(OzoneConfiguration configuration) {
+    StorageContainerLocationProtocol storageContainerLocationProtocol;
     storageContainerLocationProtocol = newContainerRpcClient(configuration);
     return storageContainerLocationProtocol;
   }

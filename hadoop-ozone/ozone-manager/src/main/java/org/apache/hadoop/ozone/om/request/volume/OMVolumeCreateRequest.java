@@ -122,7 +122,7 @@ public class OMVolumeCreateRequest extends OMVolumeRequest {
     boolean acquiredUserLock = false;
     Exception exception = null;
     OMClientResponse omClientResponse = null;
-    OmVolumeArgs omVolumeArgs = null;
+    OmVolumeArgs omVolumeArgs;
     Map<String, String> auditMap = null;
     try {
       omVolumeArgs = OmVolumeArgs.getFromProtobuf(volumeInfo);
@@ -155,7 +155,7 @@ public class OMVolumeCreateRequest extends OMVolumeRequest {
 
       String dbVolumeKey = omMetadataManager.getVolumeKey(volume);
 
-      PersistedUserVolumeInfo volumeList = null;
+      PersistedUserVolumeInfo volumeList;
       if (omMetadataManager.getVolumeTable().isExist(dbVolumeKey)) {
         LOG.debug("volume:{} already exists", omVolumeArgs.getVolume());
         throw new OMException("Volume already exists",
@@ -170,9 +170,7 @@ public class OMVolumeCreateRequest extends OMVolumeRequest {
         List<OzoneAcl> listOfAcls = getDefaultAclList(UserGroupInformation.createRemoteUser(owner),
             ozoneManager.getConfiguration());
         // ACLs from VolumeArgs
-        if (omVolumeArgs.getAcls() != null) {
-          listOfAcls.addAll(omVolumeArgs.getAcls());
-        }
+        listOfAcls.addAll(omVolumeArgs.getAcls());
         // Remove the duplicates
         listOfAcls = listOfAcls.stream().distinct().collect(Collectors.toList());
         omVolumeArgs.setAcls(listOfAcls);

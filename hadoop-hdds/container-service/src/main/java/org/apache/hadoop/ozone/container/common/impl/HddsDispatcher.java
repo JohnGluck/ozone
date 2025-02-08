@@ -219,7 +219,7 @@ public class HddsDispatcher implements ContainerDispatcher, Auditor {
     PerformanceStringBuilder perf = new PerformanceStringBuilder();
 
     ContainerType containerType;
-    ContainerCommandResponseProto responseProto = null;
+    ContainerCommandResponseProto responseProto;
     long startTime = Time.monotonicNowNanos();
     Type cmdType = msg.getCmdType();
     long containerID = msg.getContainerID();
@@ -466,7 +466,7 @@ public class HddsDispatcher implements ContainerDispatcher, Auditor {
       Preconditions.checkArgument(container2BCSIDMap.containsKey(containerId));
       // updates the latest BCSID on every putBlock or putSmallFile
       // transaction over Ratis.
-      container2BCSIDMap.computeIfPresent(containerId, (u, v) -> v = bcsID);
+      container2BCSIDMap.computeIfPresent(containerId, (u, v) -> bcsID);
     }
   }
   /**

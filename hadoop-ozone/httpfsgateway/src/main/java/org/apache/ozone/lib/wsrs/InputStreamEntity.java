@@ -51,7 +51,7 @@ public class InputStreamEntity implements StreamingOutput {
   @Override
   public void write(OutputStream os) throws IOException {
     IOUtils.skipFully(is, offset);
-    long bytes = 0L;
+    long bytes;
     if (len == -1) {
       // Use the configured buffer size instead of hardcoding to 4k
       bytes = FSOperations.copyBytes(is, os);

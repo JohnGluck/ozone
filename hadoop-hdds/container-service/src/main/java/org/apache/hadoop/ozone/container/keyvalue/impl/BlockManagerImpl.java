@@ -350,7 +350,7 @@ public class BlockManagerImpl implements BlockManager {
         "Count must be a positive number.");
     container.readLock();
     try {
-      List<BlockData> result = null;
+      List<BlockData> result;
       KeyValueContainerData cData =
           (KeyValueContainerData) container.getContainerData();
       try (DBHandle db = BlockUtils.getDB(cData, config)) {

@@ -110,7 +110,7 @@ public final class SCMDatanodeHeartbeatDispatcher {
 
     } else {
 
-      LayoutVersionProto layoutVersion = null;
+      LayoutVersionProto layoutVersion;
       if (!heartbeat.hasDataNodeLayoutVersion()) {
         // Backward compatibility to make sure old Datanodes can still talk to
         // SCM.

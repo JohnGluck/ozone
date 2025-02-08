@@ -80,9 +80,8 @@ public class S3RevokeSecretRequest extends OMClientRequest {
   @Override
   public OMClientResponse validateAndUpdateCache(OzoneManager ozoneManager, ExecutionContext context) {
 
-    OMClientResponse omClientResponse = null;
-    OMResponse.Builder omResponse =
-            OmResponseUtil.getOMResponseBuilder(getOmRequest());
+    OMClientResponse omClientResponse;
+    OMResponse.Builder omResponse = OmResponseUtil.getOMResponseBuilder(getOmRequest());
     IOException exception = null;
 
     final RevokeS3SecretRequest revokeS3SecretRequest =

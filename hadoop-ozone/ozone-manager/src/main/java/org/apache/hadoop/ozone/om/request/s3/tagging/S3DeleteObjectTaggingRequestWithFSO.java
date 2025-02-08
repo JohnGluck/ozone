@@ -79,7 +79,7 @@ public class S3DeleteObjectTaggingRequestWithFSO extends S3DeleteObjectTaggingRe
     boolean acquiredLock = false;
     OMClientResponse omClientResponse = null;
     IOException exception = null;
-    Result result = null;
+    Result result;
     try {
       mergeOmLockDetails(
           omMetadataManager.getLock()

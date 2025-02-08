@@ -145,7 +145,7 @@ public class OMRenewDelegationTokenRequest extends OMClientRequest {
 
     OMMetadataManager omMetadataManager = ozoneManager.getMetadataManager();
 
-    OMClientResponse omClientResponse = null;
+    OMClientResponse omClientResponse;
     OMResponse.Builder omResponse = OmResponseUtil.getOMResponseBuilder(
         getOmRequest());
     Exception exception = null;

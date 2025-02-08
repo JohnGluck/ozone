@@ -52,7 +52,7 @@ import org.slf4j.LoggerFactory;
  */
 public class OMHANodeDetails {
 
-  private static String[] genericConfigKeys = new String[] {
+  private static final String[] genericConfigKeys = new String[] {
       OMConfigKeys.OZONE_OM_HTTP_ADDRESS_KEY,
       OMConfigKeys.OZONE_OM_HTTPS_ADDRESS_KEY,
       OMConfigKeys.OZONE_OM_HTTP_BIND_HOST_KEY,
@@ -100,13 +100,12 @@ public class OMHANodeDetails {
    */
   public static OMHANodeDetails loadOMHAConfig(OzoneConfiguration conf) {
     InetSocketAddress localRpcAddress = null;
-    String localOMServiceId = null;
     String localOMNodeId = null;
     int localRatisPort = 0;
 
     Collection<String> omServiceIds;
 
-    localOMServiceId = conf.getTrimmed(OZONE_OM_INTERNAL_SERVICE_ID);
+    String localOMServiceId = conf.getTrimmed(OZONE_OM_INTERNAL_SERVICE_ID);
 
     if (localOMServiceId == null) {
       // There is no internal om service id is being set, fall back to ozone
@@ -162,12 +161,11 @@ public class OMHANodeDetails {
             serviceId, nodeId);
         int ratisPort = conf.getInt(ratisPortKey, OZONE_OM_RATIS_PORT_DEFAULT);
 
-        InetSocketAddress addr = null;
+        InetSocketAddress addr;
         try {
           addr = NetUtils.createSocketAddr(rpcAddrStr);
         } catch (Exception e) {
-          LOG.error("Couldn't create socket address for OM {} : {}", nodeId,
-              rpcAddrStr, e);
+          LOG.error("Couldn't create socket address for OM {} : {}", nodeId, rpcAddrStr, e);
           throw e;
         }
 

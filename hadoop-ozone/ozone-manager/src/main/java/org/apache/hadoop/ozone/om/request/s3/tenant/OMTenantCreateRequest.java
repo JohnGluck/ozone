@@ -225,7 +225,7 @@ public class OMTenantCreateRequest extends OMVolumeRequest {
     OMClientResponse omClientResponse = null;
     final OMResponse.Builder omResponse =
         OmResponseUtil.getOMResponseBuilder(getOmRequest());
-    OmVolumeArgs omVolumeArgs = null;
+    OmVolumeArgs omVolumeArgs;
     boolean acquiredVolumeLock = false;
     boolean acquiredUserLock = false;
     final String owner = getOmRequest().getUserInfo().getUserName();
@@ -328,14 +328,13 @@ public class OMTenantCreateRequest extends OMVolumeRequest {
 
       // Create tenant
       // Add to tenantStateTable. Redundant assignment for clarity
-      final String bucketNamespaceName = volumeName;
       // Populate policy ID list
       final String bucketNamespacePolicyName =
           OMMultiTenantManager.getDefaultBucketNamespacePolicyName(tenantId);
       final String bucketPolicyName =
           OMMultiTenantManager.getDefaultBucketPolicyName(tenantId);
       final OmDBTenantState omDBTenantState = new OmDBTenantState(
-          tenantId, bucketNamespaceName, userRoleName, adminRoleName,
+          tenantId, volumeName, userRoleName, adminRoleName,
           bucketNamespacePolicyName, bucketPolicyName);
       omMetadataManager.getTenantStateTable().addCacheEntry(
           new CacheKey<>(tenantId),

@@ -18,10 +18,11 @@
 
 package org.apache.hadoop.ozone.recon.api;
 
-import org.apache.hadoop.ozone.recon.api.types.EntityReadAccessHeatMapResponse;
-import org.apache.hadoop.ozone.recon.api.types.FeatureProvider;
-import org.apache.hadoop.ozone.recon.heatmap.HeatMapServiceImpl;
+import static org.apache.hadoop.ozone.recon.ReconConstants.RECON_ACCESS_METADATA_START_DATE;
+import static org.apache.hadoop.ozone.recon.ReconConstants.RECON_ENTITY_PATH;
+import static org.apache.hadoop.ozone.recon.ReconConstants.RECON_ENTITY_TYPE;
 
+import java.util.List;
 import javax.inject.Inject;
 import javax.ws.rs.DefaultValue;
 import javax.ws.rs.GET;
@@ -31,12 +32,9 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-
-import java.util.List;
-
-import static org.apache.hadoop.ozone.recon.ReconConstants.RECON_ACCESS_METADATA_START_DATE;
-import static org.apache.hadoop.ozone.recon.ReconConstants.RECON_ENTITY_PATH;
-import static org.apache.hadoop.ozone.recon.ReconConstants.RECON_ENTITY_TYPE;
+import org.apache.hadoop.ozone.recon.api.types.EntityReadAccessHeatMapResponse;
+import org.apache.hadoop.ozone.recon.api.types.FeatureProvider;
+import org.apache.hadoop.ozone.recon.heatmap.HeatMapServiceImpl;
 
 
 /**
@@ -50,7 +48,7 @@ import static org.apache.hadoop.ozone.recon.ReconConstants.RECON_ENTITY_TYPE;
     "dependency on heatmap provider service component implementation.")
 public class AccessHeatMapEndpoint {
 
-  private HeatMapServiceImpl heatMapService;
+  private final HeatMapServiceImpl heatMapService;
 
   @Inject
   public AccessHeatMapEndpoint(HeatMapServiceImpl heatMapService) {
@@ -83,7 +81,7 @@ public class AccessHeatMapEndpoint {
       @DefaultValue("24H") @QueryParam(RECON_ACCESS_METADATA_START_DATE)
       String startDate) {
     checkIfHeatMapFeatureIsEnabled();
-    EntityReadAccessHeatMapResponse entityReadAccessHeatMapResponse = null;
+    EntityReadAccessHeatMapResponse entityReadAccessHeatMapResponse;
     try {
       entityReadAccessHeatMapResponse =
           heatMapService.retrieveData(path, entityType, startDate);

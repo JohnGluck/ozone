@@ -29,7 +29,7 @@ import org.apache.hadoop.hdds.protocol.proto
  */
 public class DeleteBlockCommandStatus extends CommandStatus {
 
-  private ContainerBlocksDeletionACKProto blocksDeletionAck = null;
+  private ContainerBlocksDeletionACKProto blocksDeletionAck;
 
   public DeleteBlockCommandStatus(Type type, Long cmdId,
       StorageContainerDatanodeProtocolProtos.CommandStatus.Status status,

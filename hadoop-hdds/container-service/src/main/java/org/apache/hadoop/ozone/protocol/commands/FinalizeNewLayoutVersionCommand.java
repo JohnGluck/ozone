@@ -33,8 +33,8 @@ import org.apache.hadoop.hdds.protocol.proto
 public class FinalizeNewLayoutVersionCommand
     extends SCMCommand<FinalizeNewLayoutVersionCommandProto> {
 
-  private boolean finalizeUpgrade = false;
-  private LayoutVersionProto layoutInfo;
+  private final boolean finalizeUpgrade;
+  private final LayoutVersionProto layoutInfo;
 
   public FinalizeNewLayoutVersionCommand(boolean finalizeNewLayoutVersion,
                                          LayoutVersionProto layoutInfo,

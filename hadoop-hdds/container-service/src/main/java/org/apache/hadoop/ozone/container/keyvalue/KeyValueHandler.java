@@ -356,7 +356,7 @@ public class KeyValueHandler extends Handler {
       return malformedRequest(request);
     }
 
-    String path = null;
+    String path;
     try {
       checkContainerOpen(kvContainer);
       path = chunkManager

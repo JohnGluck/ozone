@@ -38,8 +38,8 @@ import static org.apache.hadoop.ozone.om.OmMetadataManagerImpl.DELEGATION_TOKEN_
  */
 @CleanupTableInfo(cleanupTables = {DELEGATION_TOKEN_TABLE})
 public class OMRenewDelegationTokenResponse extends OMClientResponse {
-  private OzoneTokenIdentifier ozoneTokenIdentifier;
-  private long renewTime = -1L;
+  private final OzoneTokenIdentifier ozoneTokenIdentifier;
+  private final long renewTime;
 
   public OMRenewDelegationTokenResponse(
       @Nullable OzoneTokenIdentifier ozoneTokenIdentifier,

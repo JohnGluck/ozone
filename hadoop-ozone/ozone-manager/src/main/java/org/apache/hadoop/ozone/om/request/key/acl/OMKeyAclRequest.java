@@ -67,7 +67,7 @@ public abstract class OMKeyAclRequest extends OMClientRequest {
   public OMClientResponse validateAndUpdateCache(OzoneManager ozoneManager, ExecutionContext context) {
     final long trxnLogIndex = context.getIndex();
 
-    OmKeyInfo omKeyInfo = null;
+    OmKeyInfo omKeyInfo;
 
     OMResponse.Builder omResponse = onInit();
     OMClientResponse omClientResponse = null;
@@ -77,9 +77,9 @@ public abstract class OMKeyAclRequest extends OMClientRequest {
     boolean lockAcquired = false;
     String volume = null;
     String bucket = null;
-    String key = null;
+    String key;
     boolean operationResult = false;
-    Result result = null;
+    Result result;
     try {
       ObjectParser objectParser = new ObjectParser(getPath(),
           ObjectType.KEY);
@@ -190,7 +190,6 @@ public abstract class OMKeyAclRequest extends OMClientRequest {
       LOG.error("Invalid Path: " + getPath(), ome);
       // Handle exception
       // defaulting to BucketLayout.DEFAULT
-      return;
     }
   }
 

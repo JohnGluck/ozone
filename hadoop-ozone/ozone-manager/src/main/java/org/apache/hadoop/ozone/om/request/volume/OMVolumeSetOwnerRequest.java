@@ -120,7 +120,7 @@ public class OMVolumeSetOwnerRequest extends OMVolumeRequest {
       long maxUserVolumeCount = ozoneManager.getMaxUserVolumeCount();
       OzoneManagerStorageProtos.PersistedUserVolumeInfo oldOwnerVolumeList;
       OzoneManagerStorageProtos.PersistedUserVolumeInfo newOwnerVolumeList;
-      OmVolumeArgs omVolumeArgs = null;
+      OmVolumeArgs omVolumeArgs;
 
       mergeOmLockDetails(omMetadataManager.getLock().acquireWriteLock(
           VOLUME_LOCK, volume));

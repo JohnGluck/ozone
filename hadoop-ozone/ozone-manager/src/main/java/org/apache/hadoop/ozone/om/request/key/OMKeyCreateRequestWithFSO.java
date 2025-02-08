@@ -82,7 +82,7 @@ public class OMKeyCreateRequestWithFSO extends OMKeyCreateRequest {
     omMetrics.incNumKeyAllocates();
 
     OMMetadataManager omMetadataManager = ozoneManager.getMetadataManager();
-    OmBucketInfo omBucketInfo = null;
+    OmBucketInfo omBucketInfo;
     final List<OmKeyLocationInfo> locations = new ArrayList<>();
 
     boolean acquireLock = false;

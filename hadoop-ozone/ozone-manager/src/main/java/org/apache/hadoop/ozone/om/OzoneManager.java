@@ -2023,7 +2023,7 @@ public final class OzoneManager extends ServiceRuntimeInfoImpl
    * Ratis server.
    */
   private void addOMNodeToPeers(String newOMNodeId) throws IOException {
-    OMNodeDetails newOMNodeDetails = null;
+    OMNodeDetails newOMNodeDetails;
     try {
       newOMNodeDetails = OMNodeDetails.getOMNodeDetailsFromConf(
           getConfiguration(), getOMServiceId(), newOMNodeId);
@@ -3219,18 +3219,16 @@ public final class OzoneManager extends ServiceRuntimeInfoImpl
     metrics.incNumListOpenFiles();
     checkAdminUserPrivilege("list open files.");
 
-    // Using final to make sure they are assigned once and only once in
-    // every branch.
-    final String dbOpenKeyPrefix, dbContTokenPrefix;
-    final String volumeName, bucketName;
+    final String dbOpenKeyPrefix;
+    final String dbContTokenPrefix;
+    final String volumeName;
+    final String bucketName;
     final BucketLayout bucketLayout;
 
     // Process path prefix
     if (path == null || path.isEmpty() || path.equals(OM_KEY_PREFIX)) {
       // path is root
       dbOpenKeyPrefix = "";
-      volumeName = "";
-      bucketName = "";
       // default to FSO's OpenFileTable. TODO: client option to pass OBS/LEGACY?
       bucketLayout = BucketLayout.FILE_SYSTEM_OPTIMIZED;
     } else {

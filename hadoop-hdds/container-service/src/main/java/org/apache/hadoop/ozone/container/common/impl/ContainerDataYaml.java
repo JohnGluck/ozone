@@ -345,7 +345,7 @@ public final class ContainerDataYaml {
         } else if (first == '+') {
           value = value.substring(1);
         }
-        int base = 10;
+        int base;
         if ("0".equals(value)) {
           return Long.valueOf(0);
         } else if (value.startsWith("0b")) {

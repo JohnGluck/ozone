@@ -231,7 +231,8 @@ public class ObjectEndpoint extends EndpointBase {
     boolean auditSuccess = true;
     PerformanceStringBuilder perf = new PerformanceStringBuilder();
 
-    String copyHeader = null, storageType = null;
+    String copyHeader = null;
+    String storageType;
     DigestInputStream digestInputStream = null;
     try {
       if (aclMarker != null) {
@@ -244,7 +245,7 @@ public class ObjectEndpoint extends EndpointBase {
         return putObjectTagging(volume, bucketName, keyPath, body);
       }
 
-      if (uploadID != null && !uploadID.equals("")) {
+      if (uploadID != null && !uploadID.isEmpty()) {
         if (headers.getHeaderString(COPY_SOURCE_HEADER) == null) {
           s3GAction = S3GAction.CREATE_MULTIPART_KEY;
         } else {
@@ -319,7 +320,7 @@ public class ObjectEndpoint extends EndpointBase {
       Map<String, String> tags = getTaggingFromHeaders(headers);
 
       long putLength;
-      String eTag = null;
+      String eTag;
       if (datastreamEnabled && !enableEC && length > datastreamMinLength) {
         perf.appendStreamMode();
         Pair<String, Long> keyWriteResult = ObjectEndpointStreaming
@@ -1423,7 +1424,7 @@ public class ObjectEndpoint extends EndpointBase {
   private Response putObjectTagging(OzoneVolume volume, String bucketName, String keyName, InputStream body)
       throws IOException, OS3Exception {
     long startNanos = Time.monotonicNowNanos();
-    S3Tagging tagging = null;
+    S3Tagging tagging;
     try {
       tagging = new PutTaggingUnmarshaller().readFrom(body);
       tagging.validate();

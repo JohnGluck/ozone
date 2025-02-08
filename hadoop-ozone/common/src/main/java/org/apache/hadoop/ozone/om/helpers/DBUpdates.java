@@ -25,7 +25,7 @@ import java.util.List;
  */
 public class DBUpdates {
 
-  private List<byte[]> dataList = new ArrayList<>();
+  private final List<byte[]> dataList;
 
   private long currentSequenceNumber = -1;
 

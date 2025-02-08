@@ -824,14 +824,13 @@ public final class StorageContainerLocationProtocolServerSideTranslatorPB
       SCMListContainerRequestProto request) throws IOException {
 
     long startContainerID = 0;
-    int count = -1;
 
     // Arguments check.
     if (request.hasStartContainerID()) {
       // End container name is given.
       startContainerID = request.getStartContainerID();
     }
-    count = request.getCount();
+    int count = request.getCount();
     HddsProtos.LifeCycleState state = null;
     HddsProtos.ReplicationFactor factor = null;
     HddsProtos.ReplicationType replicationType = null;

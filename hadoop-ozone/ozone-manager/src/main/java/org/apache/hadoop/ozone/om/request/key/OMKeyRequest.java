@@ -799,7 +799,7 @@ public abstract class OMKeyRequest extends OMClientRequest {
     // If KMS is not enabled, follow the normal approach of execution of not
     // reading DB in pre-execute.
 
-    OmBucketInfo bucketInfo = null;
+    OmBucketInfo bucketInfo;
     if (ozoneManager.getKmsProvider() != null) {
       try {
         mergeOmLockDetails(omMetadataManager.getLock().acquireReadLock(
@@ -838,12 +838,9 @@ public abstract class OMKeyRequest extends OMClientRequest {
       // request will be executed.
 
       if (bucketInfo != null) {
-        Optional<FileEncryptionInfo> encryptionInfo =
-            getFileEncryptionInfo(ozoneManager, bucketInfo);
-        if (encryptionInfo.isPresent()) {
-          newKeyArgs.setFileEncryptionInfo(
-              OMPBHelper.convert(encryptionInfo.get()));
-        }
+        Optional<FileEncryptionInfo> encryptionInfo = getFileEncryptionInfo(ozoneManager, bucketInfo);
+        encryptionInfo.ifPresent(
+            fileEncryptionInfo -> newKeyArgs.setFileEncryptionInfo(OMPBHelper.convert(fileEncryptionInfo)));
       }
     }
   }
@@ -855,7 +852,7 @@ public abstract class OMKeyRequest extends OMClientRequest {
     String volumeName = keyArgs.getVolumeName();
     String bucketName = keyArgs.getBucketName();
 
-    boolean acquireLock = false;
+    boolean acquireLock;
     OMMetadataManager omMetadataManager = ozoneManager.getMetadataManager();
 
     if (ozoneManager.getKmsProvider() != null) {
@@ -1160,7 +1157,7 @@ public abstract class OMKeyRequest extends OMClientRequest {
     // error no such multipart upload.
     String uploadID = args.getMultipartUploadID();
     Preconditions.checkNotNull(uploadID);
-    String multipartKey = "";
+    String multipartKey;
     if (omPathInfo instanceof OMFileRequest.OMPathInfoWithFSO) {
       OMFileRequest.OMPathInfoWithFSO omPathInfoFSO
           = (OMFileRequest.OMPathInfoWithFSO) omPathInfo;

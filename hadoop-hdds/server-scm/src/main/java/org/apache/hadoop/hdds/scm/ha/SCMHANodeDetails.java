@@ -166,14 +166,12 @@ public class SCMHANodeDetails {
                                                  SCMStorageConfig storageConfig)
       throws IOException {
     InetSocketAddress localRpcAddress = null;
-    String localScmServiceId = null;
-    String localScmNodeId = null;
     int localRatisPort = 0;
     int localGrpcPort = 0;
 
     Collection<String> scmServiceIds;
 
-    localScmServiceId = conf.getTrimmed(
+    String localScmServiceId = conf.getTrimmed(
         ScmConfigKeys.OZONE_SCM_DEFAULT_SERVICE_ID);
 
     LOG.info("ServiceID for StorageContainerManager is {}", localScmServiceId);
@@ -192,7 +190,7 @@ public class SCMHANodeDetails {
       scmServiceIds = Collections.singleton(localScmServiceId);
     }
 
-    localScmNodeId = conf.get(ScmConfigKeys.OZONE_SCM_NODE_ID_KEY);
+    String localScmNodeId = conf.get(ScmConfigKeys.OZONE_SCM_NODE_ID_KEY);
     int found = 0;
     boolean isSCMddressSet = false;
 
@@ -212,11 +210,7 @@ public class SCMHANodeDetails {
       boolean isPeer;
       List<SCMNodeDetails> peerNodesList = new ArrayList<>();
       for (String nodeId : scmNodeIds) {
-        if (localScmNodeId != null && !localScmNodeId.equals(nodeId)) {
-          isPeer = true;
-        } else {
-          isPeer = false;
-        }
+        isPeer = localScmNodeId != null && !localScmNodeId.equals(nodeId);
 
         String rpcAddrKey = ConfUtils.addKeySuffixes(
             OZONE_SCM_ADDRESS_KEY, serviceId, nodeId);
@@ -240,7 +234,7 @@ public class SCMHANodeDetails {
         int grpcPort = conf.getInt(grpcPortKey,
             conf.getInt(OZONE_SCM_GRPC_PORT_KEY, OZONE_SCM_GRPC_PORT_DEFAULT));
 
-        InetSocketAddress addr = null;
+        InetSocketAddress addr;
         try {
           addr = NetUtils.createSocketAddr(rpcAddrStr, ratisPort);
         } catch (Exception e) {

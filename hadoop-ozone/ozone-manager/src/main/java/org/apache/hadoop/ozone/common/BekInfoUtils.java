@@ -40,7 +40,6 @@ public final class BekInfoUtils {
   public static BucketEncryptionInfoProto getBekInfo(
       KeyProviderCryptoExtension kmsProvider, BucketEncryptionInfoProto bek)
       throws IOException {
-    BucketEncryptionInfoProto.Builder bekb = null;
     if (kmsProvider == null) {
       throw new OMException("Invalid KMS provider, check configuration " +
           CommonConfigurationKeys.HADOOP_SECURITY_KEY_PROVIDER_PATH,
@@ -60,11 +59,10 @@ public final class BekInfoUtils {
     }
     // If the provider supports pool for EDEKs, this will fill in the pool
     kmsProvider.warmUpEncryptedKeys(bek.getKeyName());
-    bekb = BucketEncryptionInfoProto.newBuilder()
+    return BucketEncryptionInfoProto.newBuilder()
         .setKeyName(bek.getKeyName())
         .setCryptoProtocolVersion(ENCRYPTION_ZONES)
-        .setSuite(OMPBHelper.convert(
-            CipherSuite.convert(metadata.getCipher())));
-    return bekb.build();
+        .setSuite(OMPBHelper.convert(CipherSuite.convert(metadata.getCipher())))
+        .build();
   }
 }

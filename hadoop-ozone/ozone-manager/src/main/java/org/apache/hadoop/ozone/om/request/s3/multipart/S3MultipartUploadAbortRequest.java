@@ -112,21 +112,20 @@ public class S3MultipartUploadAbortRequest extends OMKeyRequest {
 
     String volumeName = keyArgs.getVolumeName();
     String bucketName = keyArgs.getBucketName();
-    final String requestedVolume = volumeName;
-    final String requestedBucket = bucketName;
     String keyName = keyArgs.getKeyName();
 
     ozoneManager.getMetrics().incNumAbortMultipartUploads();
     OMMetadataManager omMetadataManager = ozoneManager.getMetadataManager();
     boolean acquiredLock = false;
     Exception exception = null;
-    OmMultipartKeyInfo multipartKeyInfo = null;
-    String multipartKey = null;
+    OmMultipartKeyInfo multipartKeyInfo;
+    String multipartKey;
     OMResponse.Builder omResponse = OmResponseUtil.getOMResponseBuilder(
         getOmRequest());
     OMClientResponse omClientResponse = null;
-    Result result = null;
-    OmBucketInfo omBucketInfo = null;
+    Result result;
+    OmBucketInfo omBucketInfo;
+
     try {
       mergeOmLockDetails(
           omMetadataManager.getLock().acquireWriteLock(BUCKET_LOCK, volumeName,
@@ -145,8 +144,8 @@ public class S3MultipartUploadAbortRequest extends OMKeyRequest {
                 bucketName, keyName, omMetadataManager);
       } catch (OMException ome) {
         throw new OMException(
-            "Abort Multipart Upload Failed: volume: " + requestedVolume
-                + ", bucket: " + requestedBucket + ", key: " + keyName, ome,
+            "Abort Multipart Upload Failed: volume: " + volumeName
+                + ", bucket: " + bucketName + ", key: " + keyName, ome,
             OMException.ResultCodes.NO_SUCH_MULTIPART_UPLOAD_ERROR);
       }
 
@@ -158,7 +157,7 @@ public class S3MultipartUploadAbortRequest extends OMKeyRequest {
       // upload initiated for this key.
       if (omKeyInfo == null) {
         throw new OMException("Abort Multipart Upload Failed: volume: " +
-            requestedVolume + "bucket: " + requestedBucket + "key: " + keyName,
+                                  volumeName + "bucket: " + bucketName + "key: " + keyName,
             OMException.ResultCodes.NO_SUCH_MULTIPART_UPLOAD_ERROR);
       }
 

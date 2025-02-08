@@ -16,6 +16,10 @@
  */
 package org.apache.hadoop.ozone.container.common.states.datanode;
 
+import static org.apache.hadoop.hdds.HddsUtils.getReconAddresses;
+import static org.apache.hadoop.hdds.HddsUtils.getSCMAddressForDatanodes;
+
+import com.google.common.base.Strings;
 import java.io.File;
 import java.io.IOException;
 import java.net.InetSocketAddress;
@@ -26,7 +30,6 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
-
 import org.apache.hadoop.hdds.conf.ConfigurationSource;
 import org.apache.hadoop.hdds.protocol.DatanodeDetails;
 import org.apache.hadoop.hdds.utils.HddsServerUtil;
@@ -35,10 +38,6 @@ import org.apache.hadoop.ozone.container.common.statemachine.DatanodeStateMachin
 import org.apache.hadoop.ozone.container.common.statemachine.SCMConnectionManager;
 import org.apache.hadoop.ozone.container.common.statemachine.StateContext;
 import org.apache.hadoop.ozone.container.common.states.DatanodeState;
-
-import com.google.common.base.Strings;
-import static org.apache.hadoop.hdds.HddsUtils.getReconAddresses;
-import static org.apache.hadoop.hdds.HddsUtils.getSCMAddressForDatanodes;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -76,7 +75,7 @@ public class InitDatanodeState implements DatanodeState,
    */
   @Override
   public DatanodeStateMachine.DatanodeStates call() throws Exception {
-    Collection<InetSocketAddress> addresses = null;
+    Collection<InetSocketAddress> addresses;
     try {
       addresses = getSCMAddressForDatanodes(conf);
     } catch (IllegalArgumentException e) {

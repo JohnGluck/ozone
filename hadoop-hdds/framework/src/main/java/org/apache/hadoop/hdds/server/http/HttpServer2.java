@@ -1095,7 +1095,7 @@ public final class HttpServer2 implements FilterContainer {
    *   on CLASSPATH or in the development location.
    */
   private String getWebAppsPath(String appName) throws FileNotFoundException {
-    URL resourceUrl = null;
+    URL resourceUrl;
     File webResourceDevLocation = new File("src/main/webapps", appName);
     if (webResourceDevLocation.exists()) {
       LOG.info("Web server is in development mode. Resources "
@@ -1287,7 +1287,7 @@ public final class HttpServer2 implements FilterContainer {
    */
   private void bindForPortRange(ServerConnector listener, int startPort)
       throws Exception {
-    IOException ioException = null;
+    IOException ioException;
     try {
       bindListener(listener);
       return;

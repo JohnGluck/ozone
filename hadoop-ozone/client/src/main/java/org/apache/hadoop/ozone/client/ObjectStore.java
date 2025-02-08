@@ -399,8 +399,8 @@ public class ObjectStore {
    */
   private class VolumeIterator implements Iterator<OzoneVolume> {
 
-    private String user = null;
-    private String volPrefix = null;
+    private final String user;
+    private final String volPrefix;
 
     private Iterator<OzoneVolume> currentIterator;
     private OzoneVolume currentValue;

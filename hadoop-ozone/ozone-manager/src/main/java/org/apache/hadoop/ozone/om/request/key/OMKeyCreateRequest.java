@@ -112,8 +112,8 @@ public class OMKeyCreateRequest extends OMKeyRequest {
     // validateAndUpdateCache and return to the client. TODO: See if we can fix
     //  this. We do not call allocateBlock in openKey for multipart upload.
 
-    CreateKeyRequest.Builder newCreateKeyRequest = null;
-    KeyArgs.Builder newKeyArgs = null;
+    CreateKeyRequest.Builder newCreateKeyRequest;
+    KeyArgs.Builder newKeyArgs;
     if (!keyArgs.getIsMultipartKey()) {
 
       long scmBlockSize = ozoneManager.getScmBlockSize();
@@ -202,7 +202,7 @@ public class OMKeyCreateRequest extends OMKeyRequest {
 
     OMMetadataManager omMetadataManager = ozoneManager.getMetadataManager();
     OzoneLockStrategy ozoneLockStrategy = getOzoneLockStrategy(ozoneManager);
-    OmKeyInfo omKeyInfo = null;
+    OmKeyInfo omKeyInfo;
     final List< OmKeyLocationInfo > locations = new ArrayList<>();
 
     boolean acquireLock = false;
@@ -210,7 +210,7 @@ public class OMKeyCreateRequest extends OMKeyRequest {
     OMResponse.Builder omResponse = OmResponseUtil.getOMResponseBuilder(
         getOmRequest());
     Exception exception = null;
-    Result result = null;
+    Result result;
     List<OmKeyInfo> missingParentInfos = null;
     int numMissingParents = 0;
     try {

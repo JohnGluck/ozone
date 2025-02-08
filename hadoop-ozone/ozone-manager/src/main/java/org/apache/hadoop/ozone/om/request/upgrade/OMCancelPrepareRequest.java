@@ -63,7 +63,7 @@ public class OMCancelPrepareRequest extends OMClientRequest {
     OMResponse.Builder responseBuilder =
         OmResponseUtil.getOMResponseBuilder(omRequest);
     responseBuilder.setCmdType(Type.CancelPrepare);
-    OMClientResponse response = null;
+    OMClientResponse response;
     Exception exception = null;
 
     try {

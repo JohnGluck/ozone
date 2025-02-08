@@ -66,14 +66,14 @@ public class HttpFSServerMetrics {
   private @Metric MutableCounterLong opsStat;
   private @Metric MutableCounterLong opsCheckAccess;
 
-  private final MetricsRegistry registry = new MetricsRegistry("httpfsserver");
   private final String name;
-  private JvmMetrics jvmMetrics = null;
+  private final JvmMetrics jvmMetrics;
 
   public HttpFSServerMetrics(String name, String sessionId,
       final JvmMetrics jvmMetrics) {
     this.name = name;
     this.jvmMetrics = jvmMetrics;
+    MetricsRegistry registry = new MetricsRegistry("httpfsserver");
     registry.tag(SessionId, sessionId);
   }
 

@@ -79,7 +79,7 @@ public class ValueSchema extends AbstractSubcommand implements Callable<Void> {
       throw new IOException("depth should be specified in the range [0, 10]");
     }
 
-    boolean success = true;
+    boolean success;
 
     String dbPath = parent.getDbPath();
     Map<String, Object> fields = new HashMap<>();

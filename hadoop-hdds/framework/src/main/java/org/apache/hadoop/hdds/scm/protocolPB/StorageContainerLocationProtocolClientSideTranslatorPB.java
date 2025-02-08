@@ -361,7 +361,7 @@ public final class StorageContainerLocationProtocolClientSideTranslatorPB
             .setTraceID(TracingUtil.exportCurrentSpan())
             .addAllContainerIDs(containerIDs)
             .build();
-    ScmContainerLocationResponse response = null;
+    ScmContainerLocationResponse response;
     List<ContainerWithPipeline> cps = new ArrayList<>();
     try {
       response = submitRequest(Type.GetExistContainerWithPipelinesInBatch,

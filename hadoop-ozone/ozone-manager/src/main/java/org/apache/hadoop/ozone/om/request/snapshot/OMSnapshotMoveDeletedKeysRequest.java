@@ -70,8 +70,8 @@ public class OMSnapshotMoveDeletedKeysRequest extends OMClientRequest {
 
     // If there is no Non-Deleted Snapshot move the
     // keys to Active Object Store.
-    SnapshotInfo nextSnapshot = null;
-    OMClientResponse omClientResponse = null;
+    SnapshotInfo nextSnapshot;
+    OMClientResponse omClientResponse;
     OzoneManagerProtocolProtos.OMResponse.Builder omResponse =
         OmResponseUtil.getOMResponseBuilder(getOmRequest());
     try {

@@ -146,9 +146,10 @@ public class OMKeyRenameRequest extends OMKeyRequest {
     boolean acquiredLock = false;
     OMClientResponse omClientResponse = null;
     Exception exception = null;
-    OmKeyInfo fromKeyValue = null;
-    String toKey = null, fromKey = null;
-    Result result = null;
+    OmKeyInfo fromKeyValue;
+    String toKey;
+    String fromKey;
+    Result result;
     try {
       if (toKeyName.length() == 0 || fromKeyName.length() == 0) {
         throw new OMException("Key name is empty",

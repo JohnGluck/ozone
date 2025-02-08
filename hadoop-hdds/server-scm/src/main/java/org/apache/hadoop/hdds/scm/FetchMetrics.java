@@ -20,13 +20,11 @@ package org.apache.hadoop.hdds.scm;
 import com.fasterxml.jackson.core.JsonEncoding;
 import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.core.JsonGenerator;
-
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.lang.management.ManagementFactory;
 import java.lang.reflect.Array;
 import java.nio.charset.StandardCharsets;
-import java.util.Iterator;
 import java.util.Set;
 import javax.management.AttributeNotFoundException;
 import javax.management.InstanceNotFoundException;
@@ -37,14 +35,12 @@ import javax.management.MBeanInfo;
 import javax.management.MBeanServer;
 import javax.management.MalformedObjectNameException;
 import javax.management.ObjectName;
-import javax.management.QueryExp;
 import javax.management.ReflectionException;
 import javax.management.RuntimeErrorException;
 import javax.management.RuntimeMBeanException;
 import javax.management.openmbean.CompositeData;
 import javax.management.openmbean.CompositeType;
 import javax.management.openmbean.TabularData;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -53,8 +49,8 @@ import org.slf4j.LoggerFactory;
  */
 public class FetchMetrics {
   private static final Logger LOG = LoggerFactory.getLogger(FetchMetrics.class);
-  private transient MBeanServer mBeanServer;
-  private transient JsonFactory jsonFactory;
+  private final transient MBeanServer mBeanServer;
+  private final transient JsonFactory jsonFactory;
 
   public FetchMetrics() {
     this.mBeanServer = ManagementFactory.getPlatformMBeanServer();
@@ -89,42 +85,40 @@ public class FetchMetrics {
 
   private void listBeans(JsonGenerator jg, ObjectName qry)
       throws IOException {
-    LOG.debug("Listing beans for " + qry);
-    Set<ObjectName> names = null;
-    names = this.mBeanServer.queryNames(qry, (QueryExp) null);
+    LOG.debug("Listing beans for {}", qry);
+    Set<ObjectName> names;
+    names = this.mBeanServer.queryNames(qry, null);
     jg.writeArrayFieldStart("beans");
-    Iterator<ObjectName> it = names.iterator();
 
-    while (it.hasNext()) {
-      ObjectName oname = (ObjectName) it.next();
-      String code = "";
+    for (ObjectName objectName : names) {
+      String code;
 
       MBeanInfo minfo;
       try {
-        minfo = this.mBeanServer.getMBeanInfo(oname);
+        minfo = this.mBeanServer.getMBeanInfo(objectName);
         code = minfo.getClassName();
         String prs = "";
 
         try {
           if ("org.apache.commons.modeler.BaseModelMBean".equals(code)) {
             prs = "modelerType";
-            code = (String) this.mBeanServer.getAttribute(oname, prs);
+            code = (String) this.mBeanServer.getAttribute(objectName, prs);
           }
         } catch (AttributeNotFoundException | MBeanException | RuntimeException | ReflectionException ex) {
-          LOG.error("getting attribute " + prs + " of " + oname + " threw an exception", ex);
+          LOG.error("getting attribute {} of {} threw an exception", prs, objectName, ex);
         }
       } catch (InstanceNotFoundException var17) {
         continue;
       } catch (IntrospectionException | ReflectionException ex) {
-        LOG.error("Problem while trying to process JMX query: " + qry + " with MBean " + oname, ex);
+        LOG.error("Problem while trying to process JMX query: {} with MBean {}", qry, objectName, ex);
         continue;
       }
       jg.writeStartObject();
-      jg.writeStringField("name", oname.toString());
+      jg.writeStringField("name", objectName.toString());
       jg.writeStringField("modelerType", code);
       MBeanAttributeInfo[] attrs = minfo.getAttributes();
       for (int i = 0; i < attrs.length; ++i) {
-        this.writeAttribute(jg, oname, attrs[i]);
+        this.writeAttribute(jg, objectName, attrs[i]);
       }
       jg.writeEndObject();
     }
@@ -135,8 +129,8 @@ public class FetchMetrics {
     if (attr.isReadable()) {
       String attName = attr.getName();
       if (!"modelerType".equals(attName)) {
-        if (attName.indexOf("=") < 0 && attName.indexOf(":") < 0 && attName.indexOf(" ") < 0) {
-          Object value = null;
+        if (!attName.contains("=") && !attName.contains(":") && !attName.contains(" ")) {
+          Object value;
 
           try {
             value = this.mBeanServer.getAttribute(oname, attName);
@@ -148,7 +142,7 @@ public class FetchMetrics {
             }
             return;
           } catch (RuntimeErrorException var8) {
-            LOG.error("getting attribute {} of {} threw an exception", new Object[]{attName, oname, var8});
+            LOG.error("getting attribute {} of {} threw an exception", attName, oname, var8);
             return;
           } catch (MBeanException | RuntimeException | ReflectionException ex) {
             LOG.error("getting attribute " + attName + " of " + oname + " threw an exception", ex);
@@ -194,10 +188,8 @@ public class FetchMetrics {
         CompositeType comp = cds.getCompositeType();
         Set<String> keys = comp.keySet();
         jg.writeStartObject();
-        Iterator var7 = keys.iterator();
 
-        while (var7.hasNext()) {
-          String key = (String) var7.next();
+        for (String key : keys) {
           this.writeAttribute(jg, key, cds.get(key));
         }
 
@@ -205,10 +197,9 @@ public class FetchMetrics {
       } else if (value instanceof TabularData) {
         TabularData tds = (TabularData) value;
         jg.writeStartArray();
-        Iterator var14 = tds.values().iterator();
 
-        while (var14.hasNext()) {
-          entry = var14.next();
+        for (Object o : tds.values()) {
+          entry = o;
           this.writeObject(jg, entry);
         }
         jg.writeEndArray();

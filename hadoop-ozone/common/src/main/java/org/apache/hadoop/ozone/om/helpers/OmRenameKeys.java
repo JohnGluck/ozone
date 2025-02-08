@@ -18,7 +18,6 @@
 
 package org.apache.hadoop.ozone.om.helpers;
 
-import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -26,10 +25,10 @@ import java.util.Map;
  */
 public class OmRenameKeys {
 
-  private String volume;
-  private String bucket;
-  private Map<String, String> fromAndToKey = new HashMap<>();
-  private Map<String, OmKeyInfo> fromKeyAndToKeyInfo = new HashMap<>();
+  private final String volume;
+  private final String bucket;
+  private final Map<String, String> fromAndToKey;
+  private final Map<String, OmKeyInfo> fromKeyAndToKeyInfo;
 
   public OmRenameKeys(String volume, String bucket,
                       Map<String, String> fromAndToKey,

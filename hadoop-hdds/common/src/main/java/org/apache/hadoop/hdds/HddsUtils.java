@@ -141,7 +141,7 @@ public final class HddsUtils {
       return scmAddressList;
     } else {
       String address = conf.getTrimmed(OZONE_SCM_CLIENT_ADDRESS_KEY);
-      int port = -1;
+      int port;
 
       if (address == null) {
         // fall back to ozone.scm.names for non-ha
@@ -375,7 +375,6 @@ public final class HddsUtils {
 
       if (dnsInterface == null) {
         // Try the legacy configuration keys.
-        dnsInterface = conf.get(DFS_DATANODE_DNS_INTERFACE_KEY);
         dnsInterface = conf.get(DFS_DATANODE_DNS_INTERFACE_KEY);
         nameServer = conf.get(DFS_DATANODE_DNS_NAMESERVER_KEY);
       } else {

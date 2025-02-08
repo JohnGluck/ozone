@@ -19,15 +19,14 @@
 
 package org.apache.hadoop.hdds.scm.proxy;
 
-import org.apache.hadoop.hdds.conf.Config;
-import org.apache.hadoop.hdds.conf.ConfigGroup;
-import org.apache.hadoop.hdds.conf.ConfigType;
-
-import java.util.concurrent.TimeUnit;
-
 import static org.apache.hadoop.hdds.conf.ConfigTag.CLIENT;
 import static org.apache.hadoop.hdds.conf.ConfigTag.OZONE;
 import static org.apache.hadoop.hdds.conf.ConfigTag.SCM;
+
+import java.util.concurrent.TimeUnit;
+import org.apache.hadoop.hdds.conf.Config;
+import org.apache.hadoop.hdds.conf.ConfigGroup;
+import org.apache.hadoop.hdds.conf.ConfigType;
 
 /**
  * Config for SCM Block Client.
@@ -89,12 +88,13 @@ public class SCMClientConfig {
   }
 
   public void setRpcTimeOut(long timeOut) {
-    // As at the end this value should not exceed MAX_VALUE, as underlying
+    // As at the end this value should not exceed MAX_VALUE, as the underlying
     // Rpc layer SocketTimeout parameter is int.
-    if (rpcTimeOut > Integer.MAX_VALUE) {
+    if (timeOut > Integer.MAX_VALUE) {
       this.rpcTimeOut = Integer.MAX_VALUE;
+    } else {
+      this.rpcTimeOut = timeOut;
     }
-    this.rpcTimeOut = timeOut;
   }
 
   public int getRetryCount() {

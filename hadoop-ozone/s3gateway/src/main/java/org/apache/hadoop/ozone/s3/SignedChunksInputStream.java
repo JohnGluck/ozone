@@ -77,8 +77,8 @@ public class SignedChunksInputStream extends InputStream {
     int currentOff = off;
     int currentLen = len;
     int totalReadBytes = 0;
-    int realReadLen = 0;
-    int maxReadLen = 0;
+    int realReadLen;
+    int maxReadLen;
     do {
       if (remainingData > 0) {
         maxReadLen = Math.min(remainingData, currentLen);

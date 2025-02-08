@@ -404,7 +404,7 @@ public class RootCARotationManager extends StatefulService {
             scm.shutDown(message);
           }
 
-          String newRootCertId = "";
+          String newRootCertId;
           X509Certificate newRootCertificate;
           try {
             // prevent findbugs false alert

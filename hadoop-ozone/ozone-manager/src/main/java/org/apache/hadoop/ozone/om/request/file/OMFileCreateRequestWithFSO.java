@@ -97,7 +97,7 @@ public class OMFileCreateRequestWithFSO extends OMFileCreateRequest {
 
     boolean acquiredLock = false;
 
-    OmBucketInfo omBucketInfo = null;
+    OmBucketInfo omBucketInfo;
     final List<OmKeyLocationInfo> locations = new ArrayList<>();
     List<OmDirectoryInfo> missingParentInfos;
     int numKeysCreated = 0;
@@ -106,9 +106,9 @@ public class OMFileCreateRequestWithFSO extends OMFileCreateRequest {
     OMResponse.Builder omResponse = OmResponseUtil.getOMResponseBuilder(
         getOmRequest());
     Exception exception = null;
-    Result result = null;
+    Result result;
     try {
-      if (keyName.length() == 0) {
+      if (keyName.isEmpty()) {
         // Check if this is the root of the filesystem.
         throw new OMException("Can not write to directory: " + keyName,
                 OMException.ResultCodes.NOT_A_FILE);

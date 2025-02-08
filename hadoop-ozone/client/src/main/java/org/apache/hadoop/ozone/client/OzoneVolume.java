@@ -498,12 +498,12 @@ public class OzoneVolume extends WithMetadata {
    */
   private class BucketIterator implements Iterator<OzoneBucket> {
 
-    private String bucketPrefix = null;
+    private final String bucketPrefix;
 
     private Iterator<OzoneBucket> currentIterator;
     private OzoneBucket currentValue;
 
-    private boolean hasSnapshot;
+    private final boolean hasSnapshot;
 
     /**
      * Creates an Iterator to iterate over all buckets after prevBucket in

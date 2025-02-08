@@ -203,6 +203,7 @@ public class RocksDBStoreMetrics implements MetricsSource {
    * Collect info from rocksdb property.
    * @param rb Metrics Record Builder.
    */
+  @SuppressWarnings("PMD.UnusedAssignment")
   private void getDBPropertyData(MetricsRecordBuilder rb) {
     int index = 0;
     try {

@@ -68,12 +68,12 @@ public final class S3Utils {
       String s3StorageTypeHeader, ReplicationConfig clientConfiguredReplConfig,
       ReplicationConfig bucketReplConfig)
       throws OS3Exception {
-    ReplicationConfig clientDeterminedReplConfig = null;
+    ReplicationConfig clientDeterminedReplConfig;
 
     // Let's map the user provided s3 storage type header to ozone s3 storage
     // type.
     S3StorageType s3StorageType = null;
-    if (s3StorageTypeHeader != null && !s3StorageTypeHeader.equals("")) {
+    if (s3StorageTypeHeader != null && !s3StorageTypeHeader.isEmpty()) {
       s3StorageType = toS3StorageType(s3StorageTypeHeader);
     }
 

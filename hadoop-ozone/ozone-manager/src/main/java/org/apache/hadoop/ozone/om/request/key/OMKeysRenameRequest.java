@@ -106,11 +106,11 @@ public class OMKeysRenameRequest extends OMKeyRequest {
 
     OMMetadataManager omMetadataManager = ozoneManager.getMetadataManager();
     Exception exception = null;
-    OmKeyInfo fromKeyValue = null;
-    Result result = null;
+    OmKeyInfo fromKeyValue;
+    Result result;
     Map<String, String> auditMap = new LinkedHashMap<>();
-    String fromKeyName = null;
-    String toKeyName = null;
+    String fromKeyName;
+    String toKeyName;
     boolean acquiredLock = false;
     boolean renameStatus = true;
 
@@ -134,7 +134,7 @@ public class OMKeysRenameRequest extends OMKeyRequest {
         toKeyName = renameKey.getToKeyName();
         RenameKeysMap.Builder unRenameKey = RenameKeysMap.newBuilder();
 
-        if (toKeyName.length() == 0 || fromKeyName.length() == 0) {
+        if (toKeyName.isEmpty() || fromKeyName.isEmpty()) {
           renameStatus = false;
           unRenamedKeys.add(
               unRenameKey.setFromKeyName(fromKeyName).setToKeyName(toKeyName)

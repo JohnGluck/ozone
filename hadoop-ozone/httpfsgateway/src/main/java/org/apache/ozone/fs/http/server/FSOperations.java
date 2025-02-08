@@ -1571,7 +1571,7 @@ public final class FSOperations {
      */
     @Override
     public Map execute(FileSystem fs) throws IOException {
-      Map<String, byte[]> xattrs = null;
+      Map<String, byte[]> xattrs;
       if (names != null && !names.isEmpty()) {
         xattrs = fs.getXAttrs(path, names);
       } else {
@@ -1585,7 +1585,6 @@ public final class FSOperations {
    * Executor that performs a getAllStoragePolicies FileSystemAccess files
    * system operation.
    */
-  @SuppressWarnings({ "unchecked" })
   @InterfaceAudience.Private
   public static class FSGetAllStoragePolicies implements
       FileSystemAccess.FileSystemExecutor<JSONObject> {
@@ -1888,13 +1887,6 @@ public final class FSOperations {
    */
   @InterfaceAudience.Private
   public static class FSGetSnapshottableDirListing implements FileSystemAccess.FileSystemExecutor<String> {
-
-    /**
-     * Creates a getSnapshottableDirListing executor.
-     */
-    public FSGetSnapshottableDirListing() {
-    }
-
     /**
      * Executes the filesystem operation.
      * @param fs filesystem instance to use.
@@ -1903,7 +1895,7 @@ public final class FSOperations {
      */
     @Override
     public String execute(FileSystem fs) throws IOException {
-      SnapshottableDirectoryStatus[] sds = null;
+      SnapshottableDirectoryStatus[] sds;
       if (fs instanceof DistributedFileSystem) {
         DistributedFileSystem dfs = (DistributedFileSystem) fs;
         sds = dfs.getSnapshottableDirListing();
@@ -2030,16 +2022,16 @@ public final class FSOperations {
 
     @Override
     public String execute(FileSystem fs) throws IOException {
-      ErasureCodingPolicy policy = null;
       if (fs instanceof DistributedFileSystem) {
         DistributedFileSystem dfs = (DistributedFileSystem) fs;
-        policy = dfs.getErasureCodingPolicy(path);
+        ErasureCodingPolicy policy = dfs.getErasureCodingPolicy(path);
+
+        return JsonUtil.toJsonString(policy);
       } else {
         throw new UnsupportedOperationException("getErasureCodingPolicy is "
             + "not supported for HttpFs on " + fs.getClass()
             + ". Please check your fs.defaultFS configuration");
       }
-      return JsonUtil.toJsonString(policy);
     }
   }
 

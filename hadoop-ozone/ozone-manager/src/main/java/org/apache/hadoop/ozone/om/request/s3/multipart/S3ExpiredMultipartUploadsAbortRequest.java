@@ -100,9 +100,9 @@ public class S3ExpiredMultipartUploadsAbortRequest extends OMKeyRequest {
     OzoneManagerProtocolProtos.OMResponse.Builder omResponse =
         OmResponseUtil.getOMResponseBuilder(getOmRequest());
 
-    IOException exception = null;
+    IOException exception;
     OMClientResponse omClientResponse = null;
-    Result result = null;
+    Result result;
     Map<OmBucketInfo, List<OmMultipartAbortInfo>>
         abortedMultipartUploads = new HashMap<>();
 
@@ -199,9 +199,9 @@ public class S3ExpiredMultipartUploadsAbortRequest extends OMKeyRequest {
     String volumeName = mpusPerBucket.getVolumeName();
     String bucketName = mpusPerBucket.getBucketName();
     OMMetadataManager omMetadataManager = ozoneManager.getMetadataManager();
-    OmBucketInfo omBucketInfo = null;
-    BucketLayout bucketLayout = null;
-    OMLockDetails omLockDetails = null;
+    OmBucketInfo omBucketInfo;
+    BucketLayout bucketLayout;
+    OMLockDetails omLockDetails;
     try {
       omLockDetails = omMetadataManager.getLock()
           .acquireWriteLock(BUCKET_LOCK, volumeName, bucketName);

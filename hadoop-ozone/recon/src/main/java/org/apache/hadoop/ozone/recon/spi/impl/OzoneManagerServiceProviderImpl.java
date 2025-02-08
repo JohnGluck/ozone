@@ -114,8 +114,8 @@ public class OzoneManagerServiceProviderImpl
       LoggerFactory.getLogger(OzoneManagerServiceProviderImpl.class);
   private URLConnectionFactory connectionFactory;
 
-  private File omSnapshotDBParentDir = null;
-  private File reconDbDir = null;
+  private File omSnapshotDBParentDir;
+  private File reconDbDir;
   private String omDBSnapshotUrl;
 
   private OzoneManagerProtocol ozoneManagerClient;

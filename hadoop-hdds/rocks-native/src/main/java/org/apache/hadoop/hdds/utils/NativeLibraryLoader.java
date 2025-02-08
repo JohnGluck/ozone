@@ -18,13 +18,9 @@
 
 package org.apache.hadoop.hdds.utils;
 
-import com.google.common.annotations.VisibleForTesting;
-import org.apache.commons.lang3.tuple.Pair;
-import org.apache.hadoop.fs.FileUtil;
-import org.apache.hadoop.ozone.util.ShutdownHookManager;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import static org.apache.hadoop.hdds.utils.NativeConstants.ROCKS_TOOLS_NATIVE_LIBRARY_NAME;
 
+import com.google.common.annotations.VisibleForTesting;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -37,8 +33,11 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
-
-import static org.apache.hadoop.hdds.utils.NativeConstants.ROCKS_TOOLS_NATIVE_LIBRARY_NAME;
+import org.apache.commons.lang3.tuple.Pair;
+import org.apache.hadoop.fs.FileUtil;
+import org.apache.hadoop.ozone.util.ShutdownHookManager;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Class to load Native Libraries.
@@ -122,7 +121,6 @@ public class NativeLibraryLoader {
     LOG.info("Loading Library: {}", libraryName);
     boolean loaded = false;
     try {
-      loaded = false;
       try {
         System.loadLibrary(libraryName);
         loaded = true;

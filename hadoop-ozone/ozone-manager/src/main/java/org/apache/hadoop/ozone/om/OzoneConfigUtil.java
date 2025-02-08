@@ -39,7 +39,7 @@ public final class OzoneConfigUtil {
       HddsProtos.ECReplicationConfig clientECReplicationConfig,
       DefaultReplicationConfig bucketDefaultReplicationConfig,
       OzoneManager ozoneManager) throws OMException {
-    ReplicationConfig replicationConfig = null;
+    ReplicationConfig replicationConfig;
     if (clientType != HddsProtos.ReplicationType.NONE) {
       // Client passed the replication config, so let's use it.
       replicationConfig = ReplicationConfig

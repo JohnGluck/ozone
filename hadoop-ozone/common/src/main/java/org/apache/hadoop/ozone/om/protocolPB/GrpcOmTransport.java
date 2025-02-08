@@ -183,7 +183,7 @@ public class GrpcOmTransport implements OmTransport {
   public OMResponse submitRequest(OMRequest payload) throws IOException {
     AtomicReference<OMResponse> resp = new AtomicReference<>();
     boolean tryOtherHost = true;
-    int expectedFailoverCount = 0;
+    int expectedFailoverCount;
     ResultCodes resultCode = ResultCodes.INTERNAL_ERROR;
     while (tryOtherHost) {
       tryOtherHost = false;
@@ -218,7 +218,7 @@ public class GrpcOmTransport implements OmTransport {
   }
 
   private Exception unwrapException(Exception ex) {
-    Exception grpcException = null;
+    Exception grpcException;
     try {
       StatusRuntimeException srexp =
           (StatusRuntimeException)ex.getCause();
@@ -234,7 +234,7 @@ public class GrpcOmTransport implements OmTransport {
         Constructor<? extends Exception> cn = cls.getConstructor(String.class);
         cn.setAccessible(true);
         grpcException = cn.newInstance(status.getDescription());
-        IOException remote = null;
+        IOException remote;
         try {
           String cause = status.getDescription();
           cause = cause.substring(cause.indexOf(":") + 2);
@@ -253,16 +253,16 @@ public class GrpcOmTransport implements OmTransport {
       }
     } catch (Exception e) {
       grpcException = new IOException(e);
-      LOG.error("error unwrapping exception from OMResponse {}");
+      LOG.error("error unwrapping exception from OMResponse", e);
     }
     return grpcException;
   }
 
   private boolean shouldRetry(Exception ex, int expectedFailoverCount) {
     boolean retry = false;
-    RetryPolicy.RetryAction action = null;
+    RetryPolicy.RetryAction action;
     try {
-      action = retryPolicy.shouldRetry((Exception)ex, 0, failoverCount++, true);
+      action = retryPolicy.shouldRetry(ex, 0, failoverCount++, true);
       LOG.debug("grpc failover retry action {}", action.action);
       if (action.action == RetryPolicy.RetryAction.RetryDecision.FAIL) {
         retry = false;
@@ -294,7 +294,7 @@ public class GrpcOmTransport implements OmTransport {
         }
       }
     } catch (Exception e) {
-      LOG.error("Failed failover exception {}", e);
+      LOG.error("Failed failover exception", e);
     }
     return retry;
   }
@@ -312,7 +312,7 @@ public class GrpcOmTransport implements OmTransport {
       try {
         channel.awaitTermination(5, TimeUnit.SECONDS);
       } catch (Exception e) {
-        LOG.error("failed to shutdown OzoneManagerServiceGrpc channel {} : {}",
+        LOG.error("failed to shutdown OzoneManagerServiceGrpc channel {} :",
             entry.getKey(), e);
       }
     }

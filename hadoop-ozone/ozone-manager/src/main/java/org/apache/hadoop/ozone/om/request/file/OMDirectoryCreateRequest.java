@@ -175,7 +175,7 @@ public class OMDirectoryCreateRequest extends OMKeyRequest {
       OMFileRequest.OMDirectoryResult omDirectoryResult =
           omPathInfo.getDirectoryResult();
 
-      OmKeyInfo dirKeyInfo = null;
+      OmKeyInfo dirKeyInfo;
       if (omDirectoryResult == FILE_EXISTS ||
           omDirectoryResult == FILE_EXISTS_IN_GIVENPATH) {
         throw new OMException("Unable to create directory: " + keyName

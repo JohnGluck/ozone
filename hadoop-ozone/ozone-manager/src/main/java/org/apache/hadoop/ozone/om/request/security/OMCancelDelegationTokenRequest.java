@@ -94,7 +94,7 @@ public class OMCancelDelegationTokenRequest extends OMClientRequest {
     AuditLogger auditLogger = ozoneManager.getAuditLogger();
     Map<String, String> auditMap = buildTokenAuditMap(token);
 
-    OMClientResponse omClientResponse = null;
+    OMClientResponse omClientResponse;
     OMResponse.Builder omResponse = OmResponseUtil.getOMResponseBuilder(
         getOmRequest());
     OzoneTokenIdentifier ozoneTokenIdentifier = null;

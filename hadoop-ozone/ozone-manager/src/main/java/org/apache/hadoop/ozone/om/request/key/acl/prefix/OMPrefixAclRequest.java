@@ -68,7 +68,7 @@ public abstract class OMPrefixAclRequest extends OMClientRequest {
     OzoneObj resolvedPrefixObj = null;
     OMPrefixAclOpResult operationResult;
     boolean opResult = false;
-    Result result = null;
+    Result result;
 
     PrefixManagerImpl prefixManager =
         (PrefixManagerImpl) ozoneManager.getPrefixManager();

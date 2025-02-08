@@ -79,7 +79,7 @@ public class OMPrepareRequest extends OMClientRequest {
     OMResponse.Builder responseBuilder =
         OmResponseUtil.getOMResponseBuilder(omRequest);
     responseBuilder.setCmdType(Type.Prepare);
-    OMClientResponse response = null;
+    OMClientResponse response;
     Exception exception = null;
 
     // Allow double buffer this many seconds to flush all transactions before

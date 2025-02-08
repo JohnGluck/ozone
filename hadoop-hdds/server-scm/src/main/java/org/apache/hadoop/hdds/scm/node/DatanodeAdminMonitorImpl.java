@@ -94,9 +94,9 @@ public class DatanodeAdminMonitorImpl implements DatanodeAdminMonitor {
    */
   public static final class TrackedNode {
 
-    private DatanodeDetails datanodeDetails;
-    private long startTime = 0L;
-    private Map<String, List<ContainerID>> containersReplicatedOnNode = new ConcurrentHashMap<>();
+    private final DatanodeDetails datanodeDetails;
+    private final long startTime;
+    private final Map<String, List<ContainerID>> containersReplicatedOnNode = new ConcurrentHashMap<>();
 
     public TrackedNode(DatanodeDetails datanodeDetails, long startTime) {
       this.datanodeDetails = datanodeDetails;

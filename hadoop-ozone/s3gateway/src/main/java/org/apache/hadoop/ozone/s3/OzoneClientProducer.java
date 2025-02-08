@@ -52,7 +52,7 @@ public class OzoneClientProducer {
   public synchronized OzoneClient createClient() throws WebApplicationException,
       IOException {
     ozoneConfiguration.set("ozone.om.group.rights", "NONE");
-    client = getClient(ozoneConfiguration);
+    client = getClient();
     return client;
   }
 
@@ -61,12 +61,11 @@ public class OzoneClientProducer {
     client.getObjectStore().getClientProxy().clearThreadLocalS3Auth();
   }
 
-  private OzoneClient getClient(OzoneConfiguration config)
+  private OzoneClient getClient()
       throws IOException {
-    OzoneClient ozoneClient = null;
+    OzoneClient ozoneClient;
     try {
-      ozoneClient =
-          OzoneClientCache.getOzoneClientInstance(ozoneConfiguration);
+      ozoneClient = OzoneClientCache.getOzoneClientInstance(ozoneConfiguration);
     } catch (Exception e) {
       // For any other critical errors during object creation throw Internal
       // error.

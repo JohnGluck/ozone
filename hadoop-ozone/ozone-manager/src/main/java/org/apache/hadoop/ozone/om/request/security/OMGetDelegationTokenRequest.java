@@ -136,7 +136,7 @@ public class OMGetDelegationTokenRequest extends OMClientRequest {
 
     OMResponse.Builder omResponse = OmResponseUtil.getOMResponseBuilder(
         getOmRequest());
-    OMClientResponse omClientResponse = null;
+    OMClientResponse omClientResponse;
 
     // If security is not enabled and token request is received, leader
     // returns token null. So, check here if updatedGetDelegationTokenResponse

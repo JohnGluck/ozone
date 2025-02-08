@@ -34,19 +34,19 @@ public class ParamInfo {
   /**
    * key size filter.
    */
-  private long keySize;
+  private final long keySize;
 
   /**
    * creation date filter for keys to filter.
    */
-  private String creationDate;
+  private final String creationDate;
 
   private long creationDateEpoch = -1;
 
   /**
    *
    */
-  private String replicationType;
+  private final String replicationType;
 
   /**
    * limit the number of records to return in API response.
@@ -57,7 +57,7 @@ public class ParamInfo {
 
   private String lastKey;
 
-  private boolean skipPrevKeyDone = false;
+  private boolean skipPrevKeyDone;
 
   /**
    * counter to track the number of records added in API response.

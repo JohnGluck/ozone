@@ -40,9 +40,9 @@ public class AuthorizationV4HeaderParser implements SignatureParser {
   private static final String SIGNEDHEADERS = "SignedHeaders=";
   private static final String SIGNATURE = "Signature=";
   private static final String AWS_REQUEST = "aws4_request";
-  private String authHeader;
+  private final String authHeader;
 
-  private String dateHeader;
+  private final String dateHeader;
 
   public AuthorizationV4HeaderParser(String authHeader, String dateHeader) {
     this.authHeader = authHeader;
@@ -145,7 +145,7 @@ public class AuthorizationV4HeaderParser implements SignatureParser {
    */
   private Credential parseCredentials(String credential)
       throws MalformedResourceException {
-    Credential credentialObj = null;
+    Credential credentialObj;
     if (isNotEmpty(credential) && credential.startsWith(CREDENTIAL)) {
       credential = credential.substring(CREDENTIAL.length());
       // Parse credential. Other parts of header are not validated yet. When

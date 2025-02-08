@@ -84,7 +84,6 @@ public final class FakeRatisFollower {
                 .setCallId(value.getServerRequest().getCallId())
                 .setRaftGroupId(value.getServerRequest().getRaftGroupId()))
             .build();
-        maxCommitted = Math.min(value.getLeaderCommit(), maxIndex);
         addLatency();
         responseHandler.onNext(response);
       }

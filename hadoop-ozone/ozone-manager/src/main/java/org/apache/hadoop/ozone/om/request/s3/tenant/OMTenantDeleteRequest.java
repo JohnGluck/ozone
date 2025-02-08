@@ -121,7 +121,7 @@ public class OMTenantDeleteRequest extends OMVolumeRequest {
     final DeleteTenantRequest request = getOmRequest().getDeleteTenantRequest();
     final String tenantId = request.getTenantId();
     String volumeName = null;
-    boolean decVolumeRefCount = true;
+    boolean decVolumeRefCount;
 
     Exception exception = null;
     OmVolumeArgs omVolumeArgs = null;

@@ -60,7 +60,7 @@ public final class OmKeyArgs implements Auditable {
   // generation unchanged.
   // This allows a key to be created an committed atomically if the original has not
   // been modified.
-  private Long expectedDataGeneration = null;
+  private final Long expectedDataGeneration;
 
   private OmKeyArgs(Builder b) {
     this.volumeName = b.volumeName;

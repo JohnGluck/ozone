@@ -137,7 +137,7 @@ public class BlockDeletingService extends BackgroundService {
           chooseContainerForBlockDeletion(getBlockLimitPerInterval(),
               containerDeletionPolicy);
 
-      BackgroundTask containerBlockInfos = null;
+      BackgroundTask containerBlockInfos;
       long totalBlocks = 0;
       for (ContainerBlockInfo containerBlockInfo : containers) {
         BlockDeletingTaskBuilder builder =

@@ -133,8 +133,8 @@ public class S3MultipartUploadCommitPartRequest extends OMKeyRequest {
     OmKeyInfo omKeyInfo = null;
     String multipartKey = null;
     OmMultipartKeyInfo multipartKeyInfo = null;
-    Result result = null;
-    OmBucketInfo omBucketInfo = null;
+    Result result;
+    OmBucketInfo omBucketInfo;
     OmBucketInfo copyBucketInfo = null;
     try {
       long clientID = multipartCommitUploadPartRequest.getClientID();

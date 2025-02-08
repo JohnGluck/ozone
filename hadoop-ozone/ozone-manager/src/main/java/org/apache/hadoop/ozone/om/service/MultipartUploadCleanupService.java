@@ -144,19 +144,14 @@ public class MultipartUploadCleanupService extends BackgroundService {
   private class MultipartUploadCleanupTask implements BackgroundTask {
 
     @Override
-    public int getPriority() {
-      return 0;
-    }
-
-    @Override
-    public BackgroundTaskResult call() throws Exception {
+    public BackgroundTaskResult call() {
       if (!shouldRun()) {
         return BackgroundTaskResult.EmptyTaskResult.newResult();
       }
 
       runCount.incrementAndGet();
       long startTime = Time.monotonicNow();
-      List<ExpiredMultipartUploadsBucket> expiredMultipartUploads = null;
+      List<ExpiredMultipartUploadsBucket> expiredMultipartUploads;
       try {
         expiredMultipartUploads = keyManager.getExpiredMultipartUploads(
             expireThreshold, mpuPartsLimitPerTask);
@@ -190,13 +185,11 @@ public class MultipartUploadCleanupService extends BackgroundService {
                   expiredMultipartUploadsBuckets)
               .build();
 
-      OMRequest omRequest = OMRequest.newBuilder()
+      return OMRequest.newBuilder()
           .setCmdType(Type.AbortExpiredMultiPartUploads)
           .setMultipartUploadsExpiredAbortRequest(request)
           .setClientId(clientId.toString())
           .build();
-
-      return omRequest;
     }
 
     private void submitRequest(OMRequest omRequest) {

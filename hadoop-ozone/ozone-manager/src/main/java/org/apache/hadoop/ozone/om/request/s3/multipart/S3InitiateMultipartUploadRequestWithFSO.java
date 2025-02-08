@@ -83,8 +83,6 @@ public class S3InitiateMultipartUploadRequestWithFSO
 
     String volumeName = keyArgs.getVolumeName();
     String bucketName = keyArgs.getBucketName();
-    final String requestedVolume = volumeName;
-    final String requestedBucket = bucketName;
     String keyName = keyArgs.getKeyName();
 
     OMMetadataManager omMetadataManager = ozoneManager.getMetadataManager();
@@ -92,10 +90,10 @@ public class S3InitiateMultipartUploadRequestWithFSO
     ozoneManager.getMetrics().incNumInitiateMultipartUploads();
     boolean acquiredBucketLock = false;
     Exception exception = null;
-    OmMultipartKeyInfo multipartKeyInfo = null;
-    OmKeyInfo omKeyInfo = null;
+    OmMultipartKeyInfo multipartKeyInfo;
+    OmKeyInfo omKeyInfo;
     List<OmDirectoryInfo> missingParentInfos;
-    Result result = null;
+    Result result;
 
     OMResponse.Builder omResponse = OmResponseUtil.getOMResponseBuilder(
         getOmRequest());
@@ -217,8 +215,8 @@ public class S3InitiateMultipartUploadRequestWithFSO
           new S3InitiateMultipartUploadResponseWithFSO(
               omResponse.setInitiateMultiPartUploadResponse(
                   MultipartInfoInitiateResponse.newBuilder()
-                      .setVolumeName(requestedVolume)
-                      .setBucketName(requestedBucket)
+                      .setVolumeName(volumeName)
+                      .setBucketName(bucketName)
                       .setKeyName(keyName)
                       .setMultipartUploadID(keyArgs.getMultipartUploadID()))
                   .build(), multipartKeyInfo, omKeyInfo, multipartKey,

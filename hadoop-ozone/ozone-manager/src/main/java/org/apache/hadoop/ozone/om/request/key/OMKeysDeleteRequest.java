@@ -99,7 +99,7 @@ public class OMKeysDeleteRequest extends OMKeyRequest {
 
     Exception exception = null;
     OMClientResponse omClientResponse = null;
-    Result result = null;
+    Result result;
     Map<String, ErrorInfo> keyToError = new HashMap<>();
 
     OMMetrics omMetrics = ozoneManager.getMetrics();

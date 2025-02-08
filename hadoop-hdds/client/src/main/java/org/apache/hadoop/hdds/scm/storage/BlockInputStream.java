@@ -156,7 +156,7 @@ public class BlockInputStream extends BlockExtendedInputStream {
       return;
     }
 
-    BlockData blockData = null;
+    BlockData blockData;
     List<ChunkInfo> chunks = null;
     IOException catchEx = null;
     do {

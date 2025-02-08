@@ -126,8 +126,6 @@ public class S3InitiateMultipartUploadRequest extends OMKeyRequest {
 
     String volumeName = keyArgs.getVolumeName();
     String bucketName = keyArgs.getBucketName();
-    final String requestedVolume = volumeName;
-    final String requestedBucket = bucketName;
     String keyName = keyArgs.getKeyName();
 
     OMMetadataManager omMetadataManager = ozoneManager.getMetadataManager();
@@ -135,9 +133,9 @@ public class S3InitiateMultipartUploadRequest extends OMKeyRequest {
     ozoneManager.getMetrics().incNumInitiateMultipartUploads();
     boolean acquiredBucketLock = false;
     Exception exception = null;
-    OmMultipartKeyInfo multipartKeyInfo = null;
-    OmKeyInfo omKeyInfo = null;
-    Result result = null;
+    OmMultipartKeyInfo multipartKeyInfo;
+    OmKeyInfo omKeyInfo;
+    Result result;
     long objectID = ozoneManager.getObjectIdFromTxId(transactionLogIndex);
 
     OMResponse.Builder omResponse = OmResponseUtil.getOMResponseBuilder(
@@ -231,8 +229,8 @@ public class S3InitiateMultipartUploadRequest extends OMKeyRequest {
           new S3InitiateMultipartUploadResponse(
               omResponse.setInitiateMultiPartUploadResponse(
                   MultipartInfoInitiateResponse.newBuilder()
-                      .setVolumeName(requestedVolume)
-                      .setBucketName(requestedBucket)
+                      .setVolumeName(volumeName)
+                      .setBucketName(bucketName)
                       .setKeyName(keyName)
                       .setMultipartUploadID(keyArgs.getMultipartUploadID()))
                   .build(), multipartKeyInfo, omKeyInfo, getBucketLayout());

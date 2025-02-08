@@ -83,9 +83,9 @@ public class OMOpenKeysDeleteRequest extends OMKeyRequest {
     OzoneManagerProtocolProtos.OMResponse.Builder omResponse =
             OmResponseUtil.getOMResponseBuilder(getOmRequest());
 
-    Exception exception = null;
+    Exception exception;
     OMClientResponse omClientResponse = null;
-    Result result = null;
+    Result result;
     Map<String, OmKeyInfo> deletedOpenKeys = new HashMap<>();
 
     try {

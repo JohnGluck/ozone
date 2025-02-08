@@ -66,12 +66,12 @@ public final class NodeDecommissionMetrics implements MetricsSource {
    * Decommissioning and Maintenance mode workflow.
    */
   public static final class ContainerStateInWorkflow {
-    private long sufficientlyReplicated = 0;
-    private long unclosedContainers = 0;
-    private long underReplicatedContainers = 0;
-    private String host = "";
-    private long pipelinesWaitingToClose = 0;
-    private long startTime = 0;
+    private final long sufficientlyReplicated;
+    private final long unclosedContainers;
+    private final long underReplicatedContainers;
+    private final String host;
+    private final long pipelinesWaitingToClose;
+    private final long startTime;
 
     private static final MetricsInfo HOST_UNDER_REPLICATED = Interns.info(
         "UnderReplicatedDN",

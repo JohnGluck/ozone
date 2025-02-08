@@ -173,7 +173,7 @@ public class KeyValueContainerMetadataInspector implements ContainerInspector {
       return null;
     }
 
-    KeyValueContainerData kvData = null;
+    KeyValueContainerData kvData;
     if (containerData instanceof KeyValueContainerData) {
       kvData = (KeyValueContainerData) containerData;
     } else {

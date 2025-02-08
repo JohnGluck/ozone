@@ -624,7 +624,7 @@ public class S3MultipartUploadCompleteRequest extends OMKeyRequest {
             OMException.ResultCodes.INVALID_PART);
       }
 
-      OmKeyInfo currentPartKeyInfo = null;
+      OmKeyInfo currentPartKeyInfo;
       try {
         currentPartKeyInfo =
             OmKeyInfo.getFromProtobuf(partKeyInfo.getPartKeyInfo());

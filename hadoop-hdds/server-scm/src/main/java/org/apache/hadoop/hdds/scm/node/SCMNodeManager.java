@@ -1082,7 +1082,7 @@ public class SCMNodeManager implements NodeManager {
     nodeInfo.put("TotalUsed", 0L);
 
     for (DatanodeInfo node : nodeStateManager.getAllNodes()) {
-      String keyPrefix = "";
+      String keyPrefix;
       NodeStatus status = node.getNodeStatus();
       if (status.isMaintenance()) {
         keyPrefix = UsageStates.MAINT.getLabel();

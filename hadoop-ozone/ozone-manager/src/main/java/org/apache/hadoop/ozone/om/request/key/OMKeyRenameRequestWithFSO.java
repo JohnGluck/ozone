@@ -287,7 +287,7 @@ public class OMKeyRenameRequestWithFSO extends OMKeyRenameRequest {
     } else {
       toKeyFileName = OzoneFSUtils.getFileName(toKeyName);
     }
-    OmKeyInfo fromKeyParent = null;
+    OmKeyInfo fromKeyParent;
     OMMetadataManager metadataMgr = ozoneManager.getMetadataManager();
     Table<String, OmDirectoryInfo> dirTable = metadataMgr.getDirectoryTable();
     String bucketKey = metadataMgr.getBucketKey(
@@ -342,11 +342,17 @@ public class OMKeyRenameRequestWithFSO extends OMKeyRenameRequest {
               CacheValue.get(trxnLogIndex, fromKeyValue));
     }
 
-    OMClientResponse omClientResponse = new OMKeyRenameResponseWithFSO(
+    return new OMKeyRenameResponseWithFSO(
         omResponse.setRenameKeyResponse(RenameKeyResponse.newBuilder()).build(),
-        dbFromKey, dbToKey, fromKeyParent, toKeyParent, fromKeyValue,
-        omBucketInfo, isRenameDirectory, getBucketLayout());
-    return omClientResponse;
+        dbFromKey,
+        dbToKey,
+        fromKeyParent,
+        toKeyParent,
+        fromKeyValue,
+        omBucketInfo,
+        isRenameDirectory,
+        getBucketLayout()
+    );
   }
 
   @SuppressWarnings("checkstyle:ParameterNumber")
