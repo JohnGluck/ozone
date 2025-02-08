@@ -74,7 +74,13 @@ public class TestHandler {
               TestHddsDispatcher.NO_OP_ICR_SENDER));
     }
     this.dispatcher = new HddsDispatcher(
-        conf, containerSet, volumeSet, handlers, null, metrics, null);
+        conf,
+        containerSet,
+        handlers,
+        null,
+        metrics,
+        null
+    );
   }
 
   @AfterEach

@@ -43,10 +43,6 @@ import org.slf4j.LoggerFactory;
  * Class to parse v4 auth information from header.
  */
 public class AuthorizationV4HeaderParser implements SignatureParser {
-
-  private static final Logger LOG =
-      LoggerFactory.getLogger(AuthorizationV4HeaderParser.class);
-
   private static final String CREDENTIAL = "Credential=";
   private static final String SIGNEDHEADERS = "SignedHeaders=";
   private static final String SIGNATURE = "Signature=";

@@ -115,10 +115,11 @@ public class KeyDataStreamOutput extends AbstractDataStreamOutput
       OzoneClientConfig config,
       OpenKeySession handler,
       XceiverClientFactory xceiverClientManager,
-      OzoneManagerProtocol omClient, int chunkSize,
-      String requestId, ReplicationConfig replicationConfig,
-      String uploadID, int partNumber, boolean isMultipart,
-      boolean unsafeByteBufferConversion,
+      OzoneManagerProtocol omClient,
+      ReplicationConfig replicationConfig,
+      String uploadID,
+      int partNumber,
+      boolean isMultipart,
       boolean atomicKeyCreation
   ) {
     super(HddsClientUtils.getRetryPolicyByException(
@@ -129,12 +130,14 @@ public class KeyDataStreamOutput extends AbstractDataStreamOutput
         new BlockDataStreamOutputEntryPool(
             config,
             omClient,
-            requestId, replicationConfig,
-            uploadID, partNumber,
-            isMultipart, info,
-            unsafeByteBufferConversion,
+            replicationConfig,
+            uploadID,
+            partNumber,
+            isMultipart,
+            info,
             xceiverClientManager,
-            handler.getId());
+            handler.getId()
+        );
 
     // Retrieve the file encryption key info, null if file is not in
     // encrypted bucket.
@@ -466,12 +469,9 @@ public class KeyDataStreamOutput extends AbstractDataStreamOutput
     private OpenKeySession openHandler;
     private XceiverClientFactory xceiverManager;
     private OzoneManagerProtocol omClient;
-    private int chunkSize;
-    private final String requestID = UUID.randomUUID().toString();
     private String multipartUploadID;
     private int multipartNumber;
     private boolean isMultipartKey;
-    private boolean unsafeByteBufferConversion;
     private OzoneClientConfig clientConfig;
     private ReplicationConfig replicationConfig;
     private boolean atomicKeyCreation = false;
@@ -501,11 +501,6 @@ public class KeyDataStreamOutput extends AbstractDataStreamOutput
       return this;
     }
 
-    public Builder setChunkSize(int size) {
-      this.chunkSize = size;
-      return this;
-    }
-
     public Builder setIsMultipartKey(boolean isMultipart) {
       this.isMultipartKey = isMultipart;
       return this;
@@ -515,12 +510,6 @@ public class KeyDataStreamOutput extends AbstractDataStreamOutput
       this.clientConfig = config;
       return this;
     }
-
-    public Builder enableUnsafeByteBufferConversion(boolean enabled) {
-      this.unsafeByteBufferConversion = enabled;
-      return this;
-    }
-
 
     public Builder setReplicationConfig(ReplicationConfig replConfig) {
       this.replicationConfig = replConfig;
@@ -538,14 +527,12 @@ public class KeyDataStreamOutput extends AbstractDataStreamOutput
           openHandler,
           xceiverManager,
           omClient,
-          chunkSize,
-          requestID,
           replicationConfig,
           multipartUploadID,
           multipartNumber,
           isMultipartKey,
-          unsafeByteBufferConversion,
-          atomicKeyCreation);
+          atomicKeyCreation
+      );
     }
 
   }

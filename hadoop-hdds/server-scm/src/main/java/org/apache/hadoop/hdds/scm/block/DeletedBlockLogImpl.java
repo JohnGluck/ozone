@@ -115,9 +115,12 @@ public class DeletedBlockLogImpl
     this.scmContext = scm.getScmContext();
     this.sequenceIdGen = scm.getSequenceIdGen();
     this.metrics = metrics;
-    this.transactionStatusManager =
-        new SCMDeletedBlockTransactionStatusManager(deletedBlockLogStateManager,
-            containerManager, this.scmContext, metrics, scmCommandTimeoutMs);
+    this.transactionStatusManager = new SCMDeletedBlockTransactionStatusManager(
+        deletedBlockLogStateManager,
+        containerManager,
+        metrics,
+        scmCommandTimeoutMs
+    );
   }
 
   @Override

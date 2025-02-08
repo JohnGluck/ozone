@@ -72,8 +72,6 @@ public class S3DeleteObjectTaggingRequestWithFSO extends S3DeleteObjectTaggingRe
     OMMetrics omMetrics = ozoneManager.getMetrics();
     omMetrics.incNumDeleteObjectTagging();
 
-    Map<String, String> auditMap = buildKeyArgsAuditMap(keyArgs);
-
     OMResponse.Builder omResponse = OmResponseUtil.getOMResponseBuilder(
         getOmRequest());
 

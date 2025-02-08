@@ -80,13 +80,15 @@ public class TestContainerSizeCountTask extends AbstractReconSqlDBTest {
         getDao(ReconTaskStatusDao.class), "mockedTask-" + System.currentTimeMillis()));
     containerManager = mock(ContainerManager.class);
     scmClient = mock(StorageContainerServiceProvider.class);
+
     task = new ContainerSizeCountTask(
         containerManager,
-        scmClient,
         reconTaskConfig,
         containerCountBySizeDao,
         utilizationSchemaDefinition,
-        reconTaskStatusUpdaterManager);
+        reconTaskStatusUpdaterManager
+    );
+
     // Truncate table before running each test
     dslContext.truncate(CONTAINER_COUNT_BY_SIZE);
   }

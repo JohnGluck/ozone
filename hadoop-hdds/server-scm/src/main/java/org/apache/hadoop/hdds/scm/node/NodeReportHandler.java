@@ -31,9 +31,6 @@ import org.slf4j.LoggerFactory;
  * Handles Node Reports from datanode.
  */
 public class NodeReportHandler implements EventHandler<NodeReportFromDatanode> {
-
-  private static final Logger LOGGER = LoggerFactory
-      .getLogger(NodeReportHandler.class);
   private final NodeManager nodeManager;
 
   public NodeReportHandler(NodeManager nodeManager) {

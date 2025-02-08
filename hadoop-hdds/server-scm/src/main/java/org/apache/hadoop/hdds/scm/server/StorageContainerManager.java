@@ -478,19 +478,26 @@ public final class StorageContainerManager extends ServiceRuntimeInfoImpl
     CommandStatusReportHandler cmdStatusReportHandler =
         new CommandStatusReportHandler();
 
-    NewNodeHandler newNodeHandler = new NewNodeHandler(pipelineManager,
-        scmDecommissionManager, configuration, serviceManager);
+    NewNodeHandler newNodeHandler = new NewNodeHandler(
+        pipelineManager,
+        scmDecommissionManager,
+        serviceManager
+    );
+
     NodeAddressUpdateHandler nodeAddressUpdateHandler =
             new NodeAddressUpdateHandler(pipelineManager,
                     scmDecommissionManager, serviceManager);
-    StaleNodeHandler staleNodeHandler =
-        new StaleNodeHandler(scmNodeManager, pipelineManager, configuration);
+
+    StaleNodeHandler staleNodeHandler = new StaleNodeHandler(scmNodeManager, pipelineManager);
+
     DeadNodeHandler deadNodeHandler = new DeadNodeHandler(scmNodeManager,
         pipelineManager, containerManager);
     StartDatanodeAdminHandler datanodeStartAdminHandler =
         new StartDatanodeAdminHandler(scmNodeManager, pipelineManager);
+
     ReadOnlyHealthyToHealthyNodeHandler readOnlyHealthyToHealthyNodeHandler =
-        new ReadOnlyHealthyToHealthyNodeHandler(configuration, serviceManager);
+        new ReadOnlyHealthyToHealthyNodeHandler(serviceManager);
+
     HealthyReadOnlyNodeHandler
         healthyReadOnlyNodeHandler =
         new HealthyReadOnlyNodeHandler(scmNodeManager,
@@ -504,8 +511,8 @@ public final class StorageContainerManager extends ServiceRuntimeInfoImpl
     IncrementalContainerReportHandler incrementalContainerReportHandler =
         new IncrementalContainerReportHandler(
             scmNodeManager, containerManager, scmContext);
-    PipelineActionHandler pipelineActionHandler =
-        new PipelineActionHandler(pipelineManager, scmContext, configuration);
+
+    PipelineActionHandler pipelineActionHandler = new PipelineActionHandler(pipelineManager, scmContext);
 
     eventQueue.addHandler(SCMEvents.DATANODE_COMMAND, scmNodeManager);
     eventQueue.addHandler(SCMEvents.RETRIABLE_DATANODE_COMMAND, scmNodeManager);

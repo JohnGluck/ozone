@@ -70,27 +70,33 @@ public class NSSummaryTask implements ReconOmTask {
   private final NSSummaryTaskWithFSO nsSummaryTaskWithFSO;
   private final NSSummaryTaskWithLegacy nsSummaryTaskWithLegacy;
   private final NSSummaryTaskWithOBS nsSummaryTaskWithOBS;
-  private final OzoneConfiguration ozoneConfiguration;
 
   @Inject
-  public NSSummaryTask(ReconNamespaceSummaryManager
-                       reconNamespaceSummaryManager,
-                       ReconOMMetadataManager
-                       reconOMMetadataManager,
-                       OzoneConfiguration
-                       ozoneConfiguration) {
+  public NSSummaryTask(
+      ReconNamespaceSummaryManager reconNamespaceSummaryManager,
+      ReconOMMetadataManager reconOMMetadataManager,
+      OzoneConfiguration ozoneConfiguration
+  ) {
     this.reconNamespaceSummaryManager = reconNamespaceSummaryManager;
     this.reconOMMetadataManager = reconOMMetadataManager;
-    this.ozoneConfiguration = ozoneConfiguration;
+
     this.nsSummaryTaskWithFSO = new NSSummaryTaskWithFSO(
         reconNamespaceSummaryManager,
-        reconOMMetadataManager, ozoneConfiguration);
+        reconOMMetadataManager,
+        ozoneConfiguration
+    );
+
     this.nsSummaryTaskWithLegacy = new NSSummaryTaskWithLegacy(
         reconNamespaceSummaryManager,
-        reconOMMetadataManager, ozoneConfiguration);
+        reconOMMetadataManager,
+        ozoneConfiguration
+    );
+
     this.nsSummaryTaskWithOBS = new NSSummaryTaskWithOBS(
         reconNamespaceSummaryManager,
-        reconOMMetadataManager, ozoneConfiguration);
+        reconOMMetadataManager,
+        ozoneConfiguration
+    );
   }
 
   @Override

@@ -307,7 +307,7 @@ public class ECBlockOutputStream extends BlockOutputStream {
       return null;
     }
     this.putBlkRspFuture = flushFuture;
-    return flushFuture.thenApply(r -> new PutBlockResult(0, 0, r));
+    return flushFuture.thenApply(r -> new PutBlockResult(0, r));
   }
 
   /**

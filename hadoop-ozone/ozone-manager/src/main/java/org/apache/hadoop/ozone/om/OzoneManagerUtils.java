@@ -43,9 +43,6 @@ public final class OzoneManagerUtils {
   private OzoneManagerUtils() {
   }
 
-  private static final Logger LOG = LoggerFactory
-      .getLogger(OzoneManagerUtils.class);
-
   /**
    * All the client requests are executed through
    * OzoneManagerStateMachine#runCommand function and ensures sequential

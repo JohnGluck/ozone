@@ -253,30 +253,6 @@ public final class OmSnapshotManager implements AutoCloseable {
 
     CacheLoader<UUID, OmSnapshot> loader = createCacheLoader();
 
-    // TODO: [SNAPSHOT] Remove this if not going to make SnapshotCache impl
-    //  pluggable.
-    RemovalListener<String, OmSnapshot> removalListener = notification -> {
-      try {
-        final String snapshotTableKey = notification.getKey();
-        final OmSnapshot omSnapshot = notification.getValue();
-        if (omSnapshot != null) {
-          // close snapshot's rocksdb on eviction
-          LOG.debug("Closing OmSnapshot '{}' due to {}",
-              snapshotTableKey, notification.getCause());
-          omSnapshot.close();
-        } else {
-          // Cache value would never be null in RemovalListener.
-
-          // When a soft reference is GC'ed by the JVM, this RemovalListener
-          // would be called. But the cache value should still exist at that
-          // point. Thus in-theory this condition won't be triggered by JVM GC
-          throw new IllegalStateException("Unexpected: OmSnapshot is null");
-        }
-      } catch (IOException e) {
-        LOG.error("Failed to close OmSnapshot: {}", notification.getKey(), e);
-      }
-    };
-
     // Init snapshot cache
     long cacheCleanupServiceInterval = ozoneManager.getConfiguration()
         .getTimeDuration(OZONE_OM_SNAPSHOT_CACHE_CLEANUP_SERVICE_RUN_INTERVAL,

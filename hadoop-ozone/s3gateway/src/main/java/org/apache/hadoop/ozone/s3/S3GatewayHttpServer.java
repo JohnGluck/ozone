@@ -27,10 +27,6 @@ import org.slf4j.LoggerFactory;
  * Http server to provide S3-compatible API.
  */
 public class S3GatewayHttpServer extends BaseHttpServer {
-
-  private static final Logger LOG =
-      LoggerFactory.getLogger(S3GatewayHttpServer.class);
-
   /**
    * Default offset between two filters.
    */

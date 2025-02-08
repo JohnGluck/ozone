@@ -151,8 +151,16 @@ public class TestHddsDispatcher {
                 context.getParent().getDatanodeDetails().getUuidString(),
                 containerSet, volumeSet, metrics, NO_OP_ICR_SENDER));
       }
+
       HddsDispatcher hddsDispatcher = new HddsDispatcher(
-          conf, containerSet, volumeSet, handlers, context, metrics, null);
+          conf,
+          containerSet,
+          handlers,
+          context,
+          metrics,
+          null
+      );
+
       hddsDispatcher.setClusterId(scmId.toString());
       ContainerCommandResponseProto responseOne = hddsDispatcher
           .dispatch(getWriteChunkRequest(dd.getUuidString(), 1L, 1L), null);
@@ -287,8 +295,16 @@ public class TestHddsDispatcher {
                 context.getParent().getDatanodeDetails().getUuidString(),
                 containerSet, volumeSet, metrics, NO_OP_ICR_SENDER));
       }
+
       HddsDispatcher hddsDispatcher = new HddsDispatcher(
-          conf, containerSet, volumeSet, handlers, context, metrics, null);
+          conf,
+          containerSet,
+          handlers,
+          context,
+          metrics,
+          null
+      );
+
       hddsDispatcher.setClusterId(scmId.toString());
       containerData.getVolume().getVolumeInfo()
           .ifPresent(volumeInfo -> volumeInfo.incrementUsedSpace(50));
@@ -537,8 +553,15 @@ public class TestHddsDispatcher {
               containerSet, volumeSet, metrics, NO_OP_ICR_SENDER));
     }
 
-    final HddsDispatcher hddsDispatcher = new HddsDispatcher(conf,
-        containerSet, volumeSet, handlers, context, metrics, tokenVerifier);
+    final HddsDispatcher hddsDispatcher = new HddsDispatcher(
+        conf,
+        containerSet,
+        handlers,
+        context,
+        metrics,
+        tokenVerifier
+    );
+
     hddsDispatcher.setClusterId(scmId.toString());
     return hddsDispatcher;
   }

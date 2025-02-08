@@ -101,7 +101,6 @@ public class SCMBlockProtocolServer implements
       new AuditLogger(AuditLoggerType.SCMLOGGER);
 
   private final StorageContainerManager scm;
-  private final OzoneConfiguration conf;
   private final RPC.Server blockRpcServer;
   private final InetSocketAddress blockRpcAddress;
   private final ProtocolMessageMetrics<ProtocolMessageEnum>
@@ -111,10 +110,8 @@ public class SCMBlockProtocolServer implements
   /**
    * The RPC server that listens to requests from block service clients.
    */
-  public SCMBlockProtocolServer(OzoneConfiguration conf,
-      StorageContainerManager scm) throws IOException {
+  public SCMBlockProtocolServer(OzoneConfiguration conf, StorageContainerManager scm) throws IOException {
     this.scm = scm;
-    this.conf = conf;
     this.perfMetrics = getPerfMetrics();
     final int handlerCount = conf.getInt(OZONE_SCM_BLOCK_HANDLER_COUNT_KEY,
         OZONE_SCM_HANDLER_COUNT_KEY, OZONE_SCM_HANDLER_COUNT_DEFAULT,

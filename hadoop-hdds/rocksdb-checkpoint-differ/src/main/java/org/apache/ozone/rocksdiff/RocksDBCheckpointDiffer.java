@@ -1169,7 +1169,7 @@ public class RocksDBCheckpointDiffer implements AutoCloseable,
           sstFileNodesRemoved);
     }
 
-    try (BootstrapStateHandler.Lock lock = getBootstrapStateLock().lock()) {
+    try (BootstrapStateHandler.Lock lock = getBootstrapStateLock().lock()) { // NOPMD
       removeSstFiles(sstFileNodesRemoved);
       removeKeyFromCompactionLogTable(keysToRemove);
     } catch (InterruptedException e) {
@@ -1378,7 +1378,7 @@ public class RocksDBCheckpointDiffer implements AutoCloseable,
           nonLeafSstFiles);
     }
 
-    try (BootstrapStateHandler.Lock lock = getBootstrapStateLock().lock()) {
+    try (BootstrapStateHandler.Lock lock = getBootstrapStateLock().lock()) { // NOPMD
       removeSstFiles(nonLeafSstFiles);
     } catch (InterruptedException e) {
       throw new RuntimeException(e);

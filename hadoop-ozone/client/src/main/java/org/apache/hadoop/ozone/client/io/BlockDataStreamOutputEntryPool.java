@@ -58,7 +58,6 @@ public class BlockDataStreamOutputEntryPool implements KeyMetadataAware {
   private final OzoneManagerProtocol omClient;
   private final OmKeyArgs keyArgs;
   private final XceiverClientFactory xceiverClientFactory;
-  private final String requestID;
   private OmMultipartCommitUploadPartInfo commitUploadPartInfo;
   private final long openID;
   private final ExcludeList excludeList;
@@ -69,11 +68,13 @@ public class BlockDataStreamOutputEntryPool implements KeyMetadataAware {
   public BlockDataStreamOutputEntryPool(
       OzoneClientConfig config,
       OzoneManagerProtocol omClient,
-      String requestId, ReplicationConfig replicationConfig,
-      String uploadID, int partNumber,
-      boolean isMultipart, OmKeyInfo info,
-      boolean unsafeByteBufferConversion,
-      XceiverClientFactory xceiverClientFactory, long openID
+      ReplicationConfig replicationConfig,
+      String uploadID,
+      int partNumber,
+      boolean isMultipart,
+      OmKeyInfo info,
+      XceiverClientFactory xceiverClientFactory,
+      long openID
   ) {
     this.config = config;
     this.xceiverClientFactory = xceiverClientFactory;
@@ -86,7 +87,6 @@ public class BlockDataStreamOutputEntryPool implements KeyMetadataAware {
         .setIsMultipartKey(isMultipart).setMultipartUploadID(uploadID)
         .setMultipartUploadPartNumber(partNumber)
         .setSortDatanodesInPipeline(true).build();
-    this.requestID = requestId;
     this.openID = openID;
     this.excludeList = createExcludeList();
     this.bufferList = new ArrayList<>();

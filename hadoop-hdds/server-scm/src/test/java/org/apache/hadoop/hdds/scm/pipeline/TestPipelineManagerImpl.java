@@ -868,8 +868,8 @@ public class TestPipelineManagerImpl {
     // Throw on pipeline creates, so no new pipelines can be created
     doThrow(SCMException.class).when(pipelineManagerSpy)
         .createPipeline(any(), any(), anyList());
-    provider = new WritableRatisContainerProvider(
-        conf, pipelineManagerSpy, containerManager, pipelineChoosingPolicy);
+
+    provider = new WritableRatisContainerProvider(pipelineManagerSpy, containerManager, pipelineChoosingPolicy);
 
     // Add a single pipeline to manager, (in the allocated state)
     allocatedPipeline = pipelineManager.createPipeline(repConfig);

@@ -72,10 +72,8 @@ public class FilePerChunkStrategy implements ChunkManager {
   private final MappedBufferManager mappedBufferManager;
 
   private final boolean readNettyChunkedNioFile;
-  private final VolumeSet volumeSet;
 
-  public FilePerChunkStrategy(boolean sync, BlockManager manager,
-                              VolumeSet volSet) {
+  public FilePerChunkStrategy(boolean sync, BlockManager manager) {
     doSyncWrite = sync;
     blockManager = manager;
     this.defaultReadBufferCapacity = manager == null ? 0 :
@@ -85,7 +83,7 @@ public class FilePerChunkStrategy implements ChunkManager {
     this.readMappedBufferMaxCount = manager == null ? 0
         : manager.getReadMappedBufferMaxCount();
     LOG.info("ozone.chunk.read.mapped.buffer.max.count is load with {}", readMappedBufferMaxCount);
-    this.volumeSet = volSet;
+
     if (this.readMappedBufferMaxCount > 0) {
       mappedBufferManager = new MappedBufferManager(this.readMappedBufferMaxCount);
     } else {

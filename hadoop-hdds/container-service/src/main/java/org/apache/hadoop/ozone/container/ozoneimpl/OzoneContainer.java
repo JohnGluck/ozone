@@ -218,9 +218,14 @@ public class OzoneContainer {
     }
 
     SecurityConfig secConf = new SecurityConfig(conf);
-    hddsDispatcher = new HddsDispatcher(config, containerSet, volumeSet,
-        handlers, context, metrics,
-        TokenVerifier.create(secConf, secretKeyClient));
+    hddsDispatcher = new HddsDispatcher(
+        config,
+        containerSet,
+        handlers,
+        context,
+        metrics,
+        TokenVerifier.create(secConf, secretKeyClient)
+    );
 
     /*
      * ContainerController is the control plane

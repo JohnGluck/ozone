@@ -186,9 +186,16 @@ public class TestSecureContainerServer {
               containerSet, volumeSet, metrics,
               c -> { }));
     }
+
     HddsDispatcher hddsDispatcher = new HddsDispatcher(
-        conf, containerSet, volumeSet, handlers, context, metrics,
-        TokenVerifier.create(new SecurityConfig(conf), secretKeyClient));
+        conf,
+        containerSet,
+        handlers,
+        context,
+        metrics,
+        TokenVerifier.create(new SecurityConfig(conf), secretKeyClient)
+    );
+
     hddsDispatcher.setClusterId(scmId.toString());
     return hddsDispatcher;
   }

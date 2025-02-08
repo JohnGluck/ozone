@@ -52,7 +52,6 @@ public class ReconSafeModeMgrTask {
   private ReconSafeModeManager safeModeManager;
   private List<DatanodeDetails> allNodes;
   private List<ContainerInfo> containers;
-  private OzoneConfiguration ozoneConfiguration;
   private final long interval;
   private final long dnHBInterval;
 
@@ -67,7 +66,6 @@ public class ReconSafeModeMgrTask {
     this.nodeManager = nodeManager;
     this.allNodes = nodeManager.getAllNodes();
     this.containers = containerManager.getContainers();
-    this.ozoneConfiguration = ozoneConfiguration;
     interval = reconTaskConfig.getSafeModeWaitThreshold().toMillis();
     dnHBInterval = ozoneConfiguration.getTimeDuration(HDDS_HEARTBEAT_INTERVAL,
         HDDS_HEARTBEAT_INTERVAL_DEFAULT, TimeUnit.MILLISECONDS);

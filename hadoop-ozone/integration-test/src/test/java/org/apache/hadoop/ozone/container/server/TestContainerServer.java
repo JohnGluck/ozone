@@ -209,8 +209,16 @@ public class TestContainerServer {
               c -> {
               }));
     }
+
     HddsDispatcher hddsDispatcher = new HddsDispatcher(
-        conf, containerSet, volumeSet, handlers, context, metrics, null);
+        conf,
+        containerSet,
+        handlers,
+        context,
+        metrics,
+        null
+    );
+
     hddsDispatcher.setClusterId(scmId.toString());
     return hddsDispatcher;
   }

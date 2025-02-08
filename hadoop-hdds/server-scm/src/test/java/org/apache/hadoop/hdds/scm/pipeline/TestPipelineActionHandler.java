@@ -48,8 +48,9 @@ public class TestPipelineActionHandler {
 
     final PipelineManager manager = mock(PipelineManager.class);
     final EventQueue queue = mock(EventQueue.class);
-    final PipelineActionHandler actionHandler = new PipelineActionHandler(
-        manager, SCMContext.emptyContext(), null);
+
+    final PipelineActionHandler actionHandler = new PipelineActionHandler(manager, SCMContext.emptyContext());
+
     final Pipeline pipeline = HddsTestUtils.getRandomPipeline();
 
     actionHandler.onMessage(getPipelineActionsFromDatanode(
@@ -63,8 +64,7 @@ public class TestPipelineActionHandler {
     final PipelineManager manager = mock(PipelineManager.class);
     final EventQueue queue = mock(EventQueue.class);
     final SCMContext context = SCMContext.emptyContext();
-    final PipelineActionHandler actionHandler = new PipelineActionHandler(
-        manager, context, null);
+    final PipelineActionHandler actionHandler = new PipelineActionHandler(manager, context);
     final Pipeline pipeline = HddsTestUtils.getRandomPipeline();
 
     context.updateLeaderAndTerm(false, 1);
@@ -79,8 +79,7 @@ public class TestPipelineActionHandler {
   public void testPipelineActionHandlerForUnknownPipeline() throws IOException {
     final PipelineManager manager = mock(PipelineManager.class);
     final EventQueue queue = mock(EventQueue.class);
-    final PipelineActionHandler actionHandler = new PipelineActionHandler(
-        manager, SCMContext.emptyContext(), null);
+    final PipelineActionHandler actionHandler = new PipelineActionHandler(manager, SCMContext.emptyContext());
     final Pipeline pipeline = HddsTestUtils.getRandomPipeline();
 
     doThrow(new PipelineNotFoundException())
@@ -98,8 +97,7 @@ public class TestPipelineActionHandler {
     final PipelineManager manager = mock(PipelineManager.class);
     final EventQueue queue = mock(EventQueue.class);
     final SCMContext context = SCMContext.emptyContext();
-    final PipelineActionHandler actionHandler = new PipelineActionHandler(
-        manager, context, null);
+    final PipelineActionHandler actionHandler = new PipelineActionHandler(manager, context);
     final Pipeline pipeline = HddsTestUtils.getRandomPipeline();
 
     context.updateLeaderAndTerm(false, 1);

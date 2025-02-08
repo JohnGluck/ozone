@@ -16,6 +16,10 @@
  */
 package org.apache.hadoop.ozone.freon;
 
+import static java.nio.charset.StandardCharsets.UTF_8;
+import static org.apache.commons.lang3.RandomStringUtils.randomAscii;
+
+import com.codahale.metrics.Timer;
 import java.io.UncheckedIOException;
 import java.nio.ByteBuffer;
 import java.util.Map;
@@ -23,12 +27,11 @@ import java.util.Random;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicLong;
-
 import org.apache.hadoop.hdds.cli.HddsVersionProvider;
+import org.apache.hadoop.hdds.client.BlockID;
 import org.apache.hadoop.hdds.conf.OzoneConfiguration;
 import org.apache.hadoop.hdds.scm.container.common.helpers.StorageContainerException;
 import org.apache.hadoop.ozone.container.common.helpers.ChunkInfo;
-import org.apache.hadoop.hdds.client.BlockID;
 import org.apache.hadoop.ozone.container.common.impl.ContainerLayoutVersion;
 import org.apache.hadoop.ozone.container.common.interfaces.VolumeChoosingPolicy;
 import org.apache.hadoop.ozone.container.common.transport.server.ratis.DispatcherContext;
@@ -41,16 +44,11 @@ import org.apache.hadoop.ozone.container.keyvalue.KeyValueContainer;
 import org.apache.hadoop.ozone.container.keyvalue.KeyValueContainerData;
 import org.apache.hadoop.ozone.container.keyvalue.impl.ChunkManagerFactory;
 import org.apache.hadoop.ozone.container.keyvalue.interfaces.ChunkManager;
-
-import com.codahale.metrics.Timer;
 import org.kohsuke.MetaInfServices;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import picocli.CommandLine.Command;
 import picocli.CommandLine.Option;
-
-import static java.nio.charset.StandardCharsets.UTF_8;
-import static org.apache.commons.lang3.RandomStringUtils.randomAscii;
 
 /**
  * Data generator to use pure datanode XCeiver interface.
@@ -139,8 +137,7 @@ public class ChunkManagerDiskWrite extends BaseFreonGenerator implements
       blockSize = chunkSize * chunksPerBlock;
       data = randomAscii(chunkSize).getBytes(UTF_8);
 
-      chunkManager = ChunkManagerFactory.createChunkManager(ozoneConfiguration,
-          null, null);
+      chunkManager = ChunkManagerFactory.createChunkManager(ozoneConfiguration, null);
 
       timer = getMetrics().timer("chunk-write");
 

@@ -33,10 +33,6 @@ import org.slf4j.LoggerFactory;
  * Recon's container report handler.
  */
 public class ReconContainerReportHandler extends ContainerReportHandler {
-
-  private static final Logger LOG =
-      LoggerFactory.getLogger(ReconContainerReportHandler.class);
-
   public ReconContainerReportHandler(NodeManager nodeManager,
                                      ContainerManager containerManager) {
     super(nodeManager, containerManager);

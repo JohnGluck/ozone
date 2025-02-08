@@ -212,7 +212,6 @@ public class OzoneDelegationTokenSecretManager
       identifier.setOmCertSerialId(getCertSerialId());
       password = createPassword(identifier.getBytes(), getCurrentKey().getPrivateKey());
     }
-    long expiryTime = identifier.getIssueDate() + getTokenRenewInterval();
 
     Token<OzoneTokenIdentifier> token = new Token<>(identifier.getBytes(),
         password, identifier.getKind(), getService());

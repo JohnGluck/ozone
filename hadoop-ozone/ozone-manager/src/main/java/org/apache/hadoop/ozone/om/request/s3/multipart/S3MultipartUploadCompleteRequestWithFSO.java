@@ -47,12 +47,7 @@ import static org.apache.hadoop.ozone.om.request.file.OMFileRequest.getParentId;
 /**
  * Handle Multipart upload complete request.
  */
-public class S3MultipartUploadCompleteRequestWithFSO
-        extends S3MultipartUploadCompleteRequest {
-
-  private static final Logger LOG =
-      LoggerFactory.getLogger(S3MultipartUploadCompleteRequestWithFSO.class);
-
+public class S3MultipartUploadCompleteRequestWithFSO extends S3MultipartUploadCompleteRequest {
   public S3MultipartUploadCompleteRequestWithFSO(OMRequest omRequest,
       BucketLayout bucketLayout) {
     super(omRequest, bucketLayout);

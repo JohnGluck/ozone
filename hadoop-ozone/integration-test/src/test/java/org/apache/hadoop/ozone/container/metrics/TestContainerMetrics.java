@@ -147,8 +147,16 @@ public class TestContainerMetrics {
               containerSet, volumeSet, metrics,
               c -> { }));
     }
-    HddsDispatcher dispatcher = new HddsDispatcher(CONF, containerSet,
-        volumeSet, handlers, context, metrics, null);
+
+    HddsDispatcher dispatcher = new HddsDispatcher(
+        CONF,
+        containerSet,
+        handlers,
+        context,
+        metrics,
+        null
+    );
+
     StorageVolumeUtil.getHddsVolumesList(volumeSet.getVolumesList())
         .forEach(hddsVolume -> hddsVolume.setDbParentDir(tempDir.toFile()));
     dispatcher.setClusterId(UUID.randomUUID().toString());

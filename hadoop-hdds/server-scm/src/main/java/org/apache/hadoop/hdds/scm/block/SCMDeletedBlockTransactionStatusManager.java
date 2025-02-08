@@ -70,7 +70,6 @@ public class SCMDeletedBlockTransactionStatusManager {
   private final DeletedBlockLogStateManager deletedBlockLogStateManager;
   private final ContainerManager containerManager;
   private final ScmBlockDeletingServiceMetrics metrics;
-  private final SCMContext scmContext;
   private final long scmCommandTimeoutMs;
 
   /**
@@ -85,13 +84,14 @@ public class SCMDeletedBlockTransactionStatusManager {
 
   public SCMDeletedBlockTransactionStatusManager(
       DeletedBlockLogStateManager deletedBlockLogStateManager,
-      ContainerManager containerManager, SCMContext scmContext,
-      ScmBlockDeletingServiceMetrics metrics, long scmCommandTimeoutMs) {
+      ContainerManager containerManager,
+      ScmBlockDeletingServiceMetrics metrics,
+      long scmCommandTimeoutMs
+  ) {
     // maps transaction to dns which have committed it.
     this.deletedBlockLogStateManager = deletedBlockLogStateManager;
     this.metrics = metrics;
     this.containerManager = containerManager;
-    this.scmContext = scmContext;
     this.scmCommandTimeoutMs = scmCommandTimeoutMs;
     this.transactionToDNsCommitMap = new ConcurrentHashMap<>();
     this.transactionToRetryCountMap = new ConcurrentHashMap<>();

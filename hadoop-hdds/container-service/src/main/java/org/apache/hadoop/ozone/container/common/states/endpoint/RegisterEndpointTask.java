@@ -54,8 +54,6 @@ public final class RegisterEndpointTask implements
   static final Logger LOG = LoggerFactory.getLogger(RegisterEndpointTask.class);
 
   private final EndpointStateMachine rpcEndPoint;
-  private final ConfigurationSource conf;
-  private Future<EndpointStateMachine.EndPointStates> result;
   private DatanodeDetails datanodeDetails;
   private final OzoneContainer datanodeContainerManager;
   private StateContext stateContext;
@@ -65,34 +63,30 @@ public final class RegisterEndpointTask implements
    * Creates a register endpoint task.
    *
    * @param rpcEndPoint - endpoint
-   * @param conf - conf
    * @param ozoneContainer - container
    * @param context - State context
    */
   @VisibleForTesting
-  public RegisterEndpointTask(EndpointStateMachine rpcEndPoint,
-                              ConfigurationSource conf,
-                              OzoneContainer ozoneContainer,
-                              StateContext context) {
-    this(rpcEndPoint, conf, ozoneContainer, context,
-        context.getParent().getLayoutVersionManager());
+  public RegisterEndpointTask(EndpointStateMachine rpcEndPoint, OzoneContainer ozoneContainer, StateContext context) {
+    this(rpcEndPoint, ozoneContainer, context, context.getParent().getLayoutVersionManager());
   }
 
   /**
    * Creates a register endpoint task.
    *
    * @param rpcEndPoint - endpoint
-   * @param conf - conf
    * @param ozoneContainer - container
    * @param context - State context
    * @param versionManager - layout version Manager
    */
   @VisibleForTesting
-  public RegisterEndpointTask(EndpointStateMachine rpcEndPoint,
-      ConfigurationSource conf, OzoneContainer ozoneContainer,
-      StateContext context, HDDSLayoutVersionManager versionManager) {
+  public RegisterEndpointTask(
+      EndpointStateMachine rpcEndPoint,
+      OzoneContainer ozoneContainer,
+      StateContext context,
+      HDDSLayoutVersionManager versionManager
+  ) {
     this.rpcEndPoint = rpcEndPoint;
-    this.conf = conf;
     this.datanodeContainerManager = ozoneContainer;
     this.stateContext = context;
     if (versionManager != null) {
@@ -310,10 +304,15 @@ public final class RegisterEndpointTask implements
             "construct RegisterEndpoint task");
       }
 
-      RegisterEndpointTask task = new RegisterEndpointTask(this
-          .endPointStateMachine, this.conf, this.container, this.context,
-          this.versionManager);
+      RegisterEndpointTask task = new RegisterEndpointTask(
+          this.endPointStateMachine,
+          this.container,
+          this.context,
+          this.versionManager
+      );
+
       task.setDatanodeDetails(datanodeDetails);
+
       return task;
     }
   }

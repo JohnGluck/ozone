@@ -167,7 +167,7 @@ public abstract class BaseInsightPoint implements InsightPoint {
     if (filters == null) {
       return true;
     }
-    boolean result = true;
+
     for (Entry<String, String> entry : filters.entrySet()) {
       if (!logLine.matches(
           String.format(".*\\[%s=%s\\].*", entry.getKey(), entry.getValue()))) {

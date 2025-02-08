@@ -50,9 +50,6 @@ public class OMInterServiceProtocolClientSideImpl implements
    */
   private static final RpcController NULL_RPC_CONTROLLER = null;
 
-  private static final Logger LOG =
-      LoggerFactory.getLogger(OMInterServiceProtocolClientSideImpl.class);
-
   private final HadoopRpcOMFailoverProxyProvider omFailoverProxyProvider;
 
   private final OMInterServiceProtocolPB rpcProxy;

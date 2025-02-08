@@ -36,7 +36,7 @@ public interface ChecksumByteBuffer extends Checksum {
    *
    * @param buffer the bytes to update the checksum with
    */
-  @Override
+  @SuppressWarnings("PMD.MissingOverride")
   void update(ByteBuffer buffer);
 
   @Override

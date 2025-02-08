@@ -17,15 +17,20 @@
  */
 package org.apache.hadoop.ozone.recon.api.handlers;
 
+import static org.apache.hadoop.ozone.OzoneConsts.OM_KEY_PREFIX;
+import static org.apache.hadoop.ozone.om.helpers.OzoneFSUtils.removeTrailingSlashIfNeeded;
+
+import java.io.IOException;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Objects;
 import org.apache.hadoop.hdds.conf.OzoneConfiguration;
-import org.apache.hadoop.hdds.scm.container.ContainerManager;
-import org.apache.hadoop.hdds.scm.server.OzoneStorageContainerManager;
 import org.apache.hadoop.hdds.utils.db.Table;
 import org.apache.hadoop.ozone.om.OMConfigKeys;
+import org.apache.hadoop.ozone.om.helpers.BucketLayout;
+import org.apache.hadoop.ozone.om.helpers.OmBucketInfo;
 import org.apache.hadoop.ozone.om.helpers.OmDirectoryInfo;
 import org.apache.hadoop.ozone.om.helpers.OmKeyInfo;
-import org.apache.hadoop.ozone.om.helpers.OmBucketInfo;
-import org.apache.hadoop.ozone.om.helpers.BucketLayout;
 import org.apache.hadoop.ozone.om.helpers.OmVolumeArgs;
 import org.apache.hadoop.ozone.recon.api.types.DUResponse;
 import org.apache.hadoop.ozone.recon.api.types.EntityType;
@@ -33,14 +38,6 @@ import org.apache.hadoop.ozone.recon.recovery.ReconOMMetadataManager;
 import org.apache.hadoop.ozone.recon.spi.ReconNamespaceSummaryManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.io.IOException;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Objects;
-
-import static org.apache.hadoop.ozone.OzoneConsts.OM_KEY_PREFIX;
-import static org.apache.hadoop.ozone.om.helpers.OzoneFSUtils.removeTrailingSlashIfNeeded;
 
 /**
  * Abstract class for handling all bucket types.
@@ -55,15 +52,12 @@ public abstract class BucketHandler {
 
   private final ReconOMMetadataManager omMetadataManager;
 
-  private final ContainerManager containerManager;
-
   public BucketHandler(
           ReconNamespaceSummaryManager reconNamespaceSummaryManager,
-          ReconOMMetadataManager omMetadataManager,
-          OzoneStorageContainerManager reconSCM) {
+          ReconOMMetadataManager omMetadataManager
+  ) {
     this.reconNamespaceSummaryManager = reconNamespaceSummaryManager;
     this.omMetadataManager = omMetadataManager;
-    this.containerManager = reconSCM.getContainerManager();
   }
 
   public ReconOMMetadataManager getOmMetadataManager() {
@@ -163,8 +157,8 @@ public abstract class BucketHandler {
   public static BucketHandler getBucketHandler(
                 ReconNamespaceSummaryManager reconNamespaceSummaryManager,
                 ReconOMMetadataManager omMetadataManager,
-                OzoneStorageContainerManager reconSCM,
-                OmBucketInfo bucketInfo) throws IOException {
+                OmBucketInfo bucketInfo
+  ) throws IOException {
     // Check if enableFileSystemPaths flag is set to true.
     boolean enableFileSystemPaths = isEnableFileSystemPaths(omMetadataManager);
 
@@ -174,23 +168,19 @@ public abstract class BucketHandler {
     } else {
       if (bucketInfo.getBucketLayout()
           .equals(BucketLayout.FILE_SYSTEM_OPTIMIZED)) {
-        return new FSOBucketHandler(reconNamespaceSummaryManager,
-            omMetadataManager, reconSCM, bucketInfo);
+        return new FSOBucketHandler(reconNamespaceSummaryManager, omMetadataManager, bucketInfo);
       } else if (bucketInfo.getBucketLayout().equals(BucketLayout.LEGACY)) {
         // Choose handler based on enableFileSystemPaths flag for legacy layout.
         // If enableFileSystemPaths is false, then the legacy bucket is treated
         // as an OBS bucket.
         if (enableFileSystemPaths) {
-          return new LegacyBucketHandler(reconNamespaceSummaryManager,
-              omMetadataManager, reconSCM, bucketInfo);
+          return new LegacyBucketHandler(reconNamespaceSummaryManager, omMetadataManager, bucketInfo);
         } else {
-          return new OBSBucketHandler(reconNamespaceSummaryManager,
-              omMetadataManager, reconSCM, bucketInfo);
+          return new OBSBucketHandler(reconNamespaceSummaryManager, omMetadataManager, bucketInfo);
         }
       } else if (bucketInfo.getBucketLayout()
           .equals(BucketLayout.OBJECT_STORE)) {
-        return new OBSBucketHandler(reconNamespaceSummaryManager,
-            omMetadataManager, reconSCM, bucketInfo);
+        return new OBSBucketHandler(reconNamespaceSummaryManager, omMetadataManager, bucketInfo);
       } else {
         LOG.error("Unsupported bucket layout: " +
             bucketInfo.getBucketLayout());
@@ -218,8 +208,9 @@ public abstract class BucketHandler {
   public static BucketHandler getBucketHandler(
       ReconNamespaceSummaryManager reconNamespaceSummaryManager,
       ReconOMMetadataManager omMetadataManager,
-      OzoneStorageContainerManager reconSCM,
-      String volumeName, String bucketName) throws IOException {
+      String volumeName,
+      String bucketName
+  ) throws IOException {
 
     String bucketKey = omMetadataManager.getBucketKey(volumeName, bucketName);
     Table<String, OmBucketInfo> bucketTable =
@@ -229,7 +220,6 @@ public abstract class BucketHandler {
       bucketInfo = bucketTable.getSkipCache(bucketKey);
     }
 
-    return getBucketHandler(reconNamespaceSummaryManager,
-        omMetadataManager, reconSCM, bucketInfo);
+    return getBucketHandler(reconNamespaceSummaryManager, omMetadataManager, bucketInfo);
   }
 }

@@ -17,8 +17,12 @@
  */
 package org.apache.hadoop.ozone.recon.api.handlers;
 
+import static org.apache.hadoop.ozone.OzoneConsts.OM_KEY_PREFIX;
+
 import com.google.common.base.Preconditions;
-import org.apache.hadoop.hdds.scm.server.OzoneStorageContainerManager;
+import java.io.IOException;
+import java.util.List;
+import java.util.Set;
 import org.apache.hadoop.hdds.utils.db.Table;
 import org.apache.hadoop.hdds.utils.db.TableIterator;
 import org.apache.hadoop.ozone.om.helpers.BucketLayout;
@@ -31,23 +35,11 @@ import org.apache.hadoop.ozone.recon.api.types.EntityType;
 import org.apache.hadoop.ozone.recon.api.types.NSSummary;
 import org.apache.hadoop.ozone.recon.recovery.ReconOMMetadataManager;
 import org.apache.hadoop.ozone.recon.spi.ReconNamespaceSummaryManager;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import java.io.IOException;
-import java.util.List;
-import java.util.Set;
-
-import static org.apache.hadoop.ozone.OzoneConsts.OM_KEY_PREFIX;
 
 /**
  * Class for handling Legacy buckets NameSpaceSummaries.
  */
 public class LegacyBucketHandler extends BucketHandler {
-
-  private static final Logger LOG = LoggerFactory.getLogger(
-      LegacyBucketHandler.class);
-
   private final String vol;
   private final String bucket;
   private final OmBucketInfo omBucketInfo;
@@ -55,10 +47,10 @@ public class LegacyBucketHandler extends BucketHandler {
   public LegacyBucketHandler(
       ReconNamespaceSummaryManager reconNamespaceSummaryManager,
       ReconOMMetadataManager omMetadataManager,
-      OzoneStorageContainerManager reconSCM,
-      OmBucketInfo bucketInfo) {
-    super(reconNamespaceSummaryManager, omMetadataManager,
-        reconSCM);
+      OmBucketInfo bucketInfo
+  ) {
+    super(reconNamespaceSummaryManager, omMetadataManager);
+
     this.omBucketInfo = bucketInfo;
     this.vol = omBucketInfo.getVolumeName();
     this.bucket = omBucketInfo.getBucketName();

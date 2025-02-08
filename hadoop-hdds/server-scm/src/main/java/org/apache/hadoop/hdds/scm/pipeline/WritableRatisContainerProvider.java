@@ -21,8 +21,11 @@
  */
 package org.apache.hadoop.hdds.scm.pipeline;
 
+import jakarta.annotation.Nullable;
+import java.io.IOException;
+import java.util.List;
+import java.util.stream.Collectors;
 import org.apache.hadoop.hdds.client.ReplicationConfig;
-import org.apache.hadoop.hdds.conf.ConfigurationSource;
 import org.apache.hadoop.hdds.scm.PipelineChoosePolicy;
 import org.apache.hadoop.hdds.scm.PipelineRequestInformation;
 import org.apache.hadoop.hdds.scm.container.ContainerInfo;
@@ -31,11 +34,6 @@ import org.apache.hadoop.hdds.scm.container.common.helpers.ExcludeList;
 import org.apache.hadoop.hdds.scm.exceptions.SCMException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import jakarta.annotation.Nullable;
-import java.io.IOException;
-import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * Class to obtain a writable container for Ratis and Standalone pipelines.
@@ -46,16 +44,15 @@ public class WritableRatisContainerProvider
   private static final Logger LOG = LoggerFactory
       .getLogger(WritableRatisContainerProvider.class);
 
-  private final ConfigurationSource conf;
   private final PipelineManager pipelineManager;
   private final PipelineChoosePolicy pipelineChoosePolicy;
   private final ContainerManager containerManager;
 
-  public WritableRatisContainerProvider(ConfigurationSource conf,
+  public WritableRatisContainerProvider(
       PipelineManager pipelineManager,
       ContainerManager containerManager,
-      PipelineChoosePolicy pipelineChoosePolicy) {
-    this.conf = conf;
+      PipelineChoosePolicy pipelineChoosePolicy
+  ) {
     this.pipelineManager = pipelineManager;
     this.containerManager = containerManager;
     this.pipelineChoosePolicy = pipelineChoosePolicy;

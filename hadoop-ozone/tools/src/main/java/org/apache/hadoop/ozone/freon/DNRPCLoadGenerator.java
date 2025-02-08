@@ -17,13 +17,17 @@
  */
 package org.apache.hadoop.ozone.freon;
 
+import static org.apache.hadoop.hdds.client.ReplicationConfig.getLegacyFactor;
+
 import com.codahale.metrics.Timer;
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.base.Preconditions;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.Callable;
 import org.apache.hadoop.hdds.cli.HddsVersionProvider;
 import org.apache.hadoop.hdds.client.StandaloneReplicationConfig;
 import org.apache.hadoop.hdds.conf.OzoneConfiguration;
-import org.apache.hadoop.hdds.protocol.datanode.proto.ContainerProtos;
 import org.apache.hadoop.hdds.scm.XceiverClientCreator;
 import org.apache.hadoop.hdds.scm.XceiverClientFactory;
 import org.apache.hadoop.hdds.scm.XceiverClientSpi;
@@ -43,12 +47,6 @@ import org.slf4j.LoggerFactory;
 import picocli.CommandLine;
 import picocli.CommandLine.Command;
 import picocli.CommandLine.Option;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.concurrent.Callable;
-
-import static org.apache.hadoop.hdds.client.ReplicationConfig.getLegacyFactor;
 
 /**
  * Utility to generate RPC request to DN.
@@ -203,9 +201,16 @@ public class DNRPCLoadGenerator extends BaseFreonGenerator
   private void sendRPCReq(long l) throws Exception {
     timer.time(() -> {
       int clientIndex = (numClients == 1) ? 0 : (int)l % numClients;
-      ContainerProtos.EchoResponseProto response =
-          ContainerProtocolCalls.echo(clients.get(clientIndex), encodedContainerToken,
-              containerID, payloadReqBytes, payloadRespSize, sleepTimeMs, readOnly);
+      ContainerProtocolCalls.echo(
+          clients.get(clientIndex),
+          encodedContainerToken,
+          containerID,
+          payloadReqBytes,
+          payloadRespSize,
+          sleepTimeMs,
+          readOnly
+      );
+
       return null;
     });
   }

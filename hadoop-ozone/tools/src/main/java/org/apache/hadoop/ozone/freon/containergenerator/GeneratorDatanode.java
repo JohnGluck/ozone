@@ -137,8 +137,8 @@ public class GeneratorDatanode extends BaseGenerator {
     config = createOzoneConfiguration();
 
     blockManager = new BlockManagerImpl(config);
-    chunkManager = ChunkManagerFactory
-        .createChunkManager(config, blockManager, null);
+
+    chunkManager = ChunkManagerFactory.createChunkManager(config, blockManager);
 
     final Collection<String> storageDirs =
         HddsServerUtil.getDatanodeStorageDirs(config);

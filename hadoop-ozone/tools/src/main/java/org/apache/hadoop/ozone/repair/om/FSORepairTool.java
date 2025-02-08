@@ -398,7 +398,6 @@ public class FSORepairTool extends RepairTool {
       try (BatchOperation batch = store.initBatchOperation()) {
         fileTable.deleteWithBatch(batch, fileKey);
 
-        RepeatedOmKeyInfo originalRepeatedKeyInfo = deletedTable.get(fileKey);
         RepeatedOmKeyInfo updatedRepeatedOmKeyInfo = OmUtils.prepareKeyForDelete(
             fileInfo, fileInfo.getUpdateID(), true);
         // NOTE: The FSO code seems to write the open key entry with the whole

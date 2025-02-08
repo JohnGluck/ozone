@@ -520,7 +520,6 @@ public class OMDBInsightEndpoint {
 
       // We know each RepeatedOmKeyInfo has just one OmKeyInfo object
       OmKeyInfo keyInfo = repeatedOmKeyInfo.getOmKeyInfoList().get(0);
-      KeyEntityInfo keyEntityInfo = createKeyEntityInfoFromOmKeyInfo(entry.getKey(), keyInfo);
 
       // Add the key directly to the list without classification
       deletedKeyInsightInfo.getRepeatedOmKeyInfoList().add(repeatedOmKeyInfo);
@@ -1161,9 +1160,7 @@ public class OMDBInsightEndpoint {
     }
 
     // Fetch the immediate parentID which could be a directory or the bucket itself
-    BucketHandler handler =
-        getBucketHandler(reconNamespaceSummaryManager, omMetadataManager,
-            reconSCM, bucketInfo);
+    BucketHandler handler = getBucketHandler(reconNamespaceSummaryManager, omMetadataManager, bucketInfo);
     long dirObjectId = -1;
     try {
       OmDirectoryInfo dirInfo = handler.getDirInfo(names);

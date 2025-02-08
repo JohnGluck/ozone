@@ -45,22 +45,19 @@ public class ReconDeadNodeHandler extends DeadNodeHandler {
   private StorageContainerServiceProvider scmClient;
   private ContainerHealthTask containerHealthTask;
   private PipelineSyncTask pipelineSyncTask;
-  private ContainerSizeCountTask containerSizeCountTask;
-  private ContainerManager containerManager;
 
-  public ReconDeadNodeHandler(NodeManager nodeManager,
-                              PipelineManager pipelineManager,
-                              ContainerManager containerManager,
-                              StorageContainerServiceProvider scmClient,
-                              ContainerHealthTask containerHealthTask,
-                              PipelineSyncTask pipelineSyncTask,
-                              ContainerSizeCountTask containerSizeCountTask) {
+  public ReconDeadNodeHandler(
+      NodeManager nodeManager,
+      PipelineManager pipelineManager,
+      ContainerManager containerManager,
+      StorageContainerServiceProvider scmClient,
+      ContainerHealthTask containerHealthTask,
+      PipelineSyncTask pipelineSyncTask
+  ) {
     super(nodeManager, pipelineManager, containerManager);
     this.scmClient = scmClient;
-    this.containerManager = containerManager;
     this.containerHealthTask = containerHealthTask;
     this.pipelineSyncTask = pipelineSyncTask;
-    this.containerSizeCountTask = containerSizeCountTask;
   }
 
   @Override

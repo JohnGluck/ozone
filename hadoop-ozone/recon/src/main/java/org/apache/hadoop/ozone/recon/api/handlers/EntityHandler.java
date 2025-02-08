@@ -17,24 +17,22 @@
  */
 package org.apache.hadoop.ozone.recon.api.handlers;
 
+import static org.apache.hadoop.ozone.OzoneConsts.OM_KEY_PREFIX;
+
+import java.io.IOException;
+import java.util.Set;
 import org.apache.hadoop.hdds.scm.server.OzoneStorageContainerManager;
 import org.apache.hadoop.ozone.OmUtils;
 import org.apache.hadoop.ozone.om.helpers.BucketLayout;
 import org.apache.hadoop.ozone.recon.ReconConstants;
-import org.apache.hadoop.ozone.recon.api.types.NamespaceSummaryResponse;
 import org.apache.hadoop.ozone.recon.api.types.DUResponse;
-import org.apache.hadoop.ozone.recon.api.types.QuotaUsageResponse;
-import org.apache.hadoop.ozone.recon.api.types.FileSizeDistributionResponse;
 import org.apache.hadoop.ozone.recon.api.types.EntityType;
+import org.apache.hadoop.ozone.recon.api.types.FileSizeDistributionResponse;
 import org.apache.hadoop.ozone.recon.api.types.NSSummary;
+import org.apache.hadoop.ozone.recon.api.types.NamespaceSummaryResponse;
+import org.apache.hadoop.ozone.recon.api.types.QuotaUsageResponse;
 import org.apache.hadoop.ozone.recon.recovery.ReconOMMetadataManager;
 import org.apache.hadoop.ozone.recon.spi.ReconNamespaceSummaryManager;
-
-import java.io.IOException;
-
-import java.util.Set;
-
-import static org.apache.hadoop.ozone.OzoneConsts.OM_KEY_PREFIX;
 
 /**
  * Class for handling all entity types.
@@ -151,10 +149,8 @@ public abstract class EntityHandler {
       String volName = names[0];
       String bucketName = names[1];
 
-      bucketHandler = BucketHandler.getBucketHandler(
-              reconNamespaceSummaryManager,
-              omMetadataManager, reconSCM,
-              volName, bucketName);
+      bucketHandler =
+          BucketHandler.getBucketHandler(reconNamespaceSummaryManager, omMetadataManager, volName, bucketName);
 
       if (bucketHandler == null
           || !bucketHandler.bucketExists(volName, bucketName)) {
@@ -168,9 +164,8 @@ public abstract class EntityHandler {
       String bucketName = names[1];
 
       // Assuming getBucketHandler already validates volume and bucket existence
-      bucketHandler = BucketHandler.getBucketHandler(
-          reconNamespaceSummaryManager, omMetadataManager, reconSCM, volName,
-          bucketName);
+      bucketHandler =
+          BucketHandler.getBucketHandler(reconNamespaceSummaryManager, omMetadataManager, volName, bucketName);
 
       if (bucketHandler == null) {
         return EntityType.UNKNOWN.create(reconNamespaceSummaryManager,

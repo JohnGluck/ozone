@@ -18,18 +18,17 @@
 
 package org.apache.hadoop.ozone.container.keyvalue.impl;
 
+import static org.apache.hadoop.hdds.HddsConfigKeys.HDDS_CONTAINER_PERSISTDATA;
+import static org.apache.hadoop.hdds.HddsConfigKeys.HDDS_CONTAINER_PERSISTDATA_DEFAULT;
+import static org.apache.hadoop.ozone.container.ozoneimpl.ContainerScannerConfiguration.HDDS_CONTAINER_SCRUB_ENABLED;
+
 import org.apache.hadoop.hdds.conf.ConfigurationSource;
 import org.apache.hadoop.ozone.OzoneConfigKeys;
-import org.apache.hadoop.ozone.container.common.volume.VolumeSet;
 import org.apache.hadoop.ozone.container.keyvalue.interfaces.BlockManager;
 import org.apache.hadoop.ozone.container.keyvalue.interfaces.ChunkManager;
 import org.apache.hadoop.ozone.container.ozoneimpl.ContainerScannerConfiguration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import static org.apache.hadoop.hdds.HddsConfigKeys.HDDS_CONTAINER_PERSISTDATA;
-import static org.apache.hadoop.hdds.HddsConfigKeys.HDDS_CONTAINER_PERSISTDATA_DEFAULT;
-import static org.apache.hadoop.ozone.container.ozoneimpl.ContainerScannerConfiguration.HDDS_CONTAINER_SCRUB_ENABLED;
 
 /**
  * Select an appropriate ChunkManager implementation as per config setting.
@@ -47,8 +46,7 @@ public final class ChunkManagerFactory {
    * @param manager  This parameter will be used only for read data of
    *                 FILE_PER_CHUNK layout file. Can be null for other cases.
    */
-  public static ChunkManager createChunkManager(ConfigurationSource conf,
-      BlockManager manager, VolumeSet volSet) {
+  public static ChunkManager createChunkManager(ConfigurationSource conf, BlockManager manager) {
     boolean sync =
         conf.getBoolean(OzoneConfigKeys.HDDS_CONTAINER_CHUNK_WRITE_SYNC_KEY,
             OzoneConfigKeys.HDDS_CONTAINER_CHUNK_WRITE_SYNC_DEFAULT);
@@ -75,6 +73,6 @@ public final class ChunkManagerFactory {
       return new ChunkManagerDummyImpl();
     }
 
-    return new ChunkManagerDispatcher(sync, manager, volSet);
+    return new ChunkManagerDispatcher(sync, manager);
   }
 }

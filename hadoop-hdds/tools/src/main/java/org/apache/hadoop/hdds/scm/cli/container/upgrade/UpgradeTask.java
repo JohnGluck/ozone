@@ -189,7 +189,6 @@ public class UpgradeTask {
       result.success();
       return result;
     }).whenComplete((r, e) -> {
-      final File hddsRootDir = r.getHddsVolume().getHddsRootDir();
       final File file =
           UpgradeUtils.getVolumeUpgradeCompleteFile(r.getHddsVolume());
       // create a flag file

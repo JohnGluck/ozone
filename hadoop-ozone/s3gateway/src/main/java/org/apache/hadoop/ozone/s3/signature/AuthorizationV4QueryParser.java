@@ -45,10 +45,6 @@ import org.slf4j.LoggerFactory;
  * .com/AmazonS3/latest/API/sigv4-query-string-auth.html
  */
 public class AuthorizationV4QueryParser implements SignatureParser {
-
-  private static final Logger LOG =
-      LoggerFactory.getLogger(AuthorizationV4QueryParser.class);
-
   private final Map<String, String> queryParameters;
 
   private static final Long X_AMZ_EXPIRES_MIN = 1L;

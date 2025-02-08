@@ -89,7 +89,6 @@ public class HeartbeatEndpointTask
   public static final Logger LOG =
       LoggerFactory.getLogger(HeartbeatEndpointTask.class);
   private final EndpointStateMachine rpcEndpoint;
-  private final ConfigurationSource conf;
   private DatanodeDetailsProto datanodeDetailsProto;
   private StateContext context;
   private int maxContainerActionsPerHB;
@@ -121,7 +120,6 @@ public class HeartbeatEndpointTask
                                ConfigurationSource conf, StateContext context,
                                HDDSLayoutVersionManager versionManager) {
     this.rpcEndpoint = rpcEndpoint;
-    this.conf = conf;
     this.context = context;
     this.maxContainerActionsPerHB = conf.getInt(HDDS_CONTAINER_ACTION_MAX_LIMIT,
         HDDS_CONTAINER_ACTION_MAX_LIMIT_DEFAULT);

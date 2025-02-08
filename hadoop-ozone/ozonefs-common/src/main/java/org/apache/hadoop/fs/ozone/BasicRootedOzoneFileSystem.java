@@ -1582,7 +1582,6 @@ public class BasicRootedOzoneFileSystem extends FileSystem {
     }
     // f is a directory
     long[] summary = {0, 0, 0, 1};
-    int i = 0;
     for (FileStatusAdapter s : listStatusAdapter(f, true)) {
       long length = s.getLength();
       long spaceConsumed = s.getDiskConsumed();

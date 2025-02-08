@@ -290,7 +290,7 @@ public class SnapshotDeletingService extends AbstractKeyDeletingService {
           .setClientId(clientId.toString())
           .build();
 
-      try (BootstrapStateHandler.Lock lock = new BootstrapStateHandler.Lock()) {
+      try (BootstrapStateHandler.Lock lock = new BootstrapStateHandler.Lock()) { // NOPMD
         submitRequest(omRequest);
       }
     }

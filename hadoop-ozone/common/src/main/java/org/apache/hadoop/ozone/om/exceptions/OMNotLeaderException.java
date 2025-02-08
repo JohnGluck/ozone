@@ -30,14 +30,12 @@ import org.apache.ratis.protocol.RaftPeerId;
  */
 public class OMNotLeaderException extends IOException {
 
-  private final String currentPeerId;
   private final String leaderPeerId;
   private final String leaderAddress;
 
   public OMNotLeaderException(RaftPeerId currentPeerId) {
     super("OM:" + currentPeerId + " is not the leader. Could not " +
         "determine the leader node.");
-    this.currentPeerId = currentPeerId.toString();
     this.leaderPeerId = null;
     this.leaderAddress = null;
   }
@@ -51,14 +49,12 @@ public class OMNotLeaderException extends IOException {
       RaftPeerId suggestedLeaderPeerId, String suggestedLeaderAddress) {
     super("OM:" + currentPeerId + " is not the leader. Suggested leader is" +
         " OM:" + suggestedLeaderPeerId + "[" + suggestedLeaderAddress + "].");
-    this.currentPeerId = currentPeerId.toString();
     this.leaderPeerId = suggestedLeaderPeerId.toString();
     this.leaderAddress = suggestedLeaderAddress;
   }
 
   public OMNotLeaderException(String msg) {
     super(msg);
-    this.currentPeerId = null;
     this.leaderPeerId = null;
     this.leaderAddress = null;
   }

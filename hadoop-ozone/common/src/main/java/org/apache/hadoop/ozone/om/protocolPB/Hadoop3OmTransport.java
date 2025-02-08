@@ -49,9 +49,6 @@ public class Hadoop3OmTransport implements OmTransport {
    */
   private static final RpcController NULL_RPC_CONTROLLER = null;
 
-  private static final Logger LOG =
-      LoggerFactory.getLogger(Hadoop3OmTransport.class);
-
   private final HadoopRpcOMFailoverProxyProvider omFailoverProxyProvider;
 
   private final OzoneManagerProtocolPB rpcProxy;

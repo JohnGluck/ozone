@@ -39,16 +39,15 @@ public class NewNodeHandler implements EventHandler<DatanodeDetails> {
 
   private final PipelineManager pipelineManager;
   private final NodeDecommissionManager decommissionManager;
-  private final ConfigurationSource conf;
   private final SCMServiceManager serviceManager;
 
-  public NewNodeHandler(PipelineManager pipelineManager,
+  public NewNodeHandler(
+      PipelineManager pipelineManager,
       NodeDecommissionManager decommissionManager,
-      ConfigurationSource conf,
-      SCMServiceManager serviceManager) {
+      SCMServiceManager serviceManager
+  ) {
     this.pipelineManager = pipelineManager;
     this.decommissionManager = decommissionManager;
-    this.conf = conf;
     this.serviceManager = serviceManager;
   }
 

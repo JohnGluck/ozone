@@ -176,8 +176,9 @@ public class KeyValueHandler extends Handler {
     blockManager = new BlockManagerImpl(config);
     validateChunkChecksumData = conf.getObject(
         DatanodeConfiguration.class).isChunkDataValidationCheck();
-    chunkManager = ChunkManagerFactory.createChunkManager(config, blockManager,
-        volSet);
+
+    chunkManager = ChunkManagerFactory.createChunkManager(config, blockManager);
+
     try {
       volumeChoosingPolicy = VolumeChoosingPolicyFactory.getPolicy(conf);
     } catch (Exception e) {

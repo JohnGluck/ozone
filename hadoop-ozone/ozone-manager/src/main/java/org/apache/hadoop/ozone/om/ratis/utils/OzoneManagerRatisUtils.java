@@ -120,7 +120,6 @@ import static org.apache.hadoop.ozone.om.OzoneManagerUtils.getBucketLayout;
 public final class OzoneManagerRatisUtils {
   private static final Logger LOG = LoggerFactory
       .getLogger(OzoneManagerRatisUtils.class);
-  private static final RpcController NULL_RPC_CONTROLLER = null;
 
   private OzoneManagerRatisUtils() {
   }

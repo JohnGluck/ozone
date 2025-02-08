@@ -46,8 +46,11 @@ public class WritableContainerFactory {
     ConfigurationSource conf = scm.getConfiguration();
 
     this.ratisProvider = new WritableRatisContainerProvider(
-        conf, scm.getPipelineManager(),
-        scm.getContainerManager(), scm.getPipelineChoosePolicy());
+        scm.getPipelineManager(),
+        scm.getContainerManager(),
+        scm.getPipelineChoosePolicy()
+    );
+
     this.standaloneProvider = ratisProvider;
 
     WritableECContainerProviderConfig ecProviderConfig =

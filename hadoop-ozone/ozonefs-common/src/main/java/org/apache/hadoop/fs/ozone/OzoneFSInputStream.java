@@ -60,7 +60,7 @@ public class OzoneFSInputStream extends FSInputStream
   public int read() throws IOException {
     Span span = GlobalTracer.get()
         .buildSpan("OzoneFSInputStream.read").start();
-    try (Scope scope = GlobalTracer.get().activateSpan(span)) {
+    try (Scope scope = GlobalTracer.get().activateSpan(span)) { // NOPMD
       int byteRead = inputStream.read();
       if (statistics != null && byteRead >= 0) {
         statistics.incrementBytesRead(1);
@@ -75,7 +75,7 @@ public class OzoneFSInputStream extends FSInputStream
   public int read(byte[] b, int off, int len) throws IOException {
     Span span = GlobalTracer.get()
         .buildSpan("OzoneFSInputStream.read").start();
-    try (Scope scope = GlobalTracer.get().activateSpan(span)) {
+    try (Scope scope = GlobalTracer.get().activateSpan(span)) { // NOPMD
       span.setTag("offset", off)
           .setTag("length", len);
       int bytesRead = inputStream.read(b, off, len);

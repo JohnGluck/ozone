@@ -83,7 +83,6 @@ public class MutableVolumeSet implements VolumeSet {
   private final ReentrantReadWriteLock volumeSetRWLock;
 
   private final String datanodeUuid;
-  private String clusterID;
 
   private final StorageVolumeChecker volumeChecker;
   private CheckedRunnable<IOException> failedVolumeListener;
@@ -104,7 +103,6 @@ public class MutableVolumeSet implements VolumeSet {
   ) throws IOException {
     this.context = context;
     this.datanodeUuid = dnUuid;
-    this.clusterID = clusterID;
     this.conf = conf;
     this.volumeSetRWLock = new ReentrantReadWriteLock();
     this.volumeChecker = volumeChecker;

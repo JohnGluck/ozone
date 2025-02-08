@@ -51,10 +51,6 @@ import static org.apache.hadoop.ozone.om.upgrade.OMLayoutFeature.FILESYSTEM_SNAP
  * This is an OM internal request. Does not need @RequireSnapshotFeatureState.
  */
 public class OMSnapshotMoveDeletedKeysRequest extends OMClientRequest {
-
-  private static final Logger LOG =
-      LoggerFactory.getLogger(OMSnapshotMoveDeletedKeysRequest.class);
-
   public OMSnapshotMoveDeletedKeysRequest(OMRequest omRequest) {
     super(omRequest);
   }

@@ -46,16 +46,9 @@ public class OzoneManagerServiceGrpc extends OzoneManagerServiceImplBase {
    */
   private static final RpcController NULL_RPC_CONTROLLER = null;
   private final OzoneManagerProtocolServerSideTranslatorPB omTranslator;
-  private final OzoneDelegationTokenSecretManager delegationTokenMgr;
-  private final SecurityConfig secConfig;
 
-  OzoneManagerServiceGrpc(
-      OzoneManagerProtocolServerSideTranslatorPB omTranslator,
-      OzoneDelegationTokenSecretManager delegationTokenMgr,
-      OzoneConfiguration configuration) {
+  OzoneManagerServiceGrpc(OzoneManagerProtocolServerSideTranslatorPB omTranslator) {
     this.omTranslator = omTranslator;
-    this.delegationTokenMgr = delegationTokenMgr;
-    this.secConfig = new SecurityConfig(configuration);
   }
 
   @Override

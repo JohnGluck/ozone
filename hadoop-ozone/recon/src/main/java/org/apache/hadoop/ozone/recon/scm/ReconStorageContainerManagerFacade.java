@@ -267,8 +267,7 @@ public class ReconStorageContainerManagerFacade
         new ReconPipelineReportHandler(safeModeManager,
             pipelineManager, scmContext, conf, scmServiceProvider);
 
-    PipelineActionHandler pipelineActionHandler =
-        new PipelineActionHandler(pipelineManager, scmContext, conf);
+    PipelineActionHandler pipelineActionHandler = new PipelineActionHandler(pipelineManager, scmContext);
 
     ReconTaskConfig reconTaskConfig = conf.getObject(ReconTaskConfig.class);
     PipelineSyncTask pipelineSyncTask = new PipelineSyncTask(pipelineManager, nodeManager,
@@ -278,17 +277,26 @@ public class ReconStorageContainerManagerFacade
         containerHealthSchemaManager, containerPlacementPolicy,
         reconTaskConfig, reconContainerMetadataManager, conf, taskStatusUpdaterManager);
 
-    this.containerSizeCountTask = new ContainerSizeCountTask(containerManager, scmServiceProvider,
-        reconTaskConfig, containerCountBySizeDao, utilizationSchemaDefinition, taskStatusUpdaterManager);
+    this.containerSizeCountTask = new ContainerSizeCountTask(
+        containerManager,
+        reconTaskConfig,
+        containerCountBySizeDao,
+        utilizationSchemaDefinition,
+        taskStatusUpdaterManager
+    );
 
     this.dataSource = dataSource;
 
-    StaleNodeHandler staleNodeHandler =
-        new ReconStaleNodeHandler(nodeManager, pipelineManager, conf,
-            pipelineSyncTask);
-    DeadNodeHandler deadNodeHandler = new ReconDeadNodeHandler(nodeManager,
-        pipelineManager, containerManager, scmServiceProvider,
-        containerHealthTask, pipelineSyncTask, containerSizeCountTask);
+    StaleNodeHandler staleNodeHandler = new ReconStaleNodeHandler(nodeManager, pipelineManager, pipelineSyncTask);
+
+    DeadNodeHandler deadNodeHandler = new ReconDeadNodeHandler(
+        nodeManager,
+        pipelineManager,
+        containerManager,
+        scmServiceProvider,
+        containerHealthTask,
+        pipelineSyncTask
+    );
 
     ContainerReportHandler containerReportHandler =
         new ReconContainerReportHandler(nodeManager, containerManager);

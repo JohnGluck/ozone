@@ -64,9 +64,9 @@ public final class SqlDbUtils {
     System.setProperty("derby.stream.error.method",
         DERBY_DISABLE_LOG_METHOD);
     Class.forName(DERBY_DRIVER_CLASS);
-    try (Connection connection = DriverManager.getConnection(jdbcUrl
-        + ";user=" + schemaName
-        + ";create=true")) {
+
+    String fullJdbcUrl = jdbcUrl + ";user=" + schemaName + ";create=true";
+    try (Connection connection = DriverManager.getConnection(fullJdbcUrl)) { // NOPMD
       LOG.info("Created derby database at {}.", jdbcUrl);
     }
   }

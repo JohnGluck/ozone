@@ -58,26 +58,22 @@ public class ContainerSizeCountTask extends ReconScmTask {
   private static final Logger LOG =
       LoggerFactory.getLogger(ContainerSizeCountTask.class);
 
-  private StorageContainerServiceProvider scmClient;
   private ContainerManager containerManager;
   private final long interval;
   private ContainerCountBySizeDao containerCountBySizeDao;
   private DSLContext dslContext;
   private HashMap<ContainerID, Long> processedContainers = new HashMap<>();
-  private Map<ContainerSchemaDefinition.UnHealthyContainerStates, Map<String, Long>>
-      unhealthyContainerStateStatsMap;
   private ReadWriteLock lock = new ReentrantReadWriteLock(true);
   private final ReconTaskStatusUpdater taskStatusUpdater;
 
   public ContainerSizeCountTask(
       ContainerManager containerManager,
-      StorageContainerServiceProvider scmClient,
       ReconTaskConfig reconTaskConfig,
       ContainerCountBySizeDao containerCountBySizeDao,
       UtilizationSchemaDefinition utilizationSchemaDefinition,
-      ReconTaskStatusUpdaterManager taskStatusUpdaterManager) {
+      ReconTaskStatusUpdaterManager taskStatusUpdaterManager
+  ) {
     super(taskStatusUpdaterManager);
-    this.scmClient = scmClient;
     this.containerManager = containerManager;
     this.containerCountBySizeDao = containerCountBySizeDao;
     this.dslContext = utilizationSchemaDefinition.getDSLContext();

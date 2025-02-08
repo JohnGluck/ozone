@@ -630,7 +630,7 @@ public class BlockOutputStream extends OutputStream {
       // never reach, just to make compiler happy.
       return null;
     }
-    return flushFuture.thenApply(r -> new PutBlockResult(flushPos, asyncReply.getLogIndex(), r));
+    return flushFuture.thenApply(r -> new PutBlockResult(asyncReply.getLogIndex(), r));
   }
 
   @Override
@@ -999,7 +999,7 @@ public class BlockOutputStream extends OutputStream {
       // never reach.
       return null;
     }
-    return validateFuture.thenApply(x -> new PutBlockResult(flushPos, asyncReply.getLogIndex(), x));
+    return validateFuture.thenApply(x -> new PutBlockResult(asyncReply.getLogIndex(), x));
   }
 
   private void handleSuccessfulPutBlock(
@@ -1229,12 +1229,10 @@ public class BlockOutputStream extends OutputStream {
   }
 
   static class PutBlockResult {
-    private final long flushPosition;
     private final long commitIndex;
     private final ContainerCommandResponseProto response;
 
-    PutBlockResult(long flushPosition, long commitIndex, ContainerCommandResponseProto response) {
-      this.flushPosition = flushPosition;
+    PutBlockResult(long commitIndex, ContainerCommandResponseProto response) {
       this.commitIndex = commitIndex;
       this.response = response;
     }

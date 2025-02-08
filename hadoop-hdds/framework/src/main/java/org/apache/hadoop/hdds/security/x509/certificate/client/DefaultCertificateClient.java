@@ -127,8 +127,6 @@ public abstract class DefaultCertificateClient implements CertificateClient {
   private String rootCaCertId;
   private String component;
   private final String threadNamePrefix;
-  private List<String> pemEncodedCACerts = null;
-  private Lock pemEncodedCACertsLock = new ReentrantLock();
   private ReloadingX509KeyManager keyManager;
   private ReloadingX509TrustManager trustManager;
 
@@ -1471,6 +1469,5 @@ public abstract class DefaultCertificateClient implements CertificateClient {
     String pemCert = CertificateCodec.getPEMEncodedString(cert);
     certificateMap.put(caCertId,
         CertificateCodec.getCertPathFromPemEncodedString(pemCert));
-    pemEncodedCACerts = Arrays.asList(pemCert);
   }
 }

@@ -49,13 +49,13 @@ public class PipelineActionHandler
 
   private final PipelineManager pipelineManager;
   private final SCMContext scmContext;
-  private final ConfigurationSource ozoneConf;
 
-  public PipelineActionHandler(PipelineManager pipelineManager,
-      SCMContext scmContext, OzoneConfiguration conf) {
+  public PipelineActionHandler(
+      PipelineManager pipelineManager,
+      SCMContext scmContext
+  ) {
     this.pipelineManager = pipelineManager;
     this.scmContext = scmContext;
-    this.ozoneConf = conf;
   }
 
   @Override

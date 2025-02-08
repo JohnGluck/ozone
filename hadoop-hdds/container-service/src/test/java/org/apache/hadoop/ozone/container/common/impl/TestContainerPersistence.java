@@ -165,8 +165,8 @@ public class TestContainerPersistence {
       assertTrue(success);
     }
     blockManager = new BlockManagerImpl(conf);
-    chunkManager = ChunkManagerFactory.createChunkManager(conf, blockManager,
-        null);
+
+    chunkManager = ChunkManagerFactory.createChunkManager(conf, blockManager);
 
     for (String dir : conf.getStrings(ScmConfigKeys.HDDS_DATANODE_DIR_KEY)) {
       StorageLocation location = StorageLocation.parse(dir);

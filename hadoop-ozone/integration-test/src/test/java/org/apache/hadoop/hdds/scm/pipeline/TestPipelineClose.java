@@ -188,9 +188,7 @@ public class TestPipelineClose {
         HddsTestUtils.getPipelineActionFromDatanode(dns.get(0), pipelineID);
 
     // send closing action for pipeline
-    final PipelineActionHandler pipelineActionHandler =
-        new PipelineActionHandler(pipelineManager,
-            SCMContext.emptyContext(), conf);
+    PipelineActionHandler pipelineActionHandler = new PipelineActionHandler(pipelineManager, SCMContext.emptyContext());
 
     pipelineActionHandler.onMessage(
         pipelineActionsFromDatanode, new EventQueue());

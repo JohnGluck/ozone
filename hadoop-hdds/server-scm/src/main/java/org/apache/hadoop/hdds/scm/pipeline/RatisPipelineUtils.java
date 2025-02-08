@@ -30,9 +30,6 @@ import org.slf4j.LoggerFactory;
  */
 public final class RatisPipelineUtils {
 
-  private static final Logger LOG =
-      LoggerFactory.getLogger(RatisPipelineUtils.class);
-
   private RatisPipelineUtils() {
   }
 

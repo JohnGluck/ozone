@@ -205,8 +205,7 @@ public class SstFilteringService extends BackgroundService
               RDBStore rdbStore = (RDBStore) omSnapshot.getMetadataManager()
                   .getStore();
               RocksDatabase db = rdbStore.getDb();
-              try (BootstrapStateHandler.Lock lock = getBootstrapStateLock()
-                  .lock()) {
+              try (BootstrapStateHandler.Lock lock = getBootstrapStateLock().lock()) { // NOPMD
                 db.deleteFilesNotMatchingPrefix(columnFamilyNameToPrefixMap);
               }
               markSSTFilteredFlagForSnapshot(snapshotInfo);

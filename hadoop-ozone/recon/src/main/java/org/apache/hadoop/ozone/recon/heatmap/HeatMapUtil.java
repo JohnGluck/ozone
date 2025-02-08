@@ -19,9 +19,15 @@
 
 package org.apache.hadoop.ozone.recon.heatmap;
 
+import static org.apache.hadoop.ozone.OzoneConsts.OM_KEY_PREFIX;
+
 import com.google.inject.Inject;
+import jakarta.annotation.Nonnull;
+import java.io.IOException;
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
 import org.apache.commons.collections.CollectionUtils;
-import org.apache.hadoop.hdds.conf.OzoneConfiguration;
 import org.apache.hadoop.hdds.scm.server.OzoneStorageContainerManager;
 import org.apache.hadoop.ozone.recon.api.handlers.EntityHandler;
 import org.apache.hadoop.ozone.recon.api.types.DUResponse;
@@ -30,16 +36,8 @@ import org.apache.hadoop.ozone.recon.api.types.EntityReadAccessHeatMapResponse;
 import org.apache.hadoop.ozone.recon.api.types.ResponseStatus;
 import org.apache.hadoop.ozone.recon.recovery.ReconOMMetadataManager;
 import org.apache.hadoop.ozone.recon.spi.ReconNamespaceSummaryManager;
-import jakarta.annotation.Nonnull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.io.IOException;
-import java.util.Arrays;
-import java.util.List;
-import java.util.stream.Collectors;
-
-import static org.apache.hadoop.ozone.OzoneConsts.OM_KEY_PREFIX;
 
 /**
  * This class is general utility class for keeping heatmap utility functions.
@@ -47,25 +45,22 @@ import static org.apache.hadoop.ozone.OzoneConsts.OM_KEY_PREFIX;
 public class HeatMapUtil {
   private static final Logger LOG =
       LoggerFactory.getLogger(HeatMapUtil.class);
-  private OzoneConfiguration ozoneConfiguration;
   private final ReconNamespaceSummaryManager reconNamespaceSummaryManager;
   private final ReconOMMetadataManager omMetadataManager;
   private final OzoneStorageContainerManager reconSCM;
 
   @Inject
-  public HeatMapUtil(ReconNamespaceSummaryManager
-                      namespaceSummaryManager,
-                     ReconOMMetadataManager omMetadataManager,
-                     OzoneStorageContainerManager reconSCM,
-                     OzoneConfiguration ozoneConfiguration) {
+  public HeatMapUtil(
+      ReconNamespaceSummaryManager namespaceSummaryManager,
+      ReconOMMetadataManager omMetadataManager,
+      OzoneStorageContainerManager reconSCM
+  ) {
     this.reconNamespaceSummaryManager = namespaceSummaryManager;
     this.omMetadataManager = omMetadataManager;
     this.reconSCM = reconSCM;
-    this.ozoneConfiguration = ozoneConfiguration;
   }
 
   private long getEntitySize(String path) throws IOException {
-    long entitySize = 0;
     LOG.info("Getting entity size for {}: ", path);
     EntityHandler entityHandler =
         EntityHandler.getEntityHandler(reconNamespaceSummaryManager,

@@ -727,8 +727,7 @@ public final class RandomKeyGenerator implements Callable<Void>, FreonSubcommand
     String volumeName = "vol-" + volumeNumber + "-"
         + RandomStringUtils.randomNumeric(5);
     LOG.trace("Creating volume: {}", volumeName);
-    try (AutoCloseable scope = TracingUtil
-        .createActivatedSpan("createVolume")) {
+    try (AutoCloseable scope = TracingUtil.createActivatedSpan("createVolume")) { // NOPMD
       long start = System.nanoTime();
       objectStore.createVolume(volumeName);
       long volumeCreationDuration = System.nanoTime() - start;
@@ -759,8 +758,7 @@ public final class RandomKeyGenerator implements Callable<Void>, FreonSubcommand
         RandomStringUtils.randomNumeric(5);
     LOG.trace("Creating bucket: {} in volume: {}",
         bucketName, volume.getName());
-    try (AutoCloseable scope = TracingUtil
-        .createActivatedSpan("createBucket")) {
+    try (AutoCloseable scope = TracingUtil.createActivatedSpan("createBucket")) { // NOPMD
 
       long start = System.nanoTime();
       volume.createBucket(bucketName);
@@ -795,7 +793,7 @@ public final class RandomKeyGenerator implements Callable<Void>, FreonSubcommand
     LOG.trace("Adding key: {} in bucket: {} of volume: {}",
         keyName, bucketName, volumeName);
     try {
-      try (AutoCloseable scope = TracingUtil.createActivatedSpan("createKey")) {
+      try (AutoCloseable scope = TracingUtil.createActivatedSpan("createKey")) { // NOPMD
         long keyCreateStart = System.nanoTime();
         try (OzoneOutputStream os = bucket.createKey(keyName, keySize.toBytes(),
             replicationConfig, new HashMap<>())) {
@@ -804,8 +802,7 @@ public final class RandomKeyGenerator implements Callable<Void>, FreonSubcommand
               .update(keyCreationDuration);
           keyCreationTime.getAndAdd(keyCreationDuration);
 
-          try (AutoCloseable writeScope = TracingUtil
-              .createActivatedSpan("writeKeyData")) {
+          try (AutoCloseable writeScope = TracingUtil.createActivatedSpan("writeKeyData")) { // NOPMD
             long keyWriteStart = System.nanoTime();
             for (long nrRemaining = keySize.toBytes();
                  nrRemaining > 0; nrRemaining -= bufferSize) {
@@ -845,8 +842,7 @@ public final class RandomKeyGenerator implements Callable<Void>, FreonSubcommand
     OzoneVolume volume = getVolume(volumeNumber);
     String volumeName = volume.getName();
     LOG.trace("Cleaning volume: {}", volumeName);
-    try (AutoCloseable scope = TracingUtil
-        .createActivatedSpan("cleanVolume")) {
+    try (AutoCloseable scope = TracingUtil.createActivatedSpan("cleanVolume")) { // NOPMD
       objectStore.deleteVolume(volumeName);
       numberOfVolumesCleaned.getAndIncrement();
       return true;

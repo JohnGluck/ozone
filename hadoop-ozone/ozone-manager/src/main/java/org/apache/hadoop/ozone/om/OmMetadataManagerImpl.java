@@ -310,7 +310,6 @@ public class OmMetadataManagerImpl implements OMMetadataManager,
   private Table snapshotRenamedTable;
   private Table compactionLogTable;
 
-  private boolean ignorePipelineinKey;
   private Table deletedDirTable;
 
   private OzoneManager ozoneManager;
@@ -352,8 +351,6 @@ public class OmMetadataManagerImpl implements OMMetadataManager,
     this.lock = new OzoneManagerLock(conf);
     this.omEpoch = OmUtils.getOMEpoch();
     // For test purpose only
-    ignorePipelineinKey = conf.getBoolean(
-        "ozone.om.ignore.pipeline", Boolean.TRUE);
     start(conf);
   }
 
@@ -553,9 +550,6 @@ public class OmMetadataManagerImpl implements OMMetadataManager,
             "state.";
         ExitUtils.terminate(1, errorMsg, LOG);
       }
-
-      RocksDBConfiguration rocksDBConfiguration =
-          configuration.getObject(RocksDBConfiguration.class);
 
       // As When ratis is not enabled, when we perform put/commit to rocksdb we
       // should turn on sync flag. This needs to be done as when we return

@@ -63,7 +63,6 @@ public class SCMNodeStorageStatMap implements SCMNodeStorageStatMXBean {
    * constructs the scmNodeStorageReportMap object.
    */
   public SCMNodeStorageStatMap(OzoneConfiguration conf) {
-    // scmNodeStorageReportMap = new ConcurrentHashMap<>();
     scmNodeStorageReportMap = new ConcurrentHashMap<>();
     warningUtilizationThreshold = conf.getDouble(
         OzoneConfigKeys.
@@ -169,7 +168,6 @@ public class SCMNodeStorageStatMap implements SCMNodeStorageStatMXBean {
     Preconditions.checkNotNull(nodeReport);
 
     long totalCapacity = 0;
-    long totalRemaining = 0;
     long totalScmUsed = 0;
     Set<StorageLocationReport> storagReportSet = new HashSet<>();
     Set<StorageLocationReport> fullVolumeSet = new HashSet<>();
@@ -187,7 +185,6 @@ public class SCMNodeStorageStatMap implements SCMNodeStorageStatMXBean {
         fullVolumeSet.add(storageReport);
       }
       totalCapacity += report.getCapacity();
-      totalRemaining += report.getRemaining();
       totalScmUsed += report.getScmUsed();
     }
 

@@ -36,12 +36,9 @@ public class ReadOnlyHealthyToHealthyNodeHandler
   private static final Logger LOG =
       LoggerFactory.getLogger(ReadOnlyHealthyToHealthyNodeHandler.class);
 
-  private final ConfigurationSource conf;
   private final SCMServiceManager serviceManager;
 
-  public ReadOnlyHealthyToHealthyNodeHandler(
-      OzoneConfiguration conf, SCMServiceManager serviceManager) {
-    this.conf = conf;
+  public ReadOnlyHealthyToHealthyNodeHandler(SCMServiceManager serviceManager) {
     this.serviceManager = serviceManager;
   }
 

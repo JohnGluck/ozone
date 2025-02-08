@@ -158,8 +158,7 @@ class TestWritableRatisContainerProvider {
   }
 
   private WritableRatisContainerProvider createSubject() {
-    return new WritableRatisContainerProvider(conf,
-        pipelineManager, containerManager, policy);
+    return new WritableRatisContainerProvider(pipelineManager, containerManager, policy);
   }
 
   private void verifyPipelineCreated() throws IOException {

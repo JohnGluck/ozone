@@ -18,16 +18,16 @@
 
 package org.apache.hadoop.ozone.client;
 
+import com.google.common.annotations.VisibleForTesting;
+import com.google.common.base.Strings;
 import java.io.IOException;
 import java.net.URI;
 import java.util.Iterator;
 import java.util.List;
 import java.util.NoSuchElementException;
-
 import org.apache.commons.lang3.StringUtils;
-import org.apache.hadoop.hdds.conf.ConfigurationSource;
 import org.apache.hadoop.crypto.key.KeyProvider;
-import org.apache.hadoop.hdds.conf.OzoneConfiguration;
+import org.apache.hadoop.hdds.conf.ConfigurationSource;
 import org.apache.hadoop.hdds.scm.client.HddsClientUtils;
 import org.apache.hadoop.hdds.tracing.TracingUtil;
 import org.apache.hadoop.io.Text;
@@ -51,9 +51,6 @@ import org.apache.hadoop.ozone.snapshot.CancelSnapshotDiffResponse;
 import org.apache.hadoop.ozone.snapshot.ListSnapshotResponse;
 import org.apache.hadoop.ozone.snapshot.SnapshotDiffResponse;
 import org.apache.hadoop.security.UserGroupInformation;
-
-import com.google.common.annotations.VisibleForTesting;
-import com.google.common.base.Strings;
 import org.apache.hadoop.security.token.Token;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -63,11 +60,9 @@ import org.slf4j.LoggerFactory;
  * performed on Ozone Object Store.
  */
 public class ObjectStore {
-
   private static final Logger LOG =
       LoggerFactory.getLogger(ObjectStore.class);
 
-  private final ConfigurationSource conf;
   /**
    * The proxy used for connecting to the cluster and perform
    * client operations.
@@ -79,7 +74,6 @@ public class ObjectStore {
    * Cache size to be used for listVolume calls.
    */
   private int listCacheSize;
-  private final String defaultS3Volume;
   private BucketLayout s3BucketLayout;
 
   /**
@@ -88,10 +82,8 @@ public class ObjectStore {
    * @param proxy ClientProtocol proxy.
    */
   public ObjectStore(ConfigurationSource conf, ClientProtocol proxy) {
-    this.conf = conf;
     this.proxy = TracingUtil.createProxy(proxy, ClientProtocol.class, conf);
     this.listCacheSize = HddsClientUtils.getListCacheSize(conf);
-    defaultS3Volume = HddsClientUtils.getDefaultS3VolumeName(conf);
     s3BucketLayout = OmUtils.validateBucketLayout(
         conf.getTrimmed(
             OzoneConfigKeys.OZONE_S3G_DEFAULT_BUCKET_LAYOUT_KEY,
@@ -101,9 +93,7 @@ public class ObjectStore {
   @VisibleForTesting
   protected ObjectStore() {
     // For the unit test
-    this.conf = new OzoneConfiguration();
     proxy = null;
-    defaultS3Volume = HddsClientUtils.getDefaultS3VolumeName(conf);
   }
 
   @VisibleForTesting

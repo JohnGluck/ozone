@@ -73,8 +73,6 @@ public class S3PutObjectTaggingRequestWithFSO extends S3PutObjectTaggingRequest 
     OMMetrics omMetrics = ozoneManager.getMetrics();
     omMetrics.incNumPutObjectTagging();
 
-    Map<String, String> auditMap = buildKeyArgsAuditMap(keyArgs);
-
     OMResponse.Builder omResponse = OmResponseUtil.getOMResponseBuilder(
         getOmRequest());
 
@@ -82,7 +80,7 @@ public class S3PutObjectTaggingRequestWithFSO extends S3PutObjectTaggingRequest 
     boolean acquiredLock = false;
     OMClientResponse omClientResponse = null;
     IOException exception = null;
-    Result result = null;
+    Result result;
     try {
       mergeOmLockDetails(
           omMetadataManager.getLock()

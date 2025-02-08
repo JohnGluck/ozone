@@ -27,8 +27,6 @@ import org.slf4j.LoggerFactory;
  * sigv4-auth-using-authorization-header.html
  */
 public class Credential {
-  private static final Logger LOG = LoggerFactory.getLogger(Credential.class);
-
   private String accessKeyID;
   private String date;
   private String awsRegion;

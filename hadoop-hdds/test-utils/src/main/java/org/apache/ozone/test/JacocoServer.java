@@ -21,12 +21,10 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
-
 import org.jacoco.core.data.ExecutionDataWriter;
 import org.jacoco.core.data.IExecutionDataVisitor;
 import org.jacoco.core.data.ISessionInfoVisitor;
 import org.jacoco.core.runtime.RemoteControlReader;
-import org.jacoco.core.runtime.RemoteControlWriter;
 
 /**
  * Simple TPC server to collect all the Jacoco coverage data.
@@ -60,8 +58,6 @@ public final class JacocoServer {
       final Socket socket = serverSocket.accept();
       new Thread(() -> {
         try {
-          RemoteControlWriter writer =
-              new RemoteControlWriter(socket.getOutputStream());
           RemoteControlReader reader =
               new RemoteControlReader(socket.getInputStream());
           reader.setSessionInfoVisitor(

@@ -112,8 +112,6 @@ public class ChunkKeyHandler extends KeyHandler {
         try {
           // Datanode is queried to get chunk information.Thus querying the
           // OM,SCM and datanode helps us get chunk location information
-          ContainerProtos.DatanodeBlockID datanodeBlockID =
-              keyLocation.getBlockID().getDatanodeBlockIDProtobuf();
           // doing a getBlock on all nodes
           Map<DatanodeDetails, ContainerProtos.GetBlockResponseProto>
               responses =

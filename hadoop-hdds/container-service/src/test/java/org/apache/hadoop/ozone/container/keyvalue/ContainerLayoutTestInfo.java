@@ -17,6 +17,17 @@
  */
 package org.apache.hadoop.ozone.container.keyvalue;
 
+import static org.apache.hadoop.hdds.HddsConfigKeys.HDDS_CONTAINER_PERSISTDATA;
+import static org.apache.hadoop.hdds.scm.ScmConfigKeys.OZONE_SCM_CONTAINER_LAYOUT_KEY;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
+import java.io.File;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 import org.apache.hadoop.hdds.conf.OzoneConfiguration;
 import org.apache.hadoop.ozone.container.common.impl.ContainerLayoutVersion;
 import org.apache.hadoop.ozone.container.keyvalue.impl.ChunkManagerDummyImpl;
@@ -26,18 +37,6 @@ import org.apache.hadoop.ozone.container.keyvalue.interfaces.BlockManager;
 import org.apache.hadoop.ozone.container.keyvalue.interfaces.ChunkManager;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
-
-import java.io.File;
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
-
-import static org.apache.hadoop.hdds.HddsConfigKeys.HDDS_CONTAINER_PERSISTDATA;
-import static org.apache.hadoop.hdds.scm.ScmConfigKeys.OZONE_SCM_CONTAINER_LAYOUT_KEY;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * Interface of parameters for testing different chunk layout implementations.
@@ -69,7 +68,7 @@ public enum ContainerLayoutTestInfo {
   FILE_PER_CHUNK {
     @Override
     public ChunkManager createChunkManager(boolean sync, BlockManager manager) {
-      return new FilePerChunkStrategy(sync, manager, null);
+      return new FilePerChunkStrategy(sync, manager);
     }
 
     @Override
@@ -86,7 +85,7 @@ public enum ContainerLayoutTestInfo {
   FILE_PER_BLOCK {
     @Override
     public ChunkManager createChunkManager(boolean sync, BlockManager manager) {
-      return new FilePerBlockStrategy(sync, null, null);
+      return new FilePerBlockStrategy(sync, null);
     }
 
     @Override

@@ -109,7 +109,6 @@ public class TestKeyValueHandler {
     dispatcher = new HddsDispatcher(
         new OzoneConfiguration(),
         mock(ContainerSet.class),
-        mock(VolumeSet.class),
         handlers,
         mock(StateContext.class),
         mock(ContainerMetrics.class),

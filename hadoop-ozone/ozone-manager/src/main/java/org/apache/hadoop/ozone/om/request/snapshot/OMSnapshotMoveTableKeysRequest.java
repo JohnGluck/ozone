@@ -56,9 +56,6 @@ import static org.apache.hadoop.ozone.om.upgrade.OMLayoutFeature.FILESYSTEM_SNAP
  * This is an OM internal request. Does not need @RequireSnapshotFeatureState.
  */
 public class OMSnapshotMoveTableKeysRequest extends OMClientRequest {
-
-  private static final Logger LOG = LoggerFactory.getLogger(OMSnapshotMoveTableKeysRequest.class);
-
   public OMSnapshotMoveTableKeysRequest(OMRequest omRequest) {
     super(omRequest);
   }

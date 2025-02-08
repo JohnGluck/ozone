@@ -167,8 +167,7 @@ public class ThrottledAsyncChecker<K, V> implements AsyncChecker<K, V> {
       public void onSuccess(@Nullable V result) {
         synchronized (ThrottledAsyncChecker.this) {
           checksInProgress.remove(target);
-          completedChecks.put(target, new LastCheckResult<>(
-              result, timer.monotonicNow()));
+          completedChecks.put(target, new LastCheckResult<>(timer.monotonicNow()));
         }
       }
 
@@ -176,8 +175,7 @@ public class ThrottledAsyncChecker<K, V> implements AsyncChecker<K, V> {
       public void onFailure(@Nonnull Throwable t) {
         synchronized (ThrottledAsyncChecker.this) {
           checksInProgress.remove(target);
-          completedChecks.put(target, new LastCheckResult<>(
-              t, timer.monotonicNow()));
+          completedChecks.put(target, new LastCheckResult<>(timer.monotonicNow()));
         }
       }
     }, MoreExecutors.directExecutor());
@@ -213,34 +211,11 @@ public class ThrottledAsyncChecker<K, V> implements AsyncChecker<K, V> {
     private final long completedAt;
 
     /**
-     * Result of running the check if it completed. null if it threw.
-     */
-    @Nullable
-    private final V result;
-
-    /**
-     * Exception thrown by the check. null if it returned a result.
-     */
-    private final Throwable exception; // null on success.
-
-    /**
      * Initialize with a result.
-     * @param result
+     *
+     * @param completedAt time as milliseconds when check was completed.
      */
-    private LastCheckResult(V result, long completedAt) {
-      this.result = result;
-      this.exception = null;
-      this.completedAt = completedAt;
-    }
-
-    /**
-     * Initialize with an exception.
-     * @param completedAt
-     * @param t
-     */
-    private LastCheckResult(Throwable t, long completedAt) {
-      this.result = null;
-      this.exception = t;
+    private LastCheckResult(long completedAt) {
       this.completedAt = completedAt;
     }
   }

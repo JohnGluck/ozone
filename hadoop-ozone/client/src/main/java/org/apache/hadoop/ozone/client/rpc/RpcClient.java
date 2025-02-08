@@ -2478,7 +2478,6 @@ public class RpcClient implements ClientProtocol {
     return new KeyDataStreamOutput.Builder()
         .setXceiverClientManager(xceiverClientManager)
         .setOmClient(ozoneManagerClient)
-        .enableUnsafeByteBufferConversion(unsafeByteBufferConversion)
         .setConfig(clientConfig)
         .setAtomicKeyCreation(isS3GRequest.get());
   }

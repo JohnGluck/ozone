@@ -19,7 +19,11 @@
 
 package org.apache.hadoop.ozone.recon.heatmap;
 
+import static org.apache.hadoop.hdds.recon.ReconConfigKeys.OZONE_RECON_HEATMAP_PROVIDER_KEY;
+import static org.apache.hadoop.ozone.OzoneConsts.OM_KEY_PREFIX;
+
 import com.google.inject.Inject;
+import javax.ws.rs.core.Response;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.hadoop.hdds.conf.OzoneConfiguration;
 import org.apache.hadoop.hdds.scm.server.OzoneStorageContainerManager;
@@ -29,11 +33,6 @@ import org.apache.hadoop.ozone.recon.recovery.ReconOMMetadataManager;
 import org.apache.hadoop.ozone.recon.spi.ReconNamespaceSummaryManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import javax.ws.rs.core.Response;
-
-import static org.apache.hadoop.hdds.recon.ReconConfigKeys.OZONE_RECON_HEATMAP_PROVIDER_KEY;
-import static org.apache.hadoop.ozone.OzoneConsts.OM_KEY_PREFIX;
 
 /**
  * This class is an implementation of abstract class for retrieving
@@ -59,9 +58,7 @@ public class HeatMapServiceImpl extends HeatMapService {
     this.reconNamespaceSummaryManager = namespaceSummaryManager;
     this.omMetadataManager = omMetadataManager;
     this.reconSCM = reconSCM;
-    heatMapUtil =
-        new HeatMapUtil(reconNamespaceSummaryManager, omMetadataManager,
-            reconSCM, ozoneConfiguration);
+    heatMapUtil = new HeatMapUtil(reconNamespaceSummaryManager, omMetadataManager, reconSCM);
     initializeProvider();
   }
 

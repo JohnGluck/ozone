@@ -2066,7 +2066,6 @@ public final class OzoneManagerProtocolClientSideTranslatorPB
         .setCancelDelegationTokenRequest(req)
         .build();
 
-    final CancelDelegationTokenResponseProto resp;
     try {
       handleError(submitRequest(omRequest));
     } catch (IOException e) {

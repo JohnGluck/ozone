@@ -41,10 +41,6 @@ import java.util.Set;
  * Defines common methods required for volume requests.
  */
 public abstract class OMVolumeRequest extends OMClientRequest {
-
-  private static final Logger LOG =
-      LoggerFactory.getLogger(OMVolumeRequest.class);
-
   public OMVolumeRequest(OMRequest omRequest) {
     super(omRequest);
   }
