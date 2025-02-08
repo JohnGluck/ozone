@@ -151,6 +151,7 @@ public class OMMultiTenantManagerImpl implements OMMultiTenantManager {
     this.start();
   }
 
+  @Override
   public OMRangerBGSyncService getOMRangerBGSyncService() {
     return omRangerBGSyncService;
   }
@@ -720,6 +721,7 @@ public class OMMultiTenantManagerImpl implements OMMultiTenantManager {
   /**
    * {@inheritDoc}
    */
+  @Override
   public boolean isTenantAdmin(UserGroupInformation callerUgi,
       String tenantId, boolean delegated) {
     if (callerUgi == null) {

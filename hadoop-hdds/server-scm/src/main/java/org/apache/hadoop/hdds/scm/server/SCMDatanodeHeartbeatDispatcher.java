@@ -330,6 +330,7 @@ public final class SCMDatanodeHeartbeatDispatcher {
       return this.getDatanodeDetails().getUuid().hashCode();
     }
     
+    @Override
     public ContainerReportType getType() {
       return ContainerReportType.FCR;
     }
@@ -377,6 +378,7 @@ public final class SCMDatanodeHeartbeatDispatcher {
       return this.getDatanodeDetails().getUuid().hashCode();
     }
 
+    @Override
     public ContainerReportType getType() {
       return ContainerReportType.ICR;
     }

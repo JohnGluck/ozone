@@ -148,7 +148,7 @@ public class HealthyPipelineSafeModeRule extends SafeModeExitRule<Pipeline> {
     }
   }
 
-
+  @Override
   public synchronized void refresh(boolean forceRefresh) {
     if (forceRefresh) {
       initializeRule(true);

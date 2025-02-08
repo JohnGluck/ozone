@@ -897,6 +897,7 @@ public class SCMClientProtocolServer implements
     }
   }
 
+  @Override
   public List<DeletedBlocksTransactionInfo> getFailedDeletedBlockTxn(int count,
       long startTxId) throws IOException {
     List<DeletedBlocksTransactionInfo> result;

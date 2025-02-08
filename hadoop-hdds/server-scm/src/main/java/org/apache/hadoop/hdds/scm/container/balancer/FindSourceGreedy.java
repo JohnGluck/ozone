@@ -71,6 +71,7 @@ public class FindSourceGreedy implements FindSourceStrategy {
   /**
    * {@inheritDoc}
    */
+  @Override
   public void resetPotentialSources(
       @Nonnull Collection<DatanodeDetails> sources) {
     List<DatanodeUsageInfo> usageInfos = new ArrayList<>(sources.size());

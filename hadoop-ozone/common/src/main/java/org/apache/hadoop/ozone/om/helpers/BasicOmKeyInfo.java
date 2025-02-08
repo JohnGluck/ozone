@@ -260,6 +260,7 @@ public final class BasicOmKeyInfo {
     return builder.build();
   }
 
+  @Override
   public boolean equals(Object o) {
     if (this == o) {
       return true;
@@ -280,6 +281,7 @@ public final class BasicOmKeyInfo {
         ownerName.equals(basicOmKeyInfo.ownerName);
   }
 
+  @Override
   public int hashCode() {
     return Objects.hash(volumeName, bucketName, keyName);
   }

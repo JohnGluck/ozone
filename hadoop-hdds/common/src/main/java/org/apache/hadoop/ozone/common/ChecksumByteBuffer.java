@@ -36,6 +36,7 @@ public interface ChecksumByteBuffer extends Checksum {
    *
    * @param buffer the bytes to update the checksum with
    */
+  @Override
   void update(ByteBuffer buffer);
 
   @Override

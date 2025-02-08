@@ -135,6 +135,7 @@ public class SCMCertificateClient extends DefaultCertificateClient {
    *
    * @return CertificateSignRequest.Builder
    */
+  @Override
   public CertificateSignRequest.Builder configureCSRBuilder()
       throws SCMSecurityException {
     String subject = SCM_SUB_CA_PREFIX + scmHostname;

@@ -962,6 +962,7 @@ public abstract class DefaultCertificateClient implements CertificateClient {
     return logger;
   }
 
+  @Override
   public String getComponentName() {
     return component;
   }

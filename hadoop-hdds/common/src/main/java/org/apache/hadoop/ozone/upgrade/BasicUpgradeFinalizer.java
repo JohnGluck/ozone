@@ -76,6 +76,7 @@ public abstract class BasicUpgradeFinalizer
     this.finalizationLock = new ReentrantLock();
   }
 
+  @Override
   public StatusAndMessages finalize(String upgradeClientID, T service)
       throws IOException {
     // In some components, finalization can be driven asynchronously by a
@@ -117,6 +118,7 @@ public abstract class BasicUpgradeFinalizer
     }
   }
 
+  @Override
   public synchronized StatusAndMessages reportStatus(
       String upgradeClientID, boolean takeover) throws UpgradeException {
     if (takeover) {

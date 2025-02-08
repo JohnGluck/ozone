@@ -88,6 +88,7 @@ public final class SCMCertStore implements CertificateStore {
    * @param certificate - Certificate to persist.
    * @throws IOException - on Failure.
    */
+  @Override
   public void storeValidScmCertificate(BigInteger serialID,
       X509Certificate certificate) throws IOException {
     lock.lock();
@@ -105,6 +106,7 @@ public final class SCMCertStore implements CertificateStore {
     }
   }
 
+  @Override
   public void checkValidCertID(BigInteger serialID) throws IOException {
     lock.lock();
     try {

@@ -308,6 +308,7 @@ public class ReplicationManager implements SCMService, ContainerReplicaPendingOp
   /**
    * Stops Replication Monitor thread.
    */
+  @Override
   public synchronized void stop() {
     if (running) {
       LOG.info("Stopping Replication Monitor Thread.");

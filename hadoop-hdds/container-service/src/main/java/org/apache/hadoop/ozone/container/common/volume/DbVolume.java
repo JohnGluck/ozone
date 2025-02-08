@@ -17,17 +17,16 @@
  */
 package org.apache.hadoop.ozone.container.common.volume;
 
-import org.apache.hadoop.ozone.container.common.utils.DatanodeStoreCache;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import static org.apache.hadoop.ozone.OzoneConsts.CONTAINER_DB_NAME;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
-
-import static org.apache.hadoop.ozone.OzoneConsts.CONTAINER_DB_NAME;
+import org.apache.hadoop.ozone.container.common.utils.DatanodeStoreCache;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * DbVolume represents a volume in datanode holding db instances
@@ -105,6 +104,7 @@ public class DbVolume extends StorageVolume {
       return this;
     }
 
+    @Override
     public DbVolume build() throws IOException {
       return new DbVolume(this);
     }
