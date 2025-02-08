@@ -141,7 +141,7 @@ public final class OMDBUpdateEvent<KEY, VALUE> {
      * @return OMDBUpdateEvent
      */
     public OMDBUpdateEvent build() {
-      return new OMDBUpdateEvent<KEY, VALUE>(
+      return new OMDBUpdateEvent<>(
           action,
           table,
           updatedKey,

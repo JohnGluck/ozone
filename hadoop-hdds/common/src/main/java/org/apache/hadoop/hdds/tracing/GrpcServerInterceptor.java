@@ -32,6 +32,7 @@ import org.apache.ratis.thirdparty.io.grpc.ServerInterceptor;
  */
 public class GrpcServerInterceptor implements ServerInterceptor {
 
+  @SuppressWarnings("PMD.UseDiamondOperator")
   @Override
   public <ReqT, RespT> Listener<ReqT> interceptCall(
       ServerCall<ReqT, RespT> call, Metadata headers,

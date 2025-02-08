@@ -207,7 +207,7 @@ public class RocksDBStoreMetrics implements MetricsSource {
     int index = 0;
     try {
       for (index = 0; index < cfPros.length; index++) {
-        Boolean aggregated = Boolean.valueOf(cfPros[index][1]);
+        boolean aggregated = Boolean.parseBoolean(cfPros[index][1]);
         long sum = 0;
         for (RocksDatabase.ColumnFamily cf : rocksDB.getExtraColumnFamilies()) {
           // Metrics per column family
@@ -250,7 +250,7 @@ public class RocksDBStoreMetrics implements MetricsSource {
     List<LiveFileMetaData> liveFileMetaDataList =
         rocksDB.getLiveFilesMetaData();
 
-    Map<String, Map<Integer, Map<String, Long>>> ret = new HashMap();
+    Map<String, Map<Integer, Map<String, Long>>> ret = new HashMap<>();
     Map<Integer, Map<String, Long>> numStatPerCF = new HashMap<>();
     Map<Integer, Map<String, Long>> sizeStatPerCF = new HashMap<>();
     Map<String, Long> numStat;
@@ -259,8 +259,7 @@ public class RocksDBStoreMetrics implements MetricsSource {
       numStat = numStatPerCF.get(file.level());
       String cf = StringUtils.bytes2String(file.columnFamilyName());
       if (numStat != null) {
-        Long value = numStat.get(cf);
-        numStat.put(cf, value == null ? 1L : value + 1);
+        numStat.compute(cf, (k, value) -> value == null ? 1L : value + 1);
       } else {
         numStat = new HashMap<>();
         numStat.put(cf, 1L);
@@ -269,8 +268,7 @@ public class RocksDBStoreMetrics implements MetricsSource {
 
       sizeStat = sizeStatPerCF.get(file.level());
       if (sizeStat != null) {
-        Long value = sizeStat.get(cf);
-        sizeStat.put(cf, value == null ? file.size() : value + file.size());
+        sizeStat.compute(cf, (k, value) -> value == null ? file.size() : value + file.size());
       } else {
         sizeStat = new HashMap<>();
         sizeStat.put(cf, file.size());
@@ -292,7 +290,7 @@ public class RocksDBStoreMetrics implements MetricsSource {
           cf + "_" + metricName + entry.getKey(), "RocksDBProperty"), v));
       rb.addCounter(
           Interns.info(metricName + entry.getKey(), "RocksDBProperty"),
-          numStat.values().stream().mapToLong(p -> p.longValue()).sum());
+          numStat.values().stream().mapToLong(p -> p).sum());
     }
   }
 

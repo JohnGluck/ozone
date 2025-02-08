@@ -417,14 +417,11 @@ public class KeyManagerImpl implements KeyManager {
     }
     long generateEDEKStartTime = monotonicNow();
     EncryptedKeyVersion edek = SecurityUtil.doAsLoginUser(
-        new PrivilegedExceptionAction<EncryptedKeyVersion>() {
-          @Override
-          public EncryptedKeyVersion run() throws IOException {
-            try {
-              return getKMSProvider().generateEncryptedKey(ezKeyName);
-            } catch (GeneralSecurityException e) {
-              throw new IOException(e);
-            }
+        () -> {
+          try {
+            return getKMSProvider().generateEncryptedKey(ezKeyName);
+          } catch (GeneralSecurityException e) {
+            throw new IOException(e);
           }
         });
     long generateEDEKTime = monotonicNow() - generateEDEKStartTime;
@@ -1549,12 +1546,12 @@ public class KeyManagerImpl implements KeyManager {
   @Override
   public void refresh(OmKeyInfo key) throws IOException {
     Preconditions.checkNotNull(key, "Key info can not be null");
-    refreshPipeline(Arrays.asList(key));
+    refreshPipeline(Collections.singletonList(key));
   }
 
   public static boolean isKeyDeleted(String key, Table keyTable) {
     CacheValue<OmKeyInfo> omKeyInfoCacheValue
-        = keyTable.getCacheValue(new CacheKey(key));
+        = keyTable.getCacheValue(new CacheKey<>(key));
     return omKeyInfoCacheValue != null
         && omKeyInfoCacheValue.getCacheValue() == null;
   }

@@ -394,15 +394,12 @@ public abstract class OMKeyRequest extends OMClientRequest {
     }
     long generateEDEKStartTime = monotonicNow();
     EncryptedKeyVersion edek = SecurityUtil.doAsLoginUser(
-        new PrivilegedExceptionAction<EncryptedKeyVersion >() {
-          @Override
-          public EncryptedKeyVersion run() throws IOException {
-            try {
-              return ozoneManager.getKmsProvider()
-                  .generateEncryptedKey(ezKeyName);
-            } catch (GeneralSecurityException e) {
-              throw new IOException(e);
-            }
+        () -> {
+          try {
+            return ozoneManager.getKmsProvider()
+                .generateEncryptedKey(ezKeyName);
+          } catch (GeneralSecurityException e) {
+            throw new IOException(e);
           }
         });
     long generateEDEKTime = monotonicNow() - generateEDEKStartTime;

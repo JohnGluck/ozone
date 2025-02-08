@@ -239,7 +239,7 @@ public final class ContainerDataYaml {
     @Override
     protected Set<Property> getProperties(Class<? extends Object> type) {
       Set<Property> set = super.getProperties(type);
-      Set<Property> filtered = new TreeSet<Property>();
+      Set<Property> filtered = new TreeSet<>();
 
       // When a new Container type is added, we need to add what fields need
       // to be filtered here

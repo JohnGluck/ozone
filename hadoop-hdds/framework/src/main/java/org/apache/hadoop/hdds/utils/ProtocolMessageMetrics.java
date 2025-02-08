@@ -50,7 +50,7 @@ public class ProtocolMessageMetrics<KEY> implements MetricsSource {
 
   public static <KEY> ProtocolMessageMetrics<KEY> create(String name,
       String description, KEY[] types) {
-    return new ProtocolMessageMetrics<KEY>(name, description, types);
+    return new ProtocolMessageMetrics<>(name, description, types);
   }
 
   public ProtocolMessageMetrics(String name, String description,

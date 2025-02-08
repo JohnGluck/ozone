@@ -195,7 +195,7 @@ public class HadoopRpcOMFailoverProxyProvider<T> extends
 
   @VisibleForTesting
   public List<OMProxyInfo> getOMProxyInfos() {
-    return new ArrayList<OMProxyInfo>(omProxyInfos.values());
+    return new ArrayList<>(omProxyInfos.values());
   }
 
   @VisibleForTesting

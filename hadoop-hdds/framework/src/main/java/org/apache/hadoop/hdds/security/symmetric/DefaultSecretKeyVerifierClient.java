@@ -17,25 +17,24 @@
  */
 package org.apache.hadoop.hdds.security.symmetric;
 
+import static org.apache.hadoop.hdds.security.symmetric.SecretKeyConfig.parseExpiryDuration;
+import static org.apache.hadoop.hdds.security.symmetric.SecretKeyConfig.parseRotateDuration;
+
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
-import org.apache.hadoop.hdds.conf.ConfigurationSource;
-import org.apache.hadoop.hdds.protocol.SecretKeyProtocol;
-import org.apache.hadoop.hdds.protocol.SCMSecurityProtocol;
-import org.apache.hadoop.hdds.security.exception.SCMSecurityException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import java.io.IOException;
 import java.time.Duration;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
-
-import static org.apache.hadoop.hdds.security.symmetric.SecretKeyConfig.parseExpiryDuration;
-import static org.apache.hadoop.hdds.security.symmetric.SecretKeyConfig.parseRotateDuration;
+import org.apache.hadoop.hdds.conf.ConfigurationSource;
+import org.apache.hadoop.hdds.protocol.SCMSecurityProtocol;
+import org.apache.hadoop.hdds.protocol.SecretKeyProtocol;
+import org.apache.hadoop.hdds.security.exception.SCMSecurityException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Default implementation of {@link SecretKeyVerifierClient} that fetches
@@ -47,6 +46,7 @@ public class DefaultSecretKeyVerifierClient implements SecretKeyVerifierClient {
 
   private final LoadingCache<UUID, Optional<ManagedSecretKey>> cache;
 
+  @SuppressWarnings("PMD.UseDiamondOperator")
   DefaultSecretKeyVerifierClient(SecretKeyProtocol secretKeyProtocol,
                                  ConfigurationSource conf) {
     Duration expiryDuration = parseExpiryDuration(conf);

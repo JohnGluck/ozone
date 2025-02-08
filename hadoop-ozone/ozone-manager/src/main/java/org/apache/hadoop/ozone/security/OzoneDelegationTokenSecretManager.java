@@ -100,8 +100,7 @@ public class OzoneDelegationTokenSecretManager
     this.tokenRemoverScanInterval = b.tokenRemoverScanInterval;
     this.s3SecretManager = b.s3SecretManager;
     this.ozoneManager = b.ozoneManager;
-    this.store = new OzoneSecretStore(b.ozoneConf,
-        this.ozoneManager.getMetadataManager());
+    this.store = new OzoneSecretStore(this.ozoneManager.getMetadataManager());
     this.secretKeyClient = b.secretKeyClient;
     loadTokenSecretState(store.loadState());
   }

@@ -160,6 +160,7 @@ public class ThrottledAsyncChecker<K, V> implements AsyncChecker<K, V> {
    * @param target
    * @param lf
    */
+  @SuppressWarnings("PMD.UseDiamondOperator")
   private void addResultCachingCallback(
       Checkable<K, V> target, ListenableFuture<V> lf) {
     Futures.addCallback(lf, new FutureCallback<V>() {

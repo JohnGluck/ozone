@@ -114,6 +114,7 @@ public class GetServiceRolesSubcommand implements Callable<Void> {
     }
   }
 
+  @SuppressWarnings("PMD.UseDiamondOperator")
   private void printOmServerRolesAsJson(List<ServiceInfo> serviceList)
       throws IOException {
     List<Map<String, Map<String, String>>> omServiceList = new ArrayList<>();

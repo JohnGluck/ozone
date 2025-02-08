@@ -92,8 +92,7 @@ public final class ReportResult<T> {
       if (nullSafeMissingEntries == null) {
         nullSafeMissingEntries = Collections.emptySet();
       }
-      return new ReportResult<T>(status, nullSafeMissingEntries,
-              nullSafeNewEntries);
+      return new ReportResult<>(status, nullSafeMissingEntries, nullSafeNewEntries);
     }
   }
 

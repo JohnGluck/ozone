@@ -92,7 +92,7 @@ public class RepeatedOmKeyInfo implements CopyObject<RepeatedOmKeyInfo> {
       }
       unreplicatedSize += omKeyInfo.getDataSize();
     }
-    return new ImmutablePair<Long, Long>(unreplicatedSize, replicatedSize);
+    return new ImmutablePair<>(unreplicatedSize, replicatedSize);
   }
 
 

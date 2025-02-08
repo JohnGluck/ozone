@@ -60,8 +60,12 @@ public class Hadoop3OmTransport implements OmTransport {
         OzoneManagerProtocolPB.class,
         ProtobufRpcEngine.class);
 
-    this.omFailoverProxyProvider = new HadoopRpcOMFailoverProxyProvider(
-            conf, ugi, omServiceId, OzoneManagerProtocolPB.class);
+    this.omFailoverProxyProvider = new HadoopRpcOMFailoverProxyProvider<>(
+        conf,
+        ugi,
+        omServiceId,
+        OzoneManagerProtocolPB.class
+    );
 
     int maxFailovers = conf.getInt(
         OzoneConfigKeys.OZONE_CLIENT_FAILOVER_MAX_ATTEMPTS_KEY,

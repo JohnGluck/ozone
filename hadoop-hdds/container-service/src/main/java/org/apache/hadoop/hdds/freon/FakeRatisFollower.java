@@ -48,6 +48,7 @@ public final class FakeRatisFollower {
   private FakeRatisFollower() {
   }
 
+  @SuppressWarnings("PMD.UseDiamondOperator")
   public static StreamObserver<AppendEntriesRequestProto> appendEntries(
       RaftPeerId raftPeerId,
       StreamObserver<AppendEntriesReplyProto> responseHandler) {

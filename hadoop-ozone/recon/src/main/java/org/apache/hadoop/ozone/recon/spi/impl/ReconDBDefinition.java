@@ -65,21 +65,21 @@ public class ReconDBDefinition extends DBDefinition.WithMap {
 
   public static final DBColumnFamilyDefinition
       <Long, ContainerReplicaHistoryList> REPLICA_HISTORY =
-      new DBColumnFamilyDefinition<Long, ContainerReplicaHistoryList>(
+      new DBColumnFamilyDefinition<>(
           "replica_history",
           LongCodec.get(),
           ContainerReplicaHistoryList.getCodec());
 
   public static final DBColumnFamilyDefinition<Long, NSSummary>
-      NAMESPACE_SUMMARY = new DBColumnFamilyDefinition<Long, NSSummary>(
-          "namespaceSummaryTable",
-          LongCodec.get(),
-          NSSummaryCodec.get());
+      NAMESPACE_SUMMARY = new DBColumnFamilyDefinition<>(
+      "namespaceSummaryTable",
+      LongCodec.get(),
+      NSSummaryCodec.get());
 
   // Container Replica History with bcsId tracking.
   public static final DBColumnFamilyDefinition
       <Long, ContainerReplicaHistoryList> REPLICA_HISTORY_V2 =
-      new DBColumnFamilyDefinition<Long, ContainerReplicaHistoryList>(
+      new DBColumnFamilyDefinition<>(
           "replica_history_v2",
           LongCodec.get(),
           ContainerReplicaHistoryList.getCodec());

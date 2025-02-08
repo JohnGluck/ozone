@@ -91,6 +91,7 @@ public class RocksDbPersistentMap<K, V> implements PersistentMap<K, V> {
     }
   }
 
+  @SuppressWarnings("PMD.UseDiamondOperator")
   @Override
   public ClosableIterator<Map.Entry<K, V>> iterator(Optional<K> lowerBound,
                                                     Optional<K> upperBound) {

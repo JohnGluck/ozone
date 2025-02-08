@@ -49,6 +49,7 @@ public class ConfigFileGenerator extends AbstractProcessor {
 
   public static final String OUTPUT_FILE_NAME = "ozone-default-generated.xml";
 
+  @SuppressWarnings("PMD.UseDiamondOperator")
   private static final SimpleTypeVisitor8<Element, Void> GET_PARENT_ELEMENT =
       new SimpleTypeVisitor8<Element, Void>() {
         @Override

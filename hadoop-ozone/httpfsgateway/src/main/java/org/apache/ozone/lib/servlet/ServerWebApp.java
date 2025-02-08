@@ -36,9 +36,7 @@ import java.text.MessageFormat;
  * and uses its lifecycle to start and stop the server.
  */
 @InterfaceAudience.Private
-public abstract class ServerWebApp
-       extends Server
-       implements ServletContextListener {
+public abstract class ServerWebApp extends Server implements ServletContextListener {
 
   private static final String HOME_DIR = ".home.dir";
   private static final String CONFIG_DIR = ".config.dir";
@@ -48,8 +46,7 @@ public abstract class ServerWebApp
   private static final String HTTP_PORT = ".http.port";
   public static final String SSL_ENABLED = ".ssl.enabled";
 
-  private static final ThreadLocal<String> HOME_DIR_TL =
-      new ThreadLocal<String>();
+  private static final ThreadLocal<String> HOME_DIR_TL = new ThreadLocal<>();
 
   private InetSocketAddress authority;
 

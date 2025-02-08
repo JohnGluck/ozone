@@ -77,8 +77,8 @@ public class DatanodeAdminMonitorImpl implements DatanodeAdminMonitor {
   private EventPublisher eventQueue;
   private NodeManager nodeManager;
   private ReplicationManager replicationManager;
-  private Queue<TrackedNode> pendingNodes = new ArrayDeque();
-  private Queue<TrackedNode> cancelledNodes = new ArrayDeque();
+  private Queue<TrackedNode> pendingNodes = new ArrayDeque<>();
+  private Queue<TrackedNode> cancelledNodes = new ArrayDeque<>();
   private Set<TrackedNode> trackedNodes = ConcurrentHashMap.newKeySet();
   private NodeDecommissionMetrics metrics;
   private long pipelinesWaitingToClose = 0;

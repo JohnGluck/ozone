@@ -27,10 +27,11 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import org.apache.hadoop.metrics2.MetricsInfo;
+import java.util.Objects;
 import org.apache.hadoop.metrics2.MetricsCollector;
-import org.apache.hadoop.metrics2.MetricsSource;
+import org.apache.hadoop.metrics2.MetricsInfo;
 import org.apache.hadoop.metrics2.MetricsRecordBuilder;
+import org.apache.hadoop.metrics2.MetricsSource;
 import org.apache.hadoop.metrics2.MetricsSystem;
 import org.apache.hadoop.metrics2.lib.DefaultMetricsSystem;
 import org.apache.hadoop.metrics2.lib.MutableQuantiles;
@@ -39,11 +40,8 @@ import org.assertj.core.data.Offset;
 import org.mockito.ArgumentCaptor;
 import org.mockito.ArgumentMatcher;
 import org.mockito.stubbing.Answer;
-import org.mockito.invocation.InvocationOnMock;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.util.Objects;
 
 /**
  * Helpers for metrics source tests.
@@ -65,24 +63,21 @@ public final class MetricsAsserts {
 
   public static MetricsRecordBuilder mockMetricsRecordBuilder() {
     final MetricsCollector mc = mock(MetricsCollector.class);
-    MetricsRecordBuilder rb = mock(MetricsRecordBuilder.class, new Answer<Object>() {
-      @Override
-      public Object answer(InvocationOnMock invocation) {
-        String methodName = invocation.getMethod().getName();
-        if (LOG.isDebugEnabled()) {
-          Object[] args = invocation.getArguments();
-          StringBuilder sb = new StringBuilder();
-          for (Object o : args) {
-            if (sb.length() > 0) {
-              sb.append(", ");
-            }
-            sb.append(String.valueOf(o));
+    MetricsRecordBuilder rb = mock(MetricsRecordBuilder.class, (Answer<Object>) invocation -> {
+      String methodName = invocation.getMethod().getName();
+      if (LOG.isDebugEnabled()) {
+        Object[] args = invocation.getArguments();
+        StringBuilder sb = new StringBuilder();
+        for (Object o : args) {
+          if (sb.length() > 0) {
+            sb.append(", ");
           }
-          LOG.debug("{}: {}", methodName, sb);
+          sb.append(o);
         }
-        return methodName.equals("parent") || methodName.equals("endRecord") ?
-               mc : invocation.getMock();
+        LOG.debug("{}: {}", methodName, sb);
       }
+      return methodName.equals("parent") || methodName.equals("endRecord") ?
+             mc : invocation.getMock();
     });
     when(mc.addRecord(anyString())).thenReturn(rb);
     when(mc.addRecord(anyInfo())).thenReturn(rb);

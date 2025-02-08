@@ -30,6 +30,7 @@ import io.grpc.MethodDescriptor;
  * GRPC client side interceptor to provide client hostname and IP address.
  */
 public class ClientAddressClientInterceptor implements ClientInterceptor {
+  @SuppressWarnings("PMD.UseDiamondOperator")
   @Override
   public <ReqT, RespT> ClientCall<ReqT, RespT> interceptCall(
       MethodDescriptor<ReqT, RespT> methodDescriptor, CallOptions callOptions,

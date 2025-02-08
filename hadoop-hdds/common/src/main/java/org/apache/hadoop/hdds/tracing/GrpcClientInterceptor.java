@@ -34,6 +34,7 @@ public class GrpcClientInterceptor implements ClientInterceptor {
   public static final Key<String> TRACING_HEADER =
       Key.of("Tracing", Metadata.ASCII_STRING_MARSHALLER);
 
+  @SuppressWarnings("PMD.UseDiamondOperator")
   @Override
   public <ReqT, RespT> ClientCall<ReqT, RespT> interceptCall(
       MethodDescriptor<ReqT, RespT> method, CallOptions callOptions,

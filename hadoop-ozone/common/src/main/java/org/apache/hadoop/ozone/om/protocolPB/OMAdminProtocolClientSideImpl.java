@@ -128,9 +128,12 @@ public final class OMAdminProtocolClientSideImpl implements OMAdminProtocol {
     RPC.setProtocolEngine(OzoneConfiguration.of(conf),
         OMAdminProtocolPB.class, ProtobufRpcEngine.class);
 
-    HadoopRpcOMFailoverProxyProvider omFailoverProxyProvider =
-        new HadoopRpcOMFailoverProxyProvider(conf, ugi, omServiceId,
-            OMAdminProtocolPB.class);
+    HadoopRpcOMFailoverProxyProvider omFailoverProxyProvider = new HadoopRpcOMFailoverProxyProvider<>(
+        conf,
+        ugi,
+        omServiceId,
+        OMAdminProtocolPB.class
+    );
 
     // Multiple the max number of retries with number of OMs to calculate the
     // max number of failovers.

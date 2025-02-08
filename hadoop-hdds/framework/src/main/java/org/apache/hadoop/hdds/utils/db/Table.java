@@ -337,90 +337,18 @@ public interface Table<KEY, VALUE> extends AutoCloseable {
 
     VALUE getValue() throws IOException;
 
-    default int getRawSize()  throws IOException {
+    default int getRawSize() {
       return 0;
     }
   }
 
   static <K, V> KeyValue<K, V> newKeyValue(K key, V value) {
-    return new KeyValue<K, V>() {
-      @Override
-      public K getKey() {
-        return key;
-      }
-
-      @Override
-      public V getValue() {
-        return value;
-      }
-
-      @Override
-      public String toString() {
-        return "(key=" + key + ", value=" + value + ")";
-      }
-
-      @Override
-      public boolean equals(Object obj) {
-        if (!(obj instanceof KeyValue)) {
-          return false;
-        }
-        KeyValue<?, ?> kv = (KeyValue<?, ?>) obj;
-        try {
-          return getKey().equals(kv.getKey()) && getValue().equals(kv.getValue());
-        } catch (IOException e) {
-          throw new RuntimeException(e);
-        }
-      }
-
-      @Override
-      public int hashCode() {
-        return Objects.hash(getKey(), getValue());
-      }
-    };
+    return new SimpleKeyValue<>(key, value);
   }
 
   static <K, V> KeyValue<K, V> newKeyValue(K key, V value, int rawSize) {
-    return new KeyValue<K, V>() {
-      @Override
-      public K getKey() {
-        return key;
-      }
-
-      @Override
-      public V getValue() {
-        return value;
-      }
-
-      @Override
-      public int getRawSize() throws IOException {
-        return rawSize;
-      }
-
-      @Override
-      public String toString() {
-        return "(key=" + key + ", value=" + value + ")";
-      }
-
-      @Override
-      public boolean equals(Object obj) {
-        if (!(obj instanceof KeyValue)) {
-          return false;
-        }
-        KeyValue<?, ?> kv = (KeyValue<?, ?>) obj;
-        try {
-          return getKey().equals(kv.getKey()) && getValue().equals(kv.getValue());
-        } catch (IOException e) {
-          throw new RuntimeException(e);
-        }
-      }
-
-      @Override
-      public int hashCode() {
-        return Objects.hash(getKey(), getValue());
-      }
-    };
+    return new SimpleKeyValue<>(key, value, rawSize);
   }
-
 
   /** A {@link TableIterator} to iterate {@link KeyValue}s. */
   interface KeyValueIterator<KEY, VALUE>

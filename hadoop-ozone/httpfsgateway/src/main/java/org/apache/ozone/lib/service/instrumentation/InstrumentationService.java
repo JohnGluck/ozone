@@ -18,16 +18,6 @@
 
 package org.apache.ozone.lib.service.instrumentation;
 
-import org.apache.hadoop.hdds.annotation.InterfaceAudience;
-import org.apache.ozone.lib.server.BaseService;
-import org.apache.ozone.lib.server.ServiceException;
-import org.apache.ozone.lib.service.Instrumentation;
-import org.apache.ozone.lib.service.Scheduler;
-import org.apache.hadoop.util.Time;
-import org.json.simple.JSONAware;
-import org.json.simple.JSONObject;
-import org.json.simple.JSONStreamAware;
-
 import java.io.IOException;
 import java.io.Writer;
 import java.util.ArrayList;
@@ -39,6 +29,16 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
+import java.util.stream.Collectors;
+import org.apache.hadoop.hdds.annotation.InterfaceAudience;
+import org.apache.hadoop.util.Time;
+import org.apache.ozone.lib.server.BaseService;
+import org.apache.ozone.lib.server.ServiceException;
+import org.apache.ozone.lib.service.Instrumentation;
+import org.apache.ozone.lib.service.Scheduler;
+import org.json.simple.JSONAware;
+import org.json.simple.JSONObject;
+import org.json.simple.JSONStreamAware;
 
 /**
  * Hadoop server instrumentation.
@@ -56,7 +56,7 @@ public class InstrumentationService extends BaseService
   private Lock samplerLock;
   private Map<String, Map<String, AtomicLong>> counters;
   private Map<String, Map<String, Timer>> timers;
-  private Map<String, Map<String, VariableHolder>> variables;
+  private Map<String, Map<String, VariableHolder<?>>> variables;
   private Map<String, Map<String, Sampler>> samplers;
   private List<Sampler> samplersList;
   private Map<String, Map<String, ?>> all;
@@ -66,54 +66,40 @@ public class InstrumentationService extends BaseService
   }
 
   @Override
-  @SuppressWarnings("unchecked")
   public void init() throws ServiceException {
     timersSize = getServiceConfig().getInt(CONF_TIMERS_SIZE, 10);
     counterLock = new ReentrantLock();
     timerLock = new ReentrantLock();
     variableLock = new ReentrantLock();
     samplerLock = new ReentrantLock();
-    Map<String, VariableHolder> jvmVariables
-        = new ConcurrentHashMap<String, VariableHolder>();
-    counters = new ConcurrentHashMap<String, Map<String, AtomicLong>>();
-    timers = new ConcurrentHashMap<String, Map<String, Timer>>();
-    variables = new ConcurrentHashMap<String, Map<String, VariableHolder>>();
-    samplers = new ConcurrentHashMap<String, Map<String, Sampler>>();
-    samplersList = new ArrayList<Sampler>();
-    all = new LinkedHashMap<String, Map<String, ?>>();
+    Map<String, VariableHolder<Long>> jvmVariables = new ConcurrentHashMap<>();
+    counters = new ConcurrentHashMap<>();
+    timers = new ConcurrentHashMap<>();
+    variables = new ConcurrentHashMap<>();
+    samplers = new ConcurrentHashMap<>();
+    samplersList = new ArrayList<>();
+    all = new LinkedHashMap<>();
     all.put("os-env", System.getenv());
-    all.put("sys-props", (Map<String, ?>) (Map) System.getProperties());
-    all.put("jvm", jvmVariables);
-    all.put("counters", (Map) counters);
-    all.put("timers", (Map) timers);
-    all.put("variables", (Map) variables);
-    all.put("samplers", (Map) samplers);
 
-    jvmVariables.put("free.memory",
-        new VariableHolder<Long>(new Instrumentation.Variable<Long>() {
-          @Override
-          public Long getValue() {
-            return Runtime.getRuntime().freeMemory();
-          }
-        }));
-    jvmVariables.put("max.memory",
-        new VariableHolder<Long>(new Instrumentation.Variable<Long>() {
-          @Override
-          public Long getValue() {
-            return Runtime.getRuntime().maxMemory();
-          }
-        }));
-    jvmVariables.put("total.memory",
-        new VariableHolder<Long>(new Instrumentation.Variable<Long>() {
-          @Override
-          public Long getValue() {
-            return Runtime.getRuntime().totalMemory();
-          }
-        }));
+    Map<String, Object> convertedSystemProperties =
+        System.getProperties().entrySet()
+            .stream()
+            .collect(Collectors.toMap(e -> e.getKey().toString(), Map.Entry::getValue));
+
+    all.put("sys-props", convertedSystemProperties);
+    all.put("jvm", jvmVariables);
+    all.put("counters", counters);
+    all.put("timers", timers);
+    all.put("variables", variables);
+    all.put("samplers", samplers);
+
+    jvmVariables.put("free.memory", new VariableHolder<>(() -> Runtime.getRuntime().freeMemory()));
+    jvmVariables.put("max.memory", new VariableHolder<>(() -> Runtime.getRuntime().maxMemory()));
+    jvmVariables.put("total.memory", new VariableHolder<>(() -> Runtime.getRuntime().totalMemory()));
   }
 
   @Override
-  public void postInit() throws ServiceException {
+  public void postInit() {
     Scheduler scheduler = getServer().get(Scheduler.class);
     if (scheduler != null) {
       scheduler.schedule(new SamplersRunnable(), 0, 1, TimeUnit.SECONDS);
@@ -128,21 +114,19 @@ public class InstrumentationService extends BaseService
   @SuppressWarnings("unchecked")
   private <T> T getToAdd(String group,
                          String name,
-                         Class<T> klass,
+                         Class<?> klass,
                          Lock lock,
                          Map<String, Map<String, T>> map) {
     boolean locked = false;
     try {
       Map<String, T> groupMap = map.get(group);
+
       if (groupMap == null) {
         lock.lock();
         locked = true;
-        groupMap = map.get(group);
-        if (groupMap == null) {
-          groupMap = new ConcurrentHashMap<String, T>();
-          map.put(group, groupMap);
-        }
+        groupMap = map.computeIfAbsent(group, k -> new ConcurrentHashMap<>());
       }
+
       T element = groupMap.get(name);
       if (element == null) {
         if (!locked) {
@@ -155,7 +139,7 @@ public class InstrumentationService extends BaseService
             if (klass == Timer.class) {
               element = (T) new Timer(timersSize);
             } else {
-              element = klass.newInstance();
+              element = (T) klass.newInstance();
             }
           } catch (Exception ex) {
             throw new RuntimeException(ex);
@@ -223,12 +207,12 @@ public class InstrumentationService extends BaseService
     static final int AVG_TOTAL = 2;
     static final int AVG_OWN = 3;
 
-    private Lock lock = new ReentrantLock();
-    private long[] own;
-    private long[] total;
+    private final Lock lock = new ReentrantLock();
+    private final long[] own;
+    private final long[] total;
     private int last;
     private boolean full;
-    private int size;
+    private final int size;
 
     Timer(int size) {
       this.size = size;
@@ -323,9 +307,6 @@ public class InstrumentationService extends BaseService
     @SuppressWarnings("checkstyle:VisibilityModifier")
     Variable<E> var;
 
-    VariableHolder() {
-    }
-
     VariableHolder(Variable<E> var) {
       this.var = var;
     }
@@ -351,8 +332,7 @@ public class InstrumentationService extends BaseService
 
   @Override
   public void addVariable(String group, String name, Variable<?> variable) {
-    VariableHolder holder
-        = getToAdd(group, name, VariableHolder.class, variableLock, variables);
+    VariableHolder holder = getToAdd(group, name, VariableHolder.class, variableLock, variables);
     holder.var = variable;
   }
 

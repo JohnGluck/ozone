@@ -155,7 +155,7 @@ public class SecretKeyProtocolFailoverProxyProvider
     try {
       T scmProxy = createSCMProxy(address);
       // Create proxyInfo here, to make it work with all Hadoop versions.
-      proxyInfo = new ProxyInfo<T>(scmProxy, scmProxyInfo.toString());
+      proxyInfo = new ProxyInfo<>(scmProxy, scmProxyInfo.toString());
       scmProxies.put(nodeId, proxyInfo);
       return proxyInfo;
     } catch (IOException ioe) {

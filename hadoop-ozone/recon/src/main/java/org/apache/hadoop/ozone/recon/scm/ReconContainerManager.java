@@ -262,6 +262,7 @@ public class ReconContainerManager extends ContainerManagerImpl {
   /**
    * Add a container Replica for given DataNode.
    */
+  @SuppressWarnings("PMD.UseDiamondOperator")
   @Override
   public void updateContainerReplica(ContainerID containerID,
       ContainerReplica replica)

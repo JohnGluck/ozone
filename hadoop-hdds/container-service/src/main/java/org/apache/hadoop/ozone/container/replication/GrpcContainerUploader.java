@@ -53,6 +53,7 @@ public class GrpcContainerUploader implements ContainerUploader {
     securityConfig = new SecurityConfig(conf);
   }
 
+  @SuppressWarnings("PMD.UseDiamondOperator")
   @Override
   public OutputStream startUpload(long containerId, DatanodeDetails target,
       CompletableFuture<Void> callback, CopyContainerCompression compression)

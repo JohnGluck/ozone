@@ -91,6 +91,7 @@ public class GrpcXceiverService extends
     newServiceBuilder.addMethod(newMethod, serverCallHandler);
   }
 
+  @SuppressWarnings("PMD.UseDiamondOperator")
   @Override
   public StreamObserver<ContainerCommandRequestProto> send(
       StreamObserver<ContainerCommandResponseProto> responseObserver) {

@@ -1541,7 +1541,7 @@ public class OzoneBucket extends WithMetadata {
     @Override
     List<OzoneKey> getNextListOfKeys(String prevKey) throws IOException {
       if (stack == null) {
-        stack = new Stack();
+        stack = new Stack<>();
       }
 
       if (shallow()) {

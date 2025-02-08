@@ -81,6 +81,7 @@ public class RocksDbPersistentList<E> implements PersistentList<E> {
     }
   }
 
+  @SuppressWarnings("PMD.UseDiamondOperator")
   @Override
   public ClosableIterator<E> iterator() {
     ManagedRocksIterator managedRocksIterator

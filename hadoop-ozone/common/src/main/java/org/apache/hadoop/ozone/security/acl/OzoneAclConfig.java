@@ -53,7 +53,7 @@ public class OzoneAclConfig {
   private String groupDefaultRights;
 
   public ACLType[] getUserDefaultRights() {
-    List<ACLType> types = new ArrayList();
+    List<ACLType> types = new ArrayList<>();
     if (userDefaultRights == null) {
       types.add(ACLType.ALL);
     } else {
@@ -64,7 +64,7 @@ public class OzoneAclConfig {
   }
 
   public ACLType[] getGroupDefaultRights() {
-    List<ACLType> types = new ArrayList();
+    List<ACLType> types = new ArrayList<>();
     if (groupDefaultRights == null) {
       types.add(ACLType.READ);
       types.add(ACLType.LIST);

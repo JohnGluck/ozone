@@ -16,26 +16,24 @@
  */
 package org.apache.hadoop.ozone.security;
 
-import org.apache.hadoop.hdds.conf.OzoneConfiguration;
-import org.apache.hadoop.ozone.om.OMMetadataManager;
-import org.apache.hadoop.hdds.utils.db.Table.KeyValue;
-import org.apache.hadoop.hdds.utils.db.TableIterator;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import java.io.Closeable;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+import org.apache.hadoop.hdds.utils.db.Table.KeyValue;
+import org.apache.hadoop.hdds.utils.db.TableIterator;
+import org.apache.hadoop.ozone.om.OMMetadataManager;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * SecretStore for Ozone Master.
  */
 public class OzoneSecretStore implements Closeable {
+  private static final Logger LOG = LoggerFactory.getLogger(OzoneSecretStore.class);
 
-  private static final Logger LOG = LoggerFactory
-      .getLogger(OzoneSecretStore.class);
-  private OMMetadataManager omMetadataManager;
+  private final OMMetadataManager omMetadataManager;
+
   @Override
   public void close() throws IOException {
     if (omMetadataManager != null) {
@@ -47,24 +45,23 @@ public class OzoneSecretStore implements Closeable {
     }
   }
 
-
   /**
    * Support class to maintain state of OzoneSecretStore.
    */
   public static class OzoneManagerSecretState<T> {
-    private Map<T, Long> tokenState = new HashMap<>();
+    private final Map<T, Long> tokenState = new HashMap<>();
+
     public Map<T, Long> getTokenState() {
       return tokenState;
     }
   }
 
-  public OzoneSecretStore(OzoneConfiguration conf,
-      OMMetadataManager omMetadataManager) {
+  public OzoneSecretStore(OMMetadataManager omMetadataManager) {
     this.omMetadataManager = omMetadataManager;
   }
 
-  public OzoneManagerSecretState loadState() throws IOException {
-    OzoneManagerSecretState<Integer> state = new OzoneManagerSecretState();
+  public OzoneManagerSecretState<OzoneTokenIdentifier> loadState() throws IOException {
+    OzoneManagerSecretState<OzoneTokenIdentifier> state = new OzoneManagerSecretState<>();
     int numTokens = loadTokens(state);
     LOG.info("Loaded {} tokens", numTokens);
     return state;
@@ -98,7 +95,7 @@ public class OzoneSecretStore implements Closeable {
     }
   }
 
-  public int loadTokens(OzoneManagerSecretState state) throws IOException {
+  public int loadTokens(OzoneManagerSecretState<OzoneTokenIdentifier> state) throws IOException {
     int loadedToken = 0;
     try (TableIterator<OzoneTokenIdentifier, ? extends
         KeyValue<OzoneTokenIdentifier, Long>> iterator =

@@ -1650,7 +1650,7 @@ public final class OzoneManager extends ServiceRuntimeInfoImpl
    * Start service.
    */
   public void start() throws IOException {
-    Map<String, String> auditMap = new HashMap();
+    Map<String, String> auditMap = new HashMap<>();
     auditMap.put("OmState", omState.name());
     if (omState == State.BOOTSTRAPPING) {
       if (isBootstrapping) {
@@ -1753,7 +1753,7 @@ public final class OzoneManager extends ServiceRuntimeInfoImpl
    * Restarts the service. This method re-initializes the rpc server.
    */
   public void restart() throws IOException {
-    Map<String, String> auditMap = new HashMap();
+    Map<String, String> auditMap = new HashMap<>();
     auditMap.put("OmState", omState.name());
     auditMap.put("Trigger", "restart");
     setInstanceVariablesFromConf();

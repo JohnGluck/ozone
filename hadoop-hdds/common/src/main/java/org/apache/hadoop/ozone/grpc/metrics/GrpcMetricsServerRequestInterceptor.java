@@ -40,6 +40,7 @@ public class GrpcMetricsServerRequestInterceptor implements ServerInterceptor {
     this.grpcMetrics = grpcMetrics;
   }
 
+  @SuppressWarnings("PMD.UseDiamondOperator")
   @Override
   public <ReqT, RespT> ServerCall.Listener<ReqT> interceptCall(
       ServerCall<ReqT, RespT> serverCall, Metadata headers,

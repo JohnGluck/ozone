@@ -17,6 +17,8 @@
  */
 package org.apache.hadoop.hdds.utils;
 
+import static java.util.Comparator.naturalOrder;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -31,8 +33,6 @@ import java.util.PriorityQueue;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
-
-import static java.util.Comparator.naturalOrder;
 
 /** Utility methods for Java Collections. */
 public interface CollectionUtils {
@@ -63,6 +63,7 @@ public interface CollectionUtils {
             e -> Collections.unmodifiableList(e.getValue()))));
   }
 
+  @SuppressWarnings("PMD.UseDiamondOperator")
   static <T> Iterator<T> newIterator(Collection<List<T>> values) {
     final Iterator<List<T>> listIterator = values.iterator();
     return new Iterator<T>() {

@@ -149,7 +149,7 @@ public abstract class MisReplicationHandler implements
 
     ReplicationManagerUtil.ExcludedAndUsedNodes excludedAndUsedNodes
         = ReplicationManagerUtil.getExcludedAndUsedNodes(container,
-            new ArrayList(replicas), replicasToBeReplicated,
+            new ArrayList<>(replicas), replicasToBeReplicated,
             Collections.emptyList(), replicationManager);
 
     int requiredNodes = replicasToBeReplicated.size();

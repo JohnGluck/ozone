@@ -19,7 +19,14 @@
 
 package org.apache.hadoop.ozone.freon;
 
+import static org.apache.hadoop.ozone.freon.KeyGeneratorUtil.FILE_DIR_SEPARATOR;
+import static org.apache.hadoop.ozone.freon.KeyGeneratorUtil.MD5;
+import static org.apache.hadoop.ozone.freon.KeyGeneratorUtil.PURE_INDEX;
+
 import com.codahale.metrics.Timer;
+import java.util.HashMap;
+import java.util.concurrent.Callable;
+import java.util.function.Function;
 import org.apache.hadoop.hdds.cli.HddsVersionProvider;
 import org.apache.hadoop.hdds.conf.OzoneConfiguration;
 import org.apache.hadoop.hdds.conf.StorageSize;
@@ -29,14 +36,6 @@ import org.kohsuke.MetaInfServices;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import picocli.CommandLine;
-
-import java.util.concurrent.Callable;
-import java.util.function.Function;
-import java.util.HashMap;
-
-import static org.apache.hadoop.ozone.freon.KeyGeneratorUtil.PURE_INDEX;
-import static org.apache.hadoop.ozone.freon.KeyGeneratorUtil.MD5;
-import static org.apache.hadoop.ozone.freon.KeyGeneratorUtil.FILE_DIR_SEPARATOR;
 
 /**
  * Ozone range keys generator for performance test.
@@ -161,9 +160,14 @@ public class RangeKeysGenerator extends BaseFreonGenerator
     for (int i = start; i < end + 1; i++) {
       keyName = getPrefix() + FILE_DIR_SEPARATOR +
               keyNameGeneratorfunc.apply(i);
-      try (OzoneOutputStream out = client.getProxy().
-                        createKey(volumeName, bucketName, keyName,
-                            objectSize.toBytes(), null, new HashMap())) {
+      try (OzoneOutputStream out = client.getProxy().createKey(
+          volumeName,
+          bucketName,
+          keyName,
+          objectSize.toBytes(),
+          null,
+          new HashMap<>()
+      )) {
         contentGenerator.write(out);
       }
     }

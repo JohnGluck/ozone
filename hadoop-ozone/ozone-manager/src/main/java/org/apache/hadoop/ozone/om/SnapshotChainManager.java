@@ -397,6 +397,7 @@ public class SnapshotChainManager {
     return oldestGlobalSnapshotId;
   }
 
+  @SuppressWarnings("PMD.UseDiamondOperator")
   public Iterator<UUID> iterator(final boolean reverse) throws IOException {
     validateSnapshotChain();
     return new Iterator<UUID>() {

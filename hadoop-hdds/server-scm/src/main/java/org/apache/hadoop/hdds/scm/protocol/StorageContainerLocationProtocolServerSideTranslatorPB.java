@@ -1018,7 +1018,7 @@ public final class StorageContainerLocationProtocolServerSideTranslatorPB
       GetSafeModeRuleStatusesRequestProto request) throws IOException {
     Map<String, Pair<Boolean, String>>
         map = impl.getSafeModeRuleStatuses();
-    List<SafeModeRuleStatusProto> proto = new ArrayList();
+    List<SafeModeRuleStatusProto> proto = new ArrayList<>();
     for (Map.Entry<String, Pair<Boolean, String>> entry : map.entrySet()) {
       proto.add(SafeModeRuleStatusProto.newBuilder().setRuleName(entry.getKey())
           .setValidate(entry.getValue().getLeft())

@@ -854,7 +854,7 @@ public final class StorageContainerLocationProtocolClientSideTranslatorPB
         submitRequest(Type.GetSafeModeRuleStatuses,
             builder -> builder.setGetSafeModeRuleStatusesRequest(request))
             .getGetSafeModeRuleStatusesResponse();
-    Map<String, Pair<Boolean, String>> map = new HashMap();
+    Map<String, Pair<Boolean, String>> map = new HashMap<>();
     for (SafeModeRuleStatusProto statusProto :
         response.getSafeModeRuleStatusesProtoList()) {
       map.put(statusProto.getRuleName(),

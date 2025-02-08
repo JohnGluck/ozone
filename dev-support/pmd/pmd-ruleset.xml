@@ -33,4 +33,5 @@
 
   <rule ref="category/java/bestpractices.xml/UseCollectionIsEmpty" />
 
+  <rule ref="category/java/codestyle.xml/UseDiamondOperator" />
 </ruleset>

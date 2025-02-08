@@ -395,7 +395,7 @@ public abstract class OMFailoverProxyProviderBase<T> implements
 
 
   public List<ProxyInfo> getOMProxies() {
-    return new ArrayList<ProxyInfo>(omProxies.values());
+    return new ArrayList<>(omProxies.values());
   }
 
 

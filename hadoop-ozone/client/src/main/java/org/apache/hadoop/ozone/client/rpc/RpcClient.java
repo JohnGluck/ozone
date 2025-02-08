@@ -2568,12 +2568,7 @@ public class RpcClient implements ClientProtocol {
     }
 
     try {
-      return keyProviderCache.get(kmsUri, new Callable<KeyProvider>() {
-        @Override
-        public KeyProvider call() throws Exception {
-          return OzoneKMSUtil.getKeyProvider(conf, kmsUri);
-        }
-      });
+      return keyProviderCache.get(kmsUri, () -> OzoneKMSUtil.getKeyProvider(conf, kmsUri));
     } catch (Exception e) {
       LOG.error("Can't create KeyProvider for Ozone RpcClient.", e);
       return null;

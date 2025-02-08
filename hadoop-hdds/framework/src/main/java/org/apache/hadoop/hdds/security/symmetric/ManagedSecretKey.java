@@ -43,7 +43,7 @@ public final class ManagedSecretKey {
   private final Instant creationTime;
   private final Instant expiryTime;
   private final SecretKey secretKey;
-  private final Map<Long, Mac> macInstances = new ConcurrentHashMap();
+  private final Map<Long, Mac> macInstances = new ConcurrentHashMap<>();
 
   public ManagedSecretKey(UUID id,
                           Instant creationTime,

@@ -151,8 +151,7 @@ public class FileSystemAccessService extends BaseService
 
   private AtomicInteger unmanagedFileSystems = new AtomicInteger();
 
-  private ConcurrentHashMap<String, CachedFileSystem> fsCache =
-      new ConcurrentHashMap<String, CachedFileSystem>();
+  private Map<String, CachedFileSystem> fsCache = new ConcurrentHashMap<>();
 
   private long purgeTimeout;
 
@@ -255,30 +254,22 @@ public class FileSystemAccessService extends BaseService
   public void postInit() throws ServiceException {
     super.postInit();
     Instrumentation instrumentation = getServer().get(Instrumentation.class);
+
     instrumentation.addVariable(INSTRUMENTATION_GROUP,
         "unmanaged.fs",
-        new Instrumentation.Variable<Integer>() {
-          @Override
-          public Integer getValue() {
-            return unmanagedFileSystems.get();
-          }
-        });
+        (Instrumentation.Variable<Integer>) () -> unmanagedFileSystems.get());
+
     instrumentation.addSampler(INSTRUMENTATION_GROUP,
         "unmanaged.fs",
         60,
-        new Instrumentation.Variable<Long>() {
-          @Override
-          public Long getValue() {
-            return (long) unmanagedFileSystems.get();
-          }
-        });
+        () -> (long) unmanagedFileSystems.get());
+
     Scheduler scheduler = getServer().get(Scheduler.class);
     int purgeInterval = getServiceConfig().getInt(FS_CACHE_PURGE_FREQUENCY, 60);
     purgeTimeout = getServiceConfig().getLong(FS_CACHE_PURGE_TIMEOUT, 60);
     purgeTimeout = (purgeTimeout > 0) ? purgeTimeout : 0;
     if (purgeTimeout > 0) {
-      scheduler.schedule(new FileSystemCachePurger(),
-                         purgeInterval, purgeInterval, TimeUnit.SECONDS);
+      scheduler.schedule(new FileSystemCachePurger(), purgeInterval, purgeInterval, TimeUnit.SECONDS);
     }
   }
 
@@ -291,7 +282,7 @@ public class FileSystemAccessService extends BaseService
         try {
           count += cacheFs.purgeIfIdle() ? 1 : 0;
         } catch (Throwable ex) {
-          LOG.warn("Error while purging filesystem, " + ex.toString(), ex);
+          LOG.warn("Error while purging filesystem, {}", ex.getMessage(), ex);
         }
       }
       LOG.debug("Purged [{}] filesystem instances", count);
@@ -299,7 +290,7 @@ public class FileSystemAccessService extends BaseService
   }
 
   private Set<String> toLowerCase(Collection<String> collection) {
-    Set<String> set = new HashSet<String>();
+    Set<String> set = new HashSet<>();
     for (String value : collection) {
       set.add(StringUtils.toLowerCase(value));
     }
@@ -307,7 +298,7 @@ public class FileSystemAccessService extends BaseService
   }
 
   @Override
-  public Class getInterface() {
+  public Class<?> getInterface() {
     return FileSystemAccess.class;
   }
 
@@ -385,24 +376,22 @@ public class FileSystemAccessService extends BaseService
           new URI(conf.get(CommonConfigurationKeysPublic.FS_DEFAULT_NAME_KEY))
             .getAuthority());
       UserGroupInformation ugi = getUGI(user);
-      return ugi.doAs(new PrivilegedExceptionAction<T>() {
-        @Override
-        public T run() throws Exception {
-          FileSystem fs = createFileSystem(conf);
-          Instrumentation instrumentation = getServer()
-              .get(Instrumentation.class);
-          Instrumentation.Cron cron = instrumentation.createCron();
-          try {
-            checkNameNodeHealth(fs);
-            cron.start();
-            return executor.execute(fs);
-          } finally {
-            cron.stop();
-            instrumentation.addCron(INSTRUMENTATION_GROUP,
-                executor.getClass().getSimpleName(),
-                cron);
-            closeFileSystem(fs);
-          }
+
+      return ugi.doAs((PrivilegedExceptionAction<T>) () -> {
+        FileSystem fs = createFileSystem(conf);
+        Instrumentation instrumentation = getServer()
+            .get(Instrumentation.class);
+        Instrumentation.Cron cron = instrumentation.createCron();
+        try {
+          checkNameNodeHealth(fs);
+          cron.start();
+          return executor.execute(fs);
+        } finally {
+          cron.stop();
+          instrumentation.addCron(INSTRUMENTATION_GROUP,
+              executor.getClass().getSimpleName(),
+              cron);
+          closeFileSystem(fs);
         }
       });
     } catch (FileSystemAccessException ex) {
@@ -413,8 +402,7 @@ public class FileSystemAccessService extends BaseService
     }
   }
 
-  public FileSystem createFileSystemInternal(String user,
-                                             final Configuration conf)
+  public FileSystem createFileSystemInternal(String user, Configuration conf)
       throws IOException, FileSystemAccessException {
     Check.notEmpty(user, "user");
     Check.notNull(conf, "conf");
@@ -426,15 +414,9 @@ public class FileSystemAccessService extends BaseService
           .get(CommonConfigurationKeysPublic.FS_DEFAULT_NAME_KEY))
           .getAuthority());
       UserGroupInformation ugi = getUGI(user);
-      return ugi.doAs(new PrivilegedExceptionAction<FileSystem>() {
-        @Override
-        public FileSystem run() throws Exception {
-          return createFileSystem(conf);
-        }
-      });
-    } catch (IOException ex) {
-      throw ex;
-    } catch (FileSystemAccessException ex) {
+
+      return ugi.doAs((PrivilegedExceptionAction<FileSystem>) () -> createFileSystem(conf));
+    } catch (IOException | FileSystemAccessException ex) {
       throw ex;
     } catch (Exception ex) {
       throw new FileSystemAccessException(FileSystemAccessException.ERROR.H08,

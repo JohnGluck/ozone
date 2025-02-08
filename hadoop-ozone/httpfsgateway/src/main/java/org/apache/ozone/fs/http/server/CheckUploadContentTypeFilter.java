@@ -42,7 +42,7 @@ import java.util.Set;
 @InterfaceAudience.Private
 public class CheckUploadContentTypeFilter implements Filter {
 
-  private static final Set<String> UPLOAD_OPERATIONS = new HashSet<String>();
+  private static final Set<String> UPLOAD_OPERATIONS = new HashSet<>();
 
   static {
     UPLOAD_OPERATIONS.add(HttpFSConstants.Operation.APPEND.toString());

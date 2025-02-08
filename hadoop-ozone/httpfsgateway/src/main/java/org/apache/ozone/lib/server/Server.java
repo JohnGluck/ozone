@@ -150,7 +150,7 @@ public class Server {
   private String logDir;
   private String tempDir;
   private Configuration config;
-  private Map<Class, Service> services = new LinkedHashMap<Class, Service>();
+  private Map<Class<?>, Service> services = new LinkedHashMap<>();
 
   /**
    * Creates a server instance.
@@ -600,11 +600,11 @@ public class Server {
    */
   protected List<Service> loadServices() throws ServerException {
     try {
-      Map<Class, Service> map = new LinkedHashMap<Class, Service>();
+      Map<Class<?>, Service> map = new LinkedHashMap<>();
       Class[] classes = getConfig().getClasses(getPrefixedName(CONF_SERVICES));
       Class[] classesExt
           = getConfig().getClasses(getPrefixedName(CONF_SERVICES_EXT));
-      List<Service> list = new ArrayList<Service>();
+      List<Service> list = new ArrayList<>();
       loadServices(classes, list);
       loadServices(classesExt, list);
 
@@ -617,8 +617,8 @@ public class Server {
         }
         map.put(service.getInterface(), service);
       }
-      list = new ArrayList<Service>();
-      for (Map.Entry<Class, Service> entry : map.entrySet()) {
+      list = new ArrayList<>();
+      for (Map.Entry<Class<?>, Service> entry : map.entrySet()) {
         list.add(entry.getValue());
       }
       return list;
@@ -658,7 +658,7 @@ public class Server {
   protected void checkServiceDependencies(Service service)
       throws ServerException {
     if (service.getServiceDependencies() != null) {
-      for (Class dependency : service.getServiceDependencies()) {
+      for (Class<?> dependency : service.getServiceDependencies()) {
         if (services.get(dependency) == null) {
           throw new ServerException(ServerException.ERROR.S10,
               service.getClass(),
@@ -672,15 +672,14 @@ public class Server {
    * Destroys the server services.
    */
   protected void destroyServices() {
-    List<Service> list = new ArrayList<Service>(services.values());
+    List<Service> list = new ArrayList<>(services.values());
     Collections.reverse(list);
     for (Service service : list) {
       try {
         log.debug("Destroying service [{}]", service.getInterface());
         service.destroy();
       } catch (Throwable ex) {
-        log.error("Could not destroy service [{}], {}",
-                  new Object[]{service.getInterface(), ex.getMessage(), ex});
+        log.error("Could not destroy service [{}], {}", service.getInterface(), ex.getMessage(), ex);
       }
     }
     log.info("Services destroyed");

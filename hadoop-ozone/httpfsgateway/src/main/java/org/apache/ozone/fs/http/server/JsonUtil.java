@@ -77,14 +77,14 @@ final class JsonUtil {
       return null;
     }
 
-    final Map<String, Object> m = new TreeMap<String, Object>();
+    final Map<String, Object> m = new TreeMap<>();
     m.put("urlString", token.encodeToUrlString());
     return m;
   }
 
   /** Convert an exception object to a Json string. */
   public static String toJsonString(final Exception e) {
-    final Map<String, Object> m = new TreeMap<String, Object>();
+    final Map<String, Object> m = new TreeMap<>();
     m.put("exception", e.getClass().getSimpleName());
     m.put("message", e.getMessage());
     m.put("javaClassName", e.getClass().getName());
@@ -97,7 +97,7 @@ final class JsonUtil {
 
   /** Convert a key-value pair to a Json string. */
   public static String toJsonString(final String key, final Object value) {
-    final Map<String, Object> m = new TreeMap<String, Object>();
+    final Map<String, Object> m = new TreeMap<>();
     m.put(key, value);
     try {
       return MAPPER.writeValueAsString(m);
@@ -118,7 +118,7 @@ final class JsonUtil {
       return null;
     }
 
-    final Map<String, Object> m = new TreeMap<String, Object>();
+    final Map<String, Object> m = new TreeMap<>();
     m.put("blockPoolId", extendedblock.getBlockPoolId());
     m.put("blockId", extendedblock.getBlockId());
     m.put("numBytes", extendedblock.getNumBytes());
@@ -133,7 +133,7 @@ final class JsonUtil {
     }
 
     // TODO: Fix storageID
-    final Map<String, Object> m = new TreeMap<String, Object>();
+    final Map<String, Object> m = new TreeMap<>();
     m.put("ipAddr", datanodeinfo.getIpAddr());
     // 'name' is equivalent to ipAddr:xferPort. Older clients (1.x, 0.23.x) 
     // expects this instead of the two fields.
@@ -202,7 +202,7 @@ final class JsonUtil {
       return null;
     }
  
-    final Map<String, Object> m = new TreeMap<String, Object>();
+    final Map<String, Object> m = new TreeMap<>();
     m.put("blockToken", toJsonMap(locatedblock.getBlockToken()));
     m.put("isCorrupt", locatedblock.isCorrupt());
     m.put("startOffset", locatedblock.getStartOffset());
@@ -236,7 +236,7 @@ final class JsonUtil {
       return null;
     }
 
-    final Map<String, Object> m = new TreeMap<String, Object>();
+    final Map<String, Object> m = new TreeMap<>();
     m.put("fileLength", locatedblocks.getFileLength());
     m.put("isUnderConstruction", locatedblocks.isUnderConstruction());
 
@@ -252,7 +252,7 @@ final class JsonUtil {
       return null;
     }
 
-    final Map<String, Object> m = new TreeMap<String, Object>();
+    final Map<String, Object> m = new TreeMap<>();
     m.put("length", contentsummary.getLength());
     m.put("fileCount", contentsummary.getFileCount());
     m.put("directoryCount", contentsummary.getDirectoryCount());
@@ -304,7 +304,7 @@ final class JsonUtil {
       return null;
     }
 
-    final Map<String, Object> m = new TreeMap<String, Object>();
+    final Map<String, Object> m = new TreeMap<>();
     m.put("algorithm", checksum.getAlgorithmName());
     m.put("length", checksum.getLength());
     m.put("bytes", StringUtils.byteToHexString(checksum.getBytes()));
@@ -317,7 +317,7 @@ final class JsonUtil {
       return null;
     }
 
-    final Map<String, Object> m = new TreeMap<String, Object>();
+    final Map<String, Object> m = new TreeMap<>();
     m.put("owner", status.getOwner());
     m.put("group", status.getGroup());
     m.put("stickyBit", status.isStickyBit());
@@ -332,8 +332,7 @@ final class JsonUtil {
     if (perm != null) {
       m.put("permission", toString(perm));
     }
-    final Map<String, Map<String, Object>> finalMap =
-        new TreeMap<String, Map<String, Object>>();
+    final Map<String, Map<String, Object>> finalMap = new TreeMap<>();
     finalMap.put(AclStatus.class.getSimpleName(), m);
 
     try {
@@ -349,7 +348,7 @@ final class JsonUtil {
       return null;
     }
  
-    final Map<String, Object> m = new TreeMap<String, Object>();
+    final Map<String, Object> m = new TreeMap<>();
     m.put("name", XAttrHelper.getPrefixedName(xAttr));
     m.put("value", xAttr.getValue() != null ?
         XAttrCodec.encodeValue(xAttr.getValue(), encoding) : null);
@@ -373,7 +372,7 @@ final class JsonUtil {
   
   public static String toJsonString(final List<XAttr> xAttrs,
       final XAttrCodec encoding) throws IOException {
-    final Map<String, Object> finalMap = new TreeMap<String, Object>();
+    final Map<String, Object> finalMap = new TreeMap<>();
     finalMap.put("XAttrs", toJsonArray(xAttrs, encoding));
     return MAPPER.writeValueAsString(finalMap);
   }
@@ -385,7 +384,7 @@ final class JsonUtil {
       names.add(XAttrHelper.getPrefixedName(xAttr));
     }
     String ret = MAPPER.writeValueAsString(names);
-    final Map<String, Object> finalMap = new TreeMap<String, Object>();
+    final Map<String, Object> finalMap = new TreeMap<>();
     finalMap.put("XAttrNames", ret);
     return MAPPER.writeValueAsString(finalMap);
   }
@@ -408,7 +407,7 @@ final class JsonUtil {
   }
 
   private static Object toJsonMap(BlockStoragePolicy blockStoragePolicy) {
-    final Map<String, Object> m = new TreeMap<String, Object>();
+    final Map<String, Object> m = new TreeMap<>();
     m.put("id", blockStoragePolicy.getId());
     m.put("name", blockStoragePolicy.getName());
     m.put("storageTypes", blockStoragePolicy.getStorageTypes());
@@ -427,7 +426,7 @@ final class JsonUtil {
   }
 
   private static Object toJsonMap(FsServerDefaults serverDefaults) {
-    final Map<String, Object> m = new HashMap<String, Object>();
+    final Map<String, Object> m = new HashMap<>();
     m.put("blockSize", serverDefaults.getBlockSize());
     m.put("bytesPerChecksum", serverDefaults.getBytesPerChecksum());
     m.put("writePacketSize", serverDefaults.getWritePacketSize());
@@ -447,7 +446,7 @@ final class JsonUtil {
   }
 
   private static Object toJsonMap(SnapshotDiffReport diffReport) {
-    final Map<String, Object> m = new TreeMap<String, Object>();
+    final Map<String, Object> m = new TreeMap<>();
     m.put("snapshotRoot", diffReport.getSnapshotRoot());
     m.put("fromSnapshot", diffReport.getFromSnapshot());
     m.put("toSnapshot", diffReport.getLaterSnapshotName());
@@ -461,7 +460,7 @@ final class JsonUtil {
 
   private static Object toJsonMap(
       SnapshotDiffReport.DiffReportEntry diffReportEntry) {
-    final Map<String, Object> m = new TreeMap<String, Object>();
+    final Map<String, Object> m = new TreeMap<>();
     m.put("type", diffReportEntry.getType());
     if (diffReportEntry.getSourcePath() != null) {
       m.put("sourcePath",

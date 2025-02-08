@@ -18,25 +18,28 @@
 package org.apache.hadoop.ozone.util;
 
 import com.google.common.annotations.VisibleForTesting;
-import org.apache.hadoop.ozone.OzoneConsts;
-
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import org.apache.hadoop.ozone.OzoneConsts;
 
 /**
  * Wrapper class for handling Ozone prefix path lookup of ACL APIs
  * with radix tree.
  */
 public class RadixTree<T> {
+  private static final String PATH_DELIMITER = OzoneConsts.OZONE_URI_DELIMITER;
+
+  // root of a radix tree has a name of "/" and may optionally has it value.
+  private final RadixNode<T> root;
 
   /**
    * create a empty radix tree with root only.
    */
   public RadixTree() {
-    root = new RadixNode<T>(PATH_DELIMITER);
+    root = new RadixNode<>(PATH_DELIMITER);
   }
 
   /**
@@ -67,12 +70,12 @@ public class RadixTree<T> {
     RadixNode<T> n = root;
     Path p = Paths.get(path);
     for (int level = 0; level < p.getNameCount(); level++) {
-      HashMap<String, RadixNode> child = n.getChildren();
+      Map<String, RadixNode<T>> child = n.getChildren();
       String component = p.getName(level).toString();
       if (child.containsKey(component)) {
         n = child.get(component);
       } else {
-        RadixNode tmp = new RadixNode(component);
+        RadixNode<T> tmp = new RadixNode<>(component);
         child.put(component, tmp);
         n = tmp;
       }
@@ -142,13 +145,13 @@ public class RadixTree<T> {
    * @return longest prefix path as list of RadixNode.
    */
   public List<RadixNode<T>> getLongestPrefixPath(String path) {
-    RadixNode n = root;
+    RadixNode<T> n = root;
     Path p = Paths.get(path);
     int level = 0;
     List<RadixNode<T>> result = new ArrayList<>();
     result.add(root);
     while (level < p.getNameCount()) {
-      HashMap<String, RadixNode> children = n.getChildren();
+      Map<String, RadixNode<T>> children = n.getChildren();
       if (children.isEmpty()) {
         break;
       }
@@ -173,7 +176,7 @@ public class RadixTree<T> {
    */
   public static String radixPathToString(List<RadixNode<Integer>> path) {
     StringBuilder sb = new StringBuilder();
-    for (RadixNode n : path) {
+    for (RadixNode<Integer> n : path) {
       sb.append(n.getName());
       sb.append(n.getName().equals(PATH_DELIMITER) ? "" : PATH_DELIMITER);
     }
@@ -190,7 +193,7 @@ public class RadixTree<T> {
     Path p = Paths.get(path);
     int level = 0;
     while (level < p.getNameCount()) {
-      HashMap<String, RadixNode> children = n.getChildren();
+      Map<String, RadixNode<T>> children = n.getChildren();
       if (children.isEmpty()) {
         break;
       }
@@ -204,17 +207,11 @@ public class RadixTree<T> {
     }
 
     if (level >= 1) {
-      Path longestMatch =
-          Paths.get(root.getName()).resolve(p.subpath(0, level));
+      Path longestMatch = Paths.get(root.getName()).resolve(p.subpath(0, level));
       String ret = longestMatch.toString();
       return path.endsWith("/") ?  ret + "/" : ret;
     } else {
       return root.getName();
     }
   }
-
-  // root of a radix tree has a name of "/" and may optionally has it value.
-  private RadixNode root;
-
-  private static final String PATH_DELIMITER = OzoneConsts.OZONE_URI_DELIMITER;
 }

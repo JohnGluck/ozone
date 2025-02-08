@@ -17,12 +17,15 @@
  */
 package org.apache.hadoop.fs.ozone;
 
+import static org.apache.hadoop.fs.CommonConfigurationKeysPublic.HADOOP_SHELL_SAFELY_DELETE_LIMIT_NUM_FILES;
+import static org.apache.hadoop.fs.CommonConfigurationKeysPublic.HADOOP_SHELL_SAFELY_DELETE_LIMIT_NUM_FILES_DEFAULT;
+import static org.apache.hadoop.ozone.OzoneConsts.OZONE_URI_DELIMITER;
+
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URI;
 import java.util.LinkedList;
 import java.util.List;
-
 import org.apache.hadoop.fs.ContentSummary;
 import org.apache.hadoop.fs.Path;
 import org.apache.hadoop.fs.PathIOException;
@@ -36,9 +39,6 @@ import org.apache.hadoop.fs.shell.PathData;
 import org.apache.hadoop.hdds.annotation.InterfaceAudience;
 import org.apache.hadoop.hdds.annotation.InterfaceStability;
 import org.apache.hadoop.util.ToolRunner;
-import static org.apache.hadoop.fs.CommonConfigurationKeysPublic.HADOOP_SHELL_SAFELY_DELETE_LIMIT_NUM_FILES;
-import static org.apache.hadoop.fs.CommonConfigurationKeysPublic.HADOOP_SHELL_SAFELY_DELETE_LIMIT_NUM_FILES_DEFAULT;
-import static org.apache.hadoop.ozone.OzoneConsts.OZONE_URI_DELIMITER;
 
 /**
  * Classes that delete paths.
@@ -105,7 +105,7 @@ public final class OzoneFsDelete {
           throw e;
         }
         // prevent -f on a non-existent glob from failing
-        return new LinkedList<PathData>();
+        return new LinkedList<>();
       }
     }
 

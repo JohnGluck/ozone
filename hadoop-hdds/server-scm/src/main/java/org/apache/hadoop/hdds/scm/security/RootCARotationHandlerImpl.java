@@ -54,8 +54,8 @@ public class RootCARotationHandlerImpl implements RootCARotationHandler {
   private Set<String> newScmCertIdSet = new HashSet<>();
   private final String newSubCAPath;
   private final RootCARotationManager rotationManager;
-  private AtomicReference<String> newSubCACertId = new AtomicReference();
-  private AtomicReference<String> newRootCACertId = new AtomicReference();
+  private AtomicReference<String> newSubCACertId = new AtomicReference<>();
+  private AtomicReference<String> newRootCACertId = new AtomicReference<>();
 
   /**
    * Constructs RootCARotationHandlerImpl with the specified arguments.

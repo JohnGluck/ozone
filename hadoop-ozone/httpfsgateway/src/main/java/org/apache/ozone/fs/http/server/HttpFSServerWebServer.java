@@ -107,7 +107,7 @@ public class HttpFSServerWebServer {
     String configuredInitializers = conf.get(HttpServer2.
         FILTER_INITIALIZER_PROPERTY);
     if (configuredInitializers != null) {
-      Set<String> target = new LinkedHashSet<String>();
+      Set<String> target = new LinkedHashSet<>();
       String[] parts = configuredInitializers.split(",");
       for (String filterInitializer : parts) {
         if (!filterInitializer.equals(AuthenticationFilterInitializer.class.

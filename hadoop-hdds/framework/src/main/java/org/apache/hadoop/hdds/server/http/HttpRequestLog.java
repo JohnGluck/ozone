@@ -18,11 +18,11 @@
 package org.apache.hadoop.hdds.server.http;
 
 import java.util.HashMap;
-
-import org.apache.commons.logging.impl.Log4JLogger;
+import java.util.Map;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogConfigurationException;
 import org.apache.commons.logging.LogFactory;
+import org.apache.commons.logging.impl.Log4JLogger;
 import org.apache.log4j.Appender;
 import org.eclipse.jetty.server.AsyncRequestLogWriter;
 import org.eclipse.jetty.server.CustomRequestLog;
@@ -37,13 +37,13 @@ public final class HttpRequestLog {
 
   public static final Logger LOG =
       LoggerFactory.getLogger(HttpRequestLog.class);
-  private static final HashMap<String, String> SERVER_TO_COMPONENT;
+  private static final Map<String, String> SERVER_TO_COMPONENT;
 
   private HttpRequestLog() {
   }
 
   static {
-    SERVER_TO_COMPONENT = new HashMap<String, String>();
+    SERVER_TO_COMPONENT = new HashMap<>();
     SERVER_TO_COMPONENT.put("cluster", "resourcemanager");
     SERVER_TO_COMPONENT.put("hdfs", "namenode");
     SERVER_TO_COMPONENT.put("node", "nodemanager");

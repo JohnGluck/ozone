@@ -561,6 +561,7 @@ public class XceiverClientGrpc extends XceiverClientSpi {
     return !HddsUtils.isReadOnly(request);
   }
 
+  @SuppressWarnings("PMD.UseDiamondOperator")
   @VisibleForTesting
   public XceiverClientReply sendCommandAsync(
       ContainerCommandRequestProto request, DatanodeDetails dn)

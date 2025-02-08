@@ -508,6 +508,7 @@ public final class HddsServerUtil {
    * @return {@link org.apache.hadoop.hdds.protocol.SecretKeyProtocolScm}
    * @throws IOException
    */
+  @SuppressWarnings("PMD.UseDiamondOperator")
   public static SecretKeyProtocolScm getSecretKeyClientForSCM(
       ConfigurationSource conf) throws IOException {
     SecretKeyProtocolClientSideTranslatorPB scmSecretClient =
@@ -524,6 +525,7 @@ public final class HddsServerUtil {
    * Create a {@link org.apache.hadoop.hdds.protocol.SecretKeyProtocol} for
    * datanode service, should be use only if user is the Datanode identity.
    */
+  @SuppressWarnings("PMD.UseDiamondOperator")
   public static SecretKeyProtocolClientSideTranslatorPB
       getSecretKeyClientForDatanode(ConfigurationSource conf)
       throws IOException {
@@ -538,6 +540,7 @@ public final class HddsServerUtil {
    * Create a {@link org.apache.hadoop.hdds.protocol.SecretKeyProtocol} for
    * OM service, should be use only if user is the OM identity.
    */
+  @SuppressWarnings("PMD.UseDiamondOperator")
   public static SecretKeyProtocolClientSideTranslatorPB
       getSecretKeyClientForOm(ConfigurationSource conf) throws IOException {
     return new SecretKeyProtocolClientSideTranslatorPB(
@@ -547,6 +550,7 @@ public final class HddsServerUtil {
         SecretKeyProtocolOmPB.class);
   }
 
+  @SuppressWarnings("PMD.UseDiamondOperator")
   public static SecretKeyProtocolClientSideTranslatorPB
       getSecretKeyClientForDatanode(ConfigurationSource conf,
       UserGroupInformation ugi) {
@@ -563,6 +567,7 @@ public final class HddsServerUtil {
    * The protocol returned by this method only target a single destination
    * SCM node.
    */
+  @SuppressWarnings("PMD.UseDiamondOperator")
   public static SecretKeyProtocolClientSideTranslatorPB
       getSecretKeyClientForScm(ConfigurationSource conf,
       String scmNodeId, UserGroupInformation ugi) {

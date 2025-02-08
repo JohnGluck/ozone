@@ -420,6 +420,7 @@ public class FollowerAppendLogEntryGenerator extends BaseAppendLogGenerator
    * Pseudo sync call to request a vote.
    *
    */
+  @SuppressWarnings("PMD.UseDiamondOperator")
   private CompletableFuture<RequestVoteReplyProto> requestVote() {
     CompletableFuture<RequestVoteReplyProto> response =
         new CompletableFuture<>();

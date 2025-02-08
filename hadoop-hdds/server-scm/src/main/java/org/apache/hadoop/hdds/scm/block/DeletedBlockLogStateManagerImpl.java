@@ -71,6 +71,7 @@ public class DeletedBlockLogStateManagerImpl
         isRatisEnabled ? ConcurrentHashMap.newKeySet() : null;
   }
 
+  @SuppressWarnings("PMD.UseDiamondOperator")
   @Override
   public TableIterator<Long, TypedTable.KeyValue<Long,
       DeletedBlocksTransaction>> getReadOnlyIterator() throws IOException {

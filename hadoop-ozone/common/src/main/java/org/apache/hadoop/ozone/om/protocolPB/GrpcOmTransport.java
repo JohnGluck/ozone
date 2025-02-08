@@ -107,7 +107,7 @@ public class GrpcOmTransport implements OmTransport {
     this.channels = new HashMap<>();
     this.clients = new HashMap<>();
     this.conf = conf;
-    this.host = new AtomicReference();
+    this.host = new AtomicReference<>();
     this.failoverCount = 0;
     this.syncFailoverCount = new AtomicInteger();
 
@@ -116,11 +116,12 @@ public class GrpcOmTransport implements OmTransport {
     maxSize = conf.getInt(OZONE_OM_GRPC_MAXIMUM_RESPONSE_LENGTH,
         OZONE_OM_GRPC_MAXIMUM_RESPONSE_LENGTH_DEFAULT);
 
-    omFailoverProxyProvider = new GrpcOMFailoverProxyProvider(
+    omFailoverProxyProvider = new GrpcOMFailoverProxyProvider<>(
         conf,
         ugi,
         omServiceId,
-        OzoneManagerProtocolPB.class);
+        OzoneManagerProtocolPB.class
+    );
 
     start();
   }

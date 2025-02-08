@@ -636,23 +636,19 @@ public class HttpFSServer {
           .createProxyUser(user.getShortUserName(),
               UserGroupInformation.getLoginUser());
       try {
-        is = ugi.doAs(new PrivilegedExceptionAction<InputStream>() {
-          @Override
-          public InputStream run() throws Exception {
-            return command.execute(fs);
-          }
-        });
+        is = ugi.doAs((PrivilegedExceptionAction<InputStream>) () -> command.execute(fs));
       } catch (InterruptedException ie) {
         LOG.warn("Open interrupted.", ie);
         Thread.currentThread().interrupt();
       }
+
       Long offset = params.get(OffsetParam.NAME, OffsetParam.class);
       Long len = params.get(LenParam.NAME, LenParam.class);
-      AUDIT_LOG.info("[{}] offset [{}] len [{}]",
-          new Object[]{path, offset, len});
+
+      AUDIT_LOG.info("[{}] offset [{}] len [{}]", path, offset, len);
+
       InputStreamEntity entity = new InputStreamEntity(is, offset, len);
-      response = Response.ok(entity).type(MediaType.APPLICATION_OCTET_STREAM)
-          .build();
+      response = Response.ok(entity).type(MediaType.APPLICATION_OCTET_STREAM).build();
     }
     return response;
   }

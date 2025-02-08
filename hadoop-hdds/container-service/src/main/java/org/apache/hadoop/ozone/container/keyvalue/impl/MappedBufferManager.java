@@ -36,8 +36,7 @@ import java.util.function.Supplier;
  */
 public class MappedBufferManager {
 
-  private static ConcurrentHashMap<String, WeakReference<ByteBuffer>> mappedBuffers =
-      new ConcurrentHashMap<String, WeakReference<ByteBuffer>>();
+  private static ConcurrentHashMap<String, WeakReference<ByteBuffer>> mappedBuffers = new ConcurrentHashMap<>();
   private static final Logger LOG = LoggerFactory.getLogger(MappedBufferManager.class);
   private final Semaphore semaphore;
   private final AtomicBoolean cleanupInProgress = new AtomicBoolean(false);

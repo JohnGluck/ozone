@@ -18,17 +18,7 @@
 
 package org.apache.ozone.rocksdb.util;
 
-import org.apache.hadoop.hdds.StringUtils;
-import org.apache.hadoop.hdds.utils.IOUtils;
-import org.apache.hadoop.hdds.utils.db.managed.ManagedRawSSTFileReader;
-import org.apache.hadoop.hdds.utils.db.managed.ManagedRawSSTFileIterator;
-import org.apache.hadoop.hdds.utils.db.managed.ManagedSlice;
-import org.apache.hadoop.hdds.utils.db.managed.ManagedSstFileReader;
-import org.apache.hadoop.hdds.utils.db.managed.ManagedSstFileReaderIterator;
-import org.apache.hadoop.ozone.util.ClosableIterator;
-import org.apache.hadoop.hdds.utils.db.managed.ManagedOptions;
-import org.apache.hadoop.hdds.utils.db.managed.ManagedReadOptions;
-import org.rocksdb.RocksDBException;
+import static java.nio.charset.StandardCharsets.UTF_8;
 
 import java.io.IOException;
 import java.io.UncheckedIOException;
@@ -41,8 +31,17 @@ import java.util.Spliterators;
 import java.util.function.Function;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
-
-import static java.nio.charset.StandardCharsets.UTF_8;
+import org.apache.hadoop.hdds.StringUtils;
+import org.apache.hadoop.hdds.utils.IOUtils;
+import org.apache.hadoop.hdds.utils.db.managed.ManagedOptions;
+import org.apache.hadoop.hdds.utils.db.managed.ManagedRawSSTFileIterator;
+import org.apache.hadoop.hdds.utils.db.managed.ManagedRawSSTFileReader;
+import org.apache.hadoop.hdds.utils.db.managed.ManagedReadOptions;
+import org.apache.hadoop.hdds.utils.db.managed.ManagedSlice;
+import org.apache.hadoop.hdds.utils.db.managed.ManagedSstFileReader;
+import org.apache.hadoop.hdds.utils.db.managed.ManagedSstFileReaderIterator;
+import org.apache.hadoop.ozone.util.ClosableIterator;
+import org.rocksdb.RocksDBException;
 
 /**
  * Provides an abstraction layer using which we can iterate over multiple
@@ -89,6 +88,7 @@ public class SstFileSetReader {
     return estimatedTotalKeys;
   }
 
+  @SuppressWarnings("PMD.UseDiamondOperator")
   public Stream<String> getKeyStream(String lowerBound,
                                      String upperBound) throws RocksDBException {
     // TODO: [SNAPSHOT] Check if default Options and ReadOptions is enough.
@@ -138,6 +138,7 @@ public class SstFileSetReader {
     return getStreamFromIterator(itr);
   }
 
+  @SuppressWarnings("PMD.UseDiamondOperator")
   public Stream<String> getKeyStreamWithTombstone(String lowerBound, String upperBound) throws RocksDBException {
     final MultipleSstFileIterator<String> itr = new MultipleSstFileIterator<String>(sstFiles) {
       //TODO: [SNAPSHOT] Check if default Options is enough.

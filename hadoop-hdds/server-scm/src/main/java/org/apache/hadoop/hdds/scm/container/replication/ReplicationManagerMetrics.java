@@ -53,24 +53,9 @@ public final class ReplicationManagerMetrics implements MetricsSource {
       "InflightReplication",
       "Tracked inflight container replication requests.");
 
-  private static final MetricsInfo INFLIGHT_REPLICATION_SKIPPED = Interns.info(
-      "InflightReplicationSkipped",
-      "Tracked inflight container replication requests skipped" +
-          " due to the configured limit.");
-
   private static final MetricsInfo INFLIGHT_DELETION = Interns.info(
       "InflightDeletion",
       "Tracked inflight container deletion requests.");
-
-  private static final MetricsInfo INFLIGHT_DELETION_SKIPPED = Interns.info(
-      "InflightDeletionSkipped",
-      "Tracked inflight container deletion requests skipped" +
-          " due to the configured limit.");
-
-
-  private static final MetricsInfo INFLIGHT_MOVE = Interns.info(
-      "InflightMove",
-      "Tracked inflight container move requests.");
 
   private static final MetricsInfo INFLIGHT_EC_REPLICATION = Interns.info(
       "InflightEcReplication",
@@ -89,6 +74,7 @@ public final class ReplicationManagerMetrics implements MetricsSource {
       "Number of containers currently in the over replicated queue");
 
   // Setup metric names and descriptions for Container Lifecycle states
+  @SuppressWarnings("PMD.UseDiamondOperator")
   private static final Map<LifeCycleState, MetricsInfo> LIFECYCLE_STATE_METRICS
       = Collections.unmodifiableMap(
           new LinkedHashMap<LifeCycleState, MetricsInfo>() {{
@@ -103,6 +89,7 @@ public final class ReplicationManagerMetrics implements MetricsSource {
           }});
 
   // Setup metric names and descriptions for
+  @SuppressWarnings("PMD.UseDiamondOperator")
   private static final Map<HealthState, MetricsInfo>
       CONTAINER_HEALTH_STATE_METRICS = Collections.unmodifiableMap(
           new LinkedHashMap<HealthState, MetricsInfo>() {{

@@ -51,9 +51,8 @@ public class InnerNodeImpl extends NodeImpl implements InnerNode {
   public static final Factory FACTORY = new Factory();
   // a map of node's network name to Node for quick search and keep
   // the insert order
-  private HashMap<String, Node> childrenMap =
-      new LinkedHashMap<String, Node>();
-  // number of descendant leaves under this node
+  private HashMap<String, Node> childrenMap = new LinkedHashMap<>();
+  // number of descendant leafs under this node
   private int numOfLeaves;
   // LOGGER
   public static final Logger LOG = LoggerFactory.getLogger(InnerNodeImpl.class);

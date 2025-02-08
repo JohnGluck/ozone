@@ -78,7 +78,7 @@ public final class ReloadingX509TrustManager implements X509TrustManager, Certif
   public ReloadingX509TrustManager(String type, List<X509Certificate> newRootCaCerts)
       throws GeneralSecurityException, IOException {
     this.type = type;
-    trustManagerRef = new AtomicReference<X509TrustManager>();
+    trustManagerRef = new AtomicReference<>();
     trustManagerRef.set(init(newRootCaCerts));
   }
 

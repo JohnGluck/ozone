@@ -40,8 +40,7 @@ import java.io.IOException;
  */
 @InterfaceAudience.Private
 public abstract class FileSystemReleaseFilter implements Filter {
-  private static final ThreadLocal<FileSystem> FILE_SYSTEM_TL
-      = new ThreadLocal<FileSystem>();
+  private static final ThreadLocal<FileSystem> FILE_SYSTEM_TL = new ThreadLocal<>();
 
   /**
    * Initializes the filter.
