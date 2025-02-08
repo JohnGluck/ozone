@@ -18,57 +18,15 @@
 
 package org.apache.ozone.fs.http.server;
 
-import org.apache.hadoop.conf.Configuration;
-import org.apache.hadoop.fs.FileSystem;
-import org.apache.hadoop.fs.XAttrCodec;
-import org.apache.hadoop.fs.XAttrSetFlag;
-import org.apache.ozone.fs.http.HttpFSConstants;
-import org.apache.ozone.fs.http.server.HttpFSParametersProvider.AccessTimeParam;
-import org.apache.ozone.fs.http.server.HttpFSParametersProvider.AclPermissionParam;
-import org.apache.ozone.fs.http.server.HttpFSParametersProvider.BlockSizeParam;
-import org.apache.ozone.fs.http.server.HttpFSParametersProvider.DataParam;
-import org.apache.ozone.fs.http.server.HttpFSParametersProvider.DestinationParam;
-import org.apache.ozone.fs.http.server.HttpFSParametersProvider.ECPolicyParam;
-import org.apache.ozone.fs.http.server.HttpFSParametersProvider.FilterParam;
-import org.apache.ozone.fs.http.server.HttpFSParametersProvider.FsActionParam;
-import org.apache.ozone.fs.http.server.HttpFSParametersProvider.GroupParam;
-import org.apache.ozone.fs.http.server.HttpFSParametersProvider.LenParam;
-import org.apache.ozone.fs.http.server.HttpFSParametersProvider.ModifiedTimeParam;
-import org.apache.ozone.fs.http.server.HttpFSParametersProvider.NewLengthParam;
-import org.apache.ozone.fs.http.server.HttpFSParametersProvider.NoRedirectParam;
-import org.apache.ozone.fs.http.server.HttpFSParametersProvider.OffsetParam;
-import org.apache.ozone.fs.http.server.HttpFSParametersProvider.OldSnapshotNameParam;
-import org.apache.ozone.fs.http.server.HttpFSParametersProvider.OperationParam;
-import org.apache.ozone.fs.http.server.HttpFSParametersProvider.OverwriteParam;
-import org.apache.ozone.fs.http.server.HttpFSParametersProvider.OwnerParam;
-import org.apache.ozone.fs.http.server.HttpFSParametersProvider.PermissionParam;
-import org.apache.ozone.fs.http.server.HttpFSParametersProvider.PolicyNameParam;
-import org.apache.ozone.fs.http.server.HttpFSParametersProvider.RecursiveParam;
-import org.apache.ozone.fs.http.server.HttpFSParametersProvider.ReplicationParam;
-import org.apache.ozone.fs.http.server.HttpFSParametersProvider.SourcesParam;
-import org.apache.ozone.fs.http.server.HttpFSParametersProvider.UnmaskedPermissionParam;
-import org.apache.ozone.fs.http.server.HttpFSParametersProvider.SnapshotNameParam;
-import org.apache.ozone.fs.http.server.HttpFSParametersProvider.XAttrEncodingParam;
-import org.apache.ozone.fs.http.server.HttpFSParametersProvider.XAttrNameParam;
-import org.apache.ozone.fs.http.server.HttpFSParametersProvider.XAttrSetFlagParam;
-import org.apache.ozone.fs.http.server.HttpFSParametersProvider.XAttrValueParam;
-import org.apache.hadoop.fs.permission.FsAction;
-import org.apache.hadoop.hdds.annotation.InterfaceAudience;
-import org.apache.hadoop.http.JettyUtils;
-import org.apache.ozone.lib.service.FileSystemAccess;
-import org.apache.ozone.lib.service.FileSystemAccessException;
-import org.apache.ozone.lib.service.Groups;
-import org.apache.ozone.lib.service.Instrumentation;
-import org.apache.ozone.lib.servlet.FileSystemReleaseFilter;
-import org.apache.ozone.lib.wsrs.InputStreamEntity;
-import org.apache.ozone.lib.wsrs.Parameters;
-import org.apache.hadoop.security.UserGroupInformation;
-import org.apache.hadoop.security.token.delegation.web.HttpUserGroupInformation;
-import org.json.simple.JSONObject;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.slf4j.MDC;
-
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URI;
+import java.security.AccessControlException;
+import java.security.PrivilegedExceptionAction;
+import java.text.MessageFormat;
+import java.util.EnumSet;
+import java.util.List;
+import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
@@ -84,16 +42,52 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriBuilder;
 import javax.ws.rs.core.UriInfo;
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.URI;
-import java.nio.charset.StandardCharsets;
-import java.security.AccessControlException;
-import java.security.PrivilegedExceptionAction;
-import java.text.MessageFormat;
-import java.util.EnumSet;
-import java.util.List;
-import java.util.Map;
+import org.apache.hadoop.conf.Configuration;
+import org.apache.hadoop.fs.FileSystem;
+import org.apache.hadoop.fs.XAttrCodec;
+import org.apache.hadoop.fs.XAttrSetFlag;
+import org.apache.hadoop.fs.permission.FsAction;
+import org.apache.hadoop.hdds.annotation.InterfaceAudience;
+import org.apache.hadoop.http.JettyUtils;
+import org.apache.hadoop.security.UserGroupInformation;
+import org.apache.hadoop.security.token.delegation.web.HttpUserGroupInformation;
+import org.apache.ozone.fs.http.HttpFSConstants;
+import org.apache.ozone.fs.http.server.HttpFSParametersProvider.AclPermissionParam;
+import org.apache.ozone.fs.http.server.HttpFSParametersProvider.BlockSizeParam;
+import org.apache.ozone.fs.http.server.HttpFSParametersProvider.DataParam;
+import org.apache.ozone.fs.http.server.HttpFSParametersProvider.DestinationParam;
+import org.apache.ozone.fs.http.server.HttpFSParametersProvider.ECPolicyParam;
+import org.apache.ozone.fs.http.server.HttpFSParametersProvider.FilterParam;
+import org.apache.ozone.fs.http.server.HttpFSParametersProvider.FsActionParam;
+import org.apache.ozone.fs.http.server.HttpFSParametersProvider.LenParam;
+import org.apache.ozone.fs.http.server.HttpFSParametersProvider.NewLengthParam;
+import org.apache.ozone.fs.http.server.HttpFSParametersProvider.NoRedirectParam;
+import org.apache.ozone.fs.http.server.HttpFSParametersProvider.OffsetParam;
+import org.apache.ozone.fs.http.server.HttpFSParametersProvider.OldSnapshotNameParam;
+import org.apache.ozone.fs.http.server.HttpFSParametersProvider.OperationParam;
+import org.apache.ozone.fs.http.server.HttpFSParametersProvider.OverwriteParam;
+import org.apache.ozone.fs.http.server.HttpFSParametersProvider.PermissionParam;
+import org.apache.ozone.fs.http.server.HttpFSParametersProvider.PolicyNameParam;
+import org.apache.ozone.fs.http.server.HttpFSParametersProvider.RecursiveParam;
+import org.apache.ozone.fs.http.server.HttpFSParametersProvider.ReplicationParam;
+import org.apache.ozone.fs.http.server.HttpFSParametersProvider.SnapshotNameParam;
+import org.apache.ozone.fs.http.server.HttpFSParametersProvider.SourcesParam;
+import org.apache.ozone.fs.http.server.HttpFSParametersProvider.UnmaskedPermissionParam;
+import org.apache.ozone.fs.http.server.HttpFSParametersProvider.XAttrEncodingParam;
+import org.apache.ozone.fs.http.server.HttpFSParametersProvider.XAttrNameParam;
+import org.apache.ozone.fs.http.server.HttpFSParametersProvider.XAttrSetFlagParam;
+import org.apache.ozone.fs.http.server.HttpFSParametersProvider.XAttrValueParam;
+import org.apache.ozone.lib.service.FileSystemAccess;
+import org.apache.ozone.lib.service.FileSystemAccessException;
+import org.apache.ozone.lib.service.Groups;
+import org.apache.ozone.lib.service.Instrumentation;
+import org.apache.ozone.lib.servlet.FileSystemReleaseFilter;
+import org.apache.ozone.lib.wsrs.InputStreamEntity;
+import org.apache.ozone.lib.wsrs.Parameters;
+import org.json.simple.JSONObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.slf4j.MDC;
 
 /**
  * Main class of HttpFSServer server.
@@ -119,7 +113,7 @@ public class HttpFSServer {
     return PARAMETERS_PROVIDER.get(request);
   }
 
-  private AccessMode accessMode = AccessMode.READWRITE;
+  private final AccessMode accessMode;
 
   public HttpFSServer() {
     Configuration conf = HttpFSServerWebApp.get().getConfig();
@@ -134,21 +128,6 @@ public class HttpFSServer {
       accessMode = AccessMode.READWRITE;
     }
   }
-
-
-  // First try getting a user through HttpUserGroupInformation. This will return
-  // if the built-in hadoop auth filter is not used.  Fall back to getting the
-  // authenticated user from the request.
-  private UserGroupInformation getHttpUGI(HttpServletRequest request) {
-    UserGroupInformation user = HttpUserGroupInformation.get();
-    if (user != null) {
-      return user;
-    }
-
-    return UserGroupInformation
-        .createRemoteUser(request.getUserPrincipal().getName());
-  }
-
 
   /**
    * Executes a {@link FileSystemAccess.FileSystemExecutor} using a filesystem
@@ -445,36 +424,6 @@ public class HttpFSServer {
     return response;
   }
 
-  private Response handleGetTrashRoot(String path, UserGroupInformation user)
-      throws IOException, FileSystemAccessException {
-    Response response;
-    FSOperations.FSTrashRoot command = new FSOperations.FSTrashRoot(path);
-    JSONObject json = fsExecute(user, command);
-    AUDIT_LOG.info("[{}]", path);
-    response = Response.ok(json).type(MediaType.APPLICATION_JSON).build();
-    return response;
-  }
-
-  private Response handleListStatusBatch(String path,
-                                         Parameters params,
-                                         UserGroupInformation user)
-      throws IOException, FileSystemAccessException {
-    Response response;
-    String startAfter = params.get(
-        HttpFSParametersProvider.StartAfterParam.NAME,
-        HttpFSParametersProvider.StartAfterParam.class);
-    byte[] token = HttpFSConstants.EMPTY_BYTES;
-    if (startAfter != null) {
-      token = startAfter.getBytes(StandardCharsets.UTF_8);
-    }
-    FSOperations.FSListStatusBatch command = new FSOperations
-        .FSListStatusBatch(path, token);
-    @SuppressWarnings("rawtypes") Map json = fsExecute(user, command);
-    AUDIT_LOG.info("[{}] token [{}]", path, token);
-    response = Response.ok(json).type(MediaType.APPLICATION_JSON).build();
-    return response;
-  }
-
   private Response handleListXAttrs(String path, UserGroupInformation user)
       throws IOException, FileSystemAccessException {
     Response response;
@@ -509,29 +458,6 @@ public class HttpFSServer {
     Map json = fsExecute(user, command);
     AUDIT_LOG.info("ACL status for [{}]", path);
     response = Response.ok(json).type(MediaType.APPLICATION_JSON).build();
-    return response;
-  }
-
-  private Response handleGetFileCheckSum(String path,
-                                         UriInfo uriInfo,
-                                         Parameters params,
-                                         UserGroupInformation user)
-      throws IOException, FileSystemAccessException {
-    Response response;
-    FSOperations.FSFileChecksum command =
-        new FSOperations.FSFileChecksum(path);
-
-    Boolean noRedirect = params.get(
-        NoRedirectParam.NAME, NoRedirectParam.class);
-    AUDIT_LOG.info("[{}]", path);
-    if (noRedirect) {
-      URI redirectURL = createOpenRedirectionURL(uriInfo);
-      final String js = JsonUtil.toJsonString("Location", redirectURL);
-      response = Response.ok(js).type(MediaType.APPLICATION_JSON).build();
-    } else {
-      Map json = fsExecute(user, command);
-      response = Response.ok(json).type(MediaType.APPLICATION_JSON).build();
-    }
     return response;
   }
 
@@ -574,19 +500,6 @@ public class HttpFSServer {
         HttpFSServerWebApp.get().get(Instrumentation.class);
     Map snapshot = instrumentation.getSnapshot();
     response = Response.ok(snapshot).build();
-    return response;
-  }
-
-  private Response handleGetHomeDir(String path,
-                                    OperationParam op,
-                                    UserGroupInformation user)
-      throws IOException, FileSystemAccessException {
-    Response response;
-    enforceRootPath(op.value(), path);
-    FSOperations.FSHomeDir command = new FSOperations.FSHomeDir();
-    JSONObject json = fsExecute(user, command);
-    AUDIT_LOG.info("Home Directory for [{}]", user);
-    response = Response.ok(json).type(MediaType.APPLICATION_JSON).build();
     return response;
   }
 
@@ -1157,69 +1070,6 @@ public class HttpFSServer {
     return response;
   }
 
-  private Response handleSetTimes(String path,
-                                  Parameters params,
-                                  UserGroupInformation user)
-      throws IOException, FileSystemAccessException {
-    Response response;
-    Long modifiedTime = params.get(ModifiedTimeParam.NAME,
-                                   ModifiedTimeParam.class);
-    Long accessTime = params.get(AccessTimeParam.NAME,
-                                 AccessTimeParam.class);
-    FSOperations.FSSetTimes command
-        = new FSOperations.FSSetTimes(path, modifiedTime, accessTime);
-    fsExecute(user, command);
-    AUDIT_LOG.info("[{}] to (M/A)[{}]", path,
-                   modifiedTime + ":" + accessTime);
-    response = Response.ok().build();
-    return response;
-  }
-
-  private Response handleSetReplication(String path,
-                                        Parameters params,
-                                        UserGroupInformation user)
-      throws IOException, FileSystemAccessException {
-    Response response;
-    Short replication = params.get(ReplicationParam.NAME,
-                                   ReplicationParam.class);
-    FSOperations.FSSetReplication command
-        = new FSOperations.FSSetReplication(path, replication);
-    JSONObject json = fsExecute(user, command);
-    AUDIT_LOG.info("[{}] to [{}]", path, replication);
-    response = Response.ok(json).build();
-    return response;
-  }
-
-  private Response handleSetPermission(String path,
-                                       Parameters params,
-                                       UserGroupInformation user)
-      throws IOException, FileSystemAccessException {
-    Response response;
-    Short permission = params.get(PermissionParam.NAME,
-                                  PermissionParam.class);
-    FSOperations.FSSetPermission command
-        = new FSOperations.FSSetPermission(path, permission);
-    fsExecute(user, command);
-    AUDIT_LOG.info("[{}] to [{}]", path, permission);
-    response = Response.ok().build();
-    return response;
-  }
-
-  private Response handleSetOwner(String path,
-                                  Parameters params,
-                                  UserGroupInformation user)
-      throws IOException, FileSystemAccessException {
-    Response response;
-    String owner = params.get(OwnerParam.NAME, OwnerParam.class);
-    String group = params.get(GroupParam.NAME, GroupParam.class);
-    FSOperations.FSSetOwner command
-        = new FSOperations.FSSetOwner(path, owner, group);
-    fsExecute(user, command);
-    AUDIT_LOG.info("[{}] to (O/G)[{}]", path, owner + ":" + group);
-    response = Response.ok().build();
-    return response;
-  }
-
   private Response handleRename(String path,
                                 Parameters params,
                                 UserGroupInformation user)
@@ -1376,12 +1226,12 @@ public class HttpFSServer {
       fsExecute(user, command);
       AUDIT_LOG.info("[{}] permission [{}] override [{}] replication [{}] " +
               "blockSize [{}] unmaskedpermission [{}]",
-              new Object[]{path,
-                  permission,
-                  override,
-                  replication,
-                  blockSize,
-                  unmaskedPermission});
+          path,
+          permission,
+          override,
+          replication,
+          blockSize,
+          unmaskedPermission);
       final String js = JsonUtil.toJsonString(
           "Location", uriInfo.getAbsolutePath());
       response = Response.created(uriInfo.getAbsolutePath())

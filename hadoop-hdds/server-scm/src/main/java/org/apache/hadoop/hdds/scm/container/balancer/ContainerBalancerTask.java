@@ -411,53 +411,6 @@ public class ContainerBalancerTask implements Runnable {
     }
   }
 
-  private static ContainerBalancerTaskIterationStatusInfo getEmptyCurrentIterationStatistic(
-      long iterationDuration) {
-    ContainerMoveInfo containerMoveInfo = new ContainerMoveInfo(0, 0, 0, 0);
-    DataMoveInfo dataMoveInfo = new DataMoveInfo(
-        0,
-        0,
-        emptyMap(),
-        emptyMap()
-    );
-    IterationInfo iterationInfo = new IterationInfo(
-        0,
-        null,
-        iterationDuration
-    );
-    return new ContainerBalancerTaskIterationStatusInfo(
-        iterationInfo,
-        containerMoveInfo,
-        dataMoveInfo
-    );
-  }
-
-  private ContainerBalancerTaskIterationStatusInfo getFilledCurrentIterationStatistic(int lastIterationNumber,
-                                                                                      long iterationDuration) {
-    Map<UUID, Long> sizeEnteringDataToNodes =
-        convertToNodeIdToTrafficMap(findTargetStrategy.getSizeEnteringNodes());
-    Map<UUID, Long> sizeLeavingDataFromNodes =
-        convertToNodeIdToTrafficMap(findSourceStrategy.getSizeLeavingNodes());
-
-    ContainerMoveInfo containerMoveInfo = new ContainerMoveInfo(metrics);
-    DataMoveInfo dataMoveInfo = new DataMoveInfo(
-        getSizeScheduledForMoveInLatestIteration(),
-        sizeActuallyMovedInLatestIteration,
-        sizeEnteringDataToNodes,
-        sizeLeavingDataFromNodes
-    );
-    IterationInfo iterationInfo = new IterationInfo(
-        lastIterationNumber + 1,
-        null,
-        iterationDuration
-    );
-    return new ContainerBalancerTaskIterationStatusInfo(
-        iterationInfo,
-        containerMoveInfo,
-        dataMoveInfo
-    );
-  }
-
   private long getCurrentIterationDuration() {
     if (currentIterationStarted == null) {
       return ABSENCE_OF_DURATION;

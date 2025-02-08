@@ -57,8 +57,7 @@ public class SCMNodeStorageStatMap implements SCMNodeStorageStatMXBean {
   private final double criticalUtilizationThreshold;
 
   private final Map<UUID, Set<StorageLocationReport>> scmNodeStorageReportMap;
-  // NodeStorageInfo MXBean
-  private ObjectName scmNodeStorageInfoBean;
+
   /**
    * constructs the scmNodeStorageReportMap object.
    */
@@ -127,19 +126,6 @@ public class SCMNodeStorageStatMap implements SCMNodeStorageStatMXBean {
     }
   }
 
-  //TODO: This should be called once SCMNodeManager gets Started.
-  private void registerMXBean() {
-    this.scmNodeStorageInfoBean = MBeans.register("StorageContainerManager",
-        "scmNodeStorageInfo", this);
-  }
-
-  //TODO: Unregister call should happen as a part of SCMNodeManager shutdown.
-  private void unregisterMXBean() {
-    if (this.scmNodeStorageInfoBean != null) {
-      MBeans.unregister(this.scmNodeStorageInfoBean);
-      this.scmNodeStorageInfoBean = null;
-    }
-  }
   /**
    * Updates the Container list of an existing DN.
    *
