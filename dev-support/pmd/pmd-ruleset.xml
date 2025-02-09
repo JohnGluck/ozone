@@ -29,11 +29,25 @@
   <rule ref="category/java/bestpractices.xml/MissingOverride" />
 
   <rule ref="category/java/bestpractices.xml/UnusedAssignment"/>
+  <!--<rule ref="category/java/bestpractices.xml/UnusedFormalParameter">
+    <properties>
+      <property name="checkAll" value="false" />
+    </properties>
+  </rule>-->
   <rule ref="category/java/bestpractices.xml/UnusedLocalVariable"/>
   <rule ref="category/java/bestpractices.xml/UnusedPrivateField"/>
   <rule ref="category/java/bestpractices.xml/UnusedPrivateMethod"/>
 
   <rule ref="category/java/bestpractices.xml/UseCollectionIsEmpty" />
+  <!--<rule ref="category/java/bestpractices.xml/UseEnumCollections" />
+
+  <rule ref="category/java/bestpractices.xml/UseStandardCharsets" />
+
+  <rule ref="category/java/bestpractices.xml/UseTryWithResources" />
+  <rule ref="category/java/bestpractices.xml/UseVarargs" />-->
 
   <rule ref="category/java/codestyle.xml/UseDiamondOperator" />
+
+  <!--<rule ref="category/java/design.xml/ImmutableField" />-->
+
 </ruleset>
