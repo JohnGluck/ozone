@@ -49,7 +49,7 @@ public class DirstreamServerHandler extends ChannelInboundHandlerAdapter {
 
   private final StringBuilder id = new StringBuilder();
 
-  private StreamingSource source;
+  private final StreamingSource source;
 
   private boolean headerProcessed = false;
 

@@ -16,20 +16,35 @@
  */
 package org.apache.hadoop.ozone.om;
 
+import static org.apache.hadoop.ozone.OzoneConsts.OZONE_O3TRASH_URI_SCHEME;
+import static org.apache.hadoop.ozone.OzoneConsts.OZONE_URI_DELIMITER;
+import static org.apache.hadoop.ozone.om.helpers.OzoneFSUtils.addTrailingSlashIfNeeded;
+import static org.apache.hadoop.ozone.om.helpers.OzoneFSUtils.pathToKey;
+
 import com.google.common.base.Preconditions;
-import org.apache.hadoop.hdds.conf.OzoneConfiguration;
-import org.apache.hadoop.ozone.ClientVersion;
-import org.apache.hadoop.ozone.om.exceptions.OMException;
+import java.io.IOException;
+import java.net.InetAddress;
+import java.net.URI;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.atomic.AtomicLong;
+import java.util.stream.Collectors;
 import org.apache.hadoop.fs.FSDataInputStream;
-import org.apache.hadoop.fs.permission.FsPermission;
-import org.apache.hadoop.fs.FileSystem;
-import org.apache.hadoop.fs.Path;
 import org.apache.hadoop.fs.FSDataOutputStream;
 import org.apache.hadoop.fs.FileStatus;
+import org.apache.hadoop.fs.FileSystem;
+import org.apache.hadoop.fs.Path;
 import org.apache.hadoop.fs.PathIsNotEmptyDirectoryException;
+import org.apache.hadoop.fs.permission.FsPermission;
+import org.apache.hadoop.hdds.conf.OzoneConfiguration;
 import org.apache.hadoop.hdds.utils.db.cache.CacheKey;
 import org.apache.hadoop.hdds.utils.db.cache.CacheValue;
+import org.apache.hadoop.ozone.ClientVersion;
 import org.apache.hadoop.ozone.OFSPath;
+import org.apache.hadoop.ozone.om.exceptions.OMException;
 import org.apache.hadoop.ozone.om.helpers.OmBucketInfo;
 import org.apache.hadoop.ozone.om.helpers.OmKeyArgs;
 import org.apache.hadoop.ozone.om.helpers.OmKeyInfo;
@@ -42,22 +57,6 @@ import org.apache.hadoop.util.Progressable;
 import org.apache.ratis.protocol.ClientId;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.io.IOException;
-import java.net.InetAddress;
-import java.net.URI;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
-import java.util.Iterator;
-import java.util.concurrent.atomic.AtomicLong;
-import java.util.stream.Collectors;
-
-import static org.apache.hadoop.ozone.OzoneConsts.OZONE_O3TRASH_URI_SCHEME;
-import static org.apache.hadoop.ozone.OzoneConsts.OZONE_URI_DELIMITER;
-import static org.apache.hadoop.ozone.om.helpers.OzoneFSUtils.addTrailingSlashIfNeeded;
-import static org.apache.hadoop.ozone.om.helpers.OzoneFSUtils.pathToKey;
 
 /**
  * FileSystem to be used by the Trash Emptier.
@@ -324,7 +323,7 @@ public class TrashOzoneFileSystem extends FileSystem {
     private final Path path;
     private final FileStatus status;
     private String pathKey;
-    private Iterator<String> keyIterator;
+    private final Iterator<String> keyIterator;
 
     OzoneListingIterator(Path path)
           throws IOException {
@@ -535,18 +534,14 @@ public class TrashOzoneFileSystem extends FileSystem {
   }
 
   private class DeleteIterator extends OzoneListingIterator {
-    private final boolean recursive;
-    private List<String> keysList;
+    private final List<String> keysList;
 
-
-    DeleteIterator(Path f, boolean recursive)
-        throws IOException {
+    DeleteIterator(Path f, boolean recursive) throws IOException {
       super(f);
-      this.recursive = recursive;
+
       keysList = new ArrayList<>();
-      if (getStatus().isDirectory()
-          && !this.recursive
-          && listStatus(f).length != 0) {
+
+      if (getStatus().isDirectory() && !recursive && listStatus(f).length != 0) {
         throw new PathIsNotEmptyDirectoryException(f.toString());
       }
     }
@@ -616,7 +611,4 @@ public class TrashOzoneFileSystem extends FileSystem {
 
     return userInfo.build();
   }
-
-
-
 }

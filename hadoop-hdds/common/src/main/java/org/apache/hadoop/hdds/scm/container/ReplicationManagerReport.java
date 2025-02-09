@@ -79,8 +79,8 @@ public class ReplicationManagerReport {
         "Containers in OPEN state without any healthy Pipeline",
         "OpenContainersWithoutPipeline");
 
-    private String description;
-    private String metricName;
+    private final String description;
+    private final String metricName;
 
     HealthState(String desc, String name) {
       this.description = desc;
@@ -164,7 +164,7 @@ public class ReplicationManagerReport {
     for (Map.Entry<String, List<ContainerID>> e : containerSample.entrySet()) {
       result.put(e.getKey(),
           e.getValue().stream()
-              .map(c -> c.getId())
+              .map(ContainerID::getId)
               .collect(Collectors.toList()));
     }
     return result;

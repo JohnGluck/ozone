@@ -91,13 +91,13 @@ public final class DBStoreBuilder {
   // Maps added column family names to the column family options they were
   // added with. Value will be null if the column family was not added with
   // any options. On build, this will be replaced with defaultCfOptions.
-  private Map<String, ManagedColumnFamilyOptions> cfOptions;
-  private ConfigurationSource configuration;
+  private final Map<String, ManagedColumnFamilyOptions> cfOptions;
+  private final ConfigurationSource configuration;
   private final CodecRegistry.Builder registry = CodecRegistry.newBuilder();
-  private String rocksDbStat;
+  private final String rocksDbStat;
   // RocksDB column family write buffer size
-  private long rocksDbCfWriteBufferSize;
-  private RocksDBConfiguration rocksDBConfiguration;
+  private final long rocksDbCfWriteBufferSize;
+  private final RocksDBConfiguration rocksDBConfiguration;
   // Flag to indicate if the RocksDB should be opened readonly.
   private boolean openReadOnly = false;
   private int maxFSSnapshots = 0;
@@ -106,7 +106,7 @@ public final class DBStoreBuilder {
   private boolean createCheckpointDirs = true;
   // this is to track the total size of dbUpdates data since sequence
   // number in request to avoid increase in heap memory.
-  private long maxDbUpdatesSizeThreshold;
+  private final long maxDbUpdatesSizeThreshold;
   private Integer maxNumberOfOpenFiles = null;
   private String threadNamePrefix = "";
 
@@ -184,8 +184,7 @@ public final class DBStoreBuilder {
     setPath(Paths.get(metadataDir.getPath()));
 
     // Add column family names and codecs.
-    for (DBColumnFamilyDefinition columnFamily :
-        definition.getColumnFamilies()) {
+    for (DBColumnFamilyDefinition columnFamily : definition.getColumnFamilies()) {
 
       addTable(columnFamily.getName(), columnFamily.getCfOptions());
       addCodec(columnFamily.getKeyType(), columnFamily.getKeyCodec());

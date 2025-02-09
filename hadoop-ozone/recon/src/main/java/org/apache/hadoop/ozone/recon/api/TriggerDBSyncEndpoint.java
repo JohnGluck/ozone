@@ -35,7 +35,7 @@ import javax.ws.rs.core.Response;
 @AdminOnly
 public class TriggerDBSyncEndpoint {
 
-  private OzoneManagerServiceProvider ozoneManagerServiceProvider;
+  private final OzoneManagerServiceProvider ozoneManagerServiceProvider;
 
   @Inject
   public TriggerDBSyncEndpoint(

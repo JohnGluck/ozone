@@ -30,12 +30,14 @@ public class BucketsResponse {
    * Total count of buckets.
    */
   @JsonProperty("totalCount")
+  @SuppressWarnings("PMD.ImmutableField")
   private long totalCount;
 
   /**
    * An array of buckets.
    */
   @JsonProperty("buckets")
+  @SuppressWarnings("PMD.ImmutableField")
   private Collection<BucketObjectDBInfo> buckets;
 
   public BucketsResponse(long totalCount,

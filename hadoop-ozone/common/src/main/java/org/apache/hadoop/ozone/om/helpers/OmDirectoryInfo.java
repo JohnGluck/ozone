@@ -48,7 +48,7 @@ public class OmDirectoryInfo extends WithParentObjectId
   }
 
   private final String name; // directory name
-  private String owner;
+  private final String owner;
 
   private final long creationTime;
   private final long modificationTime;

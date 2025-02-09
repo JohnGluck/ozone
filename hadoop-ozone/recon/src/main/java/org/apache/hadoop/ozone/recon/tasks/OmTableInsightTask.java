@@ -18,8 +18,24 @@
 
 package org.apache.hadoop.ozone.recon.tasks;
 
+import static org.apache.hadoop.ozone.om.OmMetadataManagerImpl.DELETED_TABLE;
+import static org.apache.hadoop.ozone.om.OmMetadataManagerImpl.OPEN_FILE_TABLE;
+import static org.apache.hadoop.ozone.om.OmMetadataManagerImpl.OPEN_KEY_TABLE;
+import static org.jooq.impl.DSL.currentTimestamp;
+import static org.jooq.impl.DSL.select;
+import static org.jooq.impl.DSL.using;
+
 import com.google.common.collect.Iterators;
 import com.google.inject.Inject;
+import java.io.IOException;
+import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.Pair;
 import org.apache.commons.lang3.tuple.Triple;
@@ -33,35 +49,17 @@ import org.jooq.Configuration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.IOException;
-import java.sql.Timestamp;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.Collection;
-import java.util.Map.Entry;
-import java.util.ArrayList;
-import java.util.List;
-
-import static org.apache.hadoop.ozone.om.OmMetadataManagerImpl.OPEN_KEY_TABLE;
-import static org.apache.hadoop.ozone.om.OmMetadataManagerImpl.DELETED_TABLE;
-import static org.apache.hadoop.ozone.om.OmMetadataManagerImpl.OPEN_FILE_TABLE;
-import static org.jooq.impl.DSL.select;
-import static org.jooq.impl.DSL.using;
-import static org.jooq.impl.DSL.currentTimestamp;
-
 /**
  * Class to iterate over the OM DB and store the total counts of volumes,
  * buckets, keys, open keys, deleted keys, etc.
  */
 public class OmTableInsightTask implements ReconOmTask {
-  private static final Logger LOG =
-      LoggerFactory.getLogger(OmTableInsightTask.class);
+  private static final Logger LOG = LoggerFactory.getLogger(OmTableInsightTask.class);
 
-  private GlobalStatsDao globalStatsDao;
-  private Configuration sqlConfiguration;
-  private ReconOMMetadataManager reconOMMetadataManager;
-  private Map<String, OmTableHandler> tableHandlers;
+  private final GlobalStatsDao globalStatsDao;
+  private final Configuration sqlConfiguration;
+  private final ReconOMMetadataManager reconOMMetadataManager;
+  private final Map<String, OmTableHandler> tableHandlers;
 
   @Inject
   public OmTableInsightTask(GlobalStatsDao globalStatsDao,

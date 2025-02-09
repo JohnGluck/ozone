@@ -28,12 +28,14 @@ public class MissingContainersResponse {
    * Total count of the missing containers.
    */
   @JsonProperty("totalCount")
+  @SuppressWarnings("PMD.ImmutableField")
   private long totalCount;
 
   /**
    * A collection of missing containers.
    */
   @JsonProperty("containers")
+  @SuppressWarnings("PMD.ImmutableField")
   private Collection<MissingContainerMetadata> containers;
 
   public MissingContainersResponse(long totalCount,

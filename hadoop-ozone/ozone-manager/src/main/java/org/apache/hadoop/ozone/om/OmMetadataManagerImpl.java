@@ -16,6 +16,27 @@
  */
 package org.apache.hadoop.ozone.om;
 
+import static org.apache.hadoop.ozone.OzoneConsts.DB_TRANSIENT_MARKER;
+import static org.apache.hadoop.ozone.OzoneConsts.OM_DB_NAME;
+import static org.apache.hadoop.ozone.OzoneConsts.OM_KEY_PREFIX;
+import static org.apache.hadoop.ozone.OzoneConsts.OM_SNAPSHOT_CHECKPOINT_DIR;
+import static org.apache.hadoop.ozone.om.OMConfigKeys.OZONE_OM_DB_MAX_OPEN_FILES;
+import static org.apache.hadoop.ozone.om.OMConfigKeys.OZONE_OM_DB_MAX_OPEN_FILES_DEFAULT;
+import static org.apache.hadoop.ozone.om.OMConfigKeys.OZONE_OM_FS_SNAPSHOT_MAX_LIMIT;
+import static org.apache.hadoop.ozone.om.OMConfigKeys.OZONE_OM_FS_SNAPSHOT_MAX_LIMIT_DEFAULT;
+import static org.apache.hadoop.ozone.om.OMConfigKeys.OZONE_OM_SNAPSHOT_DB_MAX_OPEN_FILES;
+import static org.apache.hadoop.ozone.om.OMConfigKeys.OZONE_OM_SNAPSHOT_DB_MAX_OPEN_FILES_DEFAULT;
+import static org.apache.hadoop.ozone.om.OMConfigKeys.OZONE_SNAPSHOT_CHECKPOINT_DIR_CREATION_POLL_TIMEOUT;
+import static org.apache.hadoop.ozone.om.OMConfigKeys.OZONE_SNAPSHOT_CHECKPOINT_DIR_CREATION_POLL_TIMEOUT_DEFAULT;
+import static org.apache.hadoop.ozone.om.exceptions.OMException.ResultCodes.BUCKET_NOT_FOUND;
+import static org.apache.hadoop.ozone.om.exceptions.OMException.ResultCodes.FILE_NOT_FOUND;
+import static org.apache.hadoop.ozone.om.exceptions.OMException.ResultCodes.VOLUME_NOT_FOUND;
+import static org.apache.hadoop.ozone.om.service.SnapshotDeletingService.isBlockLocationInfoSame;
+import static org.apache.hadoop.ozone.om.snapshot.SnapshotUtils.checkSnapshotDirExist;
+
+import com.google.common.annotations.VisibleForTesting;
+import com.google.common.base.Strings;
+import com.google.common.collect.Lists;
 import java.io.File;
 import java.io.IOException;
 import java.io.UncheckedIOException;
@@ -37,12 +58,13 @@ import java.util.TreeSet;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-
+import org.apache.commons.lang3.StringUtils;
 import org.apache.hadoop.hdds.client.BlockID;
 import org.apache.hadoop.hdds.conf.OzoneConfiguration;
-import org.apache.hadoop.hdds.utils.db.DBCheckpoint;
 import org.apache.hadoop.hdds.utils.TableCacheMetrics;
+import org.apache.hadoop.hdds.utils.TransactionInfo;
 import org.apache.hadoop.hdds.utils.db.BatchOperation;
+import org.apache.hadoop.hdds.utils.db.DBCheckpoint;
 import org.apache.hadoop.hdds.utils.db.DBStore;
 import org.apache.hadoop.hdds.utils.db.DBStoreBuilder;
 import org.apache.hadoop.hdds.utils.db.RDBCheckpointUtils;
@@ -60,10 +82,12 @@ import org.apache.hadoop.ozone.common.BlockGroup;
 import org.apache.hadoop.ozone.om.codec.TokenIdentifierCodec;
 import org.apache.hadoop.ozone.om.exceptions.OMException;
 import org.apache.hadoop.ozone.om.exceptions.OMException.ResultCodes;
+import org.apache.hadoop.ozone.om.helpers.BucketLayout;
 import org.apache.hadoop.ozone.om.helpers.ListKeysResult;
 import org.apache.hadoop.ozone.om.helpers.ListOpenFilesResult;
 import org.apache.hadoop.ozone.om.helpers.OmBucketInfo;
 import org.apache.hadoop.ozone.om.helpers.OmDBAccessIdInfo;
+import org.apache.hadoop.ozone.om.helpers.OmDBTenantState;
 import org.apache.hadoop.ozone.om.helpers.OmDBUserPrincipalInfo;
 import org.apache.hadoop.ozone.om.helpers.OmDirectoryInfo;
 import org.apache.hadoop.ozone.om.helpers.OmKeyInfo;
@@ -71,19 +95,16 @@ import org.apache.hadoop.ozone.om.helpers.OmKeyLocationInfoGroup;
 import org.apache.hadoop.ozone.om.helpers.OmMultipartKeyInfo;
 import org.apache.hadoop.ozone.om.helpers.OmMultipartUpload;
 import org.apache.hadoop.ozone.om.helpers.OmPrefixInfo;
-import org.apache.hadoop.ozone.om.helpers.OmDBTenantState;
 import org.apache.hadoop.ozone.om.helpers.OmVolumeArgs;
 import org.apache.hadoop.ozone.om.helpers.OpenKeySession;
 import org.apache.hadoop.ozone.om.helpers.OzoneFSUtils;
 import org.apache.hadoop.ozone.om.helpers.RepeatedOmKeyInfo;
 import org.apache.hadoop.ozone.om.helpers.S3SecretValue;
 import org.apache.hadoop.ozone.om.helpers.SnapshotInfo;
-import org.apache.hadoop.ozone.om.helpers.BucketLayout;
 import org.apache.hadoop.ozone.om.helpers.WithMetadata;
 import org.apache.hadoop.ozone.om.lock.IOzoneManagerLock;
 import org.apache.hadoop.ozone.om.lock.OmReadOnlyLock;
 import org.apache.hadoop.ozone.om.lock.OzoneManagerLock;
-import org.apache.hadoop.hdds.utils.TransactionInfo;
 import org.apache.hadoop.ozone.om.protocolPB.OzoneManagerProtocolClientSideTranslatorPB;
 import org.apache.hadoop.ozone.om.request.file.OMFileRequest;
 import org.apache.hadoop.ozone.om.request.util.OMMultipartUploadUtils;
@@ -92,33 +113,9 @@ import org.apache.hadoop.ozone.om.snapshot.SnapshotUtils;
 import org.apache.hadoop.ozone.protocol.proto.OzoneManagerProtocolProtos.ExpiredMultipartUploadInfo;
 import org.apache.hadoop.ozone.protocol.proto.OzoneManagerProtocolProtos.ExpiredMultipartUploadsBucket;
 import org.apache.hadoop.ozone.protocol.proto.OzoneManagerProtocolProtos.KeyArgs;
-import org.apache.hadoop.ozone.snapshot.ListSnapshotResponse;
-import org.apache.hadoop.ozone.storage.proto
-    .OzoneManagerStorageProtos.PersistedUserVolumeInfo;
 import org.apache.hadoop.ozone.security.OzoneTokenIdentifier;
-
-import com.google.common.annotations.VisibleForTesting;
-import com.google.common.base.Strings;
-import com.google.common.collect.Lists;
-import org.apache.commons.lang3.StringUtils;
-import static org.apache.hadoop.ozone.OzoneConsts.DB_TRANSIENT_MARKER;
-import static org.apache.hadoop.ozone.OzoneConsts.OM_DB_NAME;
-import static org.apache.hadoop.ozone.OzoneConsts.OM_KEY_PREFIX;
-import static org.apache.hadoop.ozone.om.OMConfigKeys.OZONE_OM_FS_SNAPSHOT_MAX_LIMIT;
-import static org.apache.hadoop.ozone.om.OMConfigKeys.OZONE_OM_FS_SNAPSHOT_MAX_LIMIT_DEFAULT;
-import static org.apache.hadoop.ozone.om.OMConfigKeys.OZONE_OM_DB_MAX_OPEN_FILES;
-import static org.apache.hadoop.ozone.om.OMConfigKeys.OZONE_OM_DB_MAX_OPEN_FILES_DEFAULT;
-import static org.apache.hadoop.ozone.om.OMConfigKeys.OZONE_OM_SNAPSHOT_DB_MAX_OPEN_FILES;
-import static org.apache.hadoop.ozone.om.OMConfigKeys.OZONE_OM_SNAPSHOT_DB_MAX_OPEN_FILES_DEFAULT;
-import static org.apache.hadoop.ozone.om.OMConfigKeys.OZONE_SNAPSHOT_CHECKPOINT_DIR_CREATION_POLL_TIMEOUT;
-import static org.apache.hadoop.ozone.om.OMConfigKeys.OZONE_SNAPSHOT_CHECKPOINT_DIR_CREATION_POLL_TIMEOUT_DEFAULT;
-import static org.apache.hadoop.ozone.om.exceptions.OMException.ResultCodes.BUCKET_NOT_FOUND;
-import static org.apache.hadoop.ozone.om.exceptions.OMException.ResultCodes.FILE_NOT_FOUND;
-import static org.apache.hadoop.ozone.om.exceptions.OMException.ResultCodes.VOLUME_NOT_FOUND;
-import static org.apache.hadoop.ozone.OzoneConsts.OM_SNAPSHOT_CHECKPOINT_DIR;
-import static org.apache.hadoop.ozone.om.service.SnapshotDeletingService.isBlockLocationInfoSame;
-import static org.apache.hadoop.ozone.om.snapshot.SnapshotUtils.checkSnapshotDirExist;
-
+import org.apache.hadoop.ozone.snapshot.ListSnapshotResponse;
+import org.apache.hadoop.ozone.storage.proto.OzoneManagerStorageProtos.PersistedUserVolumeInfo;
 import org.apache.hadoop.util.Time;
 import org.apache.ozone.compaction.log.CompactionLogEntry;
 import org.apache.ratis.util.ExitUtils;
@@ -129,10 +126,8 @@ import org.slf4j.LoggerFactory;
 /**
  * Ozone metadata manager interface.
  */
-public class OmMetadataManagerImpl implements OMMetadataManager,
-    S3SecretStore {
-  private static final Logger LOG =
-      LoggerFactory.getLogger(OmMetadataManagerImpl.class);
+public class OmMetadataManagerImpl implements OMMetadataManager, S3SecretStore {
+  private static final Logger LOG = LoggerFactory.getLogger(OmMetadataManagerImpl.class);
 
   /**
    * OM RocksDB Structure .
@@ -323,7 +318,7 @@ public class OmMetadataManagerImpl implements OMMetadataManager,
   // to ensure uniqueness of objectIDs.
   private final long omEpoch;
 
-  private Map<String, Table> tableMap = new HashMap<>();
+  private final Map<String, Table> tableMap = new HashMap<>();
   private final Map<String, TableCacheMetrics> tableCacheMetricsMap =
       new HashMap<>();
   private SnapshotChainManager snapshotChainManager;
@@ -571,13 +566,13 @@ public class OmMetadataManagerImpl implements OMMetadataManager,
   }
 
   public static DBStore loadDB(OzoneConfiguration configuration, File metaDir, int maxOpenFiles) throws IOException {
-    return loadDB(configuration, metaDir, OM_DB_NAME, false, java.util.Optional.empty(), maxOpenFiles, true, true);
+    return loadDB(configuration, metaDir, OM_DB_NAME, false, Optional.empty(), maxOpenFiles, true, true);
   }
 
   @SuppressWarnings("checkstyle:parameternumber")
   public static DBStore loadDB(OzoneConfiguration configuration, File metaDir,
                                String dbName, boolean readOnly,
-                               java.util.Optional<Boolean> disableAutoCompaction,
+                               Optional<Boolean> disableAutoCompaction,
                                int maxOpenFiles,
                                boolean enableCompactionDag,
                                boolean createCheckpointDirs)
@@ -869,9 +864,8 @@ public class OmMetadataManagerImpl implements OMMetadataManager,
   @Override
   public String getOpenKey(String volume, String bucket,
                            String key, String clientId) {
-    String openKey = OM_KEY_PREFIX + volume + OM_KEY_PREFIX + bucket +
+    return OM_KEY_PREFIX + volume + OM_KEY_PREFIX + bucket +
         OM_KEY_PREFIX + key + OM_KEY_PREFIX + clientId;
-    return openKey;
   }
 
   @Override
@@ -930,10 +924,7 @@ public class OmMetadataManagerImpl implements OMMetadataManager,
       return false;
     }
 
-    if (isKeyPresentInTable(volumePrefix, bucketTable)) {
-      return false; // we found at least one key with this vol/
-    }
-    return true;
+    return !isKeyPresentInTable(volumePrefix, bucketTable); // we found at least one key with this vol/
   }
 
   /**
@@ -1125,8 +1116,7 @@ public class OmMetadataManagerImpl implements OMMetadataManager,
 
     // For Bucket it is full cache, so we can just iterate in-memory table
     // cache.
-    Iterator<Map.Entry<CacheKey<String>, CacheValue<OmBucketInfo>>> iterator =
-        bucketTable.cacheIterator();
+    Iterator<Map.Entry<CacheKey<String>, CacheValue<OmBucketInfo>>> iterator = bucketTable.cacheIterator();
 
 
     while (currentCount < maxNumOfBuckets && iterator.hasNext()) {
@@ -2061,16 +2051,14 @@ public class OmMetadataManagerImpl implements OMMetadataManager,
   public String getOzonePathKey(final long volumeId, final long bucketId,
                                 final long parentObjectId,
                                 final String pathComponentName) {
-    final StringBuilder builder = new StringBuilder();
-    builder.append(OM_KEY_PREFIX)
-            .append(volumeId)
-            .append(OM_KEY_PREFIX)
-            .append(bucketId)
-            .append(OM_KEY_PREFIX)
-            .append(parentObjectId)
-            .append(OM_KEY_PREFIX)
-            .append(pathComponentName);
-    return builder.toString();
+    return OM_KEY_PREFIX +
+        volumeId +
+        OM_KEY_PREFIX +
+        bucketId +
+        OM_KEY_PREFIX +
+        parentObjectId +
+        OM_KEY_PREFIX +
+        pathComponentName;
   }
 
   @Override
@@ -2088,35 +2076,29 @@ public class OmMetadataManagerImpl implements OMMetadataManager,
   public String getOpenFileName(long volumeId, long bucketId,
                                 long parentID, String fileName,
                                 String clientId) {
-    StringBuilder openKey = new StringBuilder();
-    openKey.append(OM_KEY_PREFIX).append(volumeId);
-    openKey.append(OM_KEY_PREFIX).append(bucketId);
-    openKey.append(OM_KEY_PREFIX).append(parentID);
-    openKey.append(OM_KEY_PREFIX).append(fileName);
-    openKey.append(OM_KEY_PREFIX).append(clientId);
-    return openKey.toString();
+    return OM_KEY_PREFIX + volumeId +
+        OM_KEY_PREFIX + bucketId +
+        OM_KEY_PREFIX + parentID +
+        OM_KEY_PREFIX + fileName +
+        OM_KEY_PREFIX + clientId;
   }
 
   @Override
   public String getRenameKey(String volumeName, String bucketName,
                              long objectID) {
-    StringBuilder renameKey = new StringBuilder();
-    renameKey.append(OM_KEY_PREFIX).append(volumeName);
-    renameKey.append(OM_KEY_PREFIX).append(bucketName);
-    renameKey.append(OM_KEY_PREFIX).append(objectID);
-    return renameKey.toString();
+    return OM_KEY_PREFIX + volumeName +
+        OM_KEY_PREFIX + bucketName +
+        OM_KEY_PREFIX + objectID;
   }
   @Override
   public String getMultipartKey(long volumeId, long bucketId,
                                 long parentID, String fileName,
                                 String uploadId) {
-    StringBuilder openKey = new StringBuilder();
-    openKey.append(OM_KEY_PREFIX).append(volumeId);
-    openKey.append(OM_KEY_PREFIX).append(bucketId);
-    openKey.append(OM_KEY_PREFIX).append(parentID);
-    openKey.append(OM_KEY_PREFIX).append(fileName);
-    openKey.append(OM_KEY_PREFIX).append(uploadId);
-    return openKey.toString();
+    return OM_KEY_PREFIX + volumeId +
+        OM_KEY_PREFIX + bucketId +
+        OM_KEY_PREFIX + parentID +
+        OM_KEY_PREFIX + fileName +
+        OM_KEY_PREFIX + uploadId;
   }
 
   public BucketLayout getBucketLayout() {
@@ -2183,11 +2165,7 @@ public class OmMetadataManagerImpl implements OMMetadataManager,
     }
 
     // Check in table
-    if (isKeyPresentInTable(keyPrefix, multipartInfoTable)) {
-      return true;
-    }
-
-    return false;
+    return isKeyPresentInTable(keyPrefix, multipartInfoTable);
   }
 
   private final class S3SecretBatcher implements S3Batcher {

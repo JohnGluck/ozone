@@ -18,8 +18,14 @@
 
 package org.apache.hadoop.fs.ozone;
 
+import static org.apache.hadoop.ozone.OzoneConsts.FORCE_LEASE_RECOVERY_ENV;
+
 import com.google.common.base.Strings;
 import io.opentracing.util.GlobalTracer;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URI;
+import java.util.List;
 import org.apache.hadoop.crypto.key.KeyProvider;
 import org.apache.hadoop.crypto.key.KeyProviderTokenIssuer;
 import org.apache.hadoop.fs.FileSystem;
@@ -38,13 +44,6 @@ import org.apache.hadoop.ozone.om.helpers.OmKeyArgs;
 import org.apache.hadoop.ozone.om.helpers.OmKeyLocationInfo;
 import org.apache.hadoop.security.token.DelegationTokenIssuer;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.URI;
-import java.util.List;
-
-import static org.apache.hadoop.ozone.OzoneConsts.FORCE_LEASE_RECOVERY_ENV;
-
 /**
  * The Rooted Ozone Filesystem (OFS) implementation.
  * <p>
@@ -58,13 +57,13 @@ import static org.apache.hadoop.ozone.OzoneConsts.FORCE_LEASE_RECOVERY_ENV;
 public class RootedOzoneFileSystem extends BasicRootedOzoneFileSystem
     implements KeyProviderTokenIssuer, LeaseRecoverable, SafeMode {
 
-  private OzoneFSStorageStatistics storageStatistics;
-  private boolean forceRecovery;
+  private final OzoneFSStorageStatistics storageStatistics;
+  private final boolean forceRecovery;
 
   public RootedOzoneFileSystem() {
     this.storageStatistics = new OzoneFSStorageStatistics();
     String force = System.getProperty(FORCE_LEASE_RECOVERY_ENV);
-    forceRecovery = Strings.isNullOrEmpty(force) ? false : Boolean.parseBoolean(force);
+    forceRecovery = !Strings.isNullOrEmpty(force) && Boolean.parseBoolean(force);
   }
 
   @Override
@@ -78,8 +77,7 @@ public class RootedOzoneFileSystem extends BasicRootedOzoneFileSystem
   }
 
   @Override
-  public DelegationTokenIssuer[] getAdditionalTokenIssuers()
-      throws IOException {
+  public DelegationTokenIssuer[] getAdditionalTokenIssuers() {
     KeyProvider keyProvider;
     try {
       keyProvider = getKeyProvider();

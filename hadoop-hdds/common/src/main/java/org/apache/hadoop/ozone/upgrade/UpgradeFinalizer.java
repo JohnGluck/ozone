@@ -18,16 +18,14 @@
 
 package org.apache.hadoop.ozone.upgrade;
 
+import java.io.IOException;
+import java.util.Collection;
+import java.util.Collections;
 import org.apache.hadoop.hdds.annotation.InterfaceAudience;
 import org.apache.hadoop.hdds.annotation.InterfaceStability;
 import org.apache.hadoop.ozone.common.Storage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.io.IOException;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
 
 /**
  * Interface to define the upgrade finalizer implementations.
@@ -74,8 +72,8 @@ public interface UpgradeFinalizer<T> {
    * This translates to a counterpart in the RPC layer.
    */
   class StatusAndMessages {
-    private Status status;
-    private Collection<String> msgs;
+    private final Status status;
+    private final Collection<String> msgs;
 
     /**
      * Constructs a StatusAndMessages tuple from the given params.
@@ -109,17 +107,17 @@ public interface UpgradeFinalizer<T> {
    */
   StatusAndMessages STARTING_MSG = new StatusAndMessages(
       Status.STARTING_FINALIZATION,
-      Arrays.asList("Starting Finalization")
+      Collections.singletonList("Starting Finalization")
   );
 
   StatusAndMessages FINALIZATION_IN_PROGRESS_MSG = new StatusAndMessages(
       Status.FINALIZATION_IN_PROGRESS,
-      Arrays.asList("Finalization in progress")
+      Collections.singletonList("Finalization in progress")
   );
 
   StatusAndMessages FINALIZATION_REQUIRED_MSG = new StatusAndMessages(
       Status.FINALIZATION_REQUIRED,
-      Arrays.asList("Finalization required")
+      Collections.singletonList("Finalization required")
   );
 
   /**

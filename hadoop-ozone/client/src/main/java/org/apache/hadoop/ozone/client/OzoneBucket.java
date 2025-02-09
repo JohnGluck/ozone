@@ -87,7 +87,7 @@ public class OzoneBucket extends WithMetadata {
   /**
    * Default replication factor to be used while creating keys.
    */
-  private ReplicationConfig defaultReplication;
+  private final ReplicationConfig defaultReplication;
 
   /**
    * Type of storage to be used for this bucket.
@@ -108,17 +108,17 @@ public class OzoneBucket extends WithMetadata {
   /**
    * Used bytes of the bucket.
    */
-  private long usedBytes;
+  private final long usedBytes;
 
   /**
    * Used namespace of the bucket.
    */
-  private long usedNamespace;
+  private final long usedNamespace;
 
   /**
    * Creation time of the bucket.
    */
-  private Instant creationTime;
+  private final Instant creationTime;
 
   /**
    * Modification time of the bucket.
@@ -130,10 +130,12 @@ public class OzoneBucket extends WithMetadata {
    */
   private String encryptionKeyName;
 
-  private OzoneObj ozoneObj;
+  private final OzoneObj ozoneObj;
 
-  private String sourceVolume;
-  private String sourceBucket;
+  private final String sourceVolume;
+
+  private final String sourceBucket;
+
   private boolean sourcePathExist = true;
 
   /**

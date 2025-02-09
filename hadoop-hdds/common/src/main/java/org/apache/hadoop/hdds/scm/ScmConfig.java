@@ -129,17 +129,6 @@ public class ScmConfig extends ReconfigurableConfig {
   )
   private Duration blockDeletionInterval = Duration.ofSeconds(60);
 
-  @Config(key = "init.default.layout.version",
-      defaultValue = "-1",
-      type = ConfigType.INT,
-      tags = { ConfigTag.SCM, ConfigTag.UPGRADE },
-      description =
-          " Default Layout Version to init the SCM with. Intended to be used " +
-              "in tests to finalize from an older version of SCM to the " +
-              "latest. By default, SCM init uses the highest layout version."
-  )
-  private int defaultLayoutVersionOnInit = -1;
-
   public Duration getBlockDeletionInterval() {
     return blockDeletionInterval;
   }
@@ -151,7 +140,6 @@ public class ScmConfig extends ReconfigurableConfig {
   public void setKerberosPrincipal(String kerberosPrincipal) {
     this.principal = kerberosPrincipal;
   }
-
 
   public void setKerberosKeytab(String kerberosKeytab) {
     this.keytab = kerberosKeytab;
@@ -195,10 +183,6 @@ public class ScmConfig extends ReconfigurableConfig {
 
   public int getBlockDeletionLimit() {
     return blockDeletionLimit;
-  }
-
-  public int getScmDefaultLayoutVersionOnInit() {
-    return defaultLayoutVersionOnInit;
   }
 
   /**

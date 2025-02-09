@@ -25,8 +25,8 @@ import java.util.List;
  * truncated.
  */
 public class ListKeysLightResult {
-  private List<BasicOmKeyInfo> keys;
-  private boolean isTruncated;
+  private final List<BasicOmKeyInfo> keys;
+  private final boolean isTruncated;
 
   public ListKeysLightResult(List<BasicOmKeyInfo> keys, boolean isTruncated) {
     this.keys = keys;

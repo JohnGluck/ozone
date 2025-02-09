@@ -18,13 +18,16 @@
 
 package org.apache.hadoop.ozone.container.ozoneimpl;
 
+import static org.apache.hadoop.hdds.protocol.datanode.proto.ContainerProtos.ContainerDataProto.State.CLOSED;
+import static org.apache.hadoop.hdds.protocol.datanode.proto.ContainerProtos.ContainerDataProto.State.DELETED;
+import static org.apache.hadoop.hdds.protocol.datanode.proto.ContainerProtos.ContainerDataProto.State.RECOVERING;
+
+import com.google.common.base.Preconditions;
 import java.io.File;
 import java.io.IOException;
-
 import org.apache.hadoop.hdds.conf.ConfigurationSource;
 import org.apache.hadoop.hdds.protocol.datanode.proto.ContainerProtos;
 import org.apache.hadoop.hdds.scm.container.common.helpers.StorageContainerException;
-import com.google.common.base.Preconditions;
 import org.apache.hadoop.ozone.common.Storage;
 import org.apache.hadoop.ozone.container.common.helpers.ContainerUtils;
 import org.apache.hadoop.ozone.container.common.impl.ContainerData;
@@ -34,12 +37,6 @@ import org.apache.hadoop.ozone.container.common.volume.HddsVolume;
 import org.apache.hadoop.ozone.container.common.volume.MutableVolumeSet;
 import org.apache.hadoop.ozone.container.keyvalue.KeyValueContainer;
 import org.apache.hadoop.ozone.container.keyvalue.KeyValueContainerData;
-
-import static org.apache.hadoop.hdds.protocol.datanode.proto.ContainerProtos.ContainerDataProto.State.CLOSED;
-import static org.apache.hadoop.hdds.protocol.datanode.proto.ContainerProtos.ContainerDataProto.State.DELETED;
-import static org.apache.hadoop.hdds.protocol.datanode.proto.ContainerProtos
-    .ContainerDataProto.State.RECOVERING;
-
 import org.apache.hadoop.ozone.container.keyvalue.helpers.KeyValueContainerUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -73,7 +70,7 @@ public class ContainerReader implements Runnable {
 
   private static final Logger LOG = LoggerFactory.getLogger(
       ContainerReader.class);
-  private HddsVolume hddsVolume;
+  private final HddsVolume hddsVolume;
   private final ContainerSet containerSet;
   private final ConfigurationSource config;
   private final File hddsVolumeDir;

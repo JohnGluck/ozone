@@ -30,10 +30,10 @@ import org.apache.hadoop.hdds.protocol.proto
  */
 public class CommandStatus {
 
-  private SCMCommandProto.Type type;
-  private Long cmdId;
+  private final SCMCommandProto.Type type;
+  private final Long cmdId;
   private Status status;
-  private String msg;
+  private final String msg;
 
   CommandStatus(Type type, Long cmdId, Status status, String msg) {
     this.type = type;

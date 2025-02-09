@@ -17,52 +17,41 @@
 
 package org.apache.hadoop.hdds.scm.server;
 
+import static org.apache.hadoop.hdds.scm.events.SCMEvents.CMD_STATUS_REPORT;
+import static org.apache.hadoop.hdds.scm.events.SCMEvents.CONTAINER_ACTIONS;
+import static org.apache.hadoop.hdds.scm.events.SCMEvents.CONTAINER_REPORT;
+import static org.apache.hadoop.hdds.scm.events.SCMEvents.INCREMENTAL_CONTAINER_REPORT;
+import static org.apache.hadoop.hdds.scm.events.SCMEvents.NODE_REPORT;
+import static org.apache.hadoop.hdds.scm.events.SCMEvents.PIPELINE_ACTIONS;
+import static org.apache.hadoop.hdds.scm.events.SCMEvents.PIPELINE_REPORT;
+import static org.apache.hadoop.hdds.upgrade.HDDSLayoutFeature.INITIAL_VERSION;
+import static org.apache.hadoop.ozone.container.upgrade.UpgradeUtils.toLayoutVersionProto;
+
 import com.google.common.base.Preconditions;
+import com.google.protobuf.Message;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 import org.apache.hadoop.hdds.protocol.DatanodeDetails;
 import org.apache.hadoop.hdds.protocol.proto.StorageContainerDatanodeProtocolProtos.CommandQueueReportProto;
-import org.apache.hadoop.hdds.protocol.proto
-    .StorageContainerDatanodeProtocolProtos.IncrementalContainerReportProto;
+import org.apache.hadoop.hdds.protocol.proto.StorageContainerDatanodeProtocolProtos.CommandStatusReportsProto;
+import org.apache.hadoop.hdds.protocol.proto.StorageContainerDatanodeProtocolProtos.ContainerActionsProto;
+import org.apache.hadoop.hdds.protocol.proto.StorageContainerDatanodeProtocolProtos.ContainerReportsProto;
+import org.apache.hadoop.hdds.protocol.proto.StorageContainerDatanodeProtocolProtos.IncrementalContainerReportProto;
 import org.apache.hadoop.hdds.protocol.proto.StorageContainerDatanodeProtocolProtos.LayoutVersionProto;
+import org.apache.hadoop.hdds.protocol.proto.StorageContainerDatanodeProtocolProtos.NodeReportProto;
+import org.apache.hadoop.hdds.protocol.proto.StorageContainerDatanodeProtocolProtos.PipelineActionsProto;
+import org.apache.hadoop.hdds.protocol.proto.StorageContainerDatanodeProtocolProtos.PipelineReportsProto;
 import org.apache.hadoop.hdds.protocol.proto.StorageContainerDatanodeProtocolProtos.SCMCommandProto;
-import org.apache.hadoop.hdds.protocol.proto
-    .StorageContainerDatanodeProtocolProtos.PipelineReportsProto;
-import org.apache.hadoop.hdds.protocol.proto
-    .StorageContainerDatanodeProtocolProtos.PipelineActionsProto;
-import org.apache.hadoop.hdds.protocol.proto
-    .StorageContainerDatanodeProtocolProtos.ContainerActionsProto;
-import org.apache.hadoop.hdds.protocol.proto.
-    StorageContainerDatanodeProtocolProtos.CommandStatusReportsProto;
-import org.apache.hadoop.hdds.protocol.proto
-    .StorageContainerDatanodeProtocolProtos.ContainerReportsProto;
-import org.apache.hadoop.hdds.protocol.proto
-    .StorageContainerDatanodeProtocolProtos.NodeReportProto;
-import org.apache.hadoop.hdds.protocol.proto
-    .StorageContainerDatanodeProtocolProtos.SCMHeartbeatRequestProto;
+import org.apache.hadoop.hdds.protocol.proto.StorageContainerDatanodeProtocolProtos.SCMHeartbeatRequestProto;
 import org.apache.hadoop.hdds.scm.node.NodeManager;
 import org.apache.hadoop.hdds.server.events.EventPublisher;
 import org.apache.hadoop.hdds.server.events.IEventInfo;
 import org.apache.hadoop.ozone.protocol.commands.ReregisterCommand;
 import org.apache.hadoop.ozone.protocol.commands.SCMCommand;
-
-import com.google.protobuf.Message;
 import org.apache.hadoop.util.Time;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
-
-import static org.apache.hadoop.hdds.scm.events.SCMEvents.CONTAINER_ACTIONS;
-import static org.apache.hadoop.hdds.scm.events.SCMEvents.CONTAINER_REPORT;
-import static org.apache.hadoop.hdds.scm.events.SCMEvents
-    .INCREMENTAL_CONTAINER_REPORT;
-import static org.apache.hadoop.hdds.scm.events.SCMEvents.NODE_REPORT;
-import static org.apache.hadoop.hdds.scm.events.SCMEvents.CMD_STATUS_REPORT;
-import static org.apache.hadoop.hdds.scm.events.SCMEvents.PIPELINE_ACTIONS;
-import static org.apache.hadoop.hdds.scm.events.SCMEvents.PIPELINE_REPORT;
-import static org.apache.hadoop.hdds.upgrade.HDDSLayoutFeature.INITIAL_VERSION;
-import static org.apache.hadoop.ozone.container.upgrade.UpgradeUtils.toLayoutVersionProto;
 
 /**
  * This class is responsible for dispatching heartbeat from datanode to
@@ -305,7 +294,9 @@ public final class SCMDatanodeHeartbeatDispatcher {
   public static class ContainerReportFromDatanode
       extends ReportFromDatanode<ContainerReportsProto>
       implements ContainerReport, IEventInfo {
-    private long createTime = Time.monotonicNow();
+
+    private final long createTime = Time.monotonicNow();
+
     // Used to identify whether container reporting is from a registration.
     private boolean isRegister = false;
 
@@ -318,11 +309,6 @@ public final class SCMDatanodeHeartbeatDispatcher {
         ContainerReportsProto report, boolean isRegister) {
       super(datanodeDetails, report);
       this.isRegister = isRegister;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-      return this == o;
     }
 
     @Override
@@ -360,17 +346,13 @@ public final class SCMDatanodeHeartbeatDispatcher {
   public static class IncrementalContainerReportFromDatanode
       extends ReportFromDatanode<IncrementalContainerReportProto>
       implements ContainerReport, IEventInfo {
-    private long createTime = Time.monotonicNow();
+
+    private final long createTime = Time.monotonicNow();
     
     public IncrementalContainerReportFromDatanode(
         DatanodeDetails datanodeDetails,
         IncrementalContainerReportProto report) {
       super(datanodeDetails, report);
-    }
-
-    @Override
-    public boolean equals(Object o) {
-      return this == o;
     }
 
     @Override

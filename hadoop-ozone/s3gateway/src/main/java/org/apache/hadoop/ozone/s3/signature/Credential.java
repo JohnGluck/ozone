@@ -17,10 +17,6 @@
  */
 package org.apache.hadoop.ozone.s3.signature;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-
 /**
  * Credential in the AWS authorization header.
  * Ref: https://docs.aws.amazon.com/AmazonS3/latest/API/
@@ -32,7 +28,7 @@ public class Credential {
   private String awsRegion;
   private String awsService;
   private String awsRequest;
-  private String credential;
+  private final String credential;
 
   /**
    * Construct Credential Object.

@@ -137,9 +137,9 @@ public class ProfileServlet extends HttpServlet {
   public static final Pattern FILE_NAME_PATTERN =
       Pattern.compile(FILE_PREFIX + "[0-9]+-[0-9A-Za-z\\-_]+-[0-9]+\\.[a-z]+");
 
-  private Lock profilerLock = new ReentrantLock();
+  private final Lock profilerLock = new ReentrantLock();
   private final Integer pid;
-  private String asyncProfilerHome;
+  private final String asyncProfilerHome;
   private transient Process process;
 
   public ProfileServlet() {
@@ -150,9 +150,7 @@ public class ProfileServlet extends HttpServlet {
     try {
       Files.createDirectories(OUTPUT_DIR);
     } catch (IOException e) {
-      LOG.error(
-          "Can't create the output directory for java profiler: " + OUTPUT_DIR,
-          e);
+      LOG.error("Can't create the output directory for java profiler: {}", OUTPUT_DIR, e);
     }
   }
 
@@ -496,7 +494,7 @@ public class ProfileServlet extends HttpServlet {
     MEM_BREAKPOINT("mem-breakpoint"),
     TRACE_TRACEPOINT("trace-tracepoint");
 
-    private String internalName;
+    private final String internalName;
 
     Event(final String internalName) {
       this.internalName = internalName;

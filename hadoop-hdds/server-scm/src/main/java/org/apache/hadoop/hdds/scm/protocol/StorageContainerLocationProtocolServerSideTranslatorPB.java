@@ -164,8 +164,8 @@ public final class StorageContainerLocationProtocolServerSideTranslatorPB
     implements StorageContainerLocationProtocolPB {
 
   private static final Logger LOG =
-      LoggerFactory.getLogger(
-          StorageContainerLocationProtocolServerSideTranslatorPB.class);
+      LoggerFactory.getLogger(StorageContainerLocationProtocolServerSideTranslatorPB.class);
+
   private static final String ERROR_LIST_CONTAINS_EC_REPLICATION_CONFIG =
       "The returned list of containers contains containers with Erasure Coded"
           + " replication type, which the client won't be able to understand."
@@ -180,9 +180,8 @@ public final class StorageContainerLocationProtocolServerSideTranslatorPB
   private final StorageContainerLocationProtocol impl;
   private final StorageContainerManager scm;
 
-  private OzoneProtocolMessageDispatcher<ScmContainerLocationRequest,
-      ScmContainerLocationResponse, ProtocolMessageEnum>
-      dispatcher;
+  private final OzoneProtocolMessageDispatcher<ScmContainerLocationRequest,
+      ScmContainerLocationResponse, ProtocolMessageEnum> dispatcher;
 
   /**
    * Creates a new StorageContainerLocationProtocolServerSideTranslatorPB.

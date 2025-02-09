@@ -36,35 +36,45 @@ import java.util.UUID;
 public final class PipelineMetadata {
 
   @XmlElement(name = "pipelineId")
+  @SuppressWarnings("PMD.ImmutableField")
   private UUID pipelineId;
 
   @XmlElement(name = "status")
+  @SuppressWarnings("PMD.ImmutableField")
   private PipelineState status;
 
   @XmlElement(name = "leaderNode")
+  @SuppressWarnings("PMD.ImmutableField")
   private String leaderNode;
 
   @XmlElement(name = "datanodes")
+  @SuppressWarnings("PMD.ImmutableField")
   private List<DatanodeDetails> datanodes;
 
   @XmlElement(name = "lastLeaderElection")
+  @SuppressWarnings("PMD.ImmutableField")
   private long lastLeaderElection;
 
   @XmlElement(name = "duration")
+  @SuppressWarnings("PMD.ImmutableField")
   private long duration;
 
   @XmlElement(name = "leaderElections")
+  @SuppressWarnings("PMD.ImmutableField")
   private long leaderElections;
 
   @XmlElement(name = "replicationType")
+  @SuppressWarnings("PMD.ImmutableField")
   private String replicationType;
 
   // TODO: name can be changed to just "replication". Currently EC replication
   //  also showed with below parameter but in String format.
   @XmlElement(name = "replicationFactor")
+  @SuppressWarnings("PMD.ImmutableField")
   private String replicationFactor;
 
   @XmlElement(name = "containers")
+  @SuppressWarnings("PMD.ImmutableField")
   private int containers;
 
   public UUID getPipelineId() {

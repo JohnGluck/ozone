@@ -130,6 +130,7 @@ public class OzoneClientKeyReadWriteListOps extends BaseFreonGenerator
           names = "--om-service-id",
           description = "OM Service ID"
   )
+  @SuppressWarnings("PMD.ImmutableField")
   private String omServiceID = null;
 
   private Timer timer;

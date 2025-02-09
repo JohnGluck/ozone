@@ -46,17 +46,12 @@ import com.google.common.annotations.VisibleForTesting;
 public final class OMLayoutVersionManager
     extends AbstractLayoutVersionManager<OMLayoutFeature> {
 
-  private static final Logger LOG =
-      LoggerFactory.getLogger(OMLayoutVersionManager.class);
+  private static final Logger LOG = LoggerFactory.getLogger(OMLayoutVersionManager.class);
 
-  public static final String OM_CLASS_PACKAGE =
-      "org.apache.hadoop.ozone.om";
-  public static final String OM_REQUEST_CLASS_PACKAGE =
-      OM_CLASS_PACKAGE + ".request";
-  public static final String OM_UPGRADE_CLASS_PACKAGE =
-      OM_CLASS_PACKAGE + ".upgrade";
-  private LayoutVersionInstanceFactory<Class<? extends OMClientRequest>>
-      requestFactory;
+  public static final String OM_CLASS_PACKAGE = "org.apache.hadoop.ozone.om";
+  public static final String OM_REQUEST_CLASS_PACKAGE = OM_CLASS_PACKAGE + ".request";
+  public static final String OM_UPGRADE_CLASS_PACKAGE = OM_CLASS_PACKAGE + ".upgrade";
+  private final LayoutVersionInstanceFactory<Class<? extends OMClientRequest>> requestFactory;
 
   public OMLayoutVersionManager(int layoutVersion) throws OMException {
     requestFactory = new LayoutVersionInstanceFactory<>();

@@ -106,6 +106,7 @@ public class FollowerAppendLogEntryGenerator extends BaseAppendLogGenerator
       description = "Pipeline to use. By default the first RATIS/THREE "
           + "pipeline will be used.",
       defaultValue = "96714307-4bd7-42b5-a65d-e1b13b4ca5c0")
+  @SuppressWarnings("PMD.ImmutableField")
   private String pipelineId = "96714307-4bd7-42b5-a65d-e1b13b4ca5c0";
 
   @Option(names = {"-s", "--size"},
@@ -134,11 +135,11 @@ public class FollowerAppendLogEntryGenerator extends BaseAppendLogGenerator
 
   private RaftPeerProto requestor;
 
-  private long term = 2L;
+  private final long term = 2L;
 
   private RaftServerProtocolServiceStub stub;
 
-  private Random callIdRandom = new Random();
+  private final Random callIdRandom = new Random();
 
   private ByteString dataToWrite;
 
@@ -367,7 +368,7 @@ public class FollowerAppendLogEntryGenerator extends BaseAppendLogGenerator
     long lastCommit = reply.getFollowerCommit();
     if (lastCommit % 1000 == 0) {
       long currentIndex = getAttemptCount();
-      if (currentIndex - lastCommit > batching * 3) {
+      if (currentIndex - lastCommit > batching * 3L) {
         LOG.warn(
             "Last committed index ({}) is behind the current index ({}) on "
                 + "the client side.",

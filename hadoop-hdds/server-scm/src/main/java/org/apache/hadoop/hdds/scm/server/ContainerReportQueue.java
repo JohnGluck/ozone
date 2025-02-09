@@ -48,13 +48,12 @@ public class ContainerReportQueue
    * i.e. report execution from multiple datanode will be executed in same
    * order as added to queue.
    */
-  private LinkedBlockingQueue<String> orderingQueue
-      = new LinkedBlockingQueue<>();
-  private Map<String, List<ContainerReport>> dataMap = new HashMap<>();
+  private final LinkedBlockingQueue<String> orderingQueue = new LinkedBlockingQueue<>();
+  private final Map<String, List<ContainerReport>> dataMap = new HashMap<>();
 
   private int capacity = 0;
 
-  private AtomicInteger droppedCount = new AtomicInteger();
+  private final AtomicInteger droppedCount = new AtomicInteger();
 
   public ContainerReportQueue() {
     this(100000);
@@ -64,13 +63,14 @@ public class ContainerReportQueue
     this.maxCapacity = maxCapacity;
   }
 
-  private boolean addContainerReport(ContainerReport val) {
+  private void addContainerReport(ContainerReport val) {
     String uuidString = val.getDatanodeDetails().getUuidString();
     synchronized (this) {
       // 1. check if no previous report available, else add the report
       if (!dataMap.containsKey(uuidString)) {
         addReport(val, uuidString);
-        return true;
+
+        return;
       }
 
       // 2. FCR report available
@@ -98,28 +98,27 @@ public class ContainerReportQueue
         orderingQueue.add(uuidString);
       }
     }
-    return true;
   }
 
-  private boolean addIncrementalReport(ContainerReport val) {
+  private void addIncrementalReport(ContainerReport val) {
     String uuidString = val.getDatanodeDetails().getUuidString();
     synchronized (this) {
       // 1. check if no previous report available, else add the report
       if (!dataMap.containsKey(uuidString)) {
         addReport(val, uuidString);
-        return true;
+
+        return;
       }
 
       // 2. Add ICR report or merge to previous ICR
       List<ContainerReport> dataList = dataMap.get(uuidString);
       if (mergeIcr(val, dataList)) {
-        return true;
+        return;
       }
       dataList.add(val);
       ++capacity;
       orderingQueue.add(uuidString);
     }
-    return true;
   }
 
   private void addReport(ContainerReport val, String uuidString) {
@@ -165,13 +164,16 @@ public class ContainerReportQueue
         return false;
       }
 
-      if (SCMDatanodeHeartbeatDispatcher.ContainerReportType.FCR
-          == value.getType()) {
-        return addContainerReport(value);
-      } else if (SCMDatanodeHeartbeatDispatcher.ContainerReportType.ICR
-          == value.getType()) {
-        return addIncrementalReport(value);
+      if (SCMDatanodeHeartbeatDispatcher.ContainerReportType.FCR == value.getType()) {
+        addContainerReport(value);
+
+        return true;
+      } else if (SCMDatanodeHeartbeatDispatcher.ContainerReportType.ICR == value.getType()) {
+        addIncrementalReport(value);
+
+        return true;
       }
+
       return false;
     }
   }

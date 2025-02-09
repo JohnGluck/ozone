@@ -49,12 +49,10 @@ import java.util.UUID;
 @Path("/pipelines")
 @Produces(MediaType.APPLICATION_JSON)
 public class PipelineEndpoint {
+  private static final Logger LOG = LoggerFactory.getLogger(PipelineEndpoint.class);
 
-  private static final Logger LOG =
-      LoggerFactory.getLogger(PipelineEndpoint.class);
-
-  private ReconPipelineManager pipelineManager;
-  private MetricsServiceProvider metricsServiceProvider;
+  private final ReconPipelineManager pipelineManager;
+  private final MetricsServiceProvider metricsServiceProvider;
 
   @Inject
   PipelineEndpoint(OzoneStorageContainerManager reconSCM,
@@ -76,9 +74,8 @@ public class PipelineEndpoint {
 
     pipelines.forEach(pipeline -> {
       UUID pipelineId = pipeline.getId().getId();
-      List<DatanodeDetails> datanodes = new ArrayList<>();
       PipelineMetadata.Builder builder = PipelineMetadata.newBuilder();
-      pipeline.getNodes().forEach(node -> datanodes.add(node));
+      List<DatanodeDetails> datanodes = new ArrayList<>(pipeline.getNodes());
       long duration =
           Instant.now().toEpochMilli() -
               pipeline.getCreationTimestamp().toEpochMilli();
@@ -131,9 +128,8 @@ public class PipelineEndpoint {
   }
 
   private Long getElectionCountMetricValue(String groupId) {
-    Long electionCount = 0L;
-    String metricsQuery = String.format(
-            "query=ratis_leader_election_electionCount{group=\"%s\"}", groupId);
+    long electionCount = 0L;
+    String metricsQuery = String.format("query=ratis_leader_election_electionCount{group=\"%s\"}", groupId);
     try {
       List<Metric> metrics = metricsServiceProvider.getMetricsInstant(
               metricsQuery);

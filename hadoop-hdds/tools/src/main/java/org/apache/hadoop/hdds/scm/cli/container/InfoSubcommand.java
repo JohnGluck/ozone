@@ -133,7 +133,7 @@ public class InfoSubcommand extends ScmSubcommand {
     if (json) {
       System.out.println(",");
     } else {
-      System.out.println("");
+      System.out.println();
     }
   }
 
@@ -159,7 +159,7 @@ public class InfoSubcommand extends ScmSubcommand {
       printBreak();
     }
     if (json) {
-      if (container.getPipeline().size() != 0) {
+      if (!container.getPipeline().isEmpty()) {
         ContainerWithPipelineAndReplicas wrapper =
             new ContainerWithPipelineAndReplicas(container.getContainerInfo(),
                 container.getPipeline(), replicas,
@@ -220,22 +220,21 @@ public class InfoSubcommand extends ScmSubcommand {
 
   private static String buildReplicaDetails(ContainerReplicaInfo replica) {
     StringBuilder sb = new StringBuilder();
-    sb.append("State: " + replica.getState() + ";");
+    sb.append("State: ").append(replica.getState()).append(";");
     if (replica.getReplicaIndex() != -1) {
-      sb.append(" ReplicaIndex: " + replica.getReplicaIndex() + ";");
+      sb.append(" ReplicaIndex: ").append(replica.getReplicaIndex()).append(";");
     }
-    sb.append(" Origin: " + replica.getPlaceOfBirth().toString() + ";");
-    sb.append(" Location: "
-        + buildDatanodeDetails(replica.getDatanodeDetails()));
+    sb.append(" Origin: ").append(replica.getPlaceOfBirth().toString()).append(";");
+    sb.append(" Location: ").append(buildDatanodeDetails(replica.getDatanodeDetails()));
     return sb.toString();
   }
 
   private static class ContainerWithPipelineAndReplicas {
 
-    private ContainerInfo containerInfo;
-    private Pipeline pipeline;
-    private List<ContainerReplicaInfo> replicas;
-    private PipelineID writePipelineID;
+    private final ContainerInfo containerInfo;
+    private final Pipeline pipeline;
+    private final List<ContainerReplicaInfo> replicas;
+    private final PipelineID writePipelineID;
 
     ContainerWithPipelineAndReplicas(ContainerInfo container, Pipeline pipeline,
         List<ContainerReplicaInfo> replicas, PipelineID pipelineID) {
@@ -265,10 +264,10 @@ public class InfoSubcommand extends ScmSubcommand {
 
   private static class ContainerWithoutDatanodes {
 
-    private ContainerInfo containerInfo;
-    private PipelineWithoutDatanodes pipeline;
-    private List<ContainerReplicaInfo> replicas;
-    private PipelineID writePipelineId;
+    private final ContainerInfo containerInfo;
+    private final PipelineWithoutDatanodes pipeline;
+    private final List<ContainerReplicaInfo> replicas;
+    private final PipelineID writePipelineId;
 
     ContainerWithoutDatanodes(ContainerInfo container, Pipeline pipeline,
         List<ContainerReplicaInfo> replicas, PipelineID pipelineID) {
@@ -300,8 +299,8 @@ public class InfoSubcommand extends ScmSubcommand {
     private final PipelineID id;
     private final ReplicationConfig replicationConfig;
     private final Pipeline.PipelineState state;
-    private Instant creationTimestamp;
-    private Map<DatanodeDetails, Long> nodeStatus;
+    private final Instant creationTimestamp;
+    private final Map<DatanodeDetails, Long> nodeStatus;
 
     private PipelineWithoutDatanodes(Pipeline pipeline) {
       this.id = pipeline.getId();

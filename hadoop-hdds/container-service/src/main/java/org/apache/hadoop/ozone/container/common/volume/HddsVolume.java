@@ -95,7 +95,7 @@ public class HddsVolume extends StorageVolume {
   // and stored as a member to prevent spawning lots of File objects.
   private File dbParentDir;
   private File deletedContainerDir;
-  private AtomicBoolean dbLoaded = new AtomicBoolean(false);
+  private final AtomicBoolean dbLoaded = new AtomicBoolean(false);
   private final AtomicBoolean dbLoadFailure = new AtomicBoolean(false);
 
   /**

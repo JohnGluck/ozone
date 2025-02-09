@@ -39,14 +39,14 @@ import org.slf4j.LoggerFactory;
  * data through HeatMapService.
  */
 public class HeatMapServiceImpl extends HeatMapService {
-  private static final Logger LOG =
-      LoggerFactory.getLogger(HeatMapServiceImpl.class);
+  private static final Logger LOG = LoggerFactory.getLogger(HeatMapServiceImpl.class);
+
   private final OzoneConfiguration ozoneConfiguration;
   private final ReconNamespaceSummaryManager reconNamespaceSummaryManager;
   private final ReconOMMetadataManager omMetadataManager;
   private final OzoneStorageContainerManager reconSCM;
   private IHeatMapProvider heatMapProvider;
-  private HeatMapUtil heatMapUtil;
+  private final HeatMapUtil heatMapUtil;
 
   @Inject
   public HeatMapServiceImpl(OzoneConfiguration ozoneConfiguration,

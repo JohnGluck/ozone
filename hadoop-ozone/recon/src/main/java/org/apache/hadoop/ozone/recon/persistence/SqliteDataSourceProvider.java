@@ -30,7 +30,7 @@ import com.google.inject.Provider;
  */
 public class SqliteDataSourceProvider implements Provider<DataSource> {
 
-  private DataSourceConfiguration configuration;
+  private final DataSourceConfiguration configuration;
 
   @Inject
   public SqliteDataSourceProvider(DataSourceConfiguration configuration) {

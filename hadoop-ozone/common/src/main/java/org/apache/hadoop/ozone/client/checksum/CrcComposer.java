@@ -47,7 +47,7 @@ public class CrcComposer {
 
   private int curCompositeCrc = 0;
   private long curPositionInStripe = 0;
-  private ByteArrayOutputStream digestOut = new ByteArrayOutputStream();
+  private final ByteArrayOutputStream digestOut = new ByteArrayOutputStream();
 
   /**
    * Returns a CrcComposer which will collapse all ingested CRCs into a single

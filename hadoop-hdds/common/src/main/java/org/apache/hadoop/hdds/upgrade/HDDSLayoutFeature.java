@@ -47,12 +47,10 @@ public enum HDDSLayoutFeature implements LayoutFeature {
 
   //////////////////////////////  //////////////////////////////
 
-  private int layoutVersion;
-  private String description;
-  private EnumMap<UpgradeActionType, HDDSUpgradeAction> scmActions =
-      new EnumMap<>(UpgradeActionType.class);
-  private EnumMap<UpgradeActionType, HDDSUpgradeAction> datanodeActions =
-      new EnumMap<>(UpgradeActionType.class);
+  private final int layoutVersion;
+  private final String description;
+  private final EnumMap<UpgradeActionType, HDDSUpgradeAction> scmActions = new EnumMap<>(UpgradeActionType.class);
+  private final EnumMap<UpgradeActionType, HDDSUpgradeAction> datanodeActions = new EnumMap<>(UpgradeActionType.class);
 
   HDDSLayoutFeature(final int layoutVersion, String description) {
     this.layoutVersion = layoutVersion;
@@ -63,8 +61,7 @@ public enum HDDSLayoutFeature implements LayoutFeature {
     this.scmActions.put(type, action);
   }
 
-  public void addDatanodeAction(UpgradeActionType type,
-                                HDDSUpgradeAction action) {
+  public void addDatanodeAction(UpgradeActionType type, HDDSUpgradeAction action) {
     this.datanodeActions.put(type, action);
   }
 

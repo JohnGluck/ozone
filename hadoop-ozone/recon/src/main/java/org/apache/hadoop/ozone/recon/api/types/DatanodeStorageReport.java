@@ -21,10 +21,10 @@ package org.apache.hadoop.ozone.recon.api.types;
  * Metadata object that contains storage report of a Datanode.
  */
 public class DatanodeStorageReport {
-  private long capacity;
-  private long used;
-  private long remaining;
-  private long committed;
+  private final long capacity;
+  private final long used;
+  private final long remaining;
+  private final long committed;
 
   public DatanodeStorageReport(long capacity, long used, long remaining,
                                long committed) {

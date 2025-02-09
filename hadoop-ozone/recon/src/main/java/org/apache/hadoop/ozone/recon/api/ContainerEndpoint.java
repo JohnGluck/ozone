@@ -17,6 +17,35 @@
  */
 package org.apache.hadoop.ozone.recon.api;
 
+import static org.apache.hadoop.ozone.recon.ReconConstants.DEFAULT_BATCH_NUMBER;
+import static org.apache.hadoop.ozone.recon.ReconConstants.DEFAULT_FETCH_COUNT;
+import static org.apache.hadoop.ozone.recon.ReconConstants.DEFAULT_FILTER_FOR_MISSING_CONTAINERS;
+import static org.apache.hadoop.ozone.recon.ReconConstants.PREV_CONTAINER_ID_DEFAULT_VALUE;
+import static org.apache.hadoop.ozone.recon.ReconConstants.RECON_QUERY_BATCH_PARAM;
+import static org.apache.hadoop.ozone.recon.ReconConstants.RECON_QUERY_FILTER;
+import static org.apache.hadoop.ozone.recon.ReconConstants.RECON_QUERY_LIMIT;
+import static org.apache.hadoop.ozone.recon.ReconConstants.RECON_QUERY_PREVKEY;
+
+import java.io.IOException;
+import java.time.Instant;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
+import java.util.stream.Collectors;
+import javax.inject.Inject;
+import javax.ws.rs.DefaultValue;
+import javax.ws.rs.GET;
+import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
+import javax.ws.rs.WebApplicationException;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.hadoop.hdds.protocol.proto.HddsProtos;
 import org.apache.hadoop.hdds.scm.container.ContainerID;
@@ -56,36 +85,6 @@ import org.hadoop.ozone.recon.schema.tables.pojos.UnhealthyContainers;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.inject.Inject;
-import javax.ws.rs.DefaultValue;
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
-import javax.ws.rs.QueryParam;
-import javax.ws.rs.WebApplicationException;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
-import java.io.IOException;
-import java.time.Instant;
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.stream.Collectors;
-
-import static org.apache.hadoop.ozone.recon.ReconConstants.DEFAULT_FILTER_FOR_MISSING_CONTAINERS;
-import static org.apache.hadoop.ozone.recon.ReconConstants.RECON_QUERY_FILTER;
-import static org.apache.hadoop.ozone.recon.ReconConstants.DEFAULT_BATCH_NUMBER;
-import static org.apache.hadoop.ozone.recon.ReconConstants.DEFAULT_FETCH_COUNT;
-import static org.apache.hadoop.ozone.recon.ReconConstants.PREV_CONTAINER_ID_DEFAULT_VALUE;
-import static org.apache.hadoop.ozone.recon.ReconConstants.RECON_QUERY_BATCH_PARAM;
-import static org.apache.hadoop.ozone.recon.ReconConstants.RECON_QUERY_LIMIT;
-import static org.apache.hadoop.ozone.recon.ReconConstants.RECON_QUERY_PREVKEY;
-
 
 /**
  * Endpoint for querying keys that belong to a container.
@@ -94,18 +93,15 @@ import static org.apache.hadoop.ozone.recon.ReconConstants.RECON_QUERY_PREVKEY;
 @Produces(MediaType.APPLICATION_JSON)
 @AdminOnly
 public class ContainerEndpoint {
+  private static final Logger LOG = LoggerFactory.getLogger(ContainerEndpoint.class);
 
-  private ReconContainerMetadataManager reconContainerMetadataManager;
-  private ReconOMMetadataManager omMetadataManager;
+  private final ReconContainerMetadataManager reconContainerMetadataManager;
+  private final ReconOMMetadataManager omMetadataManager;
 
   private final ReconContainerManager containerManager;
   private final PipelineManager pipelineManager;
   private final ContainerHealthSchemaManager containerHealthSchemaManager;
   private final ReconNamespaceSummaryManager reconNamespaceSummaryManager;
-  private final OzoneStorageContainerManager reconSCM;
-  private static final Logger LOG =
-      LoggerFactory.getLogger(ContainerEndpoint.class);
-  private BucketLayout layout = BucketLayout.DEFAULT;
 
   /**
    * Enumeration representing different data filters.
@@ -151,7 +147,6 @@ public class ContainerEndpoint {
     this.pipelineManager = reconSCM.getPipelineManager();
     this.containerHealthSchemaManager = containerHealthSchemaManager;
     this.reconNamespaceSummaryManager = reconNamespaceSummaryManager;
-    this.reconSCM = reconSCM;
     this.reconContainerMetadataManager = reconContainerMetadataManager;
     this.omMetadataManager = omMetadataManager;
   }

@@ -26,6 +26,7 @@ import java.io.IOException;
 import java.security.cert.CertificateException;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 import javax.annotation.PreDestroy;
 import javax.enterprise.context.ApplicationScoped;
 import org.apache.hadoop.hdds.conf.OzoneConfiguration;
@@ -45,13 +46,12 @@ import org.slf4j.LoggerFactory;
  */
 @ApplicationScoped
 public final class OzoneClientCache {
-  private static final Logger LOG =
-      LoggerFactory.getLogger(OzoneClientCache.class);
+  private static final Logger LOG = LoggerFactory.getLogger(OzoneClientCache.class);
   // single, cached OzoneClient established on first connection
   // for s3g gRPC OmTransport, OmRequest - OmResponse channel
   private static OzoneClientCache instance;
   private OzoneClient client;
-  private SecurityConfig secConfig;
+  private final SecurityConfig secConfig;
 
   private OzoneClientCache(OzoneConfiguration ozoneConfiguration)
       throws IOException {
@@ -63,10 +63,10 @@ public final class OzoneClientCache {
     client = null;
     try {
       if (secConfig.isGrpcTlsEnabled()) {
-        if (ozoneConfiguration
-            .get(OZONE_OM_TRANSPORT_CLASS,
-                OZONE_OM_TRANSPORT_CLASS_DEFAULT) !=
-            OZONE_OM_TRANSPORT_CLASS_DEFAULT) {
+        if (!Objects.equals(
+            ozoneConfiguration.get(OZONE_OM_TRANSPORT_CLASS, OZONE_OM_TRANSPORT_CLASS_DEFAULT),
+            OZONE_OM_TRANSPORT_CLASS_DEFAULT)
+        ) {
           // Grpc transport selected
           // need to get certificate for TLS through
           // hadoop rpc first via ServiceInfo

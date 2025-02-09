@@ -28,15 +28,18 @@ public class KeysResponse {
    * Total count of the keys.
    */
   @JsonProperty("totalCount")
+  @SuppressWarnings("PMD.ImmutableField")
   private long totalCount;
 
   /**
    * An array of keys.
    */
   @JsonProperty("keys")
+  @SuppressWarnings("PMD.ImmutableField")
   private Collection<KeyMetadata> keys;
 
   @JsonProperty("lastKey")
+  @SuppressWarnings("PMD.ImmutableField")
   private String lastKey;
 
   public KeysResponse(long totalCount, Collection<KeyMetadata> keys, String lastKey) {
@@ -52,6 +55,7 @@ public class KeysResponse {
   public Collection<KeyMetadata> getKeys() {
     return keys;
   }
+
   public String getLastKey() {
     return lastKey;
   }

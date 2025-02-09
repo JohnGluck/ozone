@@ -96,31 +96,35 @@ public class TrashPolicyOzone extends OzoneTrashPolicy {
 
   protected class Emptier implements Runnable {
 
-    private Configuration conf;
+    private final Configuration conf;
+
     // same as checkpoint interval
     private long emptierInterval;
 
-
-    private ThreadPoolExecutor executor;
+    private final ThreadPoolExecutor executor;
 
     Emptier(OzoneConfiguration conf, long emptierInterval,
             String threadNamePrefix) throws IOException {
       this.conf = conf;
       this.emptierInterval = emptierInterval;
       if (emptierInterval > deletionInterval || emptierInterval <= 0) {
-        LOG.info("The configured checkpoint interval is " +
-            (emptierInterval / MSECS_PER_MINUTE) + " minutes." +
-            " Using an interval of " +
-            (deletionInterval / MSECS_PER_MINUTE) +
-            " minutes that is used for deletion instead");
+        LOG.info(
+            "The configured checkpoint interval is {} minutes."
+                + " Using an interval of {} minutes that is used for deletion instead",
+            emptierInterval / MSECS_PER_MINUTE,
+            deletionInterval / MSECS_PER_MINUTE
+        );
+
         this.emptierInterval = deletionInterval;
       }
-      int trashEmptierCorePoolSize = conf.getObject(OMClientConfig.class)
-          .getTrashEmptierPoolSize();
-      LOG.info("Ozone Manager trash configuration: Deletion interval = "
-          + (deletionInterval / MSECS_PER_MINUTE)
-          + " minutes, Emptier interval = "
-          + (this.emptierInterval / MSECS_PER_MINUTE) + " minutes.");
+      int trashEmptierCorePoolSize = conf.getObject(OMClientConfig.class).getTrashEmptierPoolSize();
+
+      LOG.info(
+          "Ozone Manager trash configuration: Deletion interval = {} minutes, Emptier interval = {} minutes.",
+          deletionInterval / MSECS_PER_MINUTE,
+          this.emptierInterval / MSECS_PER_MINUTE
+      );
+
       executor = new ThreadPoolExecutor(
           trashEmptierCorePoolSize,
           trashEmptierCorePoolSize,
@@ -169,7 +173,7 @@ public class TrashPolicyOzone extends OzoneTrashPolicy {
               }
               TrashPolicyOzone trash = new TrashPolicyOzone(fs, conf, om);
               Path trashRootPath = trashRoot.getPath();
-              Runnable task = getEmptierTask(trashRootPath, trash, false);
+              Runnable task = getEmptierTask(trashRootPath, trash);
               om.getMetrics().incNumTrashRootsEnqueued();
               executor.submit(task);
             }
@@ -194,28 +198,26 @@ public class TrashPolicyOzone extends OzoneTrashPolicy {
       }
     }
 
-    private Runnable getEmptierTask(Path trashRootPath, TrashPolicyOzone trash,
-        boolean deleteImmediately) {
-      Runnable task = () -> {
+    private Runnable getEmptierTask(Path trashRootPath, TrashPolicyOzone trash) {
+      return () -> {
         try {
           om.getMetrics().incNumTrashRootsProcessed();
-          trash.deleteCheckpoint(trashRootPath, deleteImmediately);
+          trash.deleteCheckpoint(trashRootPath);
           trash.createCheckpoint(trashRootPath, new Date(Time.now()));
         } catch (Exception e) {
           om.getMetrics().incNumTrashFails();
-          LOG.error("Unable to checkpoint:" + trashRootPath, e);
+          LOG.error("Unable to checkpoint:{}", trashRootPath, e);
         }
       };
-      return task;
     }
 
     private long ceiling(long time, long interval) {
       return floor(time, interval) + interval;
     }
+
     private long floor(long time, long interval) {
       return (time / interval) * interval;
     }
-
   }
 
   private void createCheckpoint(Path trashRoot, Date date) throws IOException {
@@ -248,10 +250,9 @@ public class TrashPolicyOzone extends OzoneTrashPolicy {
     }
   }
 
-  private void deleteCheckpoint(Path trashRoot, boolean deleteImmediately)
+  private void deleteCheckpoint(Path trashRoot)
       throws IOException {
-    LOG.debug("TrashPolicyOzone#deleteCheckpoint for trashRoot: {}",
-            trashRoot);
+    LOG.debug("TrashPolicyOzone#deleteCheckpoint for trashRoot: {}", trashRoot);
 
     FileStatus[] dirs;
     try {
@@ -278,7 +279,7 @@ public class TrashPolicyOzone extends OzoneTrashPolicy {
         continue;
       }
 
-      if (((now - deletionInterval) > time) || deleteImmediately) {
+      if ((now - deletionInterval) > time) {
         if (fs.delete(path, true)) {
           LOG.debug("Deleted trash checkpoint:{} ", dir);
         } else {

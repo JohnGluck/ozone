@@ -61,7 +61,7 @@ public class BlockDataStreamOutputEntryPool implements KeyMetadataAware {
   private OmMultipartCommitUploadPartInfo commitUploadPartInfo;
   private final long openID;
   private final ExcludeList excludeList;
-  private List<StreamBuffer> bufferList;
+  private final List<StreamBuffer> bufferList;
   private ContainerBlockID lastUpdatedBlockId = new ContainerBlockID(-1, -1);
 
   @SuppressWarnings({"parameternumber", "squid:S00107"})

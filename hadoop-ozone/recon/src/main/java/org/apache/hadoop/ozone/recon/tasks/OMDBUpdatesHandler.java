@@ -41,14 +41,12 @@ import org.slf4j.LoggerFactory;
  * Class used to listen on OM RocksDB updates.
  */
 public class OMDBUpdatesHandler extends ManagedWriteBatch.Handler {
+  private static final Logger LOG = LoggerFactory.getLogger(OMDBUpdatesHandler.class);
 
-  private static final Logger LOG =
-      LoggerFactory.getLogger(OMDBUpdatesHandler.class);
-
-  private Map<Integer, String> tablesNames;
-  private OMMetadataManager omMetadataManager;
-  private List<OMDBUpdateEvent> omdbUpdateEvents = new ArrayList<>();
-  private Map<String, Map<Object, OMDBUpdateEvent>> omdbLatestUpdateEvents = new HashMap<>();
+  private final Map<Integer, String> tablesNames;
+  private final OMMetadataManager omMetadataManager;
+  private final List<OMDBUpdateEvent> omdbUpdateEvents = new ArrayList<>();
+  private final Map<String, Map<Object, OMDBUpdateEvent>> omdbLatestUpdateEvents = new HashMap<>();
   private final OMDBDefinition omdbDefinition = OMDBDefinition.get();
   private final OmUpdateEventValidator omUpdateEventValidator = new OmUpdateEventValidator(omdbDefinition);
   private long batchSequenceNumber; // Store the current sequence number for the batch

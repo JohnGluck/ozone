@@ -28,7 +28,7 @@ import javax.xml.bind.annotation.adapters.XmlAdapter;
  */
 public class IsoDateAdapter extends XmlAdapter<String, Instant> {
 
-  private DateTimeFormatter iso8861Formatter;
+  private final DateTimeFormatter iso8861Formatter;
 
   public IsoDateAdapter() {
     iso8861Formatter =

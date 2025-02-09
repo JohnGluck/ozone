@@ -24,8 +24,8 @@ package org.apache.hadoop.ozone.upgrade;
  * which returns an instance for a given "key" and "version".
  */
 public class VersionFactoryKey {
-  private String key;
-  private Integer version;
+  private final String key;
+  private final Integer version;
 
   public VersionFactoryKey(String key, Integer version) {
     this.key = key;

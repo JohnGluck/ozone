@@ -58,10 +58,9 @@ public enum OMLayoutFeature implements LayoutFeature {
   //
   //////////////////////////////  //////////////////////////////
 
-  private int layoutVersion;
-  private String description;
-  private EnumMap<UpgradeActionType, OmUpgradeAction> actions =
-      new EnumMap<>(UpgradeActionType.class);
+  private final int layoutVersion;
+  private final String description;
+  private final EnumMap<UpgradeActionType, OmUpgradeAction> actions = new EnumMap<>(UpgradeActionType.class);
 
   OMLayoutFeature(final int layoutVersion, String description) {
     this.layoutVersion = layoutVersion;

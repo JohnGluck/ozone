@@ -17,23 +17,45 @@
  */
 package org.apache.ozone.rocksdiff;
 
+import static java.nio.charset.StandardCharsets.UTF_8;
+import static org.apache.hadoop.ozone.OzoneConfigKeys.OZONE_OM_SNAPSHOT_COMPACTION_DAG_MAX_TIME_ALLOWED;
+import static org.apache.hadoop.ozone.OzoneConfigKeys.OZONE_OM_SNAPSHOT_COMPACTION_DAG_MAX_TIME_ALLOWED_DEFAULT;
+import static org.apache.hadoop.ozone.OzoneConfigKeys.OZONE_OM_SNAPSHOT_COMPACTION_DAG_PRUNE_DAEMON_RUN_INTERVAL;
+import static org.apache.hadoop.ozone.OzoneConfigKeys.OZONE_OM_SNAPSHOT_PRUNE_COMPACTION_DAG_DAEMON_RUN_INTERVAL_DEFAULT;
+
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.graph.GraphBuilder;
 import com.google.common.graph.MutableGraph;
-
+import com.google.protobuf.InvalidProtocolBufferException;
+import java.io.BufferedWriter;
+import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.Serializable;
+import java.nio.file.FileAlreadyExistsException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
-
-import com.google.protobuf.InvalidProtocolBufferException;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.tuple.Pair;
@@ -44,14 +66,15 @@ import org.apache.hadoop.hdds.utils.IOUtils;
 import org.apache.hadoop.hdds.utils.Scheduler;
 import org.apache.hadoop.hdds.utils.db.managed.ManagedDBOptions;
 import org.apache.hadoop.hdds.utils.db.managed.ManagedOptions;
-import org.apache.hadoop.hdds.utils.db.managed.ManagedRocksIterator;
 import org.apache.hadoop.hdds.utils.db.managed.ManagedRocksDB;
+import org.apache.hadoop.hdds.utils.db.managed.ManagedRocksIterator;
 import org.apache.hadoop.hdds.utils.db.managed.ManagedSstFileReader;
+import org.apache.hadoop.ozone.lock.BootstrapStateHandler;
 import org.apache.ozone.compaction.log.CompactionFileInfo;
 import org.apache.ozone.compaction.log.CompactionLogEntry;
-import org.apache.ozone.rocksdb.util.RdbUtil;
 import org.apache.ozone.graph.PrintableGraph;
 import org.apache.ozone.graph.PrintableGraph.GraphType;
+import org.apache.ozone.rocksdb.util.RdbUtil;
 import org.rocksdb.AbstractEventListener;
 import org.rocksdb.ColumnFamilyHandle;
 import org.rocksdb.CompactionJobInfo;
@@ -61,32 +84,6 @@ import org.rocksdb.RocksDBException;
 import org.rocksdb.TableProperties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.IOException;
-import java.io.Serializable;
-import java.nio.file.FileAlreadyExistsException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.nio.file.StandardOpenOption;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
-import org.apache.hadoop.ozone.lock.BootstrapStateHandler;
-
-import static java.nio.charset.StandardCharsets.UTF_8;
-import static org.apache.hadoop.ozone.OzoneConfigKeys.OZONE_OM_SNAPSHOT_COMPACTION_DAG_MAX_TIME_ALLOWED;
-import static org.apache.hadoop.ozone.OzoneConfigKeys.OZONE_OM_SNAPSHOT_COMPACTION_DAG_MAX_TIME_ALLOWED_DEFAULT;
-import static org.apache.hadoop.ozone.OzoneConfigKeys.OZONE_OM_SNAPSHOT_COMPACTION_DAG_PRUNE_DAEMON_RUN_INTERVAL;
-import static org.apache.hadoop.ozone.OzoneConfigKeys.OZONE_OM_SNAPSHOT_PRUNE_COMPACTION_DAG_DAEMON_RUN_INTERVAL_DEFAULT;
 
 /**
  * RocksDB checkpoint differ.
@@ -169,11 +166,11 @@ public class RocksDBCheckpointDiffer implements AutoCloseable,
 
   private ColumnFamilyHandle snapshotInfoTableCFHandle;
   private static final String DAG_PRUNING_SERVICE_NAME = "CompactionDagPruningService";
-  private AtomicBoolean suspended;
+  private final AtomicBoolean suspended;
 
   private ColumnFamilyHandle compactionLogTableCFHandle;
   private ManagedRocksDB activeRocksDB;
-  private ConcurrentMap<String, CompactionFileInfo> inflightCompactions;
+  private final ConcurrentMap<String, CompactionFileInfo> inflightCompactions;
 
   /**
    * For snapshot diff calculation we only need to track following column

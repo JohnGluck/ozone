@@ -18,8 +18,15 @@
 
 package org.apache.hadoop.ozone.container.keyvalue;
 
+import static org.apache.hadoop.ozone.OzoneConsts.CONTAINER_DB_TYPE_ROCKSDB;
+
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.base.Preconditions;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.nio.ByteBuffer;
+import java.nio.channels.FileChannel;
 import org.apache.hadoop.hdds.StringUtils;
 import org.apache.hadoop.hdds.conf.ConfigurationSource;
 import org.apache.hadoop.hdds.protocol.datanode.proto.ContainerProtos;
@@ -31,8 +38,8 @@ import org.apache.hadoop.ozone.common.ChecksumData;
 import org.apache.hadoop.ozone.container.common.helpers.BlockData;
 import org.apache.hadoop.ozone.container.common.helpers.ChunkInfo;
 import org.apache.hadoop.ozone.container.common.helpers.ContainerUtils;
-import org.apache.hadoop.ozone.container.common.impl.ContainerLayoutVersion;
 import org.apache.hadoop.ozone.container.common.impl.ContainerDataYaml;
+import org.apache.hadoop.ozone.container.common.impl.ContainerLayoutVersion;
 import org.apache.hadoop.ozone.container.common.interfaces.BlockIterator;
 import org.apache.hadoop.ozone.container.common.interfaces.Container.ScanResult;
 import org.apache.hadoop.ozone.container.common.interfaces.DBHandle;
@@ -40,19 +47,10 @@ import org.apache.hadoop.ozone.container.common.volume.HddsVolume;
 import org.apache.hadoop.ozone.container.keyvalue.helpers.BlockUtils;
 import org.apache.hadoop.ozone.container.keyvalue.helpers.ChunkUtils;
 import org.apache.hadoop.ozone.container.keyvalue.helpers.KeyValueContainerLocationUtil;
-
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.nio.ByteBuffer;
-import java.nio.channels.FileChannel;
-
 import org.apache.hadoop.util.DirectBufferPool;
 import org.apache.ratis.thirdparty.com.google.protobuf.ByteString;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import static org.apache.hadoop.ozone.OzoneConsts.CONTAINER_DB_TYPE_ROCKSDB;
 
 /**
  * Class to run integrity checks on Datanode Containers.
@@ -64,13 +62,13 @@ public class KeyValueContainerCheck {
   private static final Logger LOG =
       LoggerFactory.getLogger(KeyValueContainerCheck.class);
 
-  private long containerID;
+  private final long containerID;
   private KeyValueContainerData onDiskContainerData; //loaded from fs/disk
-  private ConfigurationSource checkConfig;
+  private final ConfigurationSource checkConfig;
 
-  private String metadataPath;
-  private HddsVolume volume;
-  private KeyValueContainer container;
+  private final String metadataPath;
+  private final HddsVolume volume;
+  private final KeyValueContainer container;
   private static final DirectBufferPool BUFFER_POOL = new DirectBufferPool();
 
   public KeyValueContainerCheck(String metadataPath, ConfigurationSource conf,

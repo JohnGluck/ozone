@@ -17,6 +17,17 @@
  */
 package org.apache.hadoop.ozone.om.response.key;
 
+import static org.apache.hadoop.ozone.om.OmMetadataManagerImpl.BUCKET_TABLE;
+import static org.apache.hadoop.ozone.om.OmMetadataManagerImpl.DELETED_DIR_TABLE;
+import static org.apache.hadoop.ozone.om.OmMetadataManagerImpl.DELETED_TABLE;
+import static org.apache.hadoop.ozone.om.OmMetadataManagerImpl.DIRECTORY_TABLE;
+import static org.apache.hadoop.ozone.om.OmMetadataManagerImpl.FILE_TABLE;
+import static org.apache.hadoop.ozone.om.OmMetadataManagerImpl.OPEN_FILE_TABLE;
+
+import jakarta.annotation.Nonnull;
+import java.io.IOException;
+import java.util.List;
+import java.util.Map;
 import org.apache.hadoop.hdds.utils.db.BatchOperation;
 import org.apache.hadoop.hdds.utils.db.Table;
 import org.apache.hadoop.ozone.om.OMMetadataManager;
@@ -26,18 +37,6 @@ import org.apache.hadoop.ozone.om.helpers.OmKeyInfo;
 import org.apache.hadoop.ozone.om.response.CleanupTableInfo;
 import org.apache.hadoop.ozone.protocol.proto.OzoneManagerProtocolProtos;
 
-import jakarta.annotation.Nonnull;
-import java.io.IOException;
-import java.util.List;
-import java.util.Map;
-
-import static org.apache.hadoop.ozone.om.OmMetadataManagerImpl.BUCKET_TABLE;
-import static org.apache.hadoop.ozone.om.OmMetadataManagerImpl.DELETED_DIR_TABLE;
-import static org.apache.hadoop.ozone.om.OmMetadataManagerImpl.DELETED_TABLE;
-import static org.apache.hadoop.ozone.om.OmMetadataManagerImpl.DIRECTORY_TABLE;
-import static org.apache.hadoop.ozone.om.OmMetadataManagerImpl.FILE_TABLE;
-import static org.apache.hadoop.ozone.om.OmMetadataManagerImpl.OPEN_FILE_TABLE;
-
 /**
  * Response for DeleteKeys request.
  */
@@ -45,15 +44,18 @@ import static org.apache.hadoop.ozone.om.OmMetadataManagerImpl.OPEN_FILE_TABLE;
     DELETED_DIR_TABLE, DELETED_TABLE, BUCKET_TABLE })
 public class OMKeysDeleteResponseWithFSO extends OMKeysDeleteResponse {
 
-  private List<OmKeyInfo> dirsList;
-  private long volumeId;
+  private final List<OmKeyInfo> dirsList;
+  private final long volumeId;
 
   public OMKeysDeleteResponseWithFSO(
       @Nonnull OzoneManagerProtocolProtos.OMResponse omResponse,
       @Nonnull List<OmKeyInfo> keyDeleteList,
-      @Nonnull List<OmKeyInfo> dirDeleteList, boolean isRatisEnabled,
-      @Nonnull OmBucketInfo omBucketInfo, @Nonnull long volId,
-      @Nonnull Map<String, OmKeyInfo> openKeyInfoMap) {
+      @Nonnull List<OmKeyInfo> dirDeleteList,
+      boolean isRatisEnabled,
+      @Nonnull OmBucketInfo omBucketInfo,
+      long volId,
+      @Nonnull Map<String, OmKeyInfo> openKeyInfoMap
+  ) {
     super(omResponse, keyDeleteList, isRatisEnabled, omBucketInfo, openKeyInfoMap);
     this.dirsList = dirDeleteList;
     this.volumeId = volId;

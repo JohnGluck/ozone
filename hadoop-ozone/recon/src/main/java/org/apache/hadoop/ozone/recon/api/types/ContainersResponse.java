@@ -59,18 +59,21 @@ public class ContainersResponse {
      * Total count of the containers.
      */
     @JsonProperty("totalCount")
+    @SuppressWarnings("PMD.ImmutableField")
     private long totalCount;
 
     /**
      * prevKey will be the last key of the previous page.
      */
     @JsonProperty("prevKey")
+    @SuppressWarnings("PMD.ImmutableField")
     private long prevKey;
 
     /**
      * An array of containers.
      */
     @JsonProperty("containers")
+    @SuppressWarnings("PMD.ImmutableField")
     private Collection<ContainerMetadata> containers;
 
     ContainersResponseData(long totalCount,

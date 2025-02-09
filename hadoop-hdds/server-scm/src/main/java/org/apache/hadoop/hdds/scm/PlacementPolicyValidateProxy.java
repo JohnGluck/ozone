@@ -27,8 +27,8 @@ import java.util.List;
  * of containers.
  */
 public class PlacementPolicyValidateProxy {
-  private PlacementPolicy defaultPlacementPolicy;
-  private PlacementPolicy ecPlacementPolicy;
+  private final PlacementPolicy defaultPlacementPolicy;
+  private final PlacementPolicy ecPlacementPolicy;
 
   public PlacementPolicyValidateProxy(
       PlacementPolicy defaultPlacementPolicy,

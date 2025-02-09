@@ -36,7 +36,7 @@ import org.apache.hadoop.ozone.OzoneConfigKeys;
 public class LegacyHadoopConfigurationSource
     implements MutableConfigurationSource {
 
-  private Configuration configuration;
+  private final Configuration configuration;
 
   public LegacyHadoopConfigurationSource(Configuration configuration) {
     this.configuration = new Configuration(configuration) {
@@ -51,23 +51,15 @@ public class LegacyHadoopConfigurationSource
       @Override
       protected synchronized Properties getProps() {
         if (delegatingProps == null) {
-          String complianceMode = getPropertyUnsafe(OzoneConfigKeys.OZONE_SECURITY_CRYPTO_COMPLIANCE_MODE,
-                  OzoneConfigKeys.OZONE_SECURITY_CRYPTO_COMPLIANCE_MODE_UNRESTRICTED);
+          String complianceMode = getProps().getProperty(
+              OzoneConfigKeys.OZONE_SECURITY_CRYPTO_COMPLIANCE_MODE,
+              OzoneConfigKeys.OZONE_SECURITY_CRYPTO_COMPLIANCE_MODE_UNRESTRICTED
+          );
+
           Properties cryptoProperties = getCryptoProperties();
           delegatingProps = new DelegatingProperties(super.getProps(), complianceMode, cryptoProperties);
         }
         return delegatingProps;
-      }
-
-      /**
-       * Get a property value without the compliance check. It's needed to get the compliance mode.
-       *
-       * @param key property name
-       * @param defaultValue default value
-       * @return property value, without compliance check
-       */
-      private String getPropertyUnsafe(String key, String defaultValue) {
-        return super.getProps().getProperty(key, defaultValue);
       }
 
       private Properties getCryptoProperties() {

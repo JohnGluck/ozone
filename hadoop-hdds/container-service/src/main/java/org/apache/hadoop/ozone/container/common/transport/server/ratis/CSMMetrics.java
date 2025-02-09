@@ -37,9 +37,8 @@ import java.util.EnumMap;
 @InterfaceAudience.Private
 @Metrics(about = "Container State Machine Metrics", context = "dfs")
 public class CSMMetrics {
-  public static final String SOURCE_NAME =
-      CSMMetrics.class.getSimpleName();
-  private RaftGroupId gid;
+  public static final String SOURCE_NAME = CSMMetrics.class.getSimpleName();
+  private final RaftGroupId gid;
 
   // ratis op metrics metrics
   private @Metric MutableCounterLong numWriteStateMachineOps;

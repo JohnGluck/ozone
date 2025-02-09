@@ -27,7 +27,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
  */
 
 public class ReconSafeModeManager implements SafeModeManager {
-  private AtomicBoolean inSafeMode = new AtomicBoolean(true);
+  private final AtomicBoolean inSafeMode = new AtomicBoolean(true);
 
   @Override
   public boolean getInSafeMode() {

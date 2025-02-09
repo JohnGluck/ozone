@@ -56,14 +56,13 @@ import org.slf4j.LoggerFactory;
 public class RatisPipelineProvider
     extends PipelineProvider<RatisReplicationConfig> {
 
-  private static final Logger LOG =
-      LoggerFactory.getLogger(RatisPipelineProvider.class);
+  private static final Logger LOG = LoggerFactory.getLogger(RatisPipelineProvider.class);
 
   private final ConfigurationSource conf;
   private final EventPublisher eventPublisher;
   private final PlacementPolicy placementPolicy;
-  private int pipelineNumberLimit;
-  private int maxPipelinePerDatanode;
+  private final int pipelineNumberLimit;
+  private final int maxPipelinePerDatanode;
   private final LeaderChoosePolicy leaderChoosePolicy;
   private final SCMContext scmContext;
   private final long containerSizeBytes;

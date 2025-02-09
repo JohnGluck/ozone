@@ -185,7 +185,7 @@ public interface HttpFSConstants {
     CHECKACCESS(HTTP_GET), SETECPOLICY(HTTP_PUT), GETECPOLICY(HTTP_GET),
     UNSETECPOLICY(HTTP_POST), SATISFYSTORAGEPOLICY(HTTP_PUT);
 
-    private String httpMethod;
+    private final String httpMethod;
 
     Operation(String httpMethod) {
       this.httpMethod = httpMethod;

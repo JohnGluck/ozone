@@ -19,6 +19,14 @@
 package org.apache.hadoop.ozone.om.lock;
 
 
+import static org.apache.hadoop.hdds.utils.CompositeKey.combineKeys;
+import static org.apache.hadoop.ozone.OzoneConfigKeys.OZONE_MANAGER_FAIR_LOCK;
+import static org.apache.hadoop.ozone.OzoneConfigKeys.OZONE_MANAGER_FAIR_LOCK_DEFAULT;
+import static org.apache.hadoop.ozone.OzoneConfigKeys.OZONE_MANAGER_STRIPED_LOCK_SIZE_DEFAULT;
+import static org.apache.hadoop.ozone.OzoneConfigKeys.OZONE_MANAGER_STRIPED_LOCK_SIZE_PREFIX;
+
+import com.google.common.annotations.VisibleForTesting;
+import com.google.common.util.concurrent.Striped;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -28,23 +36,13 @@ import java.util.Map;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
-
-import com.google.common.annotations.VisibleForTesting;
-import com.google.common.util.concurrent.Striped;
+import org.apache.hadoop.hdds.conf.ConfigurationSource;
 import org.apache.hadoop.hdds.utils.SimpleStriped;
 import org.apache.hadoop.ipc.ProcessingDetails.Timing;
 import org.apache.hadoop.ipc.Server;
 import org.apache.hadoop.util.Time;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import org.apache.hadoop.hdds.conf.ConfigurationSource;
-
-import static org.apache.hadoop.ozone.OzoneConfigKeys.OZONE_MANAGER_FAIR_LOCK;
-import static org.apache.hadoop.ozone.OzoneConfigKeys.OZONE_MANAGER_FAIR_LOCK_DEFAULT;
-import static org.apache.hadoop.ozone.OzoneConfigKeys.OZONE_MANAGER_STRIPED_LOCK_SIZE_DEFAULT;
-import static org.apache.hadoop.ozone.OzoneConfigKeys.OZONE_MANAGER_STRIPED_LOCK_SIZE_PREFIX;
-import static org.apache.hadoop.hdds.utils.CompositeKey.combineKeys;
 
 /**
  * Provides different locks to handle concurrency in OzoneMaster.
@@ -89,17 +87,15 @@ import static org.apache.hadoop.hdds.utils.CompositeKey.combineKeys;
  */
 
 public class OzoneManagerLock implements IOzoneManagerLock {
-  private static final Logger LOG =
-      LoggerFactory.getLogger(OzoneManagerLock.class);
+  private static final Logger LOG = LoggerFactory.getLogger(OzoneManagerLock.class);
 
   private final Map<Resource, Striped<ReadWriteLock>> stripedLockByResource;
 
-  private OMLockMetrics omLockMetrics;
-  private final ThreadLocal<Short> lockSet = ThreadLocal.withInitial(
-      () -> Short.valueOf((short)0));
+  private final OMLockMetrics omLockMetrics;
 
-  private ThreadLocal<OMLockDetails> omLockDetails =
-      ThreadLocal.withInitial(OMLockDetails::new);
+  private final ThreadLocal<Short> lockSet = ThreadLocal.withInitial(() -> (short) 0);
+
+  private final ThreadLocal<OMLockDetails> omLockDetails = ThreadLocal.withInitial(OMLockDetails::new);
 
   /**
    * Creates new OzoneManagerLock instance.
@@ -459,18 +455,15 @@ public class OzoneManagerLock implements IOzoneManagerLock {
     PREFIX_LOCK((byte) 6, "PREFIX_LOCK"), //127
     SNAPSHOT_LOCK((byte) 7, "SNAPSHOT_LOCK"); // = 255
 
-    // level of the resource
-    private byte lockLevel;
-
     // This will tell the value, till which we can allow locking.
-    private short mask;
+    private final short mask;
 
     // This value will help during setLock, and also will tell whether we can
     // re-acquire lock or not.
-    private short setMask;
+    private final short setMask;
 
     // Name of the resource.
-    private String name;
+    private final String name;
 
     // This helps in maintaining read lock related variables locally confined
     // to a given thread.
@@ -531,9 +524,9 @@ public class OzoneManagerLock implements IOzoneManagerLock {
     }
 
     Resource(byte pos, String name) {
-      this.lockLevel = pos;
-      this.mask = (short) (Math.pow(2, lockLevel + 1) - 1);
-      this.setMask = (short) Math.pow(2, lockLevel);
+      // level of the resource
+      this.mask = (short) (Math.pow(2, pos + 1) - 1);
+      this.setMask = (short) Math.pow(2, pos);
       this.name = name;
     }
 

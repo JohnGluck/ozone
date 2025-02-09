@@ -26,13 +26,13 @@ import java.net.InetSocketAddress;
  * Basic information about nodes in an HA setup.
  */
 public abstract class NodeDetails {
-  private String serviceId;
+  private final String serviceId;
   private final String nodeId;
   private String hostAddress;
   private int rpcPort;
-  private int ratisPort;
-  private String httpAddress;
-  private String httpsAddress;
+  private final int ratisPort;
+  private final String httpAddress;
+  private final String httpsAddress;
 
   private InetSocketAddress rpcAddress;
 

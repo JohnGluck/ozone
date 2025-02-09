@@ -73,6 +73,7 @@ public class OmBucketReadWriteKeyOps extends AbstractOmBucketReadWriteOps {
   @Option(names = {"-o", "--om-service-id"},
       description = "OM Service ID"
   )
+  @SuppressWarnings("PMD.ImmutableField")
   private String omServiceID = null;
 
   @CommandLine.Mixin

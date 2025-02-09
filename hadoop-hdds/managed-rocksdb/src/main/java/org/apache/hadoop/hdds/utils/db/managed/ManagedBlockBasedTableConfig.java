@@ -28,7 +28,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
  */
 public class ManagedBlockBasedTableConfig extends BlockBasedTableConfig {
   private Cache blockCacheHolder;
-  private AtomicBoolean closed = new AtomicBoolean(false);
+  private final AtomicBoolean closed = new AtomicBoolean(false);
 
   public synchronized ManagedBlockBasedTableConfig closeAndSetBlockCache(
       Cache blockCache) {

@@ -141,8 +141,8 @@ public class KeyMetadata {
    * Class to hold ContainerID and BlockID.
    */
   public static class ContainerBlockMetadata {
-    private long containerID;
-    private long localID;
+    private final long containerID;
+    private final long localID;
 
     public ContainerBlockMetadata(long containerID, long localID) {
       this.containerID = containerID;

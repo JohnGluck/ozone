@@ -30,8 +30,8 @@ import java.util.List;
  */
 public final class BlockGroup {
 
-  private String groupID;
-  private List<BlockID> blockIDs;
+  private final String groupID;
+  private final List<BlockID> blockIDs;
   private BlockGroup(String groupID, List<BlockID> blockIDs) {
     this.groupID = groupID;
     this.blockIDs = blockIDs;

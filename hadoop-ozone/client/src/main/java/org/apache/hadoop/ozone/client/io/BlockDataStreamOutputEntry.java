@@ -52,7 +52,7 @@ public final class BlockDataStreamOutputEntry
   // the current position of this stream 0 <= currentPosition < length
   private long currentPosition;
   private final Token<OzoneBlockTokenIdentifier> token;
-  private List<StreamBuffer> bufferList;
+  private final List<StreamBuffer> bufferList;
 
   @SuppressWarnings({"parameternumber", "squid:S00107"})
   private BlockDataStreamOutputEntry(

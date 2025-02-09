@@ -18,31 +18,29 @@
 
 package org.apache.hadoop.hdds.scm.cli;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Map;
-import java.util.HashMap;
-import java.util.InvalidPropertiesFormatException;
-import java.util.List;
-import java.util.TreeSet;
-import java.util.stream.Collectors;
+import static org.apache.hadoop.hdds.protocol.proto.HddsProtos.NodeState.DEAD;
+import static org.apache.hadoop.hdds.protocol.proto.HddsProtos.NodeState.HEALTHY;
+import static org.apache.hadoop.hdds.protocol.proto.HddsProtos.NodeState.STALE;
 
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.JsonSerializer;
 import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.InvalidPropertiesFormatException;
+import java.util.List;
+import java.util.Map;
+import java.util.TreeSet;
+import java.util.stream.Collectors;
 import org.apache.hadoop.hdds.cli.AdminSubcommand;
 import org.apache.hadoop.hdds.cli.HddsVersionProvider;
 import org.apache.hadoop.hdds.protocol.DatanodeDetails;
 import org.apache.hadoop.hdds.protocol.proto.HddsProtos;
 import org.apache.hadoop.hdds.scm.client.ScmClient;
-
-import static org.apache.hadoop.hdds.protocol.proto.HddsProtos.NodeState.DEAD;
-import static org.apache.hadoop.hdds.protocol.proto.HddsProtos.NodeState.HEALTHY;
-import static org.apache.hadoop.hdds.protocol.proto.HddsProtos.NodeState.STALE;
-
 import org.apache.hadoop.hdds.server.JsonUtils;
 import org.kohsuke.MetaInfServices;
 import picocli.CommandLine;
@@ -252,11 +250,11 @@ public class TopologySubcommand extends ScmSubcommand
   }
 
   private static class NodeTopologyOrder {
-    private String ipAddress;
-    private String hostName;
-    private String nodeState;
-    private String operationalState;
-    private String networkLocation;
+    private final String ipAddress;
+    private final String hostName;
+    private final String nodeState;
+    private final String operationalState;
+    private final String networkLocation;
 
     NodeTopologyOrder(DatanodeDetails node, String state, String opState) {
       ipAddress = node.getIpAddress();
@@ -289,7 +287,7 @@ public class TopologySubcommand extends ScmSubcommand
   }
 
   private static class NodeTopologyDefault extends NodeTopologyOrder {
-    private List<DatanodeDetails.Port> ports;
+    private final List<DatanodeDetails.Port> ports;
 
     NodeTopologyDefault(DatanodeDetails node, String state) {
       super(node, state, node.getPersistedOpState().toString());
@@ -303,7 +301,7 @@ public class TopologySubcommand extends ScmSubcommand
   }
 
   private static class NodeTopologyFull extends NodeTopologyDefault {
-    private String uuid;
+    private final String uuid;
 
     NodeTopologyFull(DatanodeDetails node, String state) {
       super(node, state);

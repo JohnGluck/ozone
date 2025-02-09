@@ -43,17 +43,16 @@ public class ContainerBalancer extends StatefulService {
 
   private static final AtomicInteger ID = new AtomicInteger();
 
-  public static final Logger LOG =
-      LoggerFactory.getLogger(ContainerBalancer.class);
+  public static final Logger LOG = LoggerFactory.getLogger(ContainerBalancer.class);
 
-  private StorageContainerManager scm;
+  private final StorageContainerManager scm;
   private final SCMContext scmContext;
-  private OzoneConfiguration ozoneConfiguration;
+  private final OzoneConfiguration ozoneConfiguration;
   private ContainerBalancerConfiguration config;
-  private ContainerBalancerMetrics metrics;
+  private final ContainerBalancerMetrics metrics;
   private volatile Thread currentBalancingThread;
   private volatile ContainerBalancerTask task = null;
-  private ReentrantLock lock;
+  private final ReentrantLock lock;
   private OffsetDateTime startedAt;
 
   /**

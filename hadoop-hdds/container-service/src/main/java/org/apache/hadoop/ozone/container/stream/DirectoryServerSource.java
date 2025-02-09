@@ -29,7 +29,7 @@ import java.util.stream.Stream;
  */
 public class DirectoryServerSource implements StreamingSource {
 
-  private Path root;
+  private final Path root;
 
   public DirectoryServerSource(Path root) {
     this.root = root;

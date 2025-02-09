@@ -28,16 +28,15 @@ import java.io.IOException;
  */
 public final class OmFSOFile {
 
-  private String volumeName;
-  private String bucketName;
-  private String keyName;
-  private OMMetadataManager omMetadataManager;
+  private final String volumeName;
+  private final String bucketName;
+  private final String keyName;
+  private final OMMetadataManager omMetadataManager;
 
-  private String fileName;
-  private long volumeId;
-  private long bucketId;
-  private long parentID;
-
+  private final String fileName;
+  private final long volumeId;
+  private final long bucketId;
+  private final long parentID;
 
   @SuppressWarnings("checkstyle:parameternumber")
   private OmFSOFile(String volumeName, String bucketName, String keyName, 

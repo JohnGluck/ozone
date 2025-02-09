@@ -46,7 +46,7 @@ public class XException extends Exception {
 
   }
 
-  private ERROR error;
+  private final ERROR error;
 
   /**
    * Private constructor used by the public constructors.

@@ -25,8 +25,8 @@ import org.apache.hadoop.ozone.om.helpers.BucketLayout;
  */
 public class OzoneLockProvider {
 
-  private boolean keyPathLockEnabled;
-  private boolean enableFileSystemPaths;
+  private final boolean keyPathLockEnabled;
+  private final boolean enableFileSystemPaths;
 
   public OzoneLockProvider(boolean keyPathLockEnabled,
                            boolean enableFileSystemPaths) {

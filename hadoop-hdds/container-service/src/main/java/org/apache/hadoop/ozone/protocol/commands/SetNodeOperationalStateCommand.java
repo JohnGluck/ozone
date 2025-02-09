@@ -30,7 +30,7 @@ public class SetNodeOperationalStateCommand
     extends SCMCommand<SetNodeOperationalStateCommandProto> {
 
   private final HddsProtos.NodeOperationalState opState;
-  private long stateExpiryEpochSeconds;
+  private final long stateExpiryEpochSeconds;
 
   /**
    * Ctor that creates a SetNodeOperationalStateCommand.

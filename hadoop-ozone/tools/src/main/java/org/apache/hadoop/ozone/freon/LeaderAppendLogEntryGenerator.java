@@ -16,15 +16,15 @@
  */
 package org.apache.hadoop.ozone.freon;
 
+import com.codahale.metrics.Timer;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 import java.util.UUID;
 import java.util.concurrent.Callable;
 import java.util.concurrent.LinkedBlockingQueue;
-
+import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.hadoop.hdds.cli.HddsVersionProvider;
 import org.apache.hadoop.hdds.client.RatisReplicationConfig;
 import org.apache.hadoop.hdds.conf.OzoneConfiguration;
@@ -45,14 +45,8 @@ import org.apache.hadoop.hdds.scm.XceiverClientReply;
 import org.apache.hadoop.hdds.scm.pipeline.Pipeline;
 import org.apache.hadoop.hdds.scm.pipeline.Pipeline.PipelineState;
 import org.apache.hadoop.hdds.scm.pipeline.PipelineID;
-
-import com.codahale.metrics.Timer;
-import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.ratis.client.RaftClient;
 import org.apache.ratis.conf.RaftProperties;
-import org.apache.ratis.proto.RaftProtos.RaftPeerProto;
-import org.apache.ratis.proto.grpc.RaftServerProtocolServiceGrpc;
-import org.apache.ratis.proto.grpc.RaftServerProtocolServiceGrpc.RaftServerProtocolServiceStub;
 import org.apache.ratis.protocol.ClientId;
 import org.apache.ratis.protocol.RaftClientReply;
 import org.apache.ratis.protocol.RaftGroup;
@@ -60,7 +54,6 @@ import org.apache.ratis.protocol.RaftGroupId;
 import org.apache.ratis.protocol.RaftPeer;
 import org.apache.ratis.protocol.RaftPeerId;
 import org.apache.ratis.thirdparty.com.google.protobuf.ByteString;
-import org.apache.ratis.thirdparty.io.grpc.ManagedChannel;
 import org.apache.ratis.thirdparty.io.grpc.netty.NegotiationType;
 import org.apache.ratis.thirdparty.io.grpc.netty.NettyChannelBuilder;
 import org.kohsuke.MetaInfServices;
@@ -101,6 +94,7 @@ public class LeaderAppendLogEntryGenerator extends BaseAppendLogGenerator
       description = "Pipeline to use. By default the first RATIS/THREE "
           + "pipeline will be used.",
       defaultValue = "96714307-4bd7-42b5-a65d-e1b13b4ca5c0")
+  @SuppressWarnings("PMD.ImmutableField")
   private String pipelineId = "96714307-4bd7-42b5-a65d-e1b13b4ca5c0";
 
   @Option(names = {"-s", "--size"},
@@ -114,14 +108,6 @@ public class LeaderAppendLogEntryGenerator extends BaseAppendLogGenerator
           + "call and vote)",
       defaultValue = "0")
   private long nextIndex;
-
-  private RaftPeerProto requestor;
-
-  private long term = 2L;
-
-  private RaftServerProtocolServiceStub stub;
-
-  private Random callIdRandom = new Random();
 
   private ByteString dataToWrite;
 
@@ -140,16 +126,9 @@ public class LeaderAppendLogEntryGenerator extends BaseAppendLogGenerator
 
     setServerIdFromFile(conf);
 
-    requestor = RaftPeerProto.newBuilder()
-        .setId(RaftPeerId.valueOf(FAKE_FOLLOWER_ID1).toByteString())
-        .setAddress(FAKE_LEADER_ADDDRESS1)
-        .build();
-
     NettyChannelBuilder channelBuilder =
         NettyChannelBuilder.forTarget(serverAddress).proxyDetector(uri -> null);
     channelBuilder.negotiationType(NegotiationType.PLAINTEXT);
-    ManagedChannel build = channelBuilder.build();
-    stub = RaftServerProtocolServiceGrpc.newStub(build);
 
     init();
 

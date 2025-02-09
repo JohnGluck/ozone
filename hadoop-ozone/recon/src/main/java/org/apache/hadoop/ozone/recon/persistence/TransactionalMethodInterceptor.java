@@ -37,7 +37,7 @@ import com.google.inject.Provider;
  */
 public class TransactionalMethodInterceptor implements MethodInterceptor {
 
-  private Provider<DataSourceTransactionManager> transactionManagerProvider;
+  private final Provider<DataSourceTransactionManager> transactionManagerProvider;
 
   TransactionalMethodInterceptor(
       Provider<DataSourceTransactionManager> transactionManagerProvider) {

@@ -85,11 +85,11 @@ public abstract class OMFailoverProxyProviderBase<T> implements
   // before attempting to contact all the OMs again. For other exceptions
   // such as LeaderNotReadyException, the same OM is contacted again with a
   // linearly increasing wait time.
-  private Set<String> attemptedOMs = new HashSet<>();
+  private final Set<String> attemptedOMs = new HashSet<>();
   private String lastAttemptedOM;
   private int numAttemptsOnSameOM = 0;
   private final long waitBetweenRetries;
-  private Set<String> accessControlExceptionOMs = new HashSet<>();
+  private final Set<String> accessControlExceptionOMs = new HashSet<>();
   private boolean performFailoverDone;
 
   private final UserGroupInformation ugi;

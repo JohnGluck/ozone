@@ -75,9 +75,9 @@ public abstract class SCMCommonPlacementPolicy implements
    * new object each time. There are only used when there is no network topology
    * or the replication factor is 1 or the required racks is 1.
    */
-  private ContainerPlacementStatus validPlacement
+  private final ContainerPlacementStatus validPlacement
       = new ContainerPlacementStatusDefault(1, 1, 1);
-  private ContainerPlacementStatus invalidPlacement
+  private final ContainerPlacementStatus invalidPlacement
       = new ContainerPlacementStatusDefault(0, 1, 1);
 
   /**

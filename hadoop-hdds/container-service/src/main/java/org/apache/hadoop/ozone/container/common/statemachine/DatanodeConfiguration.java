@@ -16,21 +16,19 @@
  */
 package org.apache.hadoop.ozone.container.common.statemachine;
 
-import org.apache.hadoop.hdds.conf.Config;
-import org.apache.hadoop.hdds.conf.ConfigGroup;
-import org.apache.hadoop.hdds.conf.ConfigType;
-import org.apache.hadoop.hdds.conf.PostConstruct;
-import org.apache.hadoop.hdds.conf.ConfigTag;
-
 import static java.util.concurrent.TimeUnit.MICROSECONDS;
 import static org.apache.hadoop.hdds.conf.ConfigTag.DATANODE;
 import static org.apache.hadoop.ozone.container.common.statemachine.DatanodeConfiguration.CONFIG_PREFIX;
 
+import java.time.Duration;
+import org.apache.hadoop.hdds.conf.Config;
+import org.apache.hadoop.hdds.conf.ConfigGroup;
+import org.apache.hadoop.hdds.conf.ConfigTag;
+import org.apache.hadoop.hdds.conf.ConfigType;
+import org.apache.hadoop.hdds.conf.PostConstruct;
 import org.apache.hadoop.hdds.conf.ReconfigurableConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.time.Duration;
 
 /**
  * Configuration class used for high level datanode configuration parameters.
@@ -259,8 +257,8 @@ public class DatanodeConfiguration extends ReconfigurableConfig {
       description = "Timeout for the thread used to process the delete" +
           " block command to wait for the container lock."
   )
-  private long blockDeleteMaxLockWaitTimeoutMs =
-      Duration.ofMillis(100).toMillis();
+  @SuppressWarnings("PMD.ImmutableField")
+  private long blockDeleteMaxLockWaitTimeoutMs = Duration.ofMillis(100).toMillis();
 
   public Duration getBlockDeletionInterval() {
     return blockDeletionInterval;
@@ -570,8 +568,8 @@ public class DatanodeConfiguration extends ReconfigurableConfig {
       description = "Boolean Flag to decide whether to check container " +
           "directory or not to determine container is empty"
   )
-  private boolean bCheckEmptyContainerDir =
-      OZONE_DATANODE_CHECK_EMPTY_CONTAINER_DIR_ON_DELETE_DEFAULT;
+  @SuppressWarnings("PMD.ImmutableField")
+  private boolean bCheckEmptyContainerDir = OZONE_DATANODE_CHECK_EMPTY_CONTAINER_DIR_ON_DELETE_DEFAULT;
 
   @Config(key = "delete.container.timeout",
       type = ConfigType.TIME,
@@ -581,6 +579,7 @@ public class DatanodeConfiguration extends ReconfigurableConfig {
           "performing pre checks, the command will be skipped and SCM will resend it automatically. This avoids " +
           "commands running for a very long time without SCM being informed of the progress."
   )
+  @SuppressWarnings("PMD.ImmutableField")
   private long deleteContainerTimeoutMs = Duration.ofSeconds(60).toMillis();
 
   public long getDeleteContainerTimeoutMs() {

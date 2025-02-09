@@ -82,8 +82,7 @@ public class BlockOutputStreamEntry extends OutputStream {
   /**
    * To record how many calls(write, flush) are being handled by this block.
    */
-  private AtomicInteger inflightCalls = new AtomicInteger();
-
+  private final AtomicInteger inflightCalls = new AtomicInteger();
 
   BlockOutputStreamEntry(Builder b) {
     this.config = b.config;

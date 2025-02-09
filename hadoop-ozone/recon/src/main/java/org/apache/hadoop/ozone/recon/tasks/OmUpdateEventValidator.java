@@ -29,10 +29,9 @@ import org.slf4j.LoggerFactory;
  * It can be further extended to different types of validations.
  */
 public class OmUpdateEventValidator {
+  private static Logger log = LoggerFactory.getLogger(OmUpdateEventValidator.class);
 
-  private static Logger log =
-      LoggerFactory.getLogger(OmUpdateEventValidator.class);
-  private OMDBDefinition omdbDefinition;
+  private final OMDBDefinition omdbDefinition;
 
   public OmUpdateEventValidator(OMDBDefinition omdbDefinition) {
     this.omdbDefinition = omdbDefinition;

@@ -72,19 +72,17 @@ import org.slf4j.LoggerFactory;
  * Implementation for StorageContainerServiceProvider that talks with actual
  * cluster SCM.
  */
-public class StorageContainerServiceProviderImpl
-    implements StorageContainerServiceProvider {
+public class StorageContainerServiceProviderImpl implements StorageContainerServiceProvider {
+  private static final Logger LOG = LoggerFactory.getLogger(StorageContainerServiceProviderImpl.class);
 
-  private static final Logger LOG =
-      LoggerFactory.getLogger(StorageContainerServiceProviderImpl.class);
-  private StorageContainerLocationProtocol scmClient;
+  private final StorageContainerLocationProtocol scmClient;
   private final OzoneConfiguration configuration;
   private String scmDBSnapshotUrl;
-  private File scmSnapshotDBParentDir;
-  private URLConnectionFactory connectionFactory;
-  private ReconUtils reconUtils;
-  private ReconStorageConfig reconStorage;
-  private ReconContext reconContext;
+  private final File scmSnapshotDBParentDir;
+  private final URLConnectionFactory connectionFactory;
+  private final ReconUtils reconUtils;
+  private final ReconStorageConfig reconStorage;
+  private final ReconContext reconContext;
 
   @Inject
   public StorageContainerServiceProviderImpl(

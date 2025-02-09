@@ -147,8 +147,8 @@ public class ReconstructECContainersCommand
    * To store the datanode details with replica index.
    */
   public static class DatanodeDetailsAndReplicaIndex {
-    private DatanodeDetails dnDetails;
-    private int replicaIndex;
+    private final DatanodeDetails dnDetails;
+    private final int replicaIndex;
 
     public DatanodeDetailsAndReplicaIndex(DatanodeDetails dnDetails,
         int replicaIndex) {

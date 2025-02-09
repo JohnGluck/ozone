@@ -36,8 +36,7 @@ import org.slf4j.LoggerFactory;
 @ConfigGroup(prefix = "ozone.client")
 public class OzoneClientConfig {
 
-  private static final Logger LOG =
-      LoggerFactory.getLogger(OzoneClientConfig.class);
+  private static final Logger LOG = LoggerFactory.getLogger(OzoneClientConfig.class);
 
   /**
    * Enum for indicating what mode to use when combining chunk and block
@@ -108,6 +107,7 @@ public class OzoneClientConfig {
           + "ozone.client.stream.buffer.size can reduce the memory usage for "
           + "very small keys, but has a performance overhead.",
       tags = ConfigTag.CLIENT)
+  @SuppressWarnings("PMD.ImmutableField")
   private int bufferIncrement = 0;
 
   @Config(key = "stream.buffer.flush.delay",
@@ -190,6 +190,7 @@ public class OzoneClientConfig {
       description = "Ozone EC client to retry stripe to new block group on" +
           " failures.",
       tags = ConfigTag.CLIENT)
+  @SuppressWarnings("PMD.ImmutableField")
   private int maxECStripeWriteRetries = 10;
 
   @Config(key = "ec.stripe.queue.size",
@@ -197,7 +198,8 @@ public class OzoneClientConfig {
       description = "The max number of EC stripes can be buffered in client " +
           " before flushing into datanodes.",
       tags = ConfigTag.CLIENT)
-  private int ecStripeQueueSize = 2;
+  @SuppressWarnings("PMD.ImmutableField")
+    private int ecStripeQueueSize = 2;
 
   @Config(key = "exclude.nodes.expiry.time",
       defaultValue = "600000",
@@ -205,6 +207,7 @@ public class OzoneClientConfig {
           " writes. If the value is zero, the node is excluded for the" +
           " life of the client",
       tags = ConfigTag.CLIENT)
+  @SuppressWarnings("PMD.ImmutableField")
   private long excludeNodesExpiryTime = 10 * 60 * 1000;
 
   @Config(key = "ec.reconstruct.stripe.read.pool.limit",

@@ -76,7 +76,7 @@ public class OzoneClient implements Closeable {
 
   private final ClientProtocol proxy;
   private final ObjectStore objectStore;
-  private  ConfigurationSource conf;
+  private final ConfigurationSource conf;
   private final UncheckedAutoCloseable leakTracker = OzoneClientFactory.track(this);
 
   /**

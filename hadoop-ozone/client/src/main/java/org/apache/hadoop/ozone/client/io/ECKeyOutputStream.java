@@ -19,6 +19,20 @@ package org.apache.hadoop.ozone.client.io;
 
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.base.Preconditions;
+import java.io.IOException;
+import java.nio.Buffer;
+import java.nio.ByteBuffer;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Set;
+import java.util.concurrent.ArrayBlockingQueue;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Future;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicLong;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 import org.apache.commons.lang3.NotImplementedException;
 import org.apache.hadoop.fs.FSExceptionMessages;
 import org.apache.hadoop.hdds.client.ECReplicationConfig;
@@ -35,32 +49,18 @@ import org.apache.ratis.thirdparty.com.google.protobuf.ByteString;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.IOException;
-import java.nio.Buffer;
-import java.nio.ByteBuffer;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Set;
-import java.util.concurrent.ArrayBlockingQueue;
-import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.Future;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.atomic.AtomicLong;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
-
 /**
  * ECKeyOutputStream handles the EC writes by writing the data into underlying
  * block output streams chunk by chunk.
  */
-public final class ECKeyOutputStream extends KeyOutputStream
-    implements KeyMetadataAware {
-  private OzoneClientConfig config;
+public final class ECKeyOutputStream extends KeyOutputStream implements KeyMetadataAware {
+  public static final Logger LOG = LoggerFactory.getLogger(KeyOutputStream.class);
+
+  private final OzoneClientConfig config;
   private ECChunkBuffers ecChunkBufferCache;
   private final BlockingQueue<ECChunkBuffers> ecStripeQueue;
   private int chunkIndex;
-  private int ecChunkSize;
+  private final int ecChunkSize;
   private final int numDataBlks;
   private final int numParityBlks;
   private final ByteBufferPool bufferPool;
@@ -74,15 +74,12 @@ public final class ECKeyOutputStream extends KeyOutputStream
    * A mismatch will prevent the commit from succeeding.
    * This is essential for operations like S3 put to ensure atomicity.
    */
-  private boolean atomicKeyCreation;
+  private final boolean atomicKeyCreation;
 
   private enum StripeWriteStatus {
     SUCCESS,
     FAILED
   }
-
-  public static final Logger LOG =
-      LoggerFactory.getLogger(KeyOutputStream.class);
 
   private volatile boolean closed;
   private volatile boolean closing;
@@ -715,9 +712,9 @@ public final class ECKeyOutputStream extends KeyOutputStream
     }
 
     private void clearBuffers(ByteBuffer[] buffers) {
-      for (int i = 0; i < buffers.length; i++) {
-        buffers[i].clear();
-        buffers[i].limit(cellSize);
+      for (ByteBuffer buffer : buffers) {
+        buffer.clear();
+        buffer.limit(cellSize);
       }
     }
 

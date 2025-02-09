@@ -28,10 +28,9 @@ import java.util.Map;
  * Wrap javax.crypto.CipherOutputStream with the method to return wrapped
  * output stream.
  */
-public class CipherOutputStreamOzone extends CipherOutputStream
-    implements KeyMetadataAware {
+public class CipherOutputStreamOzone extends CipherOutputStream implements KeyMetadataAware {
 
-  private OutputStream output;
+  private final OutputStream output;
 
   public CipherOutputStreamOzone(OutputStream output, Cipher cipher) {
     super(output, cipher);

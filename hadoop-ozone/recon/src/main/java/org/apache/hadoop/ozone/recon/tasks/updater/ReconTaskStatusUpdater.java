@@ -33,9 +33,9 @@ public class ReconTaskStatusUpdater {
 
   private static final Logger LOG = LoggerFactory.getLogger(ReconTaskStatusUpdater.class);
 
-  private ReconTaskStatus reconTaskStatus;
+  private final ReconTaskStatus reconTaskStatus;
 
-  private ReconTaskStatusDao reconTaskStatusDao;
+  private final ReconTaskStatusDao reconTaskStatusDao;
 
   private String taskName;
 

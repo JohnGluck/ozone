@@ -29,7 +29,7 @@ import org.xml.sax.helpers.XMLFilterImpl;
  */
 public class XmlNamespaceFilter extends XMLFilterImpl {
 
-  private String namespace;
+  private final String namespace;
 
   /**
    * Create the filter.

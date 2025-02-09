@@ -52,14 +52,14 @@ public class InfoBucketHandler extends BucketHandler {
    * Class used for link buckets.
    */
   public static class LinkBucket {
-    private String volumeName;
-    private String name;
-    private String sourceVolume;
-    private String sourceBucket;
-    private Instant creationTime;
-    private Instant modificationTime;
-    private String owner;
-    private Boolean link;
+    private final String volumeName;
+    private final String name;
+    private final String sourceVolume;
+    private final String sourceBucket;
+    private final Instant creationTime;
+    private final Instant modificationTime;
+    private final String owner;
+    private final Boolean link;
 
     LinkBucket(OzoneBucket ozoneBucket) {
       this.volumeName = ozoneBucket.getVolumeName();

@@ -27,10 +27,12 @@ public final class HealthCheckResponse {
 
   /** Health check response message. */
   @JsonProperty("message")
+  @SuppressWarnings("PMD.ImmutableField")
   private String message;
 
   /** Health check status code. */
   @JsonProperty("status")
+  @SuppressWarnings("PMD.ImmutableField")
   private int status;
 
   // Private constructor to prevent direct instantiation
@@ -53,9 +55,9 @@ public final class HealthCheckResponse {
   public static class Builder {
 
     // Required parameters
-    private String message;
+    private final String message;
 
-    private int status;
+    private final int status;
 
     // Constructor with required parameters
     public Builder(String message, int status) {

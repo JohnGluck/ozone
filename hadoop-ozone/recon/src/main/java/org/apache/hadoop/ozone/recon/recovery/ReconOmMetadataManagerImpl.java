@@ -56,14 +56,11 @@ import org.slf4j.LoggerFactory;
  * schema in OM will be automatically picked up by Recon.
  */
 @Singleton
-public class ReconOmMetadataManagerImpl extends OmMetadataManagerImpl
-    implements ReconOMMetadataManager {
+public class ReconOmMetadataManagerImpl extends OmMetadataManagerImpl implements ReconOMMetadataManager {
+  private static final Logger LOG = LoggerFactory.getLogger(ReconOmMetadataManagerImpl.class);
 
-  private static final Logger LOG =
-      LoggerFactory.getLogger(ReconOmMetadataManagerImpl.class);
-
-  private OzoneConfiguration ozoneConfiguration;
-  private ReconUtils reconUtils;
+  private final OzoneConfiguration ozoneConfiguration;
+  private final ReconUtils reconUtils;
   private boolean omTablesInitialized = false;
 
   @Inject

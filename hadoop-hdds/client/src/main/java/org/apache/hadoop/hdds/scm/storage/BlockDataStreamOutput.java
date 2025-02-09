@@ -18,7 +18,22 @@
 
 package org.apache.hadoop.hdds.scm.storage;
 
+import static org.apache.hadoop.hdds.scm.storage.ContainerProtocolCalls.putBlockAsync;
+
 import com.google.common.base.Preconditions;
+import java.io.IOException;
+import java.nio.ByteBuffer;
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Queue;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.CompletionException;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.atomic.AtomicLong;
+import java.util.concurrent.atomic.AtomicReference;
 import org.apache.hadoop.hdds.client.BlockID;
 import org.apache.hadoop.hdds.protocol.DatanodeDetails;
 import org.apache.hadoop.hdds.protocol.datanode.proto.ContainerProtos;
@@ -48,22 +63,6 @@ import org.apache.ratis.protocol.DataStreamReply;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.IOException;
-import java.nio.ByteBuffer;
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Queue;
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.CompletionException;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.atomic.AtomicLong;
-import java.util.concurrent.atomic.AtomicReference;
-
-import static org.apache.hadoop.hdds.scm.storage.ContainerProtocolCalls.putBlockAsync;
-
 /**
  * An {@link ByteBufferStreamOutput} used by the REST service in combination
  * with the SCMClient to write the value of a key to a sequence
@@ -81,28 +80,27 @@ import static org.apache.hadoop.hdds.scm.storage.ContainerProtocolCalls.putBlock
  * through to the container.
  */
 public class BlockDataStreamOutput implements ByteBufferStreamOutput {
-  public static final Logger LOG =
-      LoggerFactory.getLogger(BlockDataStreamOutput.class);
+  public static final Logger LOG = LoggerFactory.getLogger(BlockDataStreamOutput.class);
 
   public static final int PUT_BLOCK_REQUEST_LENGTH_MAX = 1 << 20;  // 1MB
 
-  public static final String EXCEPTION_MSG =
-      "Unexpected Storage Container Exception: ";
-  private static final CompletableFuture[] EMPTY_FUTURE_ARRAY = {};
+  public static final String EXCEPTION_MSG = "Unexpected Storage Container Exception: ";
 
-  private AtomicReference<BlockID> blockID;
+  private static final CompletableFuture<?>[] EMPTY_FUTURE_ARRAY = {};
+
+  private final AtomicReference<BlockID> blockID;
 
   private final BlockData.Builder containerBlockData;
   private XceiverClientFactory xceiverClientFactory;
   private XceiverClientRatis xceiverClient;
-  private OzoneClientConfig config;
+  private final OzoneClientConfig config;
 
   private int chunkIndex;
   private final AtomicLong chunkOffset = new AtomicLong();
 
   // Similar to 'BufferPool' but this list maintains only references
   // to the ByteBuffers.
-  private List<StreamBuffer> bufferList;
+  private final List<StreamBuffer> bufferList;
 
   // The IOException will be set by response handling thread in case there is an
   // exception received in the response. If the exception is set, the next
@@ -121,26 +119,22 @@ public class BlockDataStreamOutput implements ByteBufferStreamOutput {
   // be released from the buffer pool.
   private final StreamCommitWatcher commitWatcher;
 
-  private Queue<CompletableFuture<ContainerCommandResponseProto>>
-      putBlockFutures = new LinkedList<>();
+  private final Queue<CompletableFuture<ContainerCommandResponseProto>> putBlockFutures = new LinkedList<>();
 
   private final List<DatanodeDetails> failedServers;
   private final Checksum checksum;
 
-  //number of buffers used before doing a flush/putBlock.
-  private int flushPeriod;
-  private final Token<? extends TokenIdentifier> token;
   private final String tokenString;
   private final DataStreamOutput out;
   private CompletableFuture<DataStreamReply> dataStreamCloseReply;
-  private List<CompletableFuture<DataStreamReply>> futures = new ArrayList<>();
+  private final List<CompletableFuture<DataStreamReply>> futures = new ArrayList<>();
   private static final long SYNC_SIZE = 0; // TODO: disk sync is disabled for now
   private long syncPosition = 0;
   private StreamBuffer currentBuffer;
-  private XceiverClientMetrics metrics;
+  private final XceiverClientMetrics metrics;
   // buffers for which putBlock is yet to be executed
   private List<StreamBuffer> buffersForPutBlock;
-  private boolean isDatastreamPipelineMode;
+  private final boolean isDatastreamPipelineMode;
   /**
    * Creates a new BlockDataStreamOutput.
    *
@@ -160,26 +154,23 @@ public class BlockDataStreamOutput implements ByteBufferStreamOutput {
     this.config = config;
     this.isDatastreamPipelineMode = config.isDatastreamPipelineMode();
     this.blockID = new AtomicReference<>(blockID);
-    KeyValue keyValue =
-        KeyValue.newBuilder().setKey("TYPE").setValue("KEY").build();
-    this.containerBlockData =
-        BlockData.newBuilder().setBlockID(blockID.getDatanodeBlockIDProtobuf())
-            .addMetadata(keyValue);
-    this.xceiverClient =
-        (XceiverClientRatis)xceiverClientManager.acquireClient(pipeline, true);
-    this.token = token;
-    this.tokenString = (this.token == null) ? null :
-        this.token.encodeToUrlString();
+
+    KeyValue keyValue = KeyValue.newBuilder().setKey("TYPE").setValue("KEY").build();
+
+    this.containerBlockData = BlockData.newBuilder()
+        .setBlockID(blockID.getDatanodeBlockIDProtobuf())
+        .addMetadata(keyValue);
+
+    this.xceiverClient = (XceiverClientRatis)xceiverClientManager.acquireClient(pipeline, true);
+    this.tokenString = (token == null) ? null : token.encodeToUrlString();
     // Alternatively, stream setup can be delayed till the first chunk write.
     this.out = setupStream(pipeline);
     this.bufferList = bufferList;
-    flushPeriod = (int) (config.getStreamBufferFlushSize() / config
-        .getStreamBufferSize());
+    //number of buffers used before doing a flush/putBlock.
+    int flushPeriod = (int) (config.getStreamBufferFlushSize() / config.getStreamBufferSize());
 
-    Preconditions
-        .checkArgument(
-            (long) flushPeriod * config.getStreamBufferSize() == config
-                .getStreamBufferFlushSize());
+    Preconditions.checkArgument((long) flushPeriod * config.getStreamBufferSize()
+        == config.getStreamBufferFlushSize());
 
     // A single thread executor handle the responses of async requests
     responseExecutor = Executors.newSingleThreadExecutor();
@@ -188,8 +179,7 @@ public class BlockDataStreamOutput implements ByteBufferStreamOutput {
     writtenDataLength = 0;
     failedServers = new ArrayList<>(0);
     ioException = new AtomicReference<>(null);
-    checksum = new Checksum(config.getChecksumType(),
-        config.getBytesPerChecksum());
+    checksum = new Checksum(config.getChecksumType(), config.getBytesPerChecksum());
     metrics = XceiverClientManager.getXceiverClientMetrics();
   }
 
@@ -532,7 +522,7 @@ public class BlockDataStreamOutput implements ByteBufferStreamOutput {
       CompletableFuture.allOf(futures.toArray(EMPTY_FUTURE_ARRAY)).get();
       futures.clear();
     } catch (Exception e) {
-      LOG.warn("Failed to write all chunks through stream: " + e);
+      LOG.warn("Failed to write all chunks through stream:", e);
       throw new IOException(e);
     }
   }
@@ -613,9 +603,12 @@ public class BlockDataStreamOutput implements ByteBufferStreamOutput {
       IOException exception =  new IOException(EXCEPTION_MSG + e.toString(), e);
       ioException.compareAndSet(null, exception);
     } else {
-      LOG.debug("Previous request had already failed with " + ioe.toString()
-          + " so subsequent request also encounters"
-          + " Storage Container Exception ", e);
+      LOG.debug(
+          "Previous request had already failed with {}"
+              +" so subsequent request also encounters Storage Container Exception ",
+          ioe,
+          e
+      );
     }
   }
 

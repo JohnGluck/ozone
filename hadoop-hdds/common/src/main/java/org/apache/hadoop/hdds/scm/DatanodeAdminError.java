@@ -21,8 +21,8 @@ package org.apache.hadoop.hdds.scm;
  */
 public class DatanodeAdminError {
 
-  private String hostname;
-  private String error;
+  private final String hostname;
+  private final String error;
 
   public DatanodeAdminError(String host, String error) {
     this.hostname = host;

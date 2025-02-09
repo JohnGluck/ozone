@@ -44,7 +44,7 @@ public class FileSystemAccessException extends XException {
     H10("Hadoop config directory not found [{0}]"),
     H11("Could not load Hadoop config files, {0}");
 
-    private String template;
+    private final String template;
 
     ERROR(String template) {
       this.template = template;

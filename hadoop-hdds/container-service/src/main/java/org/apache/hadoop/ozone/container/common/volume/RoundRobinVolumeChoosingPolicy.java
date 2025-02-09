@@ -39,7 +39,7 @@ public class RoundRobinVolumeChoosingPolicy implements VolumeChoosingPolicy {
       RoundRobinVolumeChoosingPolicy.class);
 
   // Stores the index of the next volume to be returned.
-  private AtomicInteger nextVolumeIndex = new AtomicInteger(0);
+  private final AtomicInteger nextVolumeIndex = new AtomicInteger(0);
 
   @Override
   public HddsVolume chooseVolume(List<HddsVolume> volumes,

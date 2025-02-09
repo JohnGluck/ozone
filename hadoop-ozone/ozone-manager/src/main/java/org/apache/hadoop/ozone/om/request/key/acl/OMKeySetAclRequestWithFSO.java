@@ -62,9 +62,9 @@ public class OMKeySetAclRequestWithFSO extends OMKeyAclRequestWithFSO {
         .setUserInfo(getUserInfo()).build();
   }
 
-  private String path;
-  private List<OzoneAcl> ozoneAcls;
-  private OzoneObj obj;
+  private final String path;
+  private final List<OzoneAcl> ozoneAcls;
+  private final OzoneObj obj;
 
   public OMKeySetAclRequestWithFSO(
       OzoneManagerProtocolProtos.OMRequest omReq, BucketLayout bucketLayout) {

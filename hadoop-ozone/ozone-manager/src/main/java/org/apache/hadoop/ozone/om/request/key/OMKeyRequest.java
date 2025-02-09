@@ -192,13 +192,17 @@ public abstract class OMKeyRequest extends OMClientRequest {
    * Define the parameters carried when verifying the Key.
    */
   public static class ValidateKeyArgs {
-    private String snapshotReservedWord;
-    private String keyName;
-    private boolean validateSnapshotReserved;
-    private boolean validateKeyName;
+    private final String snapshotReservedWord;
+    private final String keyName;
+    private final boolean validateSnapshotReserved;
+    private final boolean validateKeyName;
 
-    ValidateKeyArgs(String snapshotReservedWord, String keyName,
-        boolean validateSnapshotReserved, boolean validateKeyName) {
+    ValidateKeyArgs(
+        String snapshotReservedWord,
+        String keyName,
+        boolean validateSnapshotReserved,
+        boolean validateKeyName
+    ) {
       this.snapshotReservedWord = snapshotReservedWord;
       this.keyName = keyName;
       this.validateSnapshotReserved = validateSnapshotReserved;

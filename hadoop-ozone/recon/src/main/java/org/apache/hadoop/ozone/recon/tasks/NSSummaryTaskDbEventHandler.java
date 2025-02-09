@@ -18,6 +18,11 @@
 
 package org.apache.hadoop.ozone.recon.tasks;
 
+import static org.apache.hadoop.ozone.recon.ReconServerConfigKeys.OZONE_RECON_NSSUMMARY_FLUSH_TO_DB_MAX_THRESHOLD;
+import static org.apache.hadoop.ozone.recon.ReconServerConfigKeys.OZONE_RECON_NSSUMMARY_FLUSH_TO_DB_MAX_THRESHOLD_DEFAULT;
+
+import java.io.IOException;
+import java.util.Map;
 import org.apache.hadoop.hdds.conf.OzoneConfiguration;
 import org.apache.hadoop.hdds.utils.db.RDBBatchOperation;
 import org.apache.hadoop.ozone.om.helpers.OmDirectoryInfo;
@@ -29,23 +34,16 @@ import org.apache.hadoop.ozone.recon.spi.ReconNamespaceSummaryManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.IOException;
-import java.util.Map;
-
-import static org.apache.hadoop.ozone.recon.ReconServerConfigKeys.OZONE_RECON_NSSUMMARY_FLUSH_TO_DB_MAX_THRESHOLD;
-import static org.apache.hadoop.ozone.recon.ReconServerConfigKeys.OZONE_RECON_NSSUMMARY_FLUSH_TO_DB_MAX_THRESHOLD_DEFAULT;
-
 /**
  * Class for holding all NSSummaryTask methods
  * related to DB operations so that they can commonly be
  * used in NSSummaryTaskWithFSO and NSSummaryTaskWithLegacy.
  */
 public class NSSummaryTaskDbEventHandler {
+  private static final Logger LOG = LoggerFactory.getLogger(NSSummaryTaskDbEventHandler.class);
 
-  private static final Logger LOG =
-      LoggerFactory.getLogger(NSSummaryTaskDbEventHandler.class);
-  private ReconNamespaceSummaryManager reconNamespaceSummaryManager;
-  private ReconOMMetadataManager reconOMMetadataManager;
+  private final ReconNamespaceSummaryManager reconNamespaceSummaryManager;
+  private final ReconOMMetadataManager reconOMMetadataManager;
 
   private final long nsSummaryFlushToDBMaxThreshold;
 

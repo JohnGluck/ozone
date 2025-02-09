@@ -19,6 +19,11 @@ package org.apache.hadoop.ozone.client.io;
 
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.base.Preconditions;
+import java.io.IOException;
+import java.nio.ByteBuffer;
+import java.util.Collection;
+import java.util.List;
+import java.util.Map;
 import org.apache.hadoop.fs.FSExceptionMessages;
 import org.apache.hadoop.hdds.client.ReplicationConfig;
 import org.apache.hadoop.hdds.protocol.DatanodeDetails;
@@ -40,13 +45,6 @@ import org.apache.hadoop.ozone.om.protocol.OzoneManagerProtocol;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.IOException;
-import java.nio.ByteBuffer;
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
-
 /**
  * Maintaining a list of BlockInputStream. Write based on offset.
  *
@@ -56,10 +54,10 @@ import java.util.UUID;
  *
  * TODO : currently not support multi-thread access.
  */
-public class KeyDataStreamOutput extends AbstractDataStreamOutput
-    implements KeyMetadataAware {
+public class KeyDataStreamOutput extends AbstractDataStreamOutput implements KeyMetadataAware {
+  public static final Logger LOG = LoggerFactory.getLogger(KeyDataStreamOutput.class);
 
-  private OzoneClientConfig config;
+  private final OzoneClientConfig config;
 
   /**
    * Defines stream action while calling handleFlushOrClose.
@@ -67,9 +65,6 @@ public class KeyDataStreamOutput extends AbstractDataStreamOutput
   enum StreamAction {
     FLUSH, HSYNC, CLOSE, FULL
   }
-
-  public static final Logger LOG =
-      LoggerFactory.getLogger(KeyDataStreamOutput.class);
 
   private boolean closed;
 
@@ -80,7 +75,7 @@ public class KeyDataStreamOutput extends AbstractDataStreamOutput
 
   private final BlockDataStreamOutputEntryPool blockDataStreamOutputEntryPool;
 
-  private long clientID;
+  private final long clientID;
 
   /**
    * Indicates if an atomic write is required. When set to true,
@@ -88,7 +83,7 @@ public class KeyDataStreamOutput extends AbstractDataStreamOutput
    * A mismatch will prevent the commit from succeeding.
    * This is essential for operations like S3 put to ensure atomicity.
    */
-  private boolean atomicKeyCreation;
+  private final boolean atomicKeyCreation;
 
   @VisibleForTesting
   public List<BlockDataStreamOutputEntry> getStreamEntries() {

@@ -53,7 +53,7 @@ public class SCMMetrics {
   @Metric private MutableCounterLong containerReportReadCount;
   @Metric private MutableCounterLong containerReportWriteCount;
 
-  private DBCheckpointMetrics dbCheckpointMetrics;
+  private final DBCheckpointMetrics dbCheckpointMetrics;
 
   public DBCheckpointMetrics getDBCheckpointMetrics() {
     return dbCheckpointMetrics;

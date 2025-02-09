@@ -37,11 +37,11 @@ import java.util.concurrent.ConcurrentHashMap;
  * which will be moved out.
  */
 public class FindSourceGreedy implements FindSourceStrategy {
-  private static final Logger LOG =
-      LoggerFactory.getLogger(FindSourceGreedy.class);
-  private Map<DatanodeDetails, Long> sizeLeavingNode;
-  private PriorityQueue<DatanodeUsageInfo> potentialSources;
-  private NodeManager nodeManager;
+  private static final Logger LOG = LoggerFactory.getLogger(FindSourceGreedy.class);
+
+  private final Map<DatanodeDetails, Long> sizeLeavingNode;
+  private final PriorityQueue<DatanodeUsageInfo> potentialSources;
+  private final NodeManager nodeManager;
   private ContainerBalancerConfiguration config;
   private Double lowerLimit;
 

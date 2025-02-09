@@ -31,8 +31,7 @@ import java.nio.ByteBuffer;
 @InterfaceAudience.Private
 public class NativeRSRawEncoder extends AbstractNativeRawEncoder {
 
-  private org.apache.hadoop.io.erasurecode.rawcoder.NativeRSRawEncoder
-      hadoopNativeRSRawEncoder;
+  private final org.apache.hadoop.io.erasurecode.rawcoder.NativeRSRawEncoder hadoopNativeRSRawEncoder;
 
   public NativeRSRawEncoder(ECReplicationConfig ecReplicationConfig) {
     super(ecReplicationConfig);

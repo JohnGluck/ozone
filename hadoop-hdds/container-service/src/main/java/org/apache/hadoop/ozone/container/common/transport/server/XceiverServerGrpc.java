@@ -74,14 +74,13 @@ public final class XceiverServerGrpc implements XceiverServerSpi {
   private static final Logger
       LOG = LoggerFactory.getLogger(XceiverServerGrpc.class);
   private int port;
-  private UUID id;
-  private Server server;
+  private final UUID id;
+  private final Server server;
   private final ContainerDispatcher storageContainer;
   private boolean isStarted;
-  private DatanodeDetails datanodeDetails;
-  private ThreadPoolExecutor readExecutors;
-  private EventLoopGroup eventLoopGroup;
-  private Class<? extends ServerChannel> channelType;
+  private final DatanodeDetails datanodeDetails;
+  private final ThreadPoolExecutor readExecutors;
+  private final EventLoopGroup eventLoopGroup;
 
   /**
    * Constructs a Grpc server class.
@@ -122,6 +121,8 @@ public final class XceiverServerGrpc implements XceiverServerSpi {
         .setNameFormat(datanodeDetails.threadNamePrefix() +
             "ChunkReader-ELG-%d")
         .build();
+
+    Class<? extends ServerChannel> channelType;
 
     if (Epoll.isAvailable()) {
       eventLoopGroup = new EpollEventLoopGroup(poolSize / 10, factory);

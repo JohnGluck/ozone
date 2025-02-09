@@ -62,18 +62,15 @@ public class SCMSecurityProtocolServerSideTranslatorPB
   private final SCMSecurityProtocol impl;
   private final StorageContainerManager scm;
 
-  private OzoneProtocolMessageDispatcher<SCMSecurityRequest,
-      SCMSecurityResponse, ProtocolMessageEnum>
-      dispatcher;
+  private final OzoneProtocolMessageDispatcher<SCMSecurityRequest,
+      SCMSecurityResponse, ProtocolMessageEnum> dispatcher;
 
   public SCMSecurityProtocolServerSideTranslatorPB(SCMSecurityProtocol impl,
       StorageContainerManager storageContainerManager,
       ProtocolMessageMetrics messageMetrics) {
     this.impl = impl;
     this.scm = storageContainerManager;
-    this.dispatcher =
-        new OzoneProtocolMessageDispatcher<>("ScmSecurityProtocol",
-            messageMetrics, LOG);
+    this.dispatcher = new OzoneProtocolMessageDispatcher<>("ScmSecurityProtocol", messageMetrics, LOG);
   }
 
   @Override

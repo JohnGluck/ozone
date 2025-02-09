@@ -19,6 +19,17 @@ package org.apache.hadoop.ozone.client.io;
 
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableMap;
+import java.io.EOFException;
+import java.io.IOException;
+import java.nio.ByteBuffer;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Deque;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
+import java.util.function.Function;
 import org.apache.hadoop.fs.FSExceptionMessages;
 import org.apache.hadoop.hdds.client.BlockID;
 import org.apache.hadoop.hdds.client.ContainerBlockID;
@@ -36,26 +47,12 @@ import org.apache.hadoop.hdds.scm.storage.ByteReaderStrategy;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.EOFException;
-import java.io.IOException;
-import java.nio.ByteBuffer;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Deque;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
-import java.util.function.Function;
-
 /**
  * Class to read data from an EC Block Group.
  */
 public class ECBlockInputStream extends BlockExtendedInputStream {
 
-  private static final Logger LOG =
-      LoggerFactory.getLogger(ECBlockInputStream.class);
+  private static final Logger LOG = LoggerFactory.getLogger(ECBlockInputStream.class);
 
   private final ECReplicationConfig repConfig;
   private final int ecChunkSize;
@@ -75,7 +72,7 @@ public class ECBlockInputStream extends BlockExtendedInputStream {
   private long position = 0;
   private boolean closed = false;
   private boolean seeked = false;
-  private OzoneClientConfig config;
+  private final OzoneClientConfig config;
   protected ECReplicationConfig getRepConfig() {
     return repConfig;
   }
@@ -174,7 +171,7 @@ public class ECBlockInputStream extends BlockExtendedInputStream {
       Pipeline pipeline = Pipeline.newBuilder()
           .setReplicationConfig(StandaloneReplicationConfig.getInstance(
               HddsProtos.ReplicationFactor.ONE))
-          .setNodes(Arrays.asList(dataLocation))
+          .setNodes(Collections.singletonList(dataLocation))
           .setId(PipelineID.valueOf(dataLocation.getUuid()))
           .setReplicaIndexes(ImmutableMap.of(dataLocation, locationIndex + 1))
           .setState(Pipeline.PipelineState.CLOSED)
@@ -517,11 +514,6 @@ public class ECBlockInputStream extends BlockExtendedInputStream {
   protected synchronized void setPos(long pos) {
     LOG.trace("{}: setPos({})", this, pos);
     position = pos;
-  }
-
-  @Override
-  public synchronized boolean seekToNewSource(long l) throws IOException {
-    return false;
   }
 
   protected ContainerBlockID blockIdForDebug() {

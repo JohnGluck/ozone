@@ -17,14 +17,13 @@
 
 package org.apache.hadoop.ozone.lease;
 
+import static org.apache.hadoop.ozone.lease.Lease.messageForResource;
+
 import java.util.Map;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-
-import static org.apache.hadoop.ozone.lease.Lease.messageForResource;
-
 import java.util.concurrent.Semaphore;
 import java.util.concurrent.TimeUnit;
 import org.slf4j.Logger;
@@ -48,7 +47,7 @@ public class LeaseManager<T> {
   private final String name;
   private final long defaultTimeout;
   private Map<T, Lease<T>> activeLeases;
-  private Semaphore semaphore = new Semaphore(0);
+  private final Semaphore semaphore = new Semaphore(0);
   private LeaseMonitor leaseMonitor;
   private Thread leaseMonitorThread;
   private boolean isRunning;

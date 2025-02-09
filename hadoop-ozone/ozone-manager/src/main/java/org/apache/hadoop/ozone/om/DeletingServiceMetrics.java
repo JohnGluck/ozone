@@ -31,12 +31,9 @@ import org.apache.hadoop.ozone.OzoneConsts;
 @Metrics(about = "Deletion Service Metrics", context = OzoneConsts.OZONE)
 public final class DeletingServiceMetrics {
 
-  public static final String METRICS_SOURCE_NAME =
-      DeletingServiceMetrics.class.getSimpleName();
-  private MetricsRegistry registry;
+  public static final String METRICS_SOURCE_NAME = DeletingServiceMetrics.class.getSimpleName();
 
   private DeletingServiceMetrics() {
-    this.registry = new MetricsRegistry(METRICS_SOURCE_NAME);
   }
 
   /**

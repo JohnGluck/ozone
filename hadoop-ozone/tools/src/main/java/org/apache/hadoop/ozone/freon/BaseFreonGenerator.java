@@ -124,7 +124,7 @@ public class BaseFreonGenerator implements FreonSubcommand {
   @CommandLine.Spec
   private CommandLine.Model.CommandSpec spec;
 
-  private MetricRegistry metrics = new MetricRegistry();
+  private final MetricRegistry metrics = new MetricRegistry();
 
   private AtomicLong successCounter;
   private AtomicLong failureCounter;

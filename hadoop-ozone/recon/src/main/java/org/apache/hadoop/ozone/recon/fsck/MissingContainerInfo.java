@@ -28,11 +28,11 @@ import org.apache.hadoop.ozone.recon.api.types.KeyMetadata;
  */
 public class MissingContainerInfo {
 
-  private long containerId;
-  private long missingSinceTimestamp;
-  private String lastKnownPipelineId;
-  private List<String> lastKnownDatanodes;
-  private List<KeyMetadata> keysInContainer;
+  private final long containerId;
+  private final long missingSinceTimestamp;
+  private final String lastKnownPipelineId;
+  private final List<String> lastKnownDatanodes;
+  private final List<KeyMetadata> keysInContainer;
 
   public MissingContainerInfo(long containerId,
                               long missingSinceTimestamp,

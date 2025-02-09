@@ -234,8 +234,8 @@ public class LayoutVersionInstanceFactory<T> {
    * @param <T> instance
    */
   static class VersionedInstance<T> {
-    private int version;
-    private T instance;
+    private final int version;
+    private final T instance;
 
     VersionedInstance(int version, T instance) {
       this.version = version;

@@ -17,6 +17,10 @@
 
 package org.apache.hadoop.ozone.om;
 
+import static org.apache.hadoop.ozone.conf.OzoneServiceConfig.DEFAULT_SHUTDOWN_HOOK_PRIORITY;
+
+import java.io.IOException;
+import java.util.concurrent.Callable;
 import org.apache.hadoop.hdds.cli.GenericCli;
 import org.apache.hadoop.hdds.cli.HddsVersionProvider;
 import org.apache.hadoop.hdds.conf.OzoneConfiguration;
@@ -28,14 +32,8 @@ import org.apache.hadoop.ozone.util.ShutdownHookManager;
 import org.apache.hadoop.security.authentication.client.AuthenticationException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import picocli.CommandLine;
 import picocli.CommandLine.Command;
-
-import java.io.IOException;
-import java.util.concurrent.Callable;
-
-import static org.apache.hadoop.ozone.conf.OzoneServiceConfig.DEFAULT_SHUTDOWN_HOOK_PRIORITY;
 
 /**
  * This class provides a command line interface to start the OM
@@ -48,7 +46,7 @@ import static org.apache.hadoop.ozone.conf.OzoneServiceConfig.DEFAULT_SHUTDOWN_H
 public class OzoneManagerStarter extends GenericCli implements Callable<Void> {
 
   private OzoneConfiguration conf;
-  private OMStarterInterface receiver;
+  private final OMStarterInterface receiver;
   private static final Logger LOG =
       LoggerFactory.getLogger(OzoneManagerStarter.class);
 

@@ -18,6 +18,9 @@
 
 package org.apache.hadoop.ozone.client;
 
+import static org.apache.hadoop.ozone.OzoneConsts.QUOTA_RESET;
+
+import com.google.common.base.Preconditions;
 import java.io.IOException;
 import java.time.Instant;
 import java.util.ArrayList;
@@ -26,19 +29,14 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
-
 import org.apache.hadoop.hdds.client.OzoneQuota;
 import org.apache.hadoop.hdds.conf.ConfigurationSource;
 import org.apache.hadoop.hdds.scm.client.HddsClientUtils;
 import org.apache.hadoop.ozone.OzoneAcl;
 import org.apache.hadoop.ozone.client.protocol.ClientProtocol;
 import org.apache.hadoop.ozone.om.helpers.WithMetadata;
-
-import com.google.common.base.Preconditions;
 import org.apache.hadoop.ozone.security.acl.OzoneObj;
 import org.apache.hadoop.ozone.security.acl.OzoneObjInfo;
-
-import static org.apache.hadoop.ozone.OzoneConsts.QUOTA_RESET;
 
 /**
  * A class that encapsulates OzoneVolume.
@@ -59,39 +57,47 @@ public class OzoneVolume extends WithMetadata {
   /**
    * Admin Name of the Volume.
    */
-  private String admin;
+  private final String admin;
+
   /**
    * Owner of the Volume.
    */
   private String owner;
+
   /**
    * Quota of bytes allocated for the Volume.
    */
   private long quotaInBytes;
+
   /**
    * Quota of bucket count allocated for the Volume.
    */
   private long quotaInNamespace;
+
   /**
    * Bucket namespace quota usage.
    */
-  private long usedNamespace;
+  private final long usedNamespace;
+
   /**
    * Creation time of the volume.
    */
-  private Instant creationTime;
+  private final Instant creationTime;
+
   /**
    * Modification time of the volume.
    */
   private Instant modificationTime;
+
   /**
    * Volume ACLs.
    */
-  private List<OzoneAcl> acls;
+  private final List<OzoneAcl> acls;
 
   private int listCacheSize;
 
-  private OzoneObj ozoneObj;
+  private final OzoneObj ozoneObj;
+
   /**
    * Reference count on this Ozone volume.
    *
@@ -104,7 +110,7 @@ public class OzoneVolume extends WithMetadata {
    * Volumes created using CLI, ObjectStore API or upgraded from older OM DB
    * will have reference count set to zero by default.
    */
-  private long refCount;
+  private final long refCount;
 
   protected OzoneVolume(Builder builder) {
     super(builder);
@@ -337,8 +343,7 @@ public class OzoneVolume extends WithMetadata {
    * @throws IOException
    */
   public OzoneBucket getBucket(String bucketName) throws IOException {
-    OzoneBucket bucket = proxy.getBucketDetails(name, bucketName);
-    return bucket;
+    return proxy.getBucketDetails(name, bucketName);
   }
 
   /**

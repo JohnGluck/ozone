@@ -27,7 +27,7 @@ public class Component {
   /**
    * The type of the component (eg. scm, s3g...)
    */
-  private Type name;
+  private final Type name;
 
   /**
    * Unique identifier of the instance (uuid or index). Can be null for

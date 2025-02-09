@@ -18,6 +18,9 @@
 
 package org.apache.hadoop.hdds.scm.pipeline;
 
+import java.util.Map;
+import java.util.Optional;
+import java.util.concurrent.ConcurrentHashMap;
 import org.apache.hadoop.hdds.annotation.InterfaceAudience;
 import org.apache.hadoop.metrics2.MetricsCollector;
 import org.apache.hadoop.metrics2.MetricsRecordBuilder;
@@ -27,13 +30,8 @@ import org.apache.hadoop.metrics2.annotation.Metric;
 import org.apache.hadoop.metrics2.annotation.Metrics;
 import org.apache.hadoop.metrics2.lib.DefaultMetricsSystem;
 import org.apache.hadoop.metrics2.lib.Interns;
-import org.apache.hadoop.metrics2.lib.MetricsRegistry;
 import org.apache.hadoop.metrics2.lib.MutableCounterLong;
 import org.apache.hadoop.ozone.OzoneConsts;
-
-import java.util.Map;
-import java.util.Optional;
-import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * This class maintains Pipeline related metrics.
@@ -42,10 +40,8 @@ import java.util.concurrent.ConcurrentHashMap;
 @Metrics(about = "SCM PipelineManager Metrics", context = OzoneConsts.OZONE)
 public final class SCMPipelineMetrics implements MetricsSource {
 
-  private static final String SOURCE_NAME =
-      SCMPipelineMetrics.class.getSimpleName();
+  private static final String SOURCE_NAME = SCMPipelineMetrics.class.getSimpleName();
 
-  private MetricsRegistry registry;
   private static SCMPipelineMetrics instance;
 
   private @Metric MutableCounterLong numPipelineAllocated;
@@ -61,7 +57,6 @@ public final class SCMPipelineMetrics implements MetricsSource {
 
   /** Private constructor. */
   private SCMPipelineMetrics() {
-    this.registry = new MetricsRegistry(SOURCE_NAME);
     numBlocksAllocated = new ConcurrentHashMap<>();
     numBytesWritten = new ConcurrentHashMap<>();
   }

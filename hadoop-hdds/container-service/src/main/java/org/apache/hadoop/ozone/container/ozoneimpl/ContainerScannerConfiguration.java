@@ -17,6 +17,9 @@
  */
 package org.apache.hadoop.ozone.container.ozoneimpl;
 
+import static org.apache.hadoop.hdds.conf.ConfigTag.DATANODE;
+
+import java.time.Duration;
 import org.apache.hadoop.hdds.conf.Config;
 import org.apache.hadoop.hdds.conf.ConfigGroup;
 import org.apache.hadoop.hdds.conf.ConfigTag;
@@ -25,10 +28,6 @@ import org.apache.hadoop.hdds.conf.PostConstruct;
 import org.apache.hadoop.ozone.OzoneConsts;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.time.Duration;
-
-import static org.apache.hadoop.hdds.conf.ConfigTag.DATANODE;
 
 /**
  * This class defines configuration parameters for the container scanners.
@@ -82,6 +81,7 @@ public class ContainerScannerConfiguration {
       tags = {ConfigTag.STORAGE},
       description = "Can be used to disable the background container data " +
           "scanner for developer testing purposes.")
+  @SuppressWarnings("PMD.ImmutableField")
   private boolean dataScanEnabled = true;
 
   @Config(key = "dev.metadata.scan.enabled",
@@ -90,6 +90,7 @@ public class ContainerScannerConfiguration {
       tags = {ConfigTag.STORAGE},
       description = "Can be used to disable the background container metadata" +
           " scanner for developer testing purposes.")
+  @SuppressWarnings("PMD.ImmutableField")
   private boolean metadataScanEnabled = true;
 
   @Config(key = "metadata.scan.interval",

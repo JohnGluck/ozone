@@ -44,7 +44,7 @@ public class ContainerReplicaHistoryList {
     return CODEC;
   }
 
-  private List<ContainerReplicaHistory> replicaHistories;
+  private final List<ContainerReplicaHistory> replicaHistories;
 
   public ContainerReplicaHistoryList(
       List<ContainerReplicaHistory> replicaHistories) {

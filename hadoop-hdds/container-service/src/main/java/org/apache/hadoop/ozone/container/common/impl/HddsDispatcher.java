@@ -18,9 +18,21 @@
 
 package org.apache.hadoop.ozone.container.common.impl;
 
+import static org.apache.hadoop.hdds.scm.protocolPB.ContainerCommandResponseBuilders.malformedRequest;
+import static org.apache.hadoop.hdds.scm.protocolPB.ContainerCommandResponseBuilders.unsupportedRequest;
+import static org.apache.hadoop.ozone.audit.AuditLogger.PerformanceStringBuilder;
+import static org.apache.hadoop.ozone.container.common.interfaces.Container.ScanResult;
+
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.base.Preconditions;
 import com.google.protobuf.ServiceException;
+import java.io.File;
+import java.io.IOException;
+import java.util.Map;
+import java.util.Optional;
+import java.util.Set;
+import java.util.TreeMap;
+import java.util.concurrent.TimeUnit;
 import org.apache.hadoop.hdds.HddsConfigKeys;
 import org.apache.hadoop.hdds.HddsUtils;
 import org.apache.hadoop.hdds.client.BlockID;
@@ -59,27 +71,13 @@ import org.apache.hadoop.ozone.container.common.interfaces.Handler;
 import org.apache.hadoop.ozone.container.common.statemachine.StateContext;
 import org.apache.hadoop.ozone.container.common.transport.server.ratis.DispatcherContext;
 import org.apache.hadoop.ozone.container.common.volume.HddsVolume;
-import org.apache.hadoop.ozone.container.common.volume.VolumeSet;
-import org.apache.hadoop.ozone.container.ozoneimpl.OnDemandContainerDataScanner;
 import org.apache.hadoop.ozone.container.common.volume.VolumeUsage;
+import org.apache.hadoop.ozone.container.ozoneimpl.OnDemandContainerDataScanner;
 import org.apache.hadoop.util.Time;
 import org.apache.ratis.statemachine.StateMachine;
 import org.apache.ratis.thirdparty.com.google.protobuf.ProtocolMessageEnum;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.io.File;
-import java.io.IOException;
-import java.util.Map;
-import java.util.Optional;
-import java.util.Set;
-import java.util.TreeMap;
-import java.util.concurrent.TimeUnit;
-
-import static org.apache.hadoop.ozone.audit.AuditLogger.PerformanceStringBuilder;
-import static org.apache.hadoop.hdds.scm.protocolPB.ContainerCommandResponseBuilders.malformedRequest;
-import static org.apache.hadoop.hdds.scm.protocolPB.ContainerCommandResponseBuilders.unsupportedRequest;
-import static org.apache.hadoop.ozone.container.common.interfaces.Container.ScanResult;
 
 /**
  * Ozone Container dispatcher takes a call from the netty server and routes it
@@ -103,18 +101,17 @@ public class HddsDispatcher implements ContainerDispatcher, Auditor {
   private static final String AUDIT_PARAM_START_LOCAL_ID = "startLocalID";
   private static final String AUDIT_PARAM_PREV_CHUNKNAME = "prevChunkName";
   private final Map<ContainerType, Handler> handlers;
-  private final ConfigurationSource conf;
   private final ContainerSet containerSet;
   private final StateContext context;
   private final float containerCloseThreshold;
   private final ProtocolMessageMetrics<ProtocolMessageEnum> protocolMetrics;
-  private OzoneProtocolMessageDispatcher<ContainerCommandRequestProto,
+  private final OzoneProtocolMessageDispatcher<ContainerCommandRequestProto,
       ContainerCommandResponseProto, ProtocolMessageEnum> dispatcher;
   private String clusterId;
   private ContainerMetrics metrics;
   private final TokenVerifier tokenVerifier;
-  private long slowOpThresholdNs;
-  private VolumeUsage.MinFreeSpaceCalculator freeSpaceCalculator;
+  private final long slowOpThresholdNs;
+  private final VolumeUsage.MinFreeSpaceCalculator freeSpaceCalculator;
 
   /**
    * Constructs an OzoneContainer that receives calls from
@@ -128,17 +125,16 @@ public class HddsDispatcher implements ContainerDispatcher, Auditor {
       ContainerMetrics metrics,
       TokenVerifier tokenVerifier
   ) {
-    this.conf = config;
     this.containerSet = contSet;
     this.context = context;
     this.handlers = handlers;
     this.metrics = metrics;
-    this.containerCloseThreshold = conf.getFloat(
+    this.containerCloseThreshold = config.getFloat(
         HddsConfigKeys.HDDS_CONTAINER_CLOSE_THRESHOLD,
         HddsConfigKeys.HDDS_CONTAINER_CLOSE_THRESHOLD_DEFAULT);
     this.tokenVerifier = tokenVerifier != null ? tokenVerifier
         : new NoopTokenVerifier();
-    this.slowOpThresholdNs = getSlowOpThresholdMs(conf) * 1000000;
+    this.slowOpThresholdNs = getSlowOpThresholdMs(config) * 1000000;
 
     protocolMetrics =
         new ProtocolMessageMetrics<>(
@@ -152,7 +148,7 @@ public class HddsDispatcher implements ContainerDispatcher, Auditor {
             LOG,
             HddsUtils::processForDebug,
             HddsUtils::processForDebug);
-    this.freeSpaceCalculator = new VolumeUsage.MinFreeSpaceCalculator(conf);
+    this.freeSpaceCalculator = new VolumeUsage.MinFreeSpaceCalculator(config);
   }
 
   @Override

@@ -29,17 +29,17 @@ import org.apache.hadoop.hdds.client.ReplicationType;
  */
 public class OzoneMultipartUpload {
 
-  private String volumeName;
+  private final String volumeName;
 
-  private String bucketName;
+  private final String bucketName;
 
-  private String keyName;
+  private final String keyName;
 
-  private String uploadId;
+  private final String uploadId;
 
   private Instant creationTime;
 
-  private ReplicationConfig replicationConfig;
+  private final ReplicationConfig replicationConfig;
 
   @Deprecated
   public OzoneMultipartUpload(String volumeName, String bucketName,
@@ -51,9 +51,7 @@ public class OzoneMultipartUpload {
     this.keyName = keyName;
     this.uploadId = uploadId;
     this.creationTime = creationTime;
-    this.replicationConfig =
-            ReplicationConfig
-                    .fromTypeAndFactor(replicationType, replicationFactor);
+    this.replicationConfig = ReplicationConfig.fromTypeAndFactor(replicationType, replicationFactor);
   }
 
   public OzoneMultipartUpload(String volumeName, String bucketName,

@@ -18,21 +18,20 @@
 
 package org.apache.hadoop.ozone.om.request.util;
 
+import static org.apache.hadoop.ozone.OzoneConsts.OZONE_URI_DELIMITER;
+
 import com.google.common.base.Preconditions;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.hadoop.ozone.om.exceptions.OMException;
-import org.apache.hadoop.ozone.protocol.proto.OzoneManagerProtocolProtos
-    .OzoneObj.ObjectType;
+import org.apache.hadoop.ozone.protocol.proto.OzoneManagerProtocolProtos.OzoneObj.ObjectType;
 import org.apache.hadoop.ozone.security.acl.OzoneObj;
-
-import static org.apache.hadoop.ozone.OzoneConsts.OZONE_URI_DELIMITER;
 
 /**
  * Utility class to parse {@link OzoneObj#getPath()}.
  */
 public class ObjectParser {
 
-  private String volume;
+  private final String volume;
   private String bucket;
   private String key;
 

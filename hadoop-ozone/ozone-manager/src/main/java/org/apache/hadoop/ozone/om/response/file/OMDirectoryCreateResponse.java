@@ -18,25 +18,22 @@
 
 package org.apache.hadoop.ozone.om.response.file;
 
-import org.apache.hadoop.ozone.om.OMMetadataManager;
-import org.apache.hadoop.ozone.om.helpers.BucketLayout;
-import org.apache.hadoop.ozone.om.helpers.OmBucketInfo;
-import org.apache.hadoop.ozone.om.helpers.OmKeyInfo;
-import org.apache.hadoop.ozone.om.response.CleanupTableInfo;
-import org.apache.hadoop.ozone.om.request.file.OMDirectoryCreateRequest.Result;
-
-import org.apache.hadoop.ozone.om.response.key.OmKeyResponse;
-import org.apache.hadoop.ozone.protocol.proto.OzoneManagerProtocolProtos
-    .OMResponse;
-import org.apache.hadoop.hdds.utils.db.BatchOperation;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import static org.apache.hadoop.ozone.om.OmMetadataManagerImpl.KEY_TABLE;
 
 import jakarta.annotation.Nonnull;
 import java.io.IOException;
 import java.util.List;
-
-import static org.apache.hadoop.ozone.om.OmMetadataManagerImpl.KEY_TABLE;
+import org.apache.hadoop.hdds.utils.db.BatchOperation;
+import org.apache.hadoop.ozone.om.OMMetadataManager;
+import org.apache.hadoop.ozone.om.helpers.BucketLayout;
+import org.apache.hadoop.ozone.om.helpers.OmBucketInfo;
+import org.apache.hadoop.ozone.om.helpers.OmKeyInfo;
+import org.apache.hadoop.ozone.om.request.file.OMDirectoryCreateRequest.Result;
+import org.apache.hadoop.ozone.om.response.CleanupTableInfo;
+import org.apache.hadoop.ozone.om.response.key.OmKeyResponse;
+import org.apache.hadoop.ozone.protocol.proto.OzoneManagerProtocolProtos.OMResponse;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Response for create directory request.
@@ -49,7 +46,7 @@ public class OMDirectoryCreateResponse extends OmKeyResponse {
 
   private OmKeyInfo dirKeyInfo;
   private List<OmKeyInfo> parentKeyInfos;
-  private Result result;
+  private final Result result;
   private OmBucketInfo bucketInfo;
 
   public OMDirectoryCreateResponse(@Nonnull OMResponse omResponse,

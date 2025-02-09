@@ -18,45 +18,10 @@
 
 package org.apache.hadoop.ozone.recon.api;
 
+import static org.apache.hadoop.hdds.protocol.proto.HddsProtos.NodeOperationalState.DECOMMISSIONING;
+
 import com.fasterxml.jackson.databind.JsonNode;
 import com.google.common.base.Preconditions;
-import org.apache.commons.lang3.StringUtils;
-import org.apache.hadoop.hdds.client.DecommissionUtils;
-import org.apache.hadoop.hdds.protocol.DatanodeDetails;
-import org.apache.hadoop.hdds.protocol.proto.HddsProtos;
-import org.apache.hadoop.hdds.protocol.proto.HddsProtos.NodeOperationalState;
-import org.apache.hadoop.hdds.protocol.proto.HddsProtos.NodeState;
-import org.apache.hadoop.hdds.scm.container.ContainerInfo;
-import org.apache.hadoop.hdds.scm.container.ContainerNotFoundException;
-import org.apache.hadoop.hdds.scm.container.placement.metrics.SCMNodeStat;
-import org.apache.hadoop.hdds.scm.node.DatanodeInfo;
-import org.apache.hadoop.hdds.scm.node.NodeStatus;
-import org.apache.hadoop.hdds.scm.node.states.NodeNotFoundException;
-import org.apache.hadoop.hdds.scm.pipeline.Pipeline;
-import org.apache.hadoop.hdds.scm.pipeline.PipelineID;
-import org.apache.hadoop.hdds.scm.pipeline.PipelineNotFoundException;
-import org.apache.hadoop.hdds.scm.protocol.StorageContainerLocationProtocol;
-import org.apache.hadoop.hdds.scm.server.OzoneStorageContainerManager;
-import org.apache.hadoop.hdds.scm.container.ContainerID;
-import org.apache.hadoop.ozone.ClientVersion;
-import org.apache.hadoop.ozone.recon.api.types.DatanodeMetadata;
-import org.apache.hadoop.ozone.recon.api.types.DatanodePipeline;
-import org.apache.hadoop.ozone.recon.api.types.DatanodeStorageReport;
-import org.apache.hadoop.ozone.recon.api.types.DatanodesResponse;
-import org.apache.hadoop.ozone.recon.api.types.RemoveDataNodesResponseWrapper;
-import org.apache.hadoop.ozone.recon.scm.ReconNodeManager;
-import org.apache.hadoop.ozone.recon.scm.ReconContainerManager;
-
-import javax.inject.Inject;
-import javax.ws.rs.Consumes;
-import javax.ws.rs.GET;
-import javax.ws.rs.PUT;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
-import javax.ws.rs.QueryParam;
-import javax.ws.rs.WebApplicationException;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -69,12 +34,45 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-
+import javax.inject.Inject;
+import javax.ws.rs.Consumes;
+import javax.ws.rs.GET;
+import javax.ws.rs.PUT;
+import javax.ws.rs.Path;
+import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
+import javax.ws.rs.WebApplicationException;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.hadoop.hdds.client.DecommissionUtils;
+import org.apache.hadoop.hdds.protocol.DatanodeDetails;
+import org.apache.hadoop.hdds.protocol.proto.HddsProtos;
+import org.apache.hadoop.hdds.protocol.proto.HddsProtos.NodeOperationalState;
+import org.apache.hadoop.hdds.protocol.proto.HddsProtos.NodeState;
+import org.apache.hadoop.hdds.scm.container.ContainerID;
+import org.apache.hadoop.hdds.scm.container.ContainerInfo;
+import org.apache.hadoop.hdds.scm.container.ContainerNotFoundException;
+import org.apache.hadoop.hdds.scm.container.placement.metrics.SCMNodeStat;
+import org.apache.hadoop.hdds.scm.node.DatanodeInfo;
+import org.apache.hadoop.hdds.scm.node.NodeStatus;
+import org.apache.hadoop.hdds.scm.node.states.NodeNotFoundException;
+import org.apache.hadoop.hdds.scm.pipeline.Pipeline;
+import org.apache.hadoop.hdds.scm.pipeline.PipelineID;
+import org.apache.hadoop.hdds.scm.pipeline.PipelineNotFoundException;
+import org.apache.hadoop.hdds.scm.protocol.StorageContainerLocationProtocol;
+import org.apache.hadoop.hdds.scm.server.OzoneStorageContainerManager;
+import org.apache.hadoop.ozone.ClientVersion;
+import org.apache.hadoop.ozone.recon.api.types.DatanodeMetadata;
+import org.apache.hadoop.ozone.recon.api.types.DatanodePipeline;
+import org.apache.hadoop.ozone.recon.api.types.DatanodeStorageReport;
+import org.apache.hadoop.ozone.recon.api.types.DatanodesResponse;
+import org.apache.hadoop.ozone.recon.api.types.RemoveDataNodesResponseWrapper;
+import org.apache.hadoop.ozone.recon.scm.ReconContainerManager;
+import org.apache.hadoop.ozone.recon.scm.ReconNodeManager;
 import org.apache.hadoop.ozone.recon.scm.ReconPipelineManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import static org.apache.hadoop.hdds.protocol.proto.HddsProtos.NodeOperationalState.DECOMMISSIONING;
 
 /**
  * Endpoint to fetch details about datanodes.
@@ -83,14 +81,12 @@ import static org.apache.hadoop.hdds.protocol.proto.HddsProtos.NodeOperationalSt
 @Produces(MediaType.APPLICATION_JSON)
 public class NodeEndpoint {
 
-  private static final Logger LOG =
-      LoggerFactory.getLogger(NodeEndpoint.class);
+  private static final Logger LOG = LoggerFactory.getLogger(NodeEndpoint.class);
 
-  private ReconNodeManager nodeManager;
-  private ReconPipelineManager pipelineManager;
-  private ReconContainerManager reconContainerManager;
-  private StorageContainerLocationProtocol scmClient;
-  private String errorMessage = "Error getting pipeline and container metrics for ";
+  private final ReconNodeManager nodeManager;
+  private final ReconPipelineManager pipelineManager;
+  private final ReconContainerManager reconContainerManager;
+  private final StorageContainerLocationProtocol scmClient;
 
   @Inject
   NodeEndpoint(OzoneStorageContainerManager reconSCM,
@@ -235,7 +231,7 @@ public class NodeEndpoint {
                 .build());
           }
         } catch (NodeNotFoundException nnfe) {
-          LOG.error("Selected node {} not found : {} ", uuid, nnfe);
+          LOG.error("Selected node {} not found:", uuid, nnfe);
           notFoundDatanodes.add(DatanodeMetadata.newBuilder()
                   .setHostname("")
                   .setState(NodeState.DEAD)
@@ -243,7 +239,7 @@ public class NodeEndpoint {
         }
       }
     } catch (Exception exp) {
-      LOG.error("Unexpected Error while removing datanodes : {} ", exp);
+      LOG.error("Unexpected Error while removing datanodes:", exp);
       throw new WebApplicationException(exp, Response.Status.INTERNAL_SERVER_ERROR);
     }
 
@@ -391,7 +387,7 @@ public class NodeEndpoint {
       builder.entity(responseMap);
       return builder.build();
     } catch (Exception exception) {
-      LOG.error("Unexpected Error: {}", exception);
+      LOG.error("Unexpected Error:", exception);
       throw new WebApplicationException(exception, Response.Status.INTERNAL_SERVER_ERROR);
     }
   }
@@ -423,7 +419,7 @@ public class NodeEndpoint {
       }
       LOG.error(errMsg);
     } catch (IOException e) {
-      LOG.error(errMsg + ": {} ", e);
+      LOG.error(errMsg, e);
     }
     return countsMap;
   }
@@ -440,6 +436,6 @@ public class NodeEndpoint {
   }
 
   public String getErrorMessage() {
-    return errorMessage;
+    return "Error getting pipeline and container metrics for ";
   }
 }

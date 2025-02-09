@@ -34,8 +34,8 @@ public class CompositeCrcFileChecksum extends FileChecksum {
   public static final int LENGTH = Integer.SIZE / Byte.SIZE;
 
   private int crc;
-  private DataChecksum.Type crcType;
-  private int bytesPerCrc;
+  private final DataChecksum.Type crcType;
+  private final int bytesPerCrc;
 
   /**
    * Create a CompositeCrcFileChecksum.

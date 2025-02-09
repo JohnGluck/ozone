@@ -31,10 +31,9 @@ import org.slf4j.LoggerFactory;
  * update, we do this in async.
  */
 public class ReconNewNodeHandler implements EventHandler<DatanodeDetails> {
+  private static final Logger LOG = LoggerFactory.getLogger(ReconNewNodeHandler.class);
 
-  private static final Logger LOG = LoggerFactory
-      .getLogger(ReconNewNodeHandler.class);
-  private ReconNodeManager nodeManager;
+  private final ReconNodeManager nodeManager;
 
   public ReconNewNodeHandler(ReconNodeManager nodeManager) {
     this.nodeManager = nodeManager;

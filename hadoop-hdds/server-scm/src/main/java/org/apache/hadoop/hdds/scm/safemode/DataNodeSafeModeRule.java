@@ -38,10 +38,10 @@ public class DataNodeSafeModeRule extends
   private static final String NAME = "DataNodeSafeModeRule";
 
   // Min DataNodes required to exit safe mode.
-  private int requiredDns;
+  private final int requiredDns;
   private int registeredDns = 0;
   // Set to track registered DataNodes.
-  private HashSet<UUID> registeredDnSet;
+  private final HashSet<UUID> registeredDnSet;
 
   public DataNodeSafeModeRule(EventQueue eventQueue,
       ConfigurationSource conf,

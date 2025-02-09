@@ -18,6 +18,11 @@
 
 package org.apache.hadoop.ozone.om.response.file;
 
+import static org.apache.hadoop.ozone.om.OmMetadataManagerImpl.DIRECTORY_TABLE;
+
+import jakarta.annotation.Nonnull;
+import java.io.IOException;
+import java.util.List;
 import org.apache.hadoop.hdds.utils.db.BatchOperation;
 import org.apache.hadoop.ozone.om.OMMetadataManager;
 import org.apache.hadoop.ozone.om.helpers.BucketLayout;
@@ -30,38 +35,34 @@ import org.apache.hadoop.ozone.protocol.proto.OzoneManagerProtocolProtos.OMRespo
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import jakarta.annotation.Nonnull;
-import java.io.IOException;
-import java.util.List;
-
-import static org.apache.hadoop.ozone.om.OmMetadataManagerImpl.DIRECTORY_TABLE;
-
 /**
  * Response for create directory request.
  */
 @CleanupTableInfo(cleanupTables = {DIRECTORY_TABLE})
 public class OMDirectoryCreateResponseWithFSO extends OmKeyResponse {
 
-  public static final Logger LOG =
-      LoggerFactory.getLogger(OMDirectoryCreateResponseWithFSO.class);
+  public static final Logger LOG = LoggerFactory.getLogger(OMDirectoryCreateResponseWithFSO.class);
 
   private OmDirectoryInfo dirInfo;
   private List<OmDirectoryInfo> parentDirInfos;
-  private Result result;
   private long volumeId;
   private long bucketId;
   private OmBucketInfo bucketInfo;
 
   @SuppressWarnings("checkstyle:ParameterNumber")
-  public OMDirectoryCreateResponseWithFSO(@Nonnull OMResponse omResponse,
-      @Nonnull long volumeId, @Nonnull long bucketId,
+  public OMDirectoryCreateResponseWithFSO(
+      @Nonnull OMResponse omResponse,
+      @Nonnull long volumeId,
+      @Nonnull long bucketId,
       @Nonnull OmDirectoryInfo dirInfo,
-      @Nonnull List<OmDirectoryInfo> pDirInfos, @Nonnull Result result,
-      @Nonnull BucketLayout bucketLayout, @Nonnull OmBucketInfo bucketInfo) {
+      @Nonnull List<OmDirectoryInfo> pDirInfos,
+      @Nonnull Result result,
+      @Nonnull BucketLayout bucketLayout,
+      @Nonnull OmBucketInfo bucketInfo
+  ) {
     super(omResponse, bucketLayout);
     this.dirInfo = dirInfo;
     this.parentDirInfos = pDirInfos;
-    this.result = result;
     this.volumeId = volumeId;
     this.bucketId = bucketId;
     this.bucketInfo = bucketInfo;
@@ -70,21 +71,17 @@ public class OMDirectoryCreateResponseWithFSO extends OmKeyResponse {
   /**
    * For when the request is not successful or the directory already exists.
    */
-  public OMDirectoryCreateResponseWithFSO(@Nonnull OMResponse omResponse,
-                                     @Nonnull Result result) {
+  public OMDirectoryCreateResponseWithFSO(@Nonnull OMResponse omResponse, @Nonnull Result result) {
     super(omResponse);
-    this.result = result;
   }
 
   @Override
-  protected void addToDBBatch(OMMetadataManager omMetadataManager,
-                              BatchOperation batchOperation)
+  protected void addToDBBatch(OMMetadataManager omMetadataManager, BatchOperation batchOperation)
           throws IOException {
     addToDirectoryTable(omMetadataManager, batchOperation);
   }
 
-  private void addToDirectoryTable(OMMetadataManager omMetadataManager,
-                                BatchOperation batchOperation)
+  private void addToDirectoryTable(OMMetadataManager omMetadataManager, BatchOperation batchOperation)
           throws IOException {
     if (dirInfo != null) {
       if (parentDirInfos != null) {

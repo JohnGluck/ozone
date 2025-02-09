@@ -74,9 +74,9 @@ public class OMKeySetAclRequest extends OMKeyAclRequest {
         .build();
   }
 
-  private String path;
-  private List<OzoneAcl> ozoneAcls;
-  private OzoneObj obj;
+  private final String path;
+  private final List<OzoneAcl> ozoneAcls;
+  private final OzoneObj obj;
 
   public OMKeySetAclRequest(OMRequest omRequest, OzoneManager ozoneManager) {
     super(omRequest);

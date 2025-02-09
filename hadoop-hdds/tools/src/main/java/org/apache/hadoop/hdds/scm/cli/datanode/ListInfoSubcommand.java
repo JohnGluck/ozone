@@ -167,9 +167,9 @@ public class ListInfoSubcommand extends ScmSubcommand {
   }
 
   private static class DatanodeWithAttributes {
-    private DatanodeDetails datanodeDetails;
-    private HddsProtos.NodeOperationalState operationalState;
-    private HddsProtos.NodeState healthState;
+    private final DatanodeDetails datanodeDetails;
+    private final HddsProtos.NodeOperationalState operationalState;
+    private final HddsProtos.NodeState healthState;
 
     DatanodeWithAttributes(DatanodeDetails dn,
         HddsProtos.NodeOperationalState opState,

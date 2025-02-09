@@ -18,6 +18,17 @@
 
 package org.apache.hadoop.ozone.om.response.s3.multipart;
 
+import static org.apache.hadoop.ozone.om.OmMetadataManagerImpl.BUCKET_TABLE;
+import static org.apache.hadoop.ozone.om.OmMetadataManagerImpl.DELETED_TABLE;
+import static org.apache.hadoop.ozone.om.OmMetadataManagerImpl.MULTIPARTINFO_TABLE;
+import static org.apache.hadoop.ozone.om.OmMetadataManagerImpl.OPEN_KEY_TABLE;
+import static org.apache.hadoop.ozone.protocol.proto.OzoneManagerProtocolProtos.Status.NO_SUCH_MULTIPART_UPLOAD_ERROR;
+import static org.apache.hadoop.ozone.protocol.proto.OzoneManagerProtocolProtos.Status.OK;
+
+import jakarta.annotation.Nonnull;
+import jakarta.annotation.Nullable;
+import java.io.IOException;
+import org.apache.hadoop.hdds.utils.db.BatchOperation;
 import org.apache.hadoop.ozone.OmUtils;
 import org.apache.hadoop.ozone.om.OMMetadataManager;
 import org.apache.hadoop.ozone.om.helpers.BucketLayout;
@@ -28,23 +39,7 @@ import org.apache.hadoop.ozone.om.helpers.RepeatedOmKeyInfo;
 import org.apache.hadoop.ozone.om.response.CleanupTableInfo;
 import org.apache.hadoop.ozone.om.response.key.OmKeyResponse;
 import org.apache.hadoop.ozone.protocol.proto.OzoneManagerProtocolProtos;
-import org.apache.hadoop.ozone.protocol.proto.OzoneManagerProtocolProtos
-    .OMResponse;
-import org.apache.hadoop.hdds.utils.db.BatchOperation;
-
-import java.io.IOException;
-
-import static org.apache.hadoop.ozone.om.OmMetadataManagerImpl.BUCKET_TABLE;
-import static org.apache.hadoop.ozone.om.OmMetadataManagerImpl.DELETED_TABLE;
-import static org.apache.hadoop.ozone.om.OmMetadataManagerImpl.MULTIPARTINFO_TABLE;
-import static org.apache.hadoop.ozone.om.OmMetadataManagerImpl.OPEN_KEY_TABLE;
-import static org.apache.hadoop.ozone.protocol.proto.OzoneManagerProtocolProtos
-    .Status.NO_SUCH_MULTIPART_UPLOAD_ERROR;
-import static org.apache.hadoop.ozone.protocol.proto.OzoneManagerProtocolProtos
-    .Status.OK;
-
-import jakarta.annotation.Nonnull;
-import jakarta.annotation.Nullable;
+import org.apache.hadoop.ozone.protocol.proto.OzoneManagerProtocolProtos.OMResponse;
 
 /**
  * Response for S3MultipartUploadCommitPart request.
@@ -53,13 +48,13 @@ import jakarta.annotation.Nullable;
     MULTIPARTINFO_TABLE, BUCKET_TABLE})
 public class S3MultipartUploadCommitPartResponse extends OmKeyResponse {
 
-  private String multipartKey;
-  private String openKey;
-  private OmMultipartKeyInfo omMultipartKeyInfo;
-  private OzoneManagerProtocolProtos.PartKeyInfo oldPartKeyInfo;
-  private OmKeyInfo openPartKeyInfoToBeDeleted;
-  private boolean isRatisEnabled;
-  private OmBucketInfo omBucketInfo;
+  private final String multipartKey;
+  private final String openKey;
+  private final OmMultipartKeyInfo omMultipartKeyInfo;
+  private final OzoneManagerProtocolProtos.PartKeyInfo oldPartKeyInfo;
+  private final OmKeyInfo openPartKeyInfoToBeDeleted;
+  private final boolean isRatisEnabled;
+  private final OmBucketInfo omBucketInfo;
 
   /**
    * Regular response.

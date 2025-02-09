@@ -17,10 +17,12 @@
  */
 package org.apache.hadoop.ozone.insight.datanode;
 
+import static org.apache.hadoop.hdds.HddsConfigKeys.HDDS_DATANODE_HTTPS_BIND_PORT_DEFAULT;
+import static org.apache.hadoop.hdds.HddsConfigKeys.HDDS_DATANODE_HTTP_BIND_PORT_DEFAULT;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-
 import org.apache.hadoop.hdds.conf.OzoneConfiguration;
 import org.apache.hadoop.hdds.protocol.datanode.proto.ContainerProtos;
 import org.apache.hadoop.hdds.server.http.HttpConfig;
@@ -33,9 +35,6 @@ import org.apache.hadoop.ozone.insight.InsightPoint;
 import org.apache.hadoop.ozone.insight.LoggerSource;
 import org.apache.hadoop.ozone.insight.MetricGroupDisplay;
 
-import static org.apache.hadoop.hdds.HddsConfigKeys.HDDS_DATANODE_HTTPS_BIND_PORT_DEFAULT;
-import static org.apache.hadoop.hdds.HddsConfigKeys.HDDS_DATANODE_HTTP_BIND_PORT_DEFAULT;
-
 /**
  * Insight definition for HddsDispatcher.
  */
@@ -44,7 +43,7 @@ public class DatanodeDispatcherInsight extends BaseInsightPoint
 
   private static final String DATANODE_FILTER = "datanode";
 
-  private OzoneConfiguration conf;
+  private final OzoneConfiguration conf;
 
   public DatanodeDispatcherInsight(
       OzoneConfiguration conf

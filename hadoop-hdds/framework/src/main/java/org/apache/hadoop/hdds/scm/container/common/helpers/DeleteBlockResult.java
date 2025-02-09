@@ -17,17 +17,16 @@
 
 package org.apache.hadoop.hdds.scm.container.common.helpers;
 
-import org.apache.hadoop.hdds.client.BlockID;
+import static org.apache.hadoop.hdds.protocol.proto.ScmBlockLocationProtocolProtos.DeleteScmBlockResult;
 
-import static org.apache.hadoop.hdds.protocol.proto
-    .ScmBlockLocationProtocolProtos.DeleteScmBlockResult;
+import org.apache.hadoop.hdds.client.BlockID;
 
 /**
  * Class wraps storage container manager block deletion results.
  */
 public class DeleteBlockResult {
-  private BlockID blockID;
-  private DeleteScmBlockResult.Result result;
+  private final BlockID blockID;
+  private final DeleteScmBlockResult.Result result;
 
   public DeleteBlockResult(final BlockID blockID,
       final DeleteScmBlockResult.Result result) {

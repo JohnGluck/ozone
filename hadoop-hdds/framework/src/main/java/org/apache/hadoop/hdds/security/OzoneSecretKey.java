@@ -34,11 +34,11 @@ import org.apache.hadoop.hdds.annotation.InterfaceStability;
 @InterfaceStability.Unstable
 public class OzoneSecretKey {
 
-  private int keyId;
-  private long expiryDate;
-  private PrivateKey privateKey;
-  private PublicKey publicKey;
-  private String certSerialId;
+  private final int keyId;
+  private final long expiryDate;
+  private final PrivateKey privateKey;
+  private final PublicKey publicKey;
+  private final String certSerialId;
 
   public OzoneSecretKey(int keyId, long expiryDate, KeyPair keyPair,
       String certificateSerialId) {

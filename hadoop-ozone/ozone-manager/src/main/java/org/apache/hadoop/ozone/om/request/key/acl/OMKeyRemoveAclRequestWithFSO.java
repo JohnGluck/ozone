@@ -63,9 +63,9 @@ public class OMKeyRemoveAclRequestWithFSO extends OMKeyAclRequestWithFSO {
         .build();
   }
 
-  private String path;
-  private List<OzoneAcl> ozoneAcls;
-  private OzoneObj obj;
+  private final String path;
+  private final List<OzoneAcl> ozoneAcls;
+  private final OzoneObj obj;
 
   public OMKeyRemoveAclRequestWithFSO(
       OzoneManagerProtocolProtos.OMRequest omRequest,

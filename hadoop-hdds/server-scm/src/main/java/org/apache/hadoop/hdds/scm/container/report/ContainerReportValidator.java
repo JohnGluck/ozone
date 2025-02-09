@@ -35,8 +35,10 @@ import java.util.Optional;
  */
 public final class ContainerReportValidator {
 
-  private Map<ReplicationType, ReplicaValidator> replicaValidators;
+  private final Map<ReplicationType, ReplicaValidator> replicaValidators;
+
   private static final ContainerReportValidator CONTAINER_REPORT_VALIDATOR;
+
   private ContainerReportValidator() {
     this.replicaValidators = ImmutableMap.of(ReplicationType.EC,
             new ECReplicaValidator());

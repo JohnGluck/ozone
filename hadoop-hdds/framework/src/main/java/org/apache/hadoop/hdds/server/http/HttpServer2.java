@@ -199,9 +199,9 @@ public final class HttpServer2 implements FilterContainer {
   static final String STATE_DESCRIPTION_ALIVE = " - alive";
   static final String STATE_DESCRIPTION_NOT_LIVE = " - not live";
   private final SignerSecretProvider secretProvider;
-  private XFrameOption xFrameOption;
+  private final XFrameOption xFrameOption;
   private HttpServer2Metrics metrics;
-  private boolean xFrameOptionIsEnabled;
+  private final boolean xFrameOptionIsEnabled;
   public static final String HTTP_HEADER_PREFIX = "ozone.http.header.";
   private static final String HTTP_HEADER_REGEX =
       "ozone\\.http\\.header\\.([a-zA-Z\\-_]+)";
@@ -216,7 +216,7 @@ public final class HttpServer2 implements FilterContainer {
    * Class to construct instances of HTTP server with specific options.
    */
   public static class Builder {
-    private ArrayList<URI> endpoints = Lists.newArrayList();
+    private final ArrayList<URI> endpoints = Lists.newArrayList();
     private String name;
     private MutableConfigurationSource conf;
     private ConfigurationSource sslConf;
@@ -751,10 +751,8 @@ public final class HttpServer2 implements FilterContainer {
   /**
    * Add default apps.
    * @param appDir The application directory
-   * @throws IOException
    */
-  protected void addDefaultApps(ContextHandlerCollection parent,
-      final String appDir, ConfigurationSource conf) throws IOException {
+  private void addDefaultApps(ContextHandlerCollection parent, final String appDir, ConfigurationSource conf) {
     // set up the context for "/logs/" if "hadoop.log.dir" property is defined
     // and it's enabled.
     String logDir = System.getProperty("hadoop.log.dir");
@@ -807,7 +805,7 @@ public final class HttpServer2 implements FilterContainer {
   /**
    * Add default servlets.
    */
-  protected void addDefaultServlets() {
+  private void addDefaultServlets() {
     // set up default servlets
     addServlet("stacks", "/stacks", StackServlet.class);
     addServlet("logLevel", "/logLevel", LogLevel.Servlet.class);
@@ -896,15 +894,15 @@ public final class HttpServer2 implements FilterContainer {
     // the newest one is the one we want
     final ServletMapping[] servletMappings =
         webAppContext.getServletHandler().getServletMappings();
-    for (int i = 0; i < servletMappings.length; i++) {
-      if (servletMappings[i].containsPathSpec(pathSpec)) {
+    for (ServletMapping servletMapping : servletMappings) {
+      if (servletMapping.containsPathSpec(pathSpec)) {
         if (LOG.isDebugEnabled()) {
-          LOG.debug("Found existing " + servletMappings[i].getServletName() +
+          LOG.debug("Found existing " + servletMapping.getServletName() +
               " servlet at path " + pathSpec + "; will replace mapping" +
               " with " + holder.getName() + " servlet");
         }
         ServletMapping[] newServletMappings =
-            ArrayUtil.removeFromArray(servletMappings, servletMappings[i]);
+            ArrayUtil.removeFromArray(servletMappings, servletMapping);
         webAppContext.getServletHandler()
             .setServletMappings(newServletMappings);
         break;
@@ -916,20 +914,20 @@ public final class HttpServer2 implements FilterContainer {
     // Kerberos replay error.
     FilterMapping[] filterMappings = webAppContext.getServletHandler().
         getFilterMappings();
-    for (int i = 0; i < filterMappings.length; i++) {
-      if (filterMappings[i].getPathSpecs() == null) {
+    for (FilterMapping filterMapping : filterMappings) {
+      if (filterMapping.getPathSpecs() == null) {
         LOG.debug("Skip checking {} filterMappings {} without a path spec.",
-            filterMappings[i].getFilterName(), filterMappings[i]);
+            filterMapping.getFilterName(), filterMapping);
         continue;
       }
-      int oldPathSpecsLen = filterMappings[i].getPathSpecs().length;
+      int oldPathSpecsLen = filterMapping.getPathSpecs().length;
       String[] newPathSpecs =
-          ArrayUtil.removeFromArray(filterMappings[i].getPathSpecs(), pathSpec);
+          ArrayUtil.removeFromArray(filterMapping.getPathSpecs(), pathSpec);
       if (newPathSpecs.length == 0) {
         webAppContext.getServletHandler().setFilterMappings(
-            ArrayUtil.removeFromArray(filterMappings, filterMappings[i]));
+            ArrayUtil.removeFromArray(filterMappings, filterMapping));
       } else if (newPathSpecs.length != oldPathSpecsLen) {
-        filterMappings[i].setPathSpecs(newPathSpecs);
+        filterMapping.setPathSpecs(newPathSpecs);
       }
     }
 
@@ -1365,8 +1363,7 @@ public final class HttpServer2 implements FilterContainer {
     try {
       webServer.stop();
     } catch (Exception e) {
-      LOG.error("Error while stopping web server for webapp "
-          + webAppContext.getDisplayName(), e);
+      LOG.error("Error while stopping web server for webapp {}", webAppContext.getDisplayName(), e);
       exception = addMultiException(exception, e);
     }
 
@@ -1561,8 +1558,8 @@ public final class HttpServer2 implements FilterContainer {
       @Override
       public Enumeration<String> getParameterNames() {
         return new Enumeration<String>() {
-          private Enumeration<String> rawIterator =
-              rawRequest.getParameterNames();
+          private final Enumeration<String> rawIterator = rawRequest.getParameterNames();
+
           @Override
           public boolean hasMoreElements() {
             return rawIterator.hasMoreElements();
@@ -1664,7 +1661,7 @@ public final class HttpServer2 implements FilterContainer {
       } else if (mime.startsWith("application/xml")) {
         httpResponse.setContentType("text/xml; charset=utf-8");
       }
-      headerMap.forEach((k, v) -> httpResponse.setHeader(k, v));
+      headerMap.forEach(httpResponse::setHeader);
       chain.doFilter(quoted, httpResponse);
     }
 
@@ -1738,9 +1735,9 @@ public final class HttpServer2 implements FilterContainer {
    */
   private Map<String, String> generateFilterConfiguration(
       ConfigurationSource conf) {
-    Map<String, String> config = new HashMap<>();
     // Add headers to the configuration.
-    config.putAll(getDefaultHeaders());
+    Map<String, String> config = new HashMap<>(getDefaultHeaders());
+
     if (this.xFrameOptionIsEnabled) {
       config.put(HTTP_HEADER_PREFIX + X_FRAME_OPTIONS,
           this.xFrameOption.toString());
@@ -1762,7 +1759,7 @@ public final class HttpServer2 implements FilterContainer {
   }
 
   @VisibleForTesting
-  protected List<ServerConnector> getListeners() {
+  List<ServerConnector> getListeners() {
     return listeners;
   }
 

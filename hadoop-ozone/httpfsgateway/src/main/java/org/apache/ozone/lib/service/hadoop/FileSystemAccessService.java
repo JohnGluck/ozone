@@ -55,10 +55,8 @@ import org.slf4j.LoggerFactory;
  * Provides authenticated filesystem access.
  */
 @InterfaceAudience.Private
-public class FileSystemAccessService extends BaseService
-    implements FileSystemAccess {
-  private static final Logger LOG
-      = LoggerFactory.getLogger(FileSystemAccessService.class);
+public class FileSystemAccessService extends BaseService implements FileSystemAccess {
+  private static final Logger LOG = LoggerFactory.getLogger(FileSystemAccessService.class);
 
   public static final String PREFIX = "hadoop";
 
@@ -86,7 +84,7 @@ public class FileSystemAccessService extends BaseService
   private static class CachedFileSystem {
     private FileSystem fs;
     private long lastUse;
-    private long timeout;
+    private final long timeout;
     private int count;
 
     CachedFileSystem(long timeout) {
@@ -149,9 +147,9 @@ public class FileSystemAccessService extends BaseService
   Configuration serviceHadoopConf;
   private Configuration fileSystemConf;
 
-  private AtomicInteger unmanagedFileSystems = new AtomicInteger();
+  private final AtomicInteger unmanagedFileSystems = new AtomicInteger();
 
-  private Map<String, CachedFileSystem> fsCache = new ConcurrentHashMap<>();
+  private final Map<String, CachedFileSystem> fsCache = new ConcurrentHashMap<>();
 
   private long purgeTimeout;
 
@@ -166,13 +164,13 @@ public class FileSystemAccessService extends BaseService
       String keytab = System
           .getProperty("user.home") + "/" + defaultName + ".keytab";
       keytab = getServiceConfig().get(KERBEROS_KEYTAB, keytab).trim();
-      if (keytab.length() == 0) {
+      if (keytab.isEmpty()) {
         throw new ServiceException(FileSystemAccessException.ERROR.H01,
             KERBEROS_KEYTAB);
       }
       String principal = defaultName + "/localhost@LOCALHOST";
       principal = getServiceConfig().get(KERBEROS_PRINCIPAL, principal).trim();
-      if (principal.length() == 0) {
+      if (principal.isEmpty()) {
         throw new ServiceException(FileSystemAccessException.ERROR.H01,
             KERBEROS_PRINCIPAL);
       }
@@ -257,7 +255,7 @@ public class FileSystemAccessService extends BaseService
 
     instrumentation.addVariable(INSTRUMENTATION_GROUP,
         "unmanaged.fs",
-        (Instrumentation.Variable<Integer>) () -> unmanagedFileSystems.get());
+        (Instrumentation.Variable<Integer>) unmanagedFileSystems::get);
 
     instrumentation.addSampler(INSTRUMENTATION_GROUP,
         "unmanaged.fs",

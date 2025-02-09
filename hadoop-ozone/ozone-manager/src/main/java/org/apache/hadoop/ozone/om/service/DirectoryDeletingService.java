@@ -79,11 +79,11 @@ public class DirectoryDeletingService extends AbstractKeyDeletingService {
   private final int dirDeletingCorePoolSize;
   private int ratisByteLimit;
   private final AtomicBoolean suspended;
-  private AtomicBoolean isRunningOnAOS;
+  private final AtomicBoolean isRunningOnAOS;
 
   private final DeletedDirSupplier deletedDirSupplier;
 
-  private AtomicInteger taskCount = new AtomicInteger(0);
+  private final AtomicInteger taskCount = new AtomicInteger(0);
 
   public DirectoryDeletingService(long interval, TimeUnit unit,
       long serviceTimeout, OzoneManager ozoneManager,

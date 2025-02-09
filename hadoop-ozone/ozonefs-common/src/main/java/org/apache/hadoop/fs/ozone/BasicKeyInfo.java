@@ -27,11 +27,11 @@ package org.apache.hadoop.fs.ozone;
  */
 public class BasicKeyInfo {
 
-  private String name;
+  private final String name;
 
-  private long modificationTime;
+  private final long modificationTime;
 
-  private long dataSize;
+  private final long dataSize;
 
   public BasicKeyInfo(String name, long modificationTime, long size) {
     this.name = name;

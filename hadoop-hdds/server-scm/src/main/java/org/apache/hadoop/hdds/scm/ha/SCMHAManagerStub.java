@@ -168,10 +168,9 @@ public final class SCMHAManagerStub implements SCMHAManager {
 
   private class RatisServerStub implements SCMRatisServer {
 
-    private Map<RequestType, Object> handlers =
-        new EnumMap<>(RequestType.class);
+    private final Map<RequestType, Object> handlers = new EnumMap<>(RequestType.class);
 
-    private RaftPeerId leaderId = RaftPeerId.valueOf(UUID.randomUUID().toString());
+    private final RaftPeerId leaderId = RaftPeerId.valueOf(UUID.randomUUID().toString());
 
     @Override
     public void start() {

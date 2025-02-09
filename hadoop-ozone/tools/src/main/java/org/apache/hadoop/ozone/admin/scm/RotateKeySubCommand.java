@@ -35,8 +35,8 @@ import picocli.CommandLine;
     versionProvider = HddsVersionProvider.class)
 public class RotateKeySubCommand extends ScmSubcommand {
 
-  @CommandLine.Option(names = "--force",
-      description = "Force generate new keys")
+  @CommandLine.Option(names = "--force", description = "Force generate new keys")
+  @SuppressWarnings("PMD.ImmutableField")
   private boolean force = false;
 
   @CommandLine.ParentCommand

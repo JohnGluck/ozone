@@ -30,7 +30,7 @@ import java.util.Map;
  */
 @InterfaceAudience.Private
 public class Parameters {
-  private Map<String, List<Param<?>>> params;
+  private final Map<String, List<Param<?>>> params;
 
   /**
    * Constructor that receives the request parsed parameters.

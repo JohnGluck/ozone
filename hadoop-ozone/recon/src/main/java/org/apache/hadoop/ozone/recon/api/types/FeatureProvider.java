@@ -18,26 +18,24 @@
 
 package org.apache.hadoop.ozone.recon.api.types;
 
-import com.google.inject.Singleton;
-import org.apache.commons.lang3.StringUtils;
-import org.apache.hadoop.hdds.conf.OzoneConfiguration;
+import static org.apache.hadoop.hdds.recon.ReconConfigKeys.OZONE_RECON_HEATMAP_ENABLE_DEFAULT;
+import static org.apache.hadoop.hdds.recon.ReconConfigKeys.OZONE_RECON_HEATMAP_ENABLE_KEY;
+import static org.apache.hadoop.hdds.recon.ReconConfigKeys.OZONE_RECON_HEATMAP_PROVIDER_KEY;
 
+import com.google.inject.Singleton;
 import java.util.Arrays;
 import java.util.EnumMap;
 import java.util.List;
 import java.util.stream.Collectors;
-
-import static org.apache.hadoop.hdds.recon.ReconConfigKeys.OZONE_RECON_HEATMAP_ENABLE_DEFAULT;
-import static org.apache.hadoop.hdds.recon.ReconConfigKeys.OZONE_RECON_HEATMAP_ENABLE_KEY;
-import static org.apache.hadoop.hdds.recon.ReconConfigKeys.OZONE_RECON_HEATMAP_PROVIDER_KEY;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.hadoop.hdds.conf.OzoneConfiguration;
 
 /**
  * This class is responsible for maintaining Recon features metadata.
  */
 @Singleton
 public final class FeatureProvider {
-  private static EnumMap<Feature, Boolean> featureDisableMap =
-      new EnumMap<>(Feature.class);
+  private static final EnumMap<Feature, Boolean> featureDisableMap = new EnumMap<>(Feature.class);
 
   private FeatureProvider() {
   }
@@ -49,7 +47,8 @@ public final class FeatureProvider {
   public enum Feature {
 
     HEATMAP("HeatMap");
-    private String featureName;
+
+    private final String featureName;
 
     public String getFeatureName() {
       return featureName;
@@ -60,14 +59,10 @@ public final class FeatureProvider {
     }
 
     public static Feature of(String featureName) {
-      Feature featureEnum = Arrays.stream(Feature.values())
+      return Arrays.stream(Feature.values())
           .filter(feature -> feature.getFeatureName().equals(featureName))
-          .findFirst().get();
-      if (null == featureEnum) {
-        throw new IllegalArgumentException("Unrecognized value for " +
-            "Features enum: " + featureName);
-      }
-      return featureEnum;
+          .findFirst()
+          .orElseThrow(() -> new IllegalArgumentException("Unrecognized value for Features enum: " + featureName));
     }
   }
 

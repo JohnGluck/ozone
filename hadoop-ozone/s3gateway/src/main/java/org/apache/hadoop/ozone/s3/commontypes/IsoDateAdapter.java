@@ -27,7 +27,7 @@ import java.time.format.DateTimeFormatter;
  */
 public class IsoDateAdapter extends XmlAdapter<String, Instant> {
 
-  private DateTimeFormatter iso8861Formatter;
+  private final DateTimeFormatter iso8861Formatter;
 
   public IsoDateAdapter() {
     iso8861Formatter =
@@ -36,12 +36,12 @@ public class IsoDateAdapter extends XmlAdapter<String, Instant> {
   }
 
   @Override
-  public Instant unmarshal(String v) throws Exception {
+  public Instant unmarshal(String v) {
     throw new UnsupportedOperationException();
   }
 
   @Override
-  public String marshal(Instant v) throws Exception {
+  public String marshal(Instant v) {
     return iso8861Formatter.format(v);
   }
 }

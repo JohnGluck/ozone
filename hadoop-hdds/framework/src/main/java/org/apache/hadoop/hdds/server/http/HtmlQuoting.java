@@ -142,12 +142,10 @@ public final class HtmlQuoting {
    *
    * @param out the stream to write the quoted output to
    * @return a new stream that the application show write to
-   * @throws IOException if the underlying output fails
    */
-  public static OutputStream quoteOutputStream(final OutputStream out
-  ) throws IOException {
+  public static OutputStream quoteOutputStream(OutputStream out) {
     return new OutputStream() {
-      private byte[] data = new byte[1];
+      private final byte[] data = new byte[1];
 
       @Override
       public void write(byte[] data, int off, int len) throws IOException {
@@ -191,7 +189,7 @@ public final class HtmlQuoting {
     int posn = 0;
     StringBuilder buffer = new StringBuilder();
     while (next != -1) {
-      buffer.append(item.substring(posn, next));
+      buffer.append(item, posn, next);
       if (item.startsWith("&amp;", next)) {
         buffer.append('&');
         next += 5;
@@ -218,7 +216,7 @@ public final class HtmlQuoting {
       posn = next;
       next = item.indexOf('&', posn);
     }
-    buffer.append(item.substring(posn, len));
+    buffer.append(item, posn, len);
     return buffer.toString();
   }
 

@@ -21,6 +21,10 @@
  */
 package org.apache.hadoop.hdds.scm.server;
 
+import static org.apache.hadoop.ozone.conf.OzoneServiceConfig.DEFAULT_SHUTDOWN_HOOK_PRIORITY;
+
+import java.io.IOException;
+import java.util.concurrent.Callable;
 import org.apache.hadoop.hdds.cli.GenericCli;
 import org.apache.hadoop.hdds.cli.HddsVersionProvider;
 import org.apache.hadoop.hdds.conf.OzoneConfiguration;
@@ -36,11 +40,6 @@ import org.slf4j.LoggerFactory;
 import picocli.CommandLine;
 import picocli.CommandLine.Command;
 
-import java.io.IOException;
-import java.util.concurrent.Callable;
-
-import static org.apache.hadoop.ozone.conf.OzoneServiceConfig.DEFAULT_SHUTDOWN_HOOK_PRIORITY;
-
 /**
  * This class provides a command line interface to start the SCM
  * using Picocli.
@@ -51,11 +50,11 @@ import static org.apache.hadoop.ozone.conf.OzoneServiceConfig.DEFAULT_SHUTDOWN_H
     versionProvider = HddsVersionProvider.class,
     mixinStandardHelpOptions = true)
 public class StorageContainerManagerStarter extends GenericCli implements Callable<Void> {
-
   private OzoneConfiguration conf;
-  private SCMStarterInterface receiver;
-  private static final Logger LOG =
-      LoggerFactory.getLogger(StorageContainerManagerStarter.class);
+
+  private final SCMStarterInterface receiver;
+
+  private static final Logger LOG = LoggerFactory.getLogger(StorageContainerManagerStarter.class);
 
   public static void main(String[] args) {
     OzoneNetUtils.disableJvmNetworkAddressCacheIfRequired(

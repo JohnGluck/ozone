@@ -17,11 +17,12 @@
 
 package org.apache.hadoop.hdds.scm.ha;
 
+import static org.apache.ratis.thirdparty.io.netty.handler.ssl.SslContextBuilder.forServer;
+
+import com.google.common.base.Preconditions;
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
-
-import com.google.common.base.Preconditions;
 import org.apache.hadoop.hdds.conf.ConfigurationSource;
 import org.apache.hadoop.hdds.scm.ScmConfigKeys;
 import org.apache.hadoop.hdds.scm.server.StorageContainerManager;
@@ -37,18 +38,15 @@ import org.apache.ratis.thirdparty.io.netty.handler.ssl.SslContextBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import static org.apache.ratis.thirdparty.io.netty.handler.ssl.SslContextBuilder.forServer;
-
 /**
  * Service to serve SCM DB checkpoints available for SCM HA.
  * Ideally should only be run on a ratis leader.
  */
 public class InterSCMGrpcProtocolService {
-  private static final Logger LOG =
-      LoggerFactory.getLogger(InterSCMGrpcService.class);
+  private static final Logger LOG = LoggerFactory.getLogger(InterSCMGrpcService.class);
 
   private final int port;
-  private Server server;
+  private final Server server;
   private final AtomicBoolean isStarted = new AtomicBoolean(false);
 
   InterSCMGrpcProtocolService(final ConfigurationSource conf,

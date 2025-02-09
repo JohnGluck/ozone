@@ -56,7 +56,7 @@ public class OneReplicaPipelineSafeModeRule extends
   private final Set<PipelineID> reportedPipelineIDSet = new HashSet<>();
   private Set<PipelineID> oldPipelineIDSet;
   private int currentReportedPipelineCount = 0;
-  private PipelineManager pipelineManager;
+  private final PipelineManager pipelineManager;
   private final double pipelinePercent;
 
 

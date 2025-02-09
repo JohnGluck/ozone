@@ -36,9 +36,8 @@ import com.google.inject.Inject;
  */
 public class ReconSchemaManager {
 
-  private static final Logger LOG =
-      LoggerFactory.getLogger(ReconSchemaManager.class);
-  private Set<ReconSchemaDefinition> reconSchemaDefinitions = new HashSet<>();
+  private static final Logger LOG = LoggerFactory.getLogger(ReconSchemaManager.class);
+  private final Set<ReconSchemaDefinition> reconSchemaDefinitions = new HashSet<>();
 
   @Inject
   public ReconSchemaManager(Set<ReconSchemaDefinition> reconSchemaDefinitions) {

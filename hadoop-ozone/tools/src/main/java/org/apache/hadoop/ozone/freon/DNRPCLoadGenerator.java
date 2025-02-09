@@ -71,16 +71,19 @@ public class DNRPCLoadGenerator extends BaseFreonGenerator
   private int payloadRespSize;
   private List<XceiverClientSpi> clients;
   private String encodedContainerToken;
+
   @Option(names = {"--payload-req"},
           description =
                   "Specifies the size of payload in KB in RPC request. ",
           defaultValue = "0")
+  @SuppressWarnings("PMD.ImmutableField")
   private int payloadReqSizeKB = 0;
 
   @Option(names = {"--payload-resp"},
           description =
                   "Specifies the size of payload in KB in RPC response. ",
           defaultValue = "0")
+  @SuppressWarnings("PMD.ImmutableField")
   private int payloadRespSizeKB = 0;
 
   @Option(names = {"--container-id"},
@@ -90,21 +93,25 @@ public class DNRPCLoadGenerator extends BaseFreonGenerator
   @Option(names = {"--sleep-time-ms"},
       description = "Let DataNode to pause for a duration (in milliseconds) for each request",
       defaultValue = "0")
+  @SuppressWarnings("PMD.ImmutableField")
   private int sleepTimeMs = 0;
 
   @Option(names = {"--clients"},
       description = "number of xceiver clients",
       defaultValue = "1")
+  @SuppressWarnings("PMD.ImmutableField")
   private int numClients = 1;
 
   @Option(names = {"--read-only"},
       description = "if Ratis, read only or not",
       defaultValue = "false")
+  @SuppressWarnings("PMD.ImmutableField")
   private boolean readOnly = false;
 
   @Option(names = {"--ratis"},
       description = "if Ratis or grpc",
       defaultValue = "false")
+  @SuppressWarnings("PMD.ImmutableField")
   private boolean ratis = false;
 
   @CommandLine.ParentCommand

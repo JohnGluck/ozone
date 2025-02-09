@@ -18,6 +18,8 @@
  */
 package org.apache.hadoop.ozone.om.helpers;
 
+import static org.apache.hadoop.ozone.protocol.proto.OzoneManagerProtocolProtos.Type;
+
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
@@ -31,8 +33,6 @@ import org.apache.hadoop.ozone.protocol.proto.OzoneManagerProtocolProtos;
 import org.apache.ratis.server.protocol.TermIndex;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import static org.apache.hadoop.ozone.protocol.proto.OzoneManagerProtocolProtos.Type;
 
 /**
  * This class is used for OM Audit logs.
@@ -170,7 +170,7 @@ public final class OMAuditLogger {
    * Builder class for build AuditMessage.
    */
   public static class Builder {
-    private AuditMessage.Builder messageBuilder = new AuditMessage.Builder();
+    private final AuditMessage.Builder messageBuilder = new AuditMessage.Builder();
     private final AtomicBoolean isLog = new AtomicBoolean(false);
     private Map<String, String> auditMap = null;
     private AuditLogger auditLogger;

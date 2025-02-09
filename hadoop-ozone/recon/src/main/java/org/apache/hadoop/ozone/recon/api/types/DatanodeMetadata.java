@@ -35,61 +35,76 @@ public final class DatanodeMetadata {
 
   @XmlElement(name = "uuid")
   @JsonInclude(JsonInclude.Include.NON_NULL)
+  @SuppressWarnings("PMD.ImmutableField")
   private String uuid;
 
   @XmlElement(name = "hostname")
   @JsonInclude(JsonInclude.Include.NON_NULL)
+  @SuppressWarnings("PMD.ImmutableField")
   private String hostname;
 
   @XmlElement(name = "state")
   @JsonInclude(JsonInclude.Include.NON_NULL)
+  @SuppressWarnings("PMD.ImmutableField")
   private NodeState state;
 
   @XmlElement(name = "opState")
   @JsonInclude(JsonInclude.Include.NON_NULL)
+  @SuppressWarnings("PMD.ImmutableField")
   private NodeOperationalState opState;
 
   @XmlElement(name = "lastHeartbeat")
   @JsonInclude(JsonInclude.Include.NON_DEFAULT)
+  @SuppressWarnings("PMD.ImmutableField")
   private long lastHeartbeat;
 
   @XmlElement(name = "storageReport")
   @JsonInclude(JsonInclude.Include.NON_NULL)
+  @SuppressWarnings("PMD.ImmutableField")
   private DatanodeStorageReport datanodeStorageReport;
 
   @XmlElement(name = "pipelines")
+  @SuppressWarnings("PMD.ImmutableField")
   private List<DatanodePipeline> pipelines;
 
   @XmlElement(name = "containers")
   @JsonInclude(JsonInclude.Include.NON_DEFAULT)
+  @SuppressWarnings("PMD.ImmutableField")
   private int containers;
 
   @XmlElement(name = "openContainers")
   @JsonInclude(JsonInclude.Include.NON_DEFAULT)
+  @SuppressWarnings("PMD.ImmutableField")
   private int openContainers;
 
   @XmlElement(name = "leaderCount")
   @JsonInclude(JsonInclude.Include.NON_DEFAULT)
+  @SuppressWarnings("PMD.ImmutableField")
   private int leaderCount;
 
   @XmlElement(name = "version")
   @JsonInclude(JsonInclude.Include.NON_NULL)
+  @SuppressWarnings("PMD.ImmutableField")
   private String version;
 
   @XmlElement(name = "setupTime")
   @JsonInclude(JsonInclude.Include.NON_DEFAULT)
+  @SuppressWarnings("PMD.ImmutableField")
   private long setupTime;
 
   @XmlElement(name = "revision")
   @JsonInclude(JsonInclude.Include.NON_NULL)
+  @SuppressWarnings("PMD.ImmutableField")
   private String revision;
 
   @XmlElement(name = "layoutVersion")
   @JsonInclude(JsonInclude.Include.NON_DEFAULT)
+  @SuppressWarnings("PMD.ImmutableField")
   private int layoutVersion;
 
   @XmlElement(name = "networkLocation")
   @JsonInclude(JsonInclude.Include.NON_NULL)
+  @SuppressWarnings("PMD.ImmutableField")
   private String networkLocation;
 
   private DatanodeMetadata(Builder builder) {

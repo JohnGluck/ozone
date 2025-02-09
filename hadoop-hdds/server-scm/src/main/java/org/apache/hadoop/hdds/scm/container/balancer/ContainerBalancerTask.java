@@ -19,7 +19,6 @@
 package org.apache.hadoop.hdds.scm.container.balancer;
 
 import static java.time.OffsetDateTime.now;
-import static java.util.Collections.emptyMap;
 import static org.apache.hadoop.hdds.HddsConfigKeys.HDDS_NODE_REPORT_INTERVAL;
 import static org.apache.hadoop.hdds.HddsConfigKeys.HDDS_NODE_REPORT_INTERVAL_DEFAULT;
 import static org.apache.hadoop.util.StringUtils.byteDesc;
@@ -75,16 +74,16 @@ import org.slf4j.LoggerFactory;
  */
 public class ContainerBalancerTask implements Runnable {
 
-  public static final Logger LOG =
-      LoggerFactory.getLogger(ContainerBalancerTask.class);
+  public static final Logger LOG = LoggerFactory.getLogger(ContainerBalancerTask.class);
+
   public static final long ABSENCE_OF_DURATION = -1L;
 
-  private NodeManager nodeManager;
-  private ContainerManager containerManager;
-  private ReplicationManager replicationManager;
-  private MoveManager moveManager;
-  private OzoneConfiguration ozoneConfiguration;
-  private ContainerBalancer containerBalancer;
+  private final NodeManager nodeManager;
+  private final ContainerManager containerManager;
+  private final ReplicationManager replicationManager;
+  private final MoveManager moveManager;
+  private final OzoneConfiguration ozoneConfiguration;
+  private final ContainerBalancer containerBalancer;
   private final SCMContext scmContext;
   private int totalNodesInCluster;
   private double maxDatanodesRatioToInvolvePerIteration;
@@ -93,16 +92,13 @@ public class ContainerBalancerTask implements Runnable {
   private long sizeScheduledForMoveInLatestIteration;
   // count actual size moved in bytes
   private long sizeActuallyMovedInLatestIteration;
-  private int iterations;
   private final List<DatanodeUsageInfo> overUtilizedNodes;
   private final List<DatanodeUsageInfo> underUtilizedNodes;
-  private List<DatanodeUsageInfo> withinThresholdUtilizedNodes;
+  private final List<DatanodeUsageInfo> withinThresholdUtilizedNodes;
   private Set<String> excludeNodes;
   private Set<String> includeNodes;
   private ContainerBalancerConfiguration config;
-  private ContainerBalancerMetrics metrics;
-  private PlacementPolicyValidateProxy placementPolicyValidateProxy;
-  private NetworkTopology networkTopology;
+  private final ContainerBalancerMetrics metrics;
   private double upperLimit;
   private double lowerLimit;
   private ContainerBalancerSelectionCriteria selectionCriteria;
@@ -114,18 +110,17 @@ public class ContainerBalancerTask implements Runnable {
   private final Map<ContainerID, DatanodeDetails> containerToSourceMap;
   private final Map<ContainerID, DatanodeDetails> containerToTargetMap;
 
-  private Set<DatanodeDetails> selectedTargets;
-  private Set<DatanodeDetails> selectedSources;
-  private FindTargetStrategy findTargetStrategy;
-  private FindSourceStrategy findSourceStrategy;
-  private Map<ContainerMoveSelection, CompletableFuture<MoveManager.MoveResult>>
-      moveSelectionToFutureMap;
+  private final Set<DatanodeDetails> selectedTargets;
+  private final Set<DatanodeDetails> selectedSources;
+  private final FindTargetStrategy findTargetStrategy;
+  private final FindSourceStrategy findSourceStrategy;
+  private Map<ContainerMoveSelection, CompletableFuture<MoveManager.MoveResult>> moveSelectionToFutureMap;
   private IterationResult iterationResult;
-  private int nextIterationIndex;
-  private boolean delayStart;
-  private Queue<ContainerBalancerTaskIterationStatusInfo> iterationsStatistic;
+  private final int nextIterationIndex;
+  private final boolean delayStart;
+  private final Queue<ContainerBalancerTaskIterationStatusInfo> iterationsStatistic;
   private OffsetDateTime currentIterationStarted;
-  private AtomicBoolean isCurrentIterationInProgress = new AtomicBoolean(false);
+  private final AtomicBoolean isCurrentIterationInProgress = new AtomicBoolean(false);
 
   /**
    * Constructs ContainerBalancerTask with the specified arguments.
@@ -158,8 +153,11 @@ public class ContainerBalancerTask implements Runnable {
     this.overUtilizedNodes = new ArrayList<>();
     this.underUtilizedNodes = new ArrayList<>();
     this.withinThresholdUtilizedNodes = new ArrayList<>();
-    this.placementPolicyValidateProxy = scm.getPlacementPolicyValidateProxy();
-    this.networkTopology = scm.getClusterMap();
+
+    PlacementPolicyValidateProxy placementPolicyValidateProxy = scm.getPlacementPolicyValidateProxy();
+
+    NetworkTopology networkTopology = scm.getClusterMap();
+
     this.nextIterationIndex = nextIterationIndex;
     this.containerToSourceMap = new HashMap<>();
     this.containerToTargetMap = new HashMap<>();
@@ -214,10 +212,11 @@ public class ContainerBalancerTask implements Runnable {
   }
 
   private void balance() {
-    this.iterations = config.getIterations();
-    if (this.iterations == -1) {
+    int iterations = config.getIterations();
+
+    if (iterations == -1) {
       //run balancer infinitely
-      this.iterations = Integer.MAX_VALUE;
+      iterations = Integer.MAX_VALUE;
     }
 
     // nextIterationIndex is the iteration that balancer should start from on

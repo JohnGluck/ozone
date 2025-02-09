@@ -212,8 +212,9 @@ public final class FormattingCLIUtils {
    * The type of each table row and the entity class of the data.
    */
   private static class TableRow {
-    private TableRowType tableRowType;
-    private List<String> data;
+    private final TableRowType tableRowType;
+    private final List<String> data;
+
     TableRow(TableRowType tableRowType, List<String> data) {
       this.tableRowType = tableRowType;
       this.data = data;

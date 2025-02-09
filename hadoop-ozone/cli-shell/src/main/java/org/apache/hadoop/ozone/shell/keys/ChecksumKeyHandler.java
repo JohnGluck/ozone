@@ -17,7 +17,10 @@
  */
 package org.apache.hadoop.ozone.shell.keys;
 
+import static org.apache.hadoop.fs.ozone.OzoneClientUtils.getFileChecksumWithCombineMode;
+
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import java.io.IOException;
 import org.apache.hadoop.fs.FileChecksum;
 import org.apache.hadoop.hdds.scm.OzoneClientConfig;
 import org.apache.hadoop.ozone.client.OzoneBucket;
@@ -27,10 +30,6 @@ import org.apache.hadoop.ozone.client.OzoneVolume;
 import org.apache.hadoop.ozone.client.protocol.ClientProtocol;
 import org.apache.hadoop.ozone.shell.OzoneAddress;
 import picocli.CommandLine;
-
-import java.io.IOException;
-
-import static org.apache.hadoop.fs.ozone.OzoneClientUtils.getFileChecksumWithCombineMode;
 
 /**
  * Class to display checksum information about an existing key.
@@ -43,8 +42,8 @@ public class ChecksumKeyHandler extends KeyHandler {
       names = {"-c", "--combine-mode"},
       description = "Method of combining the chunk checksums. Valid values are "
           + "COMPOSITE_CRC and MD5MD5CRC. Defaults to COMPOSITE_CRC.")
-  private OzoneClientConfig.ChecksumCombineMode mode =
-      OzoneClientConfig.ChecksumCombineMode.COMPOSITE_CRC;
+  @SuppressWarnings("PMD.ImmutableField")
+  private OzoneClientConfig.ChecksumCombineMode mode = OzoneClientConfig.ChecksumCombineMode.COMPOSITE_CRC;
 
   @Override
   protected void execute(OzoneClient client, OzoneAddress address)

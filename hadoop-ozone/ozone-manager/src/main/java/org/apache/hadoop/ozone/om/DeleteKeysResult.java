@@ -26,14 +26,13 @@ import java.util.List;
  * to capture the result of each delete task.
  */
 public class DeleteKeysResult {
+  private final List<OmKeyInfo> keysToDelete;
 
-  private List<OmKeyInfo> keysToDelete;
-  private long consumedSize;
+  private final long consumedSize;
 
-  private boolean processedKeys;
+  private final boolean processedKeys;
 
-  public DeleteKeysResult(List<OmKeyInfo> keysToDelete,
-      long consumedSize, boolean processedKeys) {
+  public DeleteKeysResult(List<OmKeyInfo> keysToDelete, long consumedSize, boolean processedKeys) {
     this.keysToDelete = keysToDelete;
     this.consumedSize = consumedSize;
     this.processedKeys = processedKeys;

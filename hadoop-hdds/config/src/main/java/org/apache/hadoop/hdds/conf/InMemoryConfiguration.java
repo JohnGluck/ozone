@@ -27,7 +27,7 @@ import java.util.Map;
  */
 public class InMemoryConfiguration implements MutableConfigurationSource {
 
-  private Map<String, String> configs = new HashMap<>();
+  private final Map<String, String> configs = new HashMap<>();
 
   public InMemoryConfiguration() {
   }

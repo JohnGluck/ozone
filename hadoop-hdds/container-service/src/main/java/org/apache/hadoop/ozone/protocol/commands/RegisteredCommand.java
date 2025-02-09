@@ -29,9 +29,9 @@ import org.apache.hadoop.hdds.protocol.proto
  * Response to Datanode Register call.
  */
 public class RegisteredCommand {
-  private String clusterID;
-  private ErrorCode error;
-  private DatanodeDetails datanode;
+  private final String clusterID;
+  private final ErrorCode error;
+  private final DatanodeDetails datanode;
 
   public RegisteredCommand(final ErrorCode error, final DatanodeDetails node,
       final String clusterID) {

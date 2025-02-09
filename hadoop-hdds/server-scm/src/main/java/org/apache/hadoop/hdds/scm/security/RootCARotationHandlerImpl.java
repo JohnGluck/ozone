@@ -18,14 +18,9 @@
 
 package org.apache.hadoop.hdds.scm.security;
 
-import org.apache.commons.io.FileUtils;
-import org.apache.hadoop.hdds.scm.ha.SCMHAInvocationHandler;
-import org.apache.hadoop.hdds.scm.ha.SCMRatisServer;
-import org.apache.hadoop.hdds.scm.server.StorageContainerManager;
-import org.apache.hadoop.hdds.security.SecurityConfig;
-import org.apache.hadoop.hdds.security.x509.certificate.client.SCMCertificateClient;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import static org.apache.hadoop.hdds.HddsConfigKeys.HDDS_BACKUP_KEY_CERT_DIR_NAME_SUFFIX;
+import static org.apache.hadoop.hdds.HddsConfigKeys.HDDS_NEW_KEY_CERT_DIR_NAME_SUFFIX;
+import static org.apache.hadoop.hdds.protocol.proto.SCMRatisProtocol.RequestType.CERT_ROTATE;
 
 import java.io.File;
 import java.io.IOException;
@@ -35,27 +30,29 @@ import java.nio.file.StandardCopyOption;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicReference;
-
-import static org.apache.hadoop.hdds.HddsConfigKeys.HDDS_BACKUP_KEY_CERT_DIR_NAME_SUFFIX;
-import static org.apache.hadoop.hdds.HddsConfigKeys.HDDS_NEW_KEY_CERT_DIR_NAME_SUFFIX;
-import static org.apache.hadoop.hdds.protocol.proto.SCMRatisProtocol.RequestType.CERT_ROTATE;
+import org.apache.commons.io.FileUtils;
+import org.apache.hadoop.hdds.scm.ha.SCMHAInvocationHandler;
+import org.apache.hadoop.hdds.scm.ha.SCMRatisServer;
+import org.apache.hadoop.hdds.scm.server.StorageContainerManager;
+import org.apache.hadoop.hdds.security.SecurityConfig;
+import org.apache.hadoop.hdds.security.x509.certificate.client.SCMCertificateClient;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Root CA Rotation Handler for ratis SCM statemachine.
  */
 public class RootCARotationHandlerImpl implements RootCARotationHandler {
-
-  public static final Logger LOG =
-      LoggerFactory.getLogger(RootCARotationHandlerImpl.class);
+  public static final Logger LOG = LoggerFactory.getLogger(RootCARotationHandlerImpl.class);
 
   private final StorageContainerManager scm;
   private final SCMCertificateClient scmCertClient;
   private final SecurityConfig secConfig;
-  private Set<String> newScmCertIdSet = new HashSet<>();
+  private final Set<String> newScmCertIdSet = new HashSet<>();
   private final String newSubCAPath;
   private final RootCARotationManager rotationManager;
-  private AtomicReference<String> newSubCACertId = new AtomicReference<>();
-  private AtomicReference<String> newRootCACertId = new AtomicReference<>();
+  private final AtomicReference<String> newSubCACertId = new AtomicReference<>();
+  private final AtomicReference<String> newRootCACertId = new AtomicReference<>();
 
   /**
    * Constructs RootCARotationHandlerImpl with the specified arguments.

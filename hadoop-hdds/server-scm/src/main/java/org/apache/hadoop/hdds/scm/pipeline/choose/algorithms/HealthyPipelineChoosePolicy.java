@@ -30,7 +30,7 @@ import java.util.List;
  */
 public class HealthyPipelineChoosePolicy implements PipelineChoosePolicy {
 
-  private PipelineChoosePolicy randomPolicy = new RandomPipelineChoosePolicy();
+  private final PipelineChoosePolicy randomPolicy = new RandomPipelineChoosePolicy();
 
   @Override
   public Pipeline choosePipeline(List<Pipeline> pipelineList,

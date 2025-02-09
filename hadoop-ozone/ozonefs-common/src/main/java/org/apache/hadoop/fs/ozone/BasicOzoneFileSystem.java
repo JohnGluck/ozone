@@ -535,7 +535,7 @@ public class BasicOzoneFileSystem extends FileSystem {
   }
 
   private class DeleteIterator extends OzoneListingIterator {
-    private boolean recursive;
+    private final boolean recursive;
 
     DeleteIterator(Path f, boolean recursive)
         throws IOException {
@@ -1003,11 +1003,11 @@ public class BasicOzoneFileSystem extends FileSystem {
       implements RemoteIterator<T> {
     private List<FileStatus> thisListing;
     private int i;
-    private Path p;
+    private final Path p;
     private T curStat = null;
     private String startPath = "";
-    private boolean lite;
-    private Function<FileStatus, T> transformFunc;
+    private final boolean lite;
+    private final Function<FileStatus, T> transformFunc;
 
     /**
      * Constructor to initialize OzoneFileStatusIterator.
@@ -1024,7 +1024,7 @@ public class BasicOzoneFileSystem extends FileSystem {
       this.transformFunc = transformFunc;
       // fetch the first batch of entries in the directory
       thisListing = listFileStatus(p, startPath, lite);
-      if (thisListing != null && !thisListing.isEmpty()) {
+      if (!thisListing.isEmpty()) {
         startPath = pathToKey(
             thisListing.get(thisListing.size() - 1).getPath());
         LOG.debug("Got {} file status, next start path {}",
@@ -1063,7 +1063,7 @@ public class BasicOzoneFileSystem extends FileSystem {
         if (startPath != null && (!thisListing.isEmpty())) {
           // current listing is exhausted & fetch a new listing
           thisListing = listFileStatus(p, startPath, lite);
-          if (thisListing != null && !thisListing.isEmpty()) {
+          if (!thisListing.isEmpty()) {
             startPath = pathToKey(
                 thisListing.get(thisListing.size() - 1).getPath());
             LOG.debug("Got {} file status, next start path {}",
@@ -1187,7 +1187,7 @@ public class BasicOzoneFileSystem extends FileSystem {
     private final Path path;
     private final FileStatus status;
     private String pathKey;
-    private Iterator<BasicKeyInfo> keyIterator;
+    private final Iterator<BasicKeyInfo> keyIterator;
 
     OzoneListingIterator(Path path)
         throws IOException {

@@ -24,8 +24,8 @@ import java.util.List;
  * and a boolean flag indicating if the listing is truncated.
  */
 public class ListKeysResult {
-  private List<OmKeyInfo> keys;
-  private boolean isTruncated;
+  private final List<OmKeyInfo> keys;
+  private final boolean isTruncated;
 
   public ListKeysResult(List<OmKeyInfo> keys, boolean isTruncated) {
     this.keys = keys;

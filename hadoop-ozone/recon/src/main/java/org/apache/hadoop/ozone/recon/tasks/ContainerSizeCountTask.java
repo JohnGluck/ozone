@@ -19,16 +19,23 @@
 package org.apache.hadoop.ozone.recon.tasks;
 
 
+import static org.apache.hadoop.hdds.protocol.proto.HddsProtos.LifeCycleState.DELETED;
+import static org.hadoop.ozone.recon.schema.tables.ContainerCountBySizeTable.CONTAINER_COUNT_BY_SIZE;
+
 import com.google.common.annotations.VisibleForTesting;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.locks.ReadWriteLock;
+import java.util.concurrent.locks.ReentrantReadWriteLock;
 import org.apache.hadoop.hdds.scm.container.ContainerID;
 import org.apache.hadoop.hdds.scm.container.ContainerInfo;
 import org.apache.hadoop.hdds.scm.container.ContainerManager;
 import org.apache.hadoop.ozone.recon.ReconUtils;
 import org.apache.hadoop.ozone.recon.scm.ReconScmTask;
-import org.apache.hadoop.ozone.recon.spi.StorageContainerServiceProvider;
 import org.apache.hadoop.ozone.recon.tasks.updater.ReconTaskStatusUpdater;
 import org.apache.hadoop.ozone.recon.tasks.updater.ReconTaskStatusUpdaterManager;
-import org.hadoop.ozone.recon.schema.ContainerSchemaDefinition;
 import org.hadoop.ozone.recon.schema.UtilizationSchemaDefinition;
 import org.hadoop.ozone.recon.schema.tables.daos.ContainerCountBySizeDao;
 import org.hadoop.ozone.recon.schema.tables.pojos.ContainerCountBySize;
@@ -37,16 +44,6 @@ import org.jooq.Record1;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.ArrayList;
-import java.util.concurrent.locks.ReadWriteLock;
-import java.util.concurrent.locks.ReentrantReadWriteLock;
-
-import static org.apache.hadoop.hdds.protocol.proto.HddsProtos.LifeCycleState.DELETED;
-import static org.hadoop.ozone.recon.schema.tables.ContainerCountBySizeTable.CONTAINER_COUNT_BY_SIZE;
-
 
 /**
  * Class that scans the list of containers and keeps track of container sizes
@@ -54,16 +51,14 @@ import static org.hadoop.ozone.recon.schema.tables.ContainerCountBySizeTable.CON
  * containerSize DB.
  */
 public class ContainerSizeCountTask extends ReconScmTask {
+  private static final Logger LOG = LoggerFactory.getLogger(ContainerSizeCountTask.class);
 
-  private static final Logger LOG =
-      LoggerFactory.getLogger(ContainerSizeCountTask.class);
-
-  private ContainerManager containerManager;
+  private final ContainerManager containerManager;
   private final long interval;
-  private ContainerCountBySizeDao containerCountBySizeDao;
-  private DSLContext dslContext;
-  private HashMap<ContainerID, Long> processedContainers = new HashMap<>();
-  private ReadWriteLock lock = new ReentrantReadWriteLock(true);
+  private final ContainerCountBySizeDao containerCountBySizeDao;
+  private final DSLContext dslContext;
+  private final HashMap<ContainerID, Long> processedContainers = new HashMap<>();
+  private final ReadWriteLock lock = new ReentrantReadWriteLock(true);
   private final ReconTaskStatusUpdater taskStatusUpdater;
 
   public ContainerSizeCountTask(
@@ -369,7 +364,7 @@ public class ContainerSizeCountTask extends ReconScmTask {
    */
   private static class ContainerSizeCountKey {
 
-    private Long containerSizeUpperBound;
+    private final Long containerSizeUpperBound;
 
     ContainerSizeCountKey(
         Long containerSizeUpperBound) {

@@ -23,10 +23,10 @@ package org.apache.hadoop.ozone.om.helpers;
  */
 public class OmMultipartInfo {
 
-  private String volumeName;
-  private String bucketName;
-  private String keyName;
-  private String uploadID;
+  private final String volumeName;
+  private final String bucketName;
+  private final String keyName;
+  private final String uploadID;
 
   /**
    * Construct OmMultipartInfo object which holds information about the

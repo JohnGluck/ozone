@@ -63,8 +63,7 @@ class DatanodeSimulationState {
   private DatanodeDetails datanodeDetails;
   private boolean isRegistered = false;
   private long fullContainerReportDurationMs;
-  private Map<InetSocketAddress, EndpointState> endpointStates =
-      new HashMap<>();
+  private final Map<InetSocketAddress, EndpointState> endpointStates = new HashMap<>();
 
   private Set<String> pipelines = new HashSet<>();
   private Map<Long, ContainerReplicaProto.State> containers =

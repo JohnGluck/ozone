@@ -33,6 +33,7 @@ public class HostNameParameters {
       "separated by newlines.",
       arity = "1..*",
       paramLabel = "<host name>")
+  @SuppressWarnings("PMD.ImmutableField")
   private List<String> parameters = new ArrayList<>();
 
   public List<String> getHostNames() {

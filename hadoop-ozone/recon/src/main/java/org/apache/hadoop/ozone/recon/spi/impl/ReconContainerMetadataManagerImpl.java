@@ -67,20 +67,18 @@ import org.slf4j.LoggerFactory;
  * Implementation of the Recon Container DB Service.
  */
 @Singleton
-public class ReconContainerMetadataManagerImpl
-    implements ReconContainerMetadataManager {
+public class ReconContainerMetadataManagerImpl implements ReconContainerMetadataManager {
 
-  private static final Logger LOG =
-      LoggerFactory.getLogger(ReconContainerMetadataManagerImpl.class);
+  private static final Logger LOG = LoggerFactory.getLogger(ReconContainerMetadataManagerImpl.class);
 
   private Table<ContainerKeyPrefix, Integer> containerKeyTable;
   private Table<KeyPrefixContainer, Integer> keyContainerTable;
   private Table<Long, Long> containerKeyCountTable;
-  private Table<Long, ContainerReplicaHistoryList>
-      containerReplicaHistoryTable;
-  private GlobalStatsDao globalStatsDao;
+  private Table<Long, ContainerReplicaHistoryList> containerReplicaHistoryTable;
 
-  private DBStore containerDbStore;
+  private final GlobalStatsDao globalStatsDao;
+
+  private final DBStore containerDbStore;
 
   @Inject
   private Configuration sqlConfiguration;

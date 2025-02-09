@@ -86,6 +86,7 @@ public class OzoneClientKeyGenerator extends BaseFreonGenerator
       names = {"--enable-streaming", "--stream"},
       description = "Specify whether the write will be through ratis streaming"
   )
+  @SuppressWarnings("PMD.ImmutableField")
   private boolean enableRatisStreaming = false;
 
   private Timer timer;

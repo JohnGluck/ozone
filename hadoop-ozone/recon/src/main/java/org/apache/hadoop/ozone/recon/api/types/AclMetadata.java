@@ -30,12 +30,19 @@ import java.util.stream.Collectors;
 public final class AclMetadata {
 
   @JsonProperty("type")
+  @SuppressWarnings("PMD.ImmutableField")
   private String type;
+
   @JsonProperty("name")
+  @SuppressWarnings("PMD.ImmutableField")
   private String name;
+
   @JsonProperty("scope")
+  @SuppressWarnings("PMD.ImmutableField")
   private String scope;
+
   @JsonProperty("aclList")
+  @SuppressWarnings("PMD.ImmutableField")
   private List<String> aclList;
 
   private AclMetadata(Builder builder) {

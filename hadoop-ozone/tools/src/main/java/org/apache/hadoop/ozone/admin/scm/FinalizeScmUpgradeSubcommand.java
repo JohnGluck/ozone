@@ -114,9 +114,9 @@ public class FinalizeScmUpgradeSubcommand extends ScmSubcommand {
 
   private static class UpgradeMonitor implements Callable<Void> {
 
-    private ScmClient client;
-    private String upgradeClientID;
-    private boolean force;
+    private final ScmClient client;
+    private final String upgradeClientID;
+    private final boolean force;
 
     UpgradeMonitor(
         ScmClient client,
@@ -146,7 +146,7 @@ public class FinalizeScmUpgradeSubcommand extends ScmSubcommand {
           return null;
         }
         if (isInprogress(progress.status()) || isDone(progress.status())) {
-          progress.msgs().stream().forEachOrdered(System.out::println);
+          progress.msgs().forEach(System.out::println);
         }
         if (isDone(progress.status())) {
           emitExitMsg();

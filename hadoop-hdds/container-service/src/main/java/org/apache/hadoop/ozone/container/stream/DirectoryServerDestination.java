@@ -25,7 +25,7 @@ import java.nio.file.Paths;
  */
 public class DirectoryServerDestination implements StreamingDestination {
 
-  private Path root;
+  private final Path root;
 
   public DirectoryServerDestination(Path path) {
     root = path;

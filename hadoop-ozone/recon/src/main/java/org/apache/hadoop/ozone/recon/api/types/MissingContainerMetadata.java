@@ -32,18 +32,23 @@ import java.util.UUID;
 public class MissingContainerMetadata {
 
   @XmlElement(name = "containerID")
+  @SuppressWarnings("PMD.ImmutableField")
   private long containerID;
 
   @XmlElement(name = "missingSince")
+  @SuppressWarnings("PMD.ImmutableField")
   private long missingSince;
 
   @XmlElement(name = "keys")
+  @SuppressWarnings("PMD.ImmutableField")
   private long keys;
 
   @XmlElement(name = "pipelineID")
+  @SuppressWarnings("PMD.ImmutableField")
   private UUID pipelineID;
 
   @XmlElement(name = "replicas")
+  @SuppressWarnings("PMD.ImmutableField")
   private List<ContainerHistory> replicas;
 
   public MissingContainerMetadata(long containerID, long missingSince,

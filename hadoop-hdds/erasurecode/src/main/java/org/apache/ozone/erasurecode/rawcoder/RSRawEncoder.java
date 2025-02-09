@@ -28,13 +28,11 @@ import org.apache.ozone.erasurecode.rawcoder.util.RSUtil;
  * from HDFS-RAID, and also compatible with the native/ISA-L coder.
  */
 public class RSRawEncoder extends RawErasureEncoder {
-  // relevant to schema and won't change during encode calls.
-  private byte[] encodeMatrix;
   /**
    * Array of input tables generated from coding coefficients previously.
    * Must be of size 32*k*rows
    */
-  private byte[] gfTables;
+  private final byte[] gfTables;
 
   public RSRawEncoder(ECReplicationConfig ecReplicationConfig) {
     super(ecReplicationConfig);
@@ -44,7 +42,8 @@ public class RSRawEncoder extends RawErasureEncoder {
           "Invalid numDataUnits and numParityUnits");
     }
 
-    encodeMatrix = new byte[getNumAllUnits() * getNumDataUnits()];
+    // relevant to schema and won't change during encode calls.
+    byte[] encodeMatrix = new byte[getNumAllUnits() * getNumDataUnits()];
     RSUtil.genCauchyMatrix(encodeMatrix, getNumAllUnits(), getNumDataUnits());
     if (allowVerboseDump()) {
       DumpUtil.dumpMatrix(encodeMatrix, getNumDataUnits(), getNumAllUnits());

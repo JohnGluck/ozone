@@ -30,25 +30,27 @@ import java.net.InetSocketAddress;
  * Class to store OM proxy information.
  */
 public class OMProxyInfo {
-  private String serviceId;
-  private String nodeId;
-  private String rpcAddrStr;
-  private InetSocketAddress rpcAddr;
-  private Text dtService;
+  private final String nodeId;
+  private final String rpcAddrStr;
+  private final InetSocketAddress rpcAddr;
+  private final Text dtService;
 
   private static final Logger LOG =
       LoggerFactory.getLogger(OMProxyInfo.class);
 
   OMProxyInfo(String serviceID, String nodeID, String rpcAddress) {
-    this.serviceId = serviceID;
     this.nodeId = nodeID;
     this.rpcAddrStr = rpcAddress;
     this.rpcAddr = NetUtils.createSocketAddr(rpcAddrStr);
     if (rpcAddr.isUnresolved()) {
-      LOG.warn("OzoneManager address {} for serviceID {} remains unresolved " +
-              "for node ID {} Check your ozone-site.xml file to ensure ozone " +
-              "manager addresses are configured properly.",
-          rpcAddress, serviceId, nodeId);
+      LOG.warn(
+          "OzoneManager address {} for serviceID {} remains unresolved "
+              + "for node ID {} Check your ozone-site.xml file to ensure ozone "
+              + "manager addresses are configured properly.",
+          rpcAddress,
+          serviceID,
+          nodeId
+      );
       this.dtService = null;
     } else {
 
@@ -63,12 +65,7 @@ public class OMProxyInfo {
 
   @Override
   public String toString() {
-    StringBuilder sb = new StringBuilder()
-        .append("nodeId=")
-        .append(nodeId)
-        .append(",nodeAddress=")
-        .append(rpcAddrStr);
-    return sb.toString();
+    return "nodeId=" + nodeId + ",nodeAddress=" + rpcAddrStr;
   }
 
   public InetSocketAddress getAddress() {

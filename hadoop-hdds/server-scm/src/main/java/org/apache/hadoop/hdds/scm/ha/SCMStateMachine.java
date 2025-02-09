@@ -17,23 +17,25 @@
 
 package org.apache.hadoop.hdds.scm.ha;
 
+import static java.util.Objects.requireNonNull;
+
+import com.google.common.annotations.VisibleForTesting;
+import com.google.common.base.Preconditions;
+import com.google.common.util.concurrent.ThreadFactoryBuilder;
+import com.google.protobuf.InvalidProtocolBufferException;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
+import java.util.Collection;
 import java.util.EnumMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Collection;
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicLong;
-
-import com.google.common.annotations.VisibleForTesting;
-import com.google.common.base.Preconditions;
-import com.google.common.util.concurrent.ThreadFactoryBuilder;
-import com.google.protobuf.InvalidProtocolBufferException;
+import org.apache.hadoop.hdds.protocol.proto.SCMRatisProtocol.RequestType;
 import org.apache.hadoop.hdds.scm.block.DeletedBlockLog;
 import org.apache.hadoop.hdds.scm.block.DeletedBlockLogImpl;
 import org.apache.hadoop.hdds.scm.exceptions.SCMException;
@@ -42,9 +44,9 @@ import org.apache.hadoop.hdds.scm.server.StorageContainerManager;
 import org.apache.hadoop.hdds.security.symmetric.ManagedSecretKey;
 import org.apache.hadoop.hdds.utils.TransactionInfo;
 import org.apache.hadoop.hdds.utils.db.DBCheckpoint;
+import org.apache.hadoop.util.Time;
 import org.apache.hadoop.util.concurrent.HadoopExecutors;
 import org.apache.ratis.proto.RaftProtos;
-import org.apache.hadoop.util.Time;
 import org.apache.ratis.protocol.Message;
 import org.apache.ratis.protocol.RaftGroupId;
 import org.apache.ratis.protocol.RaftGroupMemberId;
@@ -56,8 +58,6 @@ import org.apache.ratis.statemachine.SnapshotInfo;
 import org.apache.ratis.statemachine.StateMachine;
 import org.apache.ratis.statemachine.TransactionContext;
 import org.apache.ratis.statemachine.impl.BaseStateMachine;
-
-import org.apache.hadoop.hdds.protocol.proto.SCMRatisProtocol.RequestType;
 import org.apache.ratis.statemachine.impl.SimpleStateMachineStorage;
 import org.apache.ratis.util.ExitUtils;
 import org.apache.ratis.util.JavaUtils;
@@ -65,16 +65,13 @@ import org.apache.ratis.util.LifeCycle;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import static java.util.Objects.requireNonNull;
-
 /**
  * The SCMStateMachine is the state machine for SCMRatisServer. It is
  * responsible for applying ratis committed transactions to
  * {@link StorageContainerManager}.
  */
 public class SCMStateMachine extends BaseStateMachine {
-  private static final Logger LOG =
-      LoggerFactory.getLogger(SCMStateMachine.class);
+  private static final Logger LOG = LoggerFactory.getLogger(SCMStateMachine.class);
 
   private StorageContainerManager scm;
   private Map<RequestType, Object> handlers;
@@ -90,8 +87,8 @@ public class SCMStateMachine extends BaseStateMachine {
   private DBCheckpoint installingDBCheckpoint = null;
   private List<ManagedSecretKey> installingSecretKeys = null;
 
-  private AtomicLong currentLeaderTerm = new AtomicLong(-1L);
-  private AtomicBoolean refreshedAfterLeaderReady = new AtomicBoolean();
+  private final AtomicLong currentLeaderTerm = new AtomicLong(-1L);
+  private final AtomicBoolean refreshedAfterLeaderReady = new AtomicBoolean();
 
   public SCMStateMachine(final StorageContainerManager scm,
       SCMHADBTransactionBuffer buffer) {
@@ -245,7 +242,7 @@ public class SCMStateMachine extends BaseStateMachine {
     LOG.info("Received install snapshot notification from SCM leader: {} with "
         + "term index: {}", leaderAddress, firstTermIndexInLog);
 
-    CompletableFuture<TermIndex> future = CompletableFuture.supplyAsync(
+    return CompletableFuture.supplyAsync(
         () -> {
           DBCheckpoint checkpoint =
               scm.getScmHAManager().downloadCheckpointFromLeader(leaderNodeId);
@@ -275,7 +272,6 @@ public class SCMStateMachine extends BaseStateMachine {
           return termIndex;
         },
         installSnapshotExecutor);
-    return future;
   }
 
   @Override

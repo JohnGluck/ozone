@@ -32,7 +32,7 @@ public class OzoneFileStatusLight {
 
   private BasicOmKeyInfo keyInfo;
 
-  private boolean isDirectory;
+  private final boolean isDirectory;
 
   private long blockSize;
 

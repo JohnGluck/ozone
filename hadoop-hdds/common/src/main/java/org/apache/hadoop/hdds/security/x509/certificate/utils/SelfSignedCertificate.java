@@ -70,16 +70,15 @@ import org.slf4j.LoggerFactory;
  * provided.
  */
 public final class SelfSignedCertificate {
-  private String subject;
-  private String clusterID;
-  private String scmID;
-  private LocalDateTime beginDate;
-  private LocalDateTime endDate;
-  private KeyPair key;
-  private SecurityConfig config;
-  private List<GeneralName> altNames;
-  private static final Logger LOG =
-      LoggerFactory.getLogger(SelfSignedCertificate.class);
+  private final String subject;
+  private final String clusterID;
+  private final String scmID;
+  private final LocalDateTime beginDate;
+  private final LocalDateTime endDate;
+  private final KeyPair key;
+  private final SecurityConfig config;
+  private final List<GeneralName> altNames;
+  private static final Logger LOG = LoggerFactory.getLogger(SelfSignedCertificate.class);
 
   /**
    * Private Ctor invoked only via Builder Interface.

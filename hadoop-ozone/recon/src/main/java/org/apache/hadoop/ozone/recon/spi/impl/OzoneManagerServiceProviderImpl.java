@@ -18,8 +18,31 @@
 
 package org.apache.hadoop.ozone.recon.spi.impl;
 
-import javax.inject.Inject;
-import javax.inject.Singleton;
+import static org.apache.hadoop.hdds.recon.ReconConfigKeys.OZONE_RECON_DB_DIRS_PERMISSIONS_DEFAULT;
+import static org.apache.hadoop.ozone.OzoneConsts.OZONE_DB_CHECKPOINT_HTTP_ENDPOINT;
+import static org.apache.hadoop.ozone.OzoneConsts.OZONE_DB_CHECKPOINT_REQUEST_FLUSH;
+import static org.apache.hadoop.ozone.om.OMConfigKeys.OZONE_OM_HTTP_AUTH_TYPE;
+import static org.apache.hadoop.ozone.recon.ReconConstants.RECON_OM_SNAPSHOT_DB;
+import static org.apache.hadoop.ozone.recon.ReconServerConfigKeys.OZONE_RECON_OM_CONNECTION_REQUEST_TIMEOUT;
+import static org.apache.hadoop.ozone.recon.ReconServerConfigKeys.OZONE_RECON_OM_CONNECTION_REQUEST_TIMEOUT_DEFAULT;
+import static org.apache.hadoop.ozone.recon.ReconServerConfigKeys.OZONE_RECON_OM_CONNECTION_TIMEOUT;
+import static org.apache.hadoop.ozone.recon.ReconServerConfigKeys.OZONE_RECON_OM_CONNECTION_TIMEOUT_DEFAULT;
+import static org.apache.hadoop.ozone.recon.ReconServerConfigKeys.OZONE_RECON_OM_SNAPSHOT_DB_DIR;
+import static org.apache.hadoop.ozone.recon.ReconServerConfigKeys.OZONE_RECON_OM_SNAPSHOT_TASK_FLUSH_PARAM;
+import static org.apache.hadoop.ozone.recon.ReconServerConfigKeys.OZONE_RECON_OM_SNAPSHOT_TASK_INITIAL_DELAY;
+import static org.apache.hadoop.ozone.recon.ReconServerConfigKeys.OZONE_RECON_OM_SNAPSHOT_TASK_INITIAL_DELAY_DEFAULT;
+import static org.apache.hadoop.ozone.recon.ReconServerConfigKeys.OZONE_RECON_OM_SNAPSHOT_TASK_INTERVAL_DEFAULT;
+import static org.apache.hadoop.ozone.recon.ReconServerConfigKeys.OZONE_RECON_OM_SNAPSHOT_TASK_INTERVAL_DELAY;
+import static org.apache.hadoop.ozone.recon.ReconServerConfigKeys.RECON_OM_DELTA_UPDATE_LIMIT;
+import static org.apache.hadoop.ozone.recon.ReconServerConfigKeys.RECON_OM_DELTA_UPDATE_LIMIT_DEFAULT;
+import static org.apache.hadoop.ozone.recon.ReconServerConfigKeys.RECON_OM_DELTA_UPDATE_LOOP_LIMIT;
+import static org.apache.hadoop.ozone.recon.ReconServerConfigKeys.RECON_OM_DELTA_UPDATE_LOOP_LIMIT_DEFAULT;
+import static org.apache.hadoop.ozone.recon.ReconUtils.convertNumericToSymbolic;
+import static org.apache.ratis.proto.RaftProtos.RaftPeerRole.LEADER;
+
+import com.google.common.annotations.VisibleForTesting;
+import com.google.common.collect.Iterators;
+import com.google.common.util.concurrent.ThreadFactoryBuilder;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -37,23 +60,23 @@ import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.stream.Collectors;
-
-import com.google.common.collect.Iterators;
-import com.google.common.util.concurrent.ThreadFactoryBuilder;
+import javax.inject.Inject;
+import javax.inject.Singleton;
+import org.apache.commons.io.FileUtils;
+import org.apache.hadoop.hdds.conf.OzoneConfiguration;
+import org.apache.hadoop.hdds.protocol.proto.HddsProtos;
 import org.apache.hadoop.hdds.recon.ReconConfigKeys;
+import org.apache.hadoop.hdds.server.http.HttpConfig;
+import org.apache.hadoop.hdds.utils.db.DBCheckpoint;
+import org.apache.hadoop.hdds.utils.db.RDBBatchOperation;
+import org.apache.hadoop.hdds.utils.db.RDBStore;
+import org.apache.hadoop.hdds.utils.db.RocksDBCheckpoint;
 import org.apache.hadoop.hdds.utils.db.RocksDatabase;
 import org.apache.hadoop.hdds.utils.db.Table;
 import org.apache.hadoop.hdds.utils.db.TableIterator;
 import org.apache.hadoop.hdds.utils.db.managed.ManagedWriteBatch;
 import org.apache.hadoop.hdds.utils.db.managed.ManagedWriteOptions;
 import org.apache.hadoop.hdfs.web.URLConnectionFactory;
-import org.apache.hadoop.hdds.conf.OzoneConfiguration;
-import org.apache.hadoop.hdds.protocol.proto.HddsProtos;
-import org.apache.hadoop.hdds.server.http.HttpConfig;
-import org.apache.hadoop.hdds.utils.db.DBCheckpoint;
-import org.apache.hadoop.hdds.utils.db.RDBBatchOperation;
-import org.apache.hadoop.hdds.utils.db.RDBStore;
-import org.apache.hadoop.hdds.utils.db.RocksDBCheckpoint;
 import org.apache.hadoop.ozone.om.OMConfigKeys;
 import org.apache.hadoop.ozone.om.OMMetadataManager;
 import org.apache.hadoop.ozone.om.helpers.DBUpdates;
@@ -73,32 +96,6 @@ import org.apache.hadoop.ozone.recon.tasks.updater.ReconTaskStatusUpdater;
 import org.apache.hadoop.ozone.recon.tasks.updater.ReconTaskStatusUpdaterManager;
 import org.apache.hadoop.security.SecurityUtil;
 import org.apache.hadoop.util.Time;
-
-import com.google.common.annotations.VisibleForTesting;
-import org.apache.commons.io.FileUtils;
-
-import static org.apache.hadoop.hdds.recon.ReconConfigKeys.OZONE_RECON_DB_DIRS_PERMISSIONS_DEFAULT;
-import static org.apache.hadoop.ozone.OzoneConsts.OZONE_DB_CHECKPOINT_REQUEST_FLUSH;
-import static org.apache.hadoop.ozone.OzoneConsts.OZONE_DB_CHECKPOINT_HTTP_ENDPOINT;
-import static org.apache.hadoop.ozone.om.OMConfigKeys.OZONE_OM_HTTP_AUTH_TYPE;
-import static org.apache.hadoop.ozone.recon.ReconConstants.RECON_OM_SNAPSHOT_DB;
-import static org.apache.hadoop.ozone.recon.ReconServerConfigKeys.OZONE_RECON_OM_SNAPSHOT_DB_DIR;
-import static org.apache.hadoop.ozone.recon.ReconServerConfigKeys.OZONE_RECON_OM_CONNECTION_REQUEST_TIMEOUT;
-import static org.apache.hadoop.ozone.recon.ReconServerConfigKeys.OZONE_RECON_OM_CONNECTION_REQUEST_TIMEOUT_DEFAULT;
-import static org.apache.hadoop.ozone.recon.ReconServerConfigKeys.OZONE_RECON_OM_CONNECTION_TIMEOUT;
-import static org.apache.hadoop.ozone.recon.ReconServerConfigKeys.OZONE_RECON_OM_CONNECTION_TIMEOUT_DEFAULT;
-import static org.apache.hadoop.ozone.recon.ReconServerConfigKeys.OZONE_RECON_OM_SNAPSHOT_TASK_FLUSH_PARAM;
-import static org.apache.hadoop.ozone.recon.ReconServerConfigKeys.OZONE_RECON_OM_SNAPSHOT_TASK_INITIAL_DELAY;
-import static org.apache.hadoop.ozone.recon.ReconServerConfigKeys.OZONE_RECON_OM_SNAPSHOT_TASK_INITIAL_DELAY_DEFAULT;
-import static org.apache.hadoop.ozone.recon.ReconServerConfigKeys.OZONE_RECON_OM_SNAPSHOT_TASK_INTERVAL_DELAY;
-import static org.apache.hadoop.ozone.recon.ReconServerConfigKeys.OZONE_RECON_OM_SNAPSHOT_TASK_INTERVAL_DEFAULT;
-import static org.apache.hadoop.ozone.recon.ReconServerConfigKeys.RECON_OM_DELTA_UPDATE_LIMIT;
-import static org.apache.hadoop.ozone.recon.ReconServerConfigKeys.RECON_OM_DELTA_UPDATE_LIMIT_DEFAULT;
-import static org.apache.hadoop.ozone.recon.ReconServerConfigKeys.RECON_OM_DELTA_UPDATE_LOOP_LIMIT;
-import static org.apache.hadoop.ozone.recon.ReconServerConfigKeys.RECON_OM_DELTA_UPDATE_LOOP_LIMIT_DEFAULT;
-import static org.apache.hadoop.ozone.recon.ReconUtils.convertNumericToSymbolic;
-import static org.apache.ratis.proto.RaftProtos.RaftPeerRole.LEADER;
-
 import org.rocksdb.RocksDBException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -109,32 +106,30 @@ import org.slf4j.LoggerFactory;
 @Singleton
 public class OzoneManagerServiceProviderImpl
     implements OzoneManagerServiceProvider {
+  private static final Logger LOG = LoggerFactory.getLogger(OzoneManagerServiceProviderImpl.class);
 
-  private static final Logger LOG =
-      LoggerFactory.getLogger(OzoneManagerServiceProviderImpl.class);
-  private URLConnectionFactory connectionFactory;
+  private final URLConnectionFactory connectionFactory;
 
-  private File omSnapshotDBParentDir;
-  private File reconDbDir;
+  private final File omSnapshotDBParentDir;
+  private final File reconDbDir;
   private String omDBSnapshotUrl;
 
-  private OzoneManagerProtocol ozoneManagerClient;
+  private final OzoneManagerProtocol ozoneManagerClient;
   private final OzoneConfiguration configuration;
   private ScheduledExecutorService scheduler;
 
-  private ReconOMMetadataManager omMetadataManager;
-  private ReconTaskController reconTaskController;
-  private ReconUtils reconUtils;
-  private OzoneManagerSyncMetrics metrics;
+  private final ReconOMMetadataManager omMetadataManager;
+  private final ReconTaskController reconTaskController;
+  private final ReconUtils reconUtils;
+  private final OzoneManagerSyncMetrics metrics;
 
-  private long deltaUpdateLimit;
-  private int deltaUpdateLoopLimit;
+  private final long deltaUpdateLimit;
+  private final int deltaUpdateLoopLimit;
 
-  private AtomicBoolean isSyncDataFromOMRunning;
-  private final String threadNamePrefix;
-  private ThreadFactory threadFactory;
-  private ReconContext reconContext;
-  private ReconTaskStatusUpdaterManager taskStatusUpdaterManager;
+  private final AtomicBoolean isSyncDataFromOMRunning;
+  private final ThreadFactory threadFactory;
+  private final ReconContext reconContext;
+  private final ReconTaskStatusUpdaterManager taskStatusUpdaterManager;
 
   /**
    * OM Snapshot related task names.
@@ -220,8 +215,7 @@ public class OzoneManagerServiceProviderImpl
     this.deltaUpdateLimit = deltaUpdateLimits;
     this.deltaUpdateLoopLimit = deltaUpdateLoopLimits;
     this.isSyncDataFromOMRunning = new AtomicBoolean();
-    this.threadNamePrefix =
-        reconUtils.getReconNodeDetails(configuration).threadNamePrefix();
+    String threadNamePrefix = reconUtils.getReconNodeDetails(configuration).threadNamePrefix();
     this.threadFactory =
         new ThreadFactoryBuilder().setNameFormat(threadNamePrefix + "SyncOM-%d")
             .build();
@@ -594,8 +588,7 @@ public class OzoneManagerServiceProviderImpl
             metrics.incrNumDeltaRequestsFailed();
             reconTaskUpdater.setLastTaskRunStatus(-1);
             reconTaskUpdater.recordRunCompletion();
-            LOG.warn("Unable to get and apply delta updates from OM.",
-                e.getMessage());
+            LOG.warn("Unable to get and apply delta updates from OM. {}", e.getMessage(), e);
             fullSnapshot = true;
           }
         }

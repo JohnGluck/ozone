@@ -56,9 +56,7 @@ import org.apache.hadoop.ozone.protocol.proto.OzoneManagerProtocolProtos.OMRespo
  * Handle add Acl request for bucket.
  */
 public class OMKeyAddAclRequest extends OMKeyAclRequest {
-
-  private static final Logger LOG =
-      LoggerFactory.getLogger(OMKeyAddAclRequest.class);
+  private static final Logger LOG = LoggerFactory.getLogger(OMKeyAddAclRequest.class);
 
   @Override
   public OMRequest preExecute(OzoneManager ozoneManager) throws IOException {
@@ -73,9 +71,9 @@ public class OMKeyAddAclRequest extends OMKeyAclRequest {
         .build();
   }
 
-  private String path;
-  private List<OzoneAcl> ozoneAcls;
-  private OzoneObj obj;
+  private final String path;
+  private final List<OzoneAcl> ozoneAcls;
+  private final OzoneObj obj;
 
   public OMKeyAddAclRequest(OMRequest omRequest, OzoneManager ozoneManager) {
     super(omRequest);

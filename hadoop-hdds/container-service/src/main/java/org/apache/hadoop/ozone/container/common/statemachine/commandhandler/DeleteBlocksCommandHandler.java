@@ -16,56 +16,19 @@
  */
 package org.apache.hadoop.ozone.container.common.statemachine.commandhandler;
 
+import static org.apache.hadoop.hdds.protocol.datanode.proto.ContainerProtos.Result.CONTAINER_NOT_FOUND;
+import static org.apache.hadoop.ozone.OzoneConsts.SCHEMA_V1;
+import static org.apache.hadoop.ozone.OzoneConsts.SCHEMA_V2;
+import static org.apache.hadoop.ozone.OzoneConsts.SCHEMA_V3;
+
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.util.concurrent.ThreadFactoryBuilder;
-import org.apache.hadoop.hdds.conf.ConfigurationSource;
-import org.apache.hadoop.hdds.protocol.datanode.proto.ContainerProtos.ContainerType;
-import org.apache.hadoop.hdds.protocol.proto
-    .StorageContainerDatanodeProtocolProtos.SCMCommandProto;
-import org.apache.hadoop.hdds.scm.container.common.helpers
-    .StorageContainerException;
-import org.apache.hadoop.hdds.protocol.proto
-    .StorageContainerDatanodeProtocolProtos.ContainerBlocksDeletionACKProto;
-import org.apache.hadoop.hdds.protocol.proto
-    .StorageContainerDatanodeProtocolProtos.ContainerBlocksDeletionACKProto
-    .DeleteBlockTransactionResult;
-import org.apache.hadoop.hdds.protocol.proto
-    .StorageContainerDatanodeProtocolProtos.DeletedBlocksTransaction;
-import org.apache.hadoop.hdds.utils.db.Table;
-import org.apache.hadoop.metrics2.lib.MetricsRegistry;
-import org.apache.hadoop.metrics2.lib.MutableRate;
-import org.apache.hadoop.ozone.container.common.helpers.BlockData;
-import org.apache.hadoop.ozone.container.common.helpers.BlockDeletingServiceMetrics;
-import org.apache.hadoop.ozone.container.common.helpers.ChunkInfoList;
-import org.apache.hadoop.ozone.container.common.helpers
-    .DeletedContainerBlocksSummary;
-import org.apache.hadoop.ozone.container.common.interfaces.Container;
-import org.apache.hadoop.ozone.container.common.interfaces.DBHandle;
-import org.apache.hadoop.ozone.container.common.statemachine.DatanodeConfiguration;
-import org.apache.hadoop.ozone.container.keyvalue.KeyValueContainer;
-import org.apache.hadoop.ozone.container.keyvalue.KeyValueContainerData;
-import org.apache.hadoop.ozone.container.keyvalue.helpers.BlockUtils;
-import org.apache.hadoop.ozone.container.common.impl.ContainerSet;
-import org.apache.hadoop.ozone.container.common.statemachine
-    .SCMConnectionManager;
-import org.apache.hadoop.ozone.container.common.statemachine.StateContext;
-import org.apache.hadoop.ozone.container.metadata.DeleteTransactionStore;
-import org.apache.hadoop.ozone.container.ozoneimpl.OzoneContainer;
-import org.apache.hadoop.ozone.protocol.commands.CommandStatus;
-import org.apache.hadoop.ozone.protocol.commands.DeleteBlockCommandStatus;
-import org.apache.hadoop.ozone.protocol.commands.DeleteBlocksCommand;
-import org.apache.hadoop.ozone.protocol.commands.SCMCommand;
-import org.apache.hadoop.util.Daemon;
-import org.apache.hadoop.util.Time;
-import org.apache.hadoop.hdds.utils.db.BatchOperation;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Executors;
@@ -75,12 +38,40 @@ import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
-
-import static org.apache.hadoop.hdds.protocol.datanode.proto.ContainerProtos
-    .Result.CONTAINER_NOT_FOUND;
-import static org.apache.hadoop.ozone.OzoneConsts.SCHEMA_V1;
-import static org.apache.hadoop.ozone.OzoneConsts.SCHEMA_V2;
-import static org.apache.hadoop.ozone.OzoneConsts.SCHEMA_V3;
+import org.apache.hadoop.hdds.conf.ConfigurationSource;
+import org.apache.hadoop.hdds.protocol.datanode.proto.ContainerProtos.ContainerType;
+import org.apache.hadoop.hdds.protocol.proto.StorageContainerDatanodeProtocolProtos.ContainerBlocksDeletionACKProto;
+import org.apache.hadoop.hdds.protocol.proto.StorageContainerDatanodeProtocolProtos.ContainerBlocksDeletionACKProto.DeleteBlockTransactionResult;
+import org.apache.hadoop.hdds.protocol.proto.StorageContainerDatanodeProtocolProtos.DeletedBlocksTransaction;
+import org.apache.hadoop.hdds.protocol.proto.StorageContainerDatanodeProtocolProtos.SCMCommandProto;
+import org.apache.hadoop.hdds.scm.container.common.helpers.StorageContainerException;
+import org.apache.hadoop.hdds.utils.db.BatchOperation;
+import org.apache.hadoop.hdds.utils.db.Table;
+import org.apache.hadoop.metrics2.lib.MetricsRegistry;
+import org.apache.hadoop.metrics2.lib.MutableRate;
+import org.apache.hadoop.ozone.container.common.helpers.BlockData;
+import org.apache.hadoop.ozone.container.common.helpers.BlockDeletingServiceMetrics;
+import org.apache.hadoop.ozone.container.common.helpers.ChunkInfoList;
+import org.apache.hadoop.ozone.container.common.helpers.DeletedContainerBlocksSummary;
+import org.apache.hadoop.ozone.container.common.impl.ContainerSet;
+import org.apache.hadoop.ozone.container.common.interfaces.Container;
+import org.apache.hadoop.ozone.container.common.interfaces.DBHandle;
+import org.apache.hadoop.ozone.container.common.statemachine.DatanodeConfiguration;
+import org.apache.hadoop.ozone.container.common.statemachine.SCMConnectionManager;
+import org.apache.hadoop.ozone.container.common.statemachine.StateContext;
+import org.apache.hadoop.ozone.container.keyvalue.KeyValueContainer;
+import org.apache.hadoop.ozone.container.keyvalue.KeyValueContainerData;
+import org.apache.hadoop.ozone.container.keyvalue.helpers.BlockUtils;
+import org.apache.hadoop.ozone.container.metadata.DeleteTransactionStore;
+import org.apache.hadoop.ozone.container.ozoneimpl.OzoneContainer;
+import org.apache.hadoop.ozone.protocol.commands.CommandStatus;
+import org.apache.hadoop.ozone.protocol.commands.DeleteBlockCommandStatus;
+import org.apache.hadoop.ozone.protocol.commands.DeleteBlocksCommand;
+import org.apache.hadoop.ozone.protocol.commands.SCMCommand;
+import org.apache.hadoop.util.Daemon;
+import org.apache.hadoop.util.Time;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Handle block deletion commands.
@@ -185,10 +176,10 @@ public class DeleteBlocksCommandHandler implements CommandHandler {
    * A delete command info.
    */
   public static final class DeleteCmdInfo {
-    private DeleteBlocksCommand cmd;
-    private StateContext context;
-    private OzoneContainer container;
-    private SCMConnectionManager connectionManager;
+    private final DeleteBlocksCommand cmd;
+    private final StateContext context;
+    private final OzoneContainer container;
+    private final SCMConnectionManager connectionManager;
 
     public DeleteCmdInfo(DeleteBlocksCommand command, OzoneContainer container,
         StateContext context, SCMConnectionManager connectionManager) {
@@ -237,7 +228,7 @@ public class DeleteBlocksCommandHandler implements CommandHandler {
    */
   public final class DeleteCmdWorker implements Runnable {
 
-    private long intervalInMs;
+    private final long intervalInMs;
 
     public DeleteCmdWorker(long interval) {
       this.intervalInMs = interval;
@@ -275,7 +266,7 @@ public class DeleteBlocksCommandHandler implements CommandHandler {
    */
   public final class ProcessTransactionTask implements
       Callable<DeleteBlockTransactionExecutionResult> {
-    private DeletedBlocksTransaction tx;
+    private final DeletedBlocksTransaction tx;
 
     public ProcessTransactionTask(DeletedBlocksTransaction transaction) {
       this.tx = transaction;
@@ -296,9 +287,8 @@ public class DeleteBlocksCommandHandler implements CommandHandler {
         }
 
         ContainerType containerType = cont.getContainerType();
-        switch (containerType) {
-        case KeyValueContainer:
-          KeyValueContainer keyValueContainer = (KeyValueContainer)cont;
+        if (Objects.requireNonNull(containerType) == ContainerType.KeyValueContainer) {
+          KeyValueContainer keyValueContainer = (KeyValueContainer) cont;
           KeyValueContainerData containerData =
               keyValueContainer.getContainerData();
           if (keyValueContainer.
@@ -322,8 +312,7 @@ public class DeleteBlocksCommandHandler implements CommandHandler {
             txResultBuilder.setContainerID(containerId)
                 .setSuccess(false);
           }
-          break;
-        default:
+        } else {
           LOG.error(
               "Delete Blocks Command Handler is not implemented for " +
                   "containerType {}", containerType);

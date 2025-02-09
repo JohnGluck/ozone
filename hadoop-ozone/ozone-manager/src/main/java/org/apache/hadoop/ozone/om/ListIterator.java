@@ -113,15 +113,13 @@ public class ListIterator {
   /**
    * Iterator for DB entries from a given rocksDB table.
    */
-  public static class DbTableIter<Value> implements
-      ClosableIterator {
+  public static class DbTableIter<Value> implements ClosableIterator {
     private final int entryIteratorId;
-    private final TableIterator<String,
-        ? extends Table.KeyValue<String, Value>> tableIterator;
+    private final TableIterator<String, ? extends Table.KeyValue<String, Value>> tableIterator;
 
     private final Table<String, Value> table;
     private HeapEntry currentEntry;
-    private Predicate<String> doesKeyExistInCache;
+    private final Predicate<String> doesKeyExistInCache;
 
     DbTableIter(int entryIteratorId, Table<String, Value> table,
                 String prefixKey, String startKey,

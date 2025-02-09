@@ -43,8 +43,7 @@ import org.apache.hadoop.util.StringUtils;
 @Metrics(about = "SCM NodeManager Metrics", context = OzoneConsts.OZONE)
 public final class SCMNodeMetrics implements MetricsSource {
 
-  public static final String SOURCE_NAME =
-      SCMNodeMetrics.class.getSimpleName();
+  public static final String SOURCE_NAME = SCMNodeMetrics.class.getSimpleName();
 
   private @Metric MutableCounterLong numHBProcessed;
   private @Metric MutableCounterLong numHBProcessingFailed;
@@ -52,16 +51,17 @@ public final class SCMNodeMetrics implements MetricsSource {
   private @Metric MutableCounterLong numNodeReportProcessingFailed;
   private @Metric MutableCounterLong numNodeCommandQueueReportProcessed;
   private @Metric MutableCounterLong numNodeCommandQueueReportProcessingFailed;
+
+  @SuppressWarnings("PMD.ImmutableField")
   private @Metric String textMetric;
 
   private final MetricsRegistry registry;
   private final NodeManagerMXBean managerMXBean;
-  private final MetricsInfo recordInfo = Interns.info("SCMNodeManager",
-      "SCM NodeManager metrics");
 
   /** Private constructor. */
   private SCMNodeMetrics(NodeManagerMXBean managerMXBean) {
     this.managerMXBean = managerMXBean;
+    MetricsInfo recordInfo = Interns.info("SCMNodeManager", "SCM NodeManager metrics");
     this.registry = new MetricsRegistry(recordInfo);
     this.textMetric = "my_test_metric";
   }
@@ -131,7 +131,6 @@ public final class SCMNodeMetrics implements MetricsSource {
    * Get aggregated counter and gauge metrics.
    */
   @Override
-  @SuppressWarnings("SuspiciousMethodCalls")
   public void getMetrics(MetricsCollector collector, boolean all) {
     Map<String, Map<String, Integer>> nodeCount = managerMXBean.getNodeCount();
     Map<String, Long> nodeInfo = managerMXBean.getNodeInfo();
@@ -170,22 +169,22 @@ public final class SCMNodeMetrics implements MetricsSource {
   private String diskMetricDescription(String metric) {
     StringBuilder sb = new StringBuilder();
     sb.append("Total");
-    if (metric.indexOf("Maintenance") >= 0) {
+    if (metric.contains("Maintenance")) {
       sb.append(" maintenance");
-    } else if (metric.indexOf("Decommissioned") >= 0) {
+    } else if (metric.contains("Decommissioned")) {
       sb.append(" decommissioned");
     }
-    if (metric.indexOf("DiskCapacity") >= 0) {
+    if (metric.contains("DiskCapacity")) {
       sb.append(" disk capacity");
-    } else if (metric.indexOf("DiskUsed") >= 0) {
+    } else if (metric.contains("DiskUsed")) {
       sb.append(" disk capacity used");
-    } else if (metric.indexOf("DiskRemaining") >= 0) {
+    } else if (metric.contains("DiskRemaining")) {
       sb.append(" disk capacity remaining");
-    } else if (metric.indexOf("SSDCapacity") >= 0) {
+    } else if (metric.contains("SSDCapacity")) {
       sb.append(" SSD capacity");
-    } else if (metric.indexOf("SSDUsed") >= 0) {
+    } else if (metric.contains("SSDUsed")) {
       sb.append(" SSD capacity used");
-    } else if (metric.indexOf("SSDRemaining") >= 0) {
+    } else if (metric.contains("SSDRemaining")) {
       sb.append(" SSD capacity remaining");
     }
     return sb.toString();

@@ -25,6 +25,7 @@ import picocli.CommandLine;
 public class ListOptions {
 
   @CommandLine.ArgGroup(exclusive = true)
+  @SuppressWarnings("PMD.ImmutableField")
   private ExclusiveLimit exclusiveLimit = new ExclusiveLimit();
   
   static class ExclusiveLimit {

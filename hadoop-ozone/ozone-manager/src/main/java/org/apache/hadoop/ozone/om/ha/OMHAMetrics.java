@@ -19,12 +19,11 @@ package org.apache.hadoop.ozone.om.ha;
 import com.google.common.annotations.VisibleForTesting;
 import org.apache.hadoop.metrics2.MetricsCollector;
 import org.apache.hadoop.metrics2.MetricsInfo;
-import org.apache.hadoop.metrics2.MetricsSource;
 import org.apache.hadoop.metrics2.MetricsRecordBuilder;
+import org.apache.hadoop.metrics2.MetricsSource;
 import org.apache.hadoop.metrics2.annotation.Metrics;
 import org.apache.hadoop.metrics2.lib.DefaultMetricsSystem;
 import org.apache.hadoop.metrics2.lib.Interns;
-import org.apache.hadoop.metrics2.lib.MetricsRegistry;
 import org.apache.hadoop.ozone.OzoneConsts;
 
 /**
@@ -74,15 +73,14 @@ public final class OMHAMetrics implements MetricsSource {
   public static final String SOURCE_NAME =
       OMHAMetrics.class.getSimpleName();
   private final OMHAMetricsInfo omhaMetricsInfo = new OMHAMetricsInfo();
-  private MetricsRegistry metricsRegistry;
 
-  private String currNodeId;
-  private String leaderId;
+  private final String currNodeId;
+
+  private final String leaderId;
 
   private OMHAMetrics(String currNodeId, String leaderId) {
     this.currNodeId = currNodeId;
     this.leaderId = leaderId;
-    this.metricsRegistry = new MetricsRegistry(SOURCE_NAME);
   }
 
   /**

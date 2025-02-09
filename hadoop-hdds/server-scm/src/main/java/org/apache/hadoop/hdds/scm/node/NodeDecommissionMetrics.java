@@ -138,13 +138,10 @@ public final class NodeDecommissionMetrics implements MetricsSource {
     }
   }
 
-  private MetricsRegistry registry;
-
-  private Map<String, ContainerStateInWorkflow> metricsByHost;
+  private final Map<String, ContainerStateInWorkflow> metricsByHost;
 
   /** Private constructor. */
   private NodeDecommissionMetrics() {
-    this.registry = new MetricsRegistry(METRICS_SOURCE_NAME);
     metricsByHost = new HashMap<>();
   }
 

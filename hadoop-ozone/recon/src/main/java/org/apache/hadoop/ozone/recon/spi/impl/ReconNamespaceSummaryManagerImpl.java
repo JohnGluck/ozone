@@ -18,6 +18,11 @@
 
 package org.apache.hadoop.ozone.recon.spi.impl;
 
+import static org.apache.hadoop.ozone.recon.spi.impl.ReconDBDefinition.NAMESPACE_SUMMARY;
+import static org.apache.hadoop.ozone.recon.spi.impl.ReconDBProvider.truncateTable;
+
+import java.io.IOException;
+import javax.inject.Inject;
 import org.apache.hadoop.hdds.utils.db.BatchOperation;
 import org.apache.hadoop.hdds.utils.db.DBStore;
 import org.apache.hadoop.hdds.utils.db.RDBBatchOperation;
@@ -27,22 +32,14 @@ import org.apache.hadoop.ozone.recon.api.types.NSSummary;
 import org.apache.hadoop.ozone.recon.spi.ReconNamespaceSummaryManager;
 import org.apache.hadoop.ozone.recon.tasks.NSSummaryTask;
 
-import static org.apache.hadoop.ozone.recon.spi.impl.ReconDBProvider.truncateTable;
-
-import javax.inject.Inject;
-import static org.apache.hadoop.ozone.recon.spi.impl.ReconDBDefinition.NAMESPACE_SUMMARY;
-
-import java.io.IOException;
-
 /**
  * Wrapper functions for DB operations on recon namespace summary metadata.
  */
-public class ReconNamespaceSummaryManagerImpl
-        implements ReconNamespaceSummaryManager {
+public class ReconNamespaceSummaryManagerImpl implements ReconNamespaceSummaryManager {
 
-  private Table<Long, NSSummary> nsSummaryTable;
-  private DBStore namespaceDbStore;
-  private NSSummaryTask nsSummaryTask;
+  private final Table<Long, NSSummary> nsSummaryTable;
+  private final DBStore namespaceDbStore;
+  private final NSSummaryTask nsSummaryTask;
 
   @Inject
   public ReconNamespaceSummaryManagerImpl(ReconDBProvider reconDBProvider, NSSummaryTask nsSummaryTask)

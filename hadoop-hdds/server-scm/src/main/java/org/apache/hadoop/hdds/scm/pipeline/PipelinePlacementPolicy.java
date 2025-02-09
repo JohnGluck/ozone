@@ -580,8 +580,8 @@ public final class PipelinePlacementPolicy extends SCMCommonPlacementPolicy {
    * pipeline engagement checking.
    */
   public static class DnWithPipelines {
-    private DatanodeDetails dn;
-    private int pipelines;
+    private final DatanodeDetails dn;
+    private final int pipelines;
 
     DnWithPipelines(DatanodeDetails dn, int pipelines) {
       this.dn = dn;

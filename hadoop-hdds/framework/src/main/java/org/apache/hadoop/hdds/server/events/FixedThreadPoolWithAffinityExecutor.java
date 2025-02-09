@@ -235,13 +235,15 @@ public class FixedThreadPoolWithAffinityExecutor<P, Q>
    * Runnable class to perform execution of payload.
    */
   public static class ContainerReportProcessTask<P> implements Runnable {
-    private BlockingQueue<P> queue;
-    private AtomicBoolean isRunning;
-    private Map<String, FixedThreadPoolWithAffinityExecutor> executorMap;
+    private final BlockingQueue<P> queue;
+    private final AtomicBoolean isRunning;
+    private final Map<String, FixedThreadPoolWithAffinityExecutor> executorMap;
 
-    public ContainerReportProcessTask(BlockingQueue<P> queue,
+    public ContainerReportProcessTask(
+        BlockingQueue<P> queue,
         AtomicBoolean isRunning,
-        Map<String, FixedThreadPoolWithAffinityExecutor> executorMap) {
+        Map<String, FixedThreadPoolWithAffinityExecutor> executorMap
+    ) {
       this.queue = queue;
       this.isRunning = isRunning;
       this.executorMap = executorMap;

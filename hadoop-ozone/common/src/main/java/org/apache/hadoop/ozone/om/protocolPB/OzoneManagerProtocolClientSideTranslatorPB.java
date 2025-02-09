@@ -17,6 +17,20 @@
  */
 package org.apache.hadoop.ozone.om.protocolPB;
 
+import static org.apache.hadoop.ozone.OzoneConsts.OM_S3_CALLER_CONTEXT_PREFIX;
+import static org.apache.hadoop.ozone.om.exceptions.OMException.ResultCodes;
+import static org.apache.hadoop.ozone.om.exceptions.OMException.ResultCodes.SCM_IN_SAFE_MODE;
+import static org.apache.hadoop.ozone.om.exceptions.OMException.ResultCodes.TOKEN_ERROR_OTHER;
+import static org.apache.hadoop.ozone.protocol.proto.OzoneManagerProtocolProtos.Status.ACCESS_DENIED;
+import static org.apache.hadoop.ozone.protocol.proto.OzoneManagerProtocolProtos.Status.DIRECTORY_ALREADY_EXISTS;
+import static org.apache.hadoop.ozone.protocol.proto.OzoneManagerProtocolProtos.Status.OK;
+
+import com.google.common.annotations.VisibleForTesting;
+import com.google.common.base.Preconditions;
+import com.google.common.base.Strings;
+import com.google.protobuf.ByteString;
+import com.google.protobuf.Proto2Utils;
+import jakarta.annotation.Nonnull;
 import java.io.IOException;
 import java.time.Instant;
 import java.util.ArrayList;
@@ -25,9 +39,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import java.util.stream.Collectors;
-
-import com.google.protobuf.Proto2Utils;
-import jakarta.annotation.Nonnull;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.hadoop.fs.SafeModeAction;
 import org.apache.hadoop.hdds.annotation.InterfaceAudience;
@@ -43,14 +54,14 @@ import org.apache.hadoop.ozone.ClientVersion;
 import org.apache.hadoop.ozone.OzoneAcl;
 import org.apache.hadoop.ozone.om.exceptions.OMException;
 import org.apache.hadoop.ozone.om.helpers.BasicOmKeyInfo;
-import org.apache.hadoop.ozone.om.helpers.ErrorInfo;
-import org.apache.hadoop.ozone.om.helpers.ListKeysLightResult;
-import org.apache.hadoop.ozone.om.helpers.ListKeysResult;
 import org.apache.hadoop.ozone.om.helpers.DBUpdates;
 import org.apache.hadoop.ozone.om.helpers.DeleteTenantState;
+import org.apache.hadoop.ozone.om.helpers.ErrorInfo;
 import org.apache.hadoop.ozone.om.helpers.KeyInfoWithVolumeContext;
 import org.apache.hadoop.ozone.om.helpers.KeyValueUtil;
 import org.apache.hadoop.ozone.om.helpers.LeaseKeyInfo;
+import org.apache.hadoop.ozone.om.helpers.ListKeysLightResult;
+import org.apache.hadoop.ozone.om.helpers.ListKeysResult;
 import org.apache.hadoop.ozone.om.helpers.ListOpenFilesResult;
 import org.apache.hadoop.ozone.om.helpers.OmBucketArgs;
 import org.apache.hadoop.ozone.om.helpers.OmBucketInfo;
@@ -88,7 +99,6 @@ import org.apache.hadoop.ozone.protocol.proto.OzoneManagerProtocolProtos.Allocat
 import org.apache.hadoop.ozone.protocol.proto.OzoneManagerProtocolProtos.AllocateBlockResponse;
 import org.apache.hadoop.ozone.protocol.proto.OzoneManagerProtocolProtos.BucketArgs;
 import org.apache.hadoop.ozone.protocol.proto.OzoneManagerProtocolProtos.BucketInfo;
-import org.apache.hadoop.ozone.protocol.proto.OzoneManagerProtocolProtos.CancelDelegationTokenResponseProto;
 import org.apache.hadoop.ozone.protocol.proto.OzoneManagerProtocolProtos.CancelPrepareRequest;
 import org.apache.hadoop.ozone.protocol.proto.OzoneManagerProtocolProtos.CancelPrepareResponse;
 import org.apache.hadoop.ozone.protocol.proto.OzoneManagerProtocolProtos.CheckVolumeAccessRequest;
@@ -234,21 +244,8 @@ import org.apache.hadoop.ozone.snapshot.SnapshotDiffResponse;
 import org.apache.hadoop.ozone.snapshot.SnapshotDiffResponse.JobStatus;
 import org.apache.hadoop.ozone.upgrade.UpgradeFinalizer;
 import org.apache.hadoop.ozone.upgrade.UpgradeFinalizer.StatusAndMessages;
-import org.apache.hadoop.security.token.Token;
-
-import com.google.common.annotations.VisibleForTesting;
-import com.google.common.base.Preconditions;
-import com.google.common.base.Strings;
-import com.google.protobuf.ByteString;
 import org.apache.hadoop.ozone.util.ProtobufUtils;
-
-import static org.apache.hadoop.ozone.OzoneConsts.OM_S3_CALLER_CONTEXT_PREFIX;
-import static org.apache.hadoop.ozone.om.exceptions.OMException.ResultCodes;
-import static org.apache.hadoop.ozone.om.exceptions.OMException.ResultCodes.SCM_IN_SAFE_MODE;
-import static org.apache.hadoop.ozone.om.exceptions.OMException.ResultCodes.TOKEN_ERROR_OTHER;
-import static org.apache.hadoop.ozone.protocol.proto.OzoneManagerProtocolProtos.Status.ACCESS_DENIED;
-import static org.apache.hadoop.ozone.protocol.proto.OzoneManagerProtocolProtos.Status.DIRECTORY_ALREADY_EXISTS;
-import static org.apache.hadoop.ozone.protocol.proto.OzoneManagerProtocolProtos.Status.OK;
+import org.apache.hadoop.security.token.Token;
 
 /**
  * The client side implementation of OzoneManagerProtocol.
@@ -259,9 +256,8 @@ public final class OzoneManagerProtocolClientSideTranslatorPB
     implements OzoneManagerClientProtocol {
 
   private final String clientID;
-  private OmTransport transport;
-  private ThreadLocal<S3Auth> threadLocalS3Auth
-      = new ThreadLocal<>();
+  private final OmTransport transport;
+  private final ThreadLocal<S3Auth> threadLocalS3Auth = new ThreadLocal<>();
   private boolean s3AuthCheck;
 
   public static final int BLOCK_ALLOCATION_RETRY_COUNT = 90;

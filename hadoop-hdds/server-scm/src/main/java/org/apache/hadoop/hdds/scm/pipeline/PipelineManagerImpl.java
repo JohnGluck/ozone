@@ -77,8 +77,8 @@ public class PipelineManagerImpl implements PipelineManager {
 
   // Limit the number of on-going ratis operation to be 1.
   private final ReentrantReadWriteLock lock;
-  private PipelineFactory pipelineFactory;
-  private PipelineStateManager stateManager;
+  private final PipelineFactory pipelineFactory;
+  private final PipelineStateManager stateManager;
   private BackgroundPipelineCreator backgroundPipelineCreator;
   private BackgroundSCMService backgroundPipelineScrubber;
   private final ConfigurationSource conf;
@@ -92,7 +92,7 @@ public class PipelineManagerImpl implements PipelineManager {
   private final NodeManager nodeManager;
   // This allows for freezing/resuming the new pipeline creation while the
   // SCM is already out of SafeMode.
-  private AtomicBoolean freezePipelineCreation;
+  private final AtomicBoolean freezePipelineCreation;
   private final Clock clock;
 
   @SuppressWarnings("checkstyle:parameterNumber")

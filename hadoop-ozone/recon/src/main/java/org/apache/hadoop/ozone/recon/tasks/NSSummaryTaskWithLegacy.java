@@ -17,15 +17,24 @@
  */
 
 package org.apache.hadoop.ozone.recon.tasks;
+
+import static org.apache.hadoop.ozone.OzoneConsts.OM_KEY_PREFIX;
+import static org.apache.hadoop.ozone.om.OmMetadataManagerImpl.KEY_TABLE;
+
+import java.io.IOException;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 import org.apache.hadoop.hdds.conf.OzoneConfiguration;
 import org.apache.hadoop.hdds.utils.db.Table;
 import org.apache.hadoop.hdds.utils.db.TableIterator;
 import org.apache.hadoop.ozone.om.OMConfigKeys;
 import org.apache.hadoop.ozone.om.OMMetadataManager;
+import org.apache.hadoop.ozone.om.helpers.BucketLayout;
+import org.apache.hadoop.ozone.om.helpers.OmBucketInfo;
 import org.apache.hadoop.ozone.om.helpers.OmDirectoryInfo;
 import org.apache.hadoop.ozone.om.helpers.OmKeyInfo;
-import org.apache.hadoop.ozone.om.helpers.OmBucketInfo;
-import org.apache.hadoop.ozone.om.helpers.BucketLayout;
 import org.apache.hadoop.ozone.om.helpers.WithParentObjectId;
 import org.apache.hadoop.ozone.recon.api.types.NSSummary;
 import org.apache.hadoop.ozone.recon.recovery.ReconOMMetadataManager;
@@ -33,26 +42,15 @@ import org.apache.hadoop.ozone.recon.spi.ReconNamespaceSummaryManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.IOException;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
-
-import static org.apache.hadoop.ozone.OzoneConsts.OM_KEY_PREFIX;
-import static org.apache.hadoop.ozone.om.OmMetadataManagerImpl.KEY_TABLE;
-
 /**
  * Class for handling Legacy specific tasks.
  */
 public class NSSummaryTaskWithLegacy extends NSSummaryTaskDbEventHandler {
+  private static final Logger LOG = LoggerFactory.getLogger(NSSummaryTaskWithLegacy.class);
 
   private static final BucketLayout LEGACY_BUCKET_LAYOUT = BucketLayout.LEGACY;
 
-  private static final Logger LOG =
-      LoggerFactory.getLogger(NSSummaryTaskWithLegacy.class);
-
-  private boolean enableFileSystemPaths;
+  private final boolean enableFileSystemPaths;
 
   public NSSummaryTaskWithLegacy(ReconNamespaceSummaryManager
                                  reconNamespaceSummaryManager,
@@ -101,7 +99,7 @@ public class NSSummaryTaskWithLegacy extends NSSummaryTaskDbEventHandler {
         OmKeyInfo updatedKeyInfo = (OmKeyInfo) value;
         OmKeyInfo oldKeyInfo = (OmKeyInfo) oldValue;
 
-        if (!isBucketLayoutValid(metadataManager, updatedKeyInfo)) {
+        if (isBucketLayoutNotValid(metadataManager, updatedKeyInfo)) {
           continue;
         }
 
@@ -254,8 +252,7 @@ public class NSSummaryTaskWithLegacy extends NSSummaryTaskDbEventHandler {
           // KeyTable entries belong to both Legacy and OBS buckets.
           // Check bucket layout and if it's OBS
           // continue to the next iteration.
-          if (!isBucketLayoutValid((ReconOMMetadataManager) omMetadataManager,
-              keyInfo)) {
+          if (isBucketLayoutNotValid((ReconOMMetadataManager) omMetadataManager, keyInfo)) {
             continue;
           }
 
@@ -364,8 +361,7 @@ public class NSSummaryTaskWithLegacy extends NSSummaryTaskDbEventHandler {
    * @param keyInfo
    * @return
    */
-  private boolean isBucketLayoutValid(ReconOMMetadataManager metadataManager,
-                                      OmKeyInfo keyInfo)
+  private boolean isBucketLayoutNotValid(ReconOMMetadataManager metadataManager, OmKeyInfo keyInfo)
       throws IOException {
     String volumeName = keyInfo.getVolumeName();
     String bucketName = keyInfo.getBucketName();
@@ -377,10 +373,10 @@ public class NSSummaryTaskWithLegacy extends NSSummaryTaskDbEventHandler {
       LOG.debug(
           "Skipping processing for bucket {} as bucket layout is not LEGACY",
           bucketName);
-      return false;
+      return true;
     }
 
-    return true;
+    return false;
   }
 
 }

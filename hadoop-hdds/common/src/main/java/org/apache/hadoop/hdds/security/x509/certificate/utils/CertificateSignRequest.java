@@ -18,6 +18,10 @@
  */
 package org.apache.hadoop.hdds.security.x509.certificate.utils;
 
+import static org.apache.hadoop.hdds.security.exception.SCMSecurityException.ErrorCode.INVALID_CSR;
+import static org.apache.hadoop.hdds.security.x509.exception.CertificateException.ErrorCode.CSR_ERROR;
+
+import com.google.common.base.Preconditions;
 import java.io.IOException;
 import java.io.StringReader;
 import java.io.StringWriter;
@@ -26,8 +30,6 @@ import java.security.KeyPair;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-
-import com.google.common.base.Preconditions;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.validator.routines.DomainValidator;
 import org.apache.hadoop.hdds.security.SecurityConfig;
@@ -64,9 +66,6 @@ import org.bouncycastle.util.io.pem.PemReader;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import static org.apache.hadoop.hdds.security.exception.SCMSecurityException.ErrorCode.INVALID_CSR;
-import static org.apache.hadoop.hdds.security.x509.exception.CertificateException.ErrorCode.CSR_ERROR;
-
 /**
  * A certificate sign request object that wraps operations to build a
  * PKCS10CertificationRequest to CertificateServer.
@@ -82,9 +81,9 @@ public final class CertificateSignRequest {
   private final KeyPair keyPair;
   private final SecurityConfig config;
   private final Extensions extensions;
-  private String subject;
-  private String clusterID;
-  private String scmID;
+  private final String subject;
+  private final String clusterID;
+  private final String scmID;
 
   /**
    * Private Ctor for CSR.
@@ -421,13 +420,10 @@ public final class CertificateSignRequest {
 
     public CertificateSignRequest build() throws SCMSecurityException {
       Preconditions.checkNotNull(key, "KeyPair cannot be null");
-      Preconditions.checkArgument(StringUtils.isNotBlank(subject), "Subject " +
-          "cannot be blank");
+      Preconditions.checkArgument(StringUtils.isNotBlank(subject), "Subject cannot be blank");
 
       try {
-        CertificateSignRequest csr = new CertificateSignRequest(subject, scmID,
-            clusterID, key, config, createExtensions());
-        return csr;
+        return new CertificateSignRequest(subject, scmID, clusterID, key, config, createExtensions());
       } catch (IOException ioe) {
         throw new CertificateException(String.format("Unable to create " +
             "extension for certificate sign request for %s.",

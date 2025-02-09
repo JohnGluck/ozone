@@ -27,7 +27,7 @@ import org.apache.hadoop.hdds.conf.OzoneConfiguration;
  */
 public class OzoneClientAdapterImpl extends BasicOzoneClientAdapterImpl {
 
-  private OzoneFSStorageStatistics storageStatistics;
+  private final OzoneFSStorageStatistics storageStatistics;
 
   public OzoneClientAdapterImpl(String volumeStr, String bucketStr,
       OzoneFSStorageStatistics storageStatistics)

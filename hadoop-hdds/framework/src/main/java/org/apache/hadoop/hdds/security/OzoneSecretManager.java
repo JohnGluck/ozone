@@ -60,9 +60,9 @@ public abstract class OzoneSecretManager<T extends TokenIdentifier>
   private final Text service;
   private CertificateClient certClient;
   private volatile boolean running;
-  private AtomicReference<OzoneSecretKey> currentKey;
-  private AtomicInteger currentKeyId;
-  private AtomicInteger tokenSequenceNumber;
+  private final AtomicReference<OzoneSecretKey> currentKey;
+  private final AtomicInteger currentKeyId;
+  private final AtomicInteger tokenSequenceNumber;
 
   /**
    * Create a secret manager.

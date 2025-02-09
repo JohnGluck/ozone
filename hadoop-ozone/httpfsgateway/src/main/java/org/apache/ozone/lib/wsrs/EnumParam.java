@@ -30,7 +30,7 @@ import java.util.Arrays;
  */
 @InterfaceAudience.Private
 public abstract class EnumParam<E extends Enum<E>> extends Param<E> {
-  private Class<E> klass;
+  private final Class<E> klass;
 
   public EnumParam(String name, Class<E> e, E defaultValue) {
     super(name, defaultValue);

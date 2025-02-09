@@ -30,10 +30,10 @@ import java.io.IOException;
  */
 public abstract class StorageVolumeFactory {
 
-  private ConfigurationSource conf;
-  private SpaceUsageCheckFactory usageCheckFactory;
-  private MutableVolumeSet volumeSet;
-  private String datanodeUuid;
+  private final ConfigurationSource conf;
+  private final SpaceUsageCheckFactory usageCheckFactory;
+  private final MutableVolumeSet volumeSet;
+  private final String datanodeUuid;
   private String clusterID;
 
   public StorageVolumeFactory(ConfigurationSource conf,

@@ -43,11 +43,11 @@ public class ReplicateContainerCommandHandler implements CommandHandler {
   static final Logger LOG =
       LoggerFactory.getLogger(ReplicateContainerCommandHandler.class);
 
-  private ReplicationSupervisor supervisor;
+  private final ReplicationSupervisor supervisor;
 
-  private ContainerReplicator downloadReplicator;
+  private final ContainerReplicator downloadReplicator;
 
-  private ContainerReplicator pushReplicator;
+  private final ContainerReplicator pushReplicator;
 
   private String metricsName;
 

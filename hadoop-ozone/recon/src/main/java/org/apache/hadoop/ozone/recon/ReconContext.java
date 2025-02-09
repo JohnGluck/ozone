@@ -46,18 +46,14 @@ public final class ReconContext {
 
   private final String threadNamePrefix;
   private String clusterId;
-  private OzoneConfiguration ozoneConfiguration;
-  private ReconUtils reconUtils;
-  private AtomicBoolean isHealthy = new AtomicBoolean(true);
+  private final AtomicBoolean isHealthy = new AtomicBoolean(true);
 
-  private Map<ErrorCode, String> errCodeMsgMap = new HashMap<>();
-  private Map<ErrorCode, List<String>> errCodeImpactMap = new HashMap<>();
-  private List<ErrorCode> errors = Collections.synchronizedList(new ArrayList<>());
+  private final Map<ErrorCode, String> errCodeMsgMap = new HashMap<>();
+  private final Map<ErrorCode, List<String>> errCodeImpactMap = new HashMap<>();
+  private final List<ErrorCode> errors = Collections.synchronizedList(new ArrayList<>());
 
   @Inject
   public ReconContext(OzoneConfiguration configuration, ReconUtils reconUtils) {
-    this.reconUtils = reconUtils;
-    this.ozoneConfiguration = configuration;
     threadNamePrefix = reconUtils.getReconNodeDetails(configuration).threadNamePrefix();
     initializeErrCodeMetaData();
   }

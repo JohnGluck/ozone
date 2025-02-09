@@ -38,7 +38,7 @@ public class OzoneFileStatus {
    */
   private OmKeyInfo keyInfo;
 
-  private boolean isDirectory;
+  private final boolean isDirectory;
 
   private long blockSize;
 

@@ -68,7 +68,7 @@ public class OzoneFSStorageStatistics extends StorageStatistics
   }
 
   private class LongIterator implements Iterator<LongStatistic> {
-    private Iterator<Map.Entry<Statistic, AtomicLong>> iterator =
+    private final Iterator<Map.Entry<Statistic, AtomicLong>> iterator =
         Collections.unmodifiableSet(opsCount.entrySet()).iterator();
 
     @Override

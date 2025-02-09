@@ -18,7 +18,21 @@
  */
 package org.apache.hadoop.ozone.om;
 
+import static org.apache.hadoop.ozone.om.OMConfigKeys.SNAPSHOT_SST_DELETING_LIMIT_PER_TASK;
+import static org.apache.hadoop.ozone.om.OMConfigKeys.SNAPSHOT_SST_DELETING_LIMIT_PER_TASK_DEFAULT;
+import static org.apache.hadoop.ozone.om.lock.OzoneManagerLock.Resource.SNAPSHOT_LOCK;
+import static org.apache.hadoop.ozone.om.snapshot.SnapshotUtils.getColumnFamilyToKeyPrefixMap;
+
 import com.google.common.annotations.VisibleForTesting;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.Map;
+import java.util.Optional;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicLong;
 import org.apache.hadoop.hdds.StringUtils;
 import org.apache.hadoop.hdds.conf.OzoneConfiguration;
 import org.apache.hadoop.hdds.utils.BackgroundService;
@@ -38,21 +52,6 @@ import org.rocksdb.RocksDBException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.Map;
-import java.util.Optional;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.concurrent.atomic.AtomicLong;
-
-import static org.apache.hadoop.ozone.om.OMConfigKeys.SNAPSHOT_SST_DELETING_LIMIT_PER_TASK;
-import static org.apache.hadoop.ozone.om.OMConfigKeys.SNAPSHOT_SST_DELETING_LIMIT_PER_TASK_DEFAULT;
-import static org.apache.hadoop.ozone.om.lock.OzoneManagerLock.Resource.SNAPSHOT_LOCK;
-import static org.apache.hadoop.ozone.om.snapshot.SnapshotUtils.getColumnFamilyToKeyPrefixMap;
-
 /**
  * When snapshots are taken, an entire snapshot of the
  * OM RocksDB is captured and it will contain SST files corresponding
@@ -65,8 +64,7 @@ import static org.apache.hadoop.ozone.om.snapshot.SnapshotUtils.getColumnFamilyT
 public class SstFilteringService extends BackgroundService
     implements BootstrapStateHandler {
 
-  private static final Logger LOG =
-      LoggerFactory.getLogger(SstFilteringService.class);
+  private static final Logger LOG = LoggerFactory.getLogger(SstFilteringService.class);
 
   // Use only a single thread for SST deletion. Multiple threads would read
   // or write to same snapshots and can send deletion requests for same sst
@@ -82,9 +80,9 @@ public class SstFilteringService extends BackgroundService
   // Number of files to be batched in an iteration.
   private final long snapshotLimitPerTask;
 
-  private AtomicLong snapshotFilteredCount;
+  private final AtomicLong snapshotFilteredCount;
 
-  private AtomicBoolean running;
+  private final AtomicBoolean running;
 
   public static boolean isSstFiltered(OzoneConfiguration ozoneConfiguration, SnapshotInfo snapshotInfo) {
     Path sstFilteredFile = Paths.get(OmSnapshotManager.getSnapshotPath(ozoneConfiguration,

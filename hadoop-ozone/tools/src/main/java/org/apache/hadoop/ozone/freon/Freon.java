@@ -16,21 +16,19 @@
  */
 package org.apache.hadoop.ozone.freon;
 
-import java.io.IOException;
+import static org.apache.hadoop.hdds.server.http.HttpServer2.setHttpBaseDir;
 
+import java.io.IOException;
 import org.apache.hadoop.hdds.cli.ExtensibleParentCommand;
 import org.apache.hadoop.hdds.cli.GenericCli;
 import org.apache.hadoop.hdds.cli.HddsVersionProvider;
 import org.apache.hadoop.hdds.conf.OzoneConfiguration;
 import org.apache.hadoop.hdds.tracing.TracingUtil;
 import org.apache.hadoop.hdds.utils.HddsServerUtil;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import picocli.CommandLine.Command;
 import picocli.CommandLine.Option;
-
-import static org.apache.hadoop.hdds.server.http.HttpServer2.setHttpBaseDir;
 
 /**
  * Ozone data generator and performance test tool.
@@ -47,6 +45,7 @@ public class Freon extends GenericCli implements ExtensibleParentCommand {
   @Option(names = "--server",
       description = "Enable internal http server to provide metric "
           + "and profile endpoint")
+  @SuppressWarnings("PMD.ImmutableField")
   private boolean httpServer = false;
 
   private final boolean interactive = System.console() != null;

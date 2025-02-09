@@ -34,10 +34,9 @@ import com.google.inject.Provider;
  */
 public class DerbyDataSourceProvider implements Provider<DataSource> {
 
-  private static final Logger LOG =
-      LoggerFactory.getLogger(DerbyDataSourceProvider.class);
+  private static final Logger LOG = LoggerFactory.getLogger(DerbyDataSourceProvider.class);
 
-  private DataSourceConfiguration configuration;
+  private final DataSourceConfiguration configuration;
 
   @Inject
   DerbyDataSourceProvider(DataSourceConfiguration configuration) {

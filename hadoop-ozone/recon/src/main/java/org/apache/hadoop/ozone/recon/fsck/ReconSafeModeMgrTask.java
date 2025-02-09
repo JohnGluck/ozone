@@ -42,13 +42,11 @@ import org.slf4j.LoggerFactory;
  * recon warm up completed, and it exits safe mode.
  */
 public class ReconSafeModeMgrTask {
+  private static final Logger LOG = LoggerFactory.getLogger(ReconSafeModeMgrTask.class);
 
-  private static final Logger LOG =
-      LoggerFactory.getLogger(ReconSafeModeMgrTask.class);
-
-  private ContainerManager containerManager;
-  private ReconNodeManager nodeManager;
-  private ReconSafeModeManager safeModeManager;
+  private final ContainerManager containerManager;
+  private final ReconNodeManager nodeManager;
+  private final ReconSafeModeManager safeModeManager;
   private List<DatanodeDetails> allNodes;
   private List<ContainerInfo> containers;
   private final long interval;

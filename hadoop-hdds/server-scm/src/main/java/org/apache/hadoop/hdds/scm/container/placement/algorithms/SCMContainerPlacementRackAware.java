@@ -57,7 +57,7 @@ public final class SCMContainerPlacementRackAware
   public static final Logger LOG =
       LoggerFactory.getLogger(SCMContainerPlacementRackAware.class);
   private final NetworkTopology networkTopology;
-  private boolean fallback;
+  private final boolean fallback;
   private static final int RACK_LEVEL = 1;
   private static final int MAX_RETRY = 3;
   private final SCMContainerPlacementMetrics metrics;

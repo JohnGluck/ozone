@@ -41,7 +41,6 @@ public final class SCMPerformanceMetrics implements MetricsSource {
   private static final String SOURCE_NAME =
       SCMPerformanceMetrics.class.getSimpleName();
 
-  private MetricsRegistry registry;
   private static SCMPerformanceMetrics instance;
 
   @Metric(about = "Number of failed deleteKey operations")
@@ -52,10 +51,6 @@ public final class SCMPerformanceMetrics implements MetricsSource {
   private MutableRate deleteKeyFailureLatencyNs;
   @Metric(about = "Latency for deleteKey success in nanoseconds")
   private MutableRate deleteKeySuccessLatencyNs;
-
-  public SCMPerformanceMetrics() {
-    this.registry = new MetricsRegistry(SOURCE_NAME);
-  }
 
   public static SCMPerformanceMetrics create() {
     if (instance != null) {

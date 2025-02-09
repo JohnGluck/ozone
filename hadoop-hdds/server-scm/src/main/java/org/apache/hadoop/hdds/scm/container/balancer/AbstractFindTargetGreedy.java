@@ -44,10 +44,10 @@ import java.util.stream.Collectors;
  */
 public abstract class AbstractFindTargetGreedy implements FindTargetStrategy {
   private Logger logger;
-  private ContainerManager containerManager;
-  private PlacementPolicyValidateProxy placementPolicyValidateProxy;
-  private Map<DatanodeDetails, Long> sizeEnteringNode;
-  private NodeManager nodeManager;
+  private final ContainerManager containerManager;
+  private final PlacementPolicyValidateProxy placementPolicyValidateProxy;
+  private final Map<DatanodeDetails, Long> sizeEnteringNode;
+  private final NodeManager nodeManager;
   private ContainerBalancerConfiguration config;
   private Double upperLimit;
   private Collection<DatanodeUsageInfo> potentialTargets;

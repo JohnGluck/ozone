@@ -17,16 +17,16 @@
  */
 package org.apache.hadoop.hdds.server.http;
 
+import static org.apache.ratis.metrics.RatisMetrics.RATIS_APPLICATION_NAME_METRICS;
+
+import io.prometheus.client.Collector.MetricFamilySamples.Sample;
+import io.prometheus.client.dropwizard.samplebuilder.DefaultSampleBuilder;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import io.prometheus.client.Collector.MetricFamilySamples.Sample;
-import io.prometheus.client.dropwizard.samplebuilder.DefaultSampleBuilder;
 import org.apache.commons.lang3.StringUtils;
-import static org.apache.ratis.metrics.RatisMetrics.RATIS_APPLICATION_NAME_METRICS;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -34,11 +34,9 @@ import org.slf4j.LoggerFactory;
  * Collect Dropwizard metrics and rename ratis specific metrics.
  */
 public class RatisNameRewriteSampleBuilder extends DefaultSampleBuilder {
+  private static final Logger LOG = LoggerFactory.getLogger(RatisNameRewriteSampleBuilder.class);
 
-  private static final Logger LOG =
-      LoggerFactory.getLogger(RatisNameRewriteSampleBuilder.class);
-
-  private List<Pattern> followerPatterns = new ArrayList<>();
+  private final List<Pattern> followerPatterns = new ArrayList<>();
 
   public RatisNameRewriteSampleBuilder() {
     followerPatterns

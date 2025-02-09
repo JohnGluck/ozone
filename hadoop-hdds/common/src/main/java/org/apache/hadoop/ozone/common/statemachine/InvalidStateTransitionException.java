@@ -22,8 +22,8 @@ package org.apache.hadoop.ozone.common.statemachine;
  * Class wraps invalid state transition exception.
  */
 public class InvalidStateTransitionException extends Exception {
-  private Enum<?> currentState;
-  private Enum<?> event;
+  private final Enum<?> currentState;
+  private final Enum<?> event;
 
   public InvalidStateTransitionException(Enum<?> currentState, Enum<?> event) {
     super("Invalid event: " + event + " at " + currentState + " state.");
@@ -38,5 +38,4 @@ public class InvalidStateTransitionException extends Exception {
   public Enum<?> getEvent() {
     return event;
   }
-
 }

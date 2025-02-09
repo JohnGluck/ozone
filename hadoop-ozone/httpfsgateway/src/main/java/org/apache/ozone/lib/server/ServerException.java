@@ -49,7 +49,7 @@ public class ServerException extends XException {
     S13("Missing system property [{0}]"),
     S14("Could not initialize server, {0}");
 
-    private String msg;
+    private final String msg;
 
     /**
      * Constructor for the error code enum.

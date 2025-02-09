@@ -18,6 +18,12 @@
 
 package org.apache.hadoop.ozone.debug.datanode.container;
 
+import static org.apache.hadoop.hdds.protocol.datanode.proto.ContainerProtos.Result.CONTAINER_NOT_FOUND;
+import static org.apache.hadoop.ozone.container.replication.CopyContainerCompression.NO_COMPRESSION;
+
+import java.io.File;
+import java.io.FileOutputStream;
+import java.util.concurrent.Callable;
 import org.apache.hadoop.hdds.scm.container.common.helpers.StorageContainerException;
 import org.apache.hadoop.ozone.container.replication.ContainerReplicationSource;
 import org.apache.hadoop.ozone.container.replication.OnDemandContainerReplicationSource;
@@ -26,13 +32,6 @@ import org.slf4j.LoggerFactory;
 import picocli.CommandLine;
 import picocli.CommandLine.Command;
 import picocli.CommandLine.ParentCommand;
-
-import java.io.File;
-import java.io.FileOutputStream;
-import java.util.concurrent.Callable;
-
-import static org.apache.hadoop.hdds.protocol.datanode.proto.ContainerProtos.Result.CONTAINER_NOT_FOUND;
-import static org.apache.hadoop.ozone.container.replication.CopyContainerCompression.NO_COMPRESSION;
 
 /**
  * Handles {@code ozone debug datanode container export} command.
@@ -60,6 +59,7 @@ public class ExportSubcommand implements Callable<Void> {
 
   @CommandLine.Option(names = {"--count"},
       description = "Count of containers to export")
+  @SuppressWarnings("PMD.ImmutableField")
   private long containerCount = 1;
 
 

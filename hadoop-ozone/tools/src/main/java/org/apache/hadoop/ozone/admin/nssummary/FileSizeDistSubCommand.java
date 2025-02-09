@@ -17,22 +17,21 @@
  */
 package org.apache.hadoop.ozone.admin.nssummary;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import org.apache.commons.io.FileUtils;
-import org.apache.hadoop.hdds.cli.HddsVersionProvider;
-import org.apache.hadoop.hdds.server.JsonUtils;
-import picocli.CommandLine;
-
-import java.util.concurrent.Callable;
-
 import static org.apache.hadoop.ozone.admin.nssummary.NSSummaryCLIUtils.makeHttpCall;
-import static org.apache.hadoop.ozone.admin.nssummary.NSSummaryCLIUtils.printEmptyPathRequest;
 import static org.apache.hadoop.ozone.admin.nssummary.NSSummaryCLIUtils.printBucketReminder;
+import static org.apache.hadoop.ozone.admin.nssummary.NSSummaryCLIUtils.printEmptyPathRequest;
 import static org.apache.hadoop.ozone.admin.nssummary.NSSummaryCLIUtils.printNewLines;
 import static org.apache.hadoop.ozone.admin.nssummary.NSSummaryCLIUtils.printPathNotFound;
 import static org.apache.hadoop.ozone.admin.nssummary.NSSummaryCLIUtils.printSpaces;
 import static org.apache.hadoop.ozone.admin.nssummary.NSSummaryCLIUtils.printTypeNA;
 import static org.apache.hadoop.ozone.admin.nssummary.NSSummaryCLIUtils.printWithUnderline;
+
+import com.fasterxml.jackson.databind.JsonNode;
+import java.util.concurrent.Callable;
+import org.apache.commons.io.FileUtils;
+import org.apache.hadoop.hdds.cli.HddsVersionProvider;
+import org.apache.hadoop.hdds.server.JsonUtils;
+import picocli.CommandLine;
 
 /**
  * File Size Distribution Subcommand.
@@ -54,11 +53,11 @@ public class FileSizeDistSubCommand implements Callable {
 
   private static final String ENDPOINT = "/api/v1/namespace/dist";
 
-  private StringBuffer url = new StringBuffer();
+  private final StringBuffer url = new StringBuffer();
 
   @Override
   public Void call() throws Exception {
-    if (path == null || path.length() == 0) {
+    if (path == null || path.isEmpty()) {
       printEmptyPathRequest();
       return null;
     }

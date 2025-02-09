@@ -1325,9 +1325,9 @@ public final class FSOperations {
    * files system operation.
    */
   @InterfaceAudience.Private
-  public static class FSTrashRoot
-      implements FileSystemAccess.FileSystemExecutor<JSONObject> {
-    private Path path;
+  public static class FSTrashRoot implements FileSystemAccess.FileSystemExecutor<JSONObject> {
+    private final Path path;
+
     public FSTrashRoot(String path) {
       this.path = new Path(path);
     }
@@ -1340,7 +1340,6 @@ public final class FSOperations {
       json.put(HttpFSConstants.TRASH_DIR_JSON, trashRoot.toUri().getPath());
       return json;
     }
-
   }
 
   /**
@@ -1603,10 +1602,9 @@ public final class FSOperations {
    */
   @SuppressWarnings({ "unchecked" })
   @InterfaceAudience.Private
-  public static class FSGetStoragePolicy implements
-      FileSystemAccess.FileSystemExecutor<JSONObject> {
+  public static class FSGetStoragePolicy implements FileSystemAccess.FileSystemExecutor<JSONObject> {
 
-    private Path path;
+    private final Path path;
 
     public FSGetStoragePolicy(String path) {
       this.path = new Path(path);

@@ -19,40 +19,37 @@
 package org.apache.hadoop.hdds.scm.container.balancer;
 
 import com.google.common.annotations.VisibleForTesting;
+import jakarta.annotation.Nonnull;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.LinkedList;
+import java.util.List;
 import org.apache.hadoop.hdds.protocol.DatanodeDetails;
 import org.apache.hadoop.hdds.scm.PlacementPolicyValidateProxy;
 import org.apache.hadoop.hdds.scm.container.ContainerManager;
 import org.apache.hadoop.hdds.scm.net.NetworkTopology;
 import org.apache.hadoop.hdds.scm.node.DatanodeUsageInfo;
 import org.apache.hadoop.hdds.scm.node.NodeManager;
-import jakarta.annotation.Nonnull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.LinkedList;
-import java.util.List;
 
 /**
  * an implementation of FindTargetGreedy, which will always select the
  * target with the shortest distance according to network topology
  * distance to the give source datanode.
  */
-public class FindTargetGreedyByNetworkTopology
-    extends AbstractFindTargetGreedy {
-  public static final Logger LOG =
-      LoggerFactory.getLogger(FindTargetGreedyByNetworkTopology.class);
+public class FindTargetGreedyByNetworkTopology extends AbstractFindTargetGreedy {
+  public static final Logger LOG = LoggerFactory.getLogger(FindTargetGreedyByNetworkTopology.class);
 
-  private NetworkTopology networkTopology;
-  private List potentialTargets;
+  private final NetworkTopology networkTopology;
+  private final List<DatanodeUsageInfo> potentialTargets;
 
   public FindTargetGreedyByNetworkTopology(
       ContainerManager containerManager,
       PlacementPolicyValidateProxy placementPolicyValidateProxy,
       NodeManager nodeManager,
-      NetworkTopology networkTopology) {
+      NetworkTopology networkTopology
+  ) {
     super(containerManager, placementPolicyValidateProxy, nodeManager);
     setLogger(LOG);
     potentialTargets = new LinkedList<>();
@@ -68,19 +65,18 @@ public class FindTargetGreedyByNetworkTopology
   @Override
   @VisibleForTesting
   public void sortTargetForSource(DatanodeDetails source) {
-    Collections.sort(potentialTargets,
-        (DatanodeUsageInfo da, DatanodeUsageInfo db) -> {
-        DatanodeDetails a = da.getDatanodeDetails();
-        DatanodeDetails b = db.getDatanodeDetails();
-        // sort by network topology first
-        int distanceToA = networkTopology.getDistanceCost(source, a);
-        int distanceToB = networkTopology.getDistanceCost(source, b);
-        if (distanceToA != distanceToB) {
-          return distanceToA - distanceToB;
-        }
-        // if distance to source is equal , sort by usage
-        return compareByUsage(da, db);
-      });
+    potentialTargets.sort((DatanodeUsageInfo da, DatanodeUsageInfo db) -> {
+      DatanodeDetails a = da.getDatanodeDetails();
+      DatanodeDetails b = db.getDatanodeDetails();
+      // sort by network topology first
+      int distanceToA = networkTopology.getDistanceCost(source, a);
+      int distanceToB = networkTopology.getDistanceCost(source, b);
+      if (distanceToA != distanceToB) {
+        return distanceToA - distanceToB;
+      }
+      // if distance to source is equal, sort by usage
+      return compareByUsage(da, db);
+    });
   }
 
   /**
@@ -90,8 +86,7 @@ public class FindTargetGreedyByNetworkTopology
    *                containers can move to
    */
   @Override
-  public void resetPotentialTargets(
-      @Nonnull Collection<DatanodeDetails> targets) {
+  public void resetPotentialTargets(@Nonnull Collection<DatanodeDetails> targets) {
     // create DatanodeUsageInfo from DatanodeDetails
     List<DatanodeUsageInfo> usageInfos = new ArrayList<>(targets.size());
     targets.forEach(datanodeDetails -> usageInfos.add(
@@ -99,5 +94,4 @@ public class FindTargetGreedyByNetworkTopology
 
     super.resetTargets(usageInfos);
   }
-
 }

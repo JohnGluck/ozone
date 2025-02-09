@@ -47,13 +47,13 @@ import java.util.Set;
  */
 public class RocksDBStoreMetrics implements MetricsSource {
 
-  private Statistics statistics;
+  private final Statistics statistics;
 
   private final RocksDatabase rocksDB;
 
-  private Set<String> histogramAttributes = new HashSet<>();
+  private final Set<String> histogramAttributes = new HashSet<>();
 
-  private String contextName;
+  private final String contextName;
 
   private static final Logger LOG =
       LoggerFactory.getLogger(RocksDBStoreMetrics.class);

@@ -17,15 +17,6 @@
  */
 package org.apache.hadoop.ozone.admin.nssummary;
 
-import org.apache.commons.io.FileUtils;
-import org.apache.hadoop.hdds.cli.HddsVersionProvider;
-import org.apache.hadoop.hdds.server.JsonUtils;
-import org.apache.hadoop.ozone.shell.ListOptions;
-import picocli.CommandLine;
-
-import java.util.concurrent.Callable;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.node.ArrayNode;
 import static org.apache.hadoop.ozone.OzoneConsts.OM_KEY_PREFIX;
 import static org.apache.hadoop.ozone.admin.nssummary.NSSummaryCLIUtils.makeHttpCall;
 import static org.apache.hadoop.ozone.admin.nssummary.NSSummaryCLIUtils.parseInputPath;
@@ -35,6 +26,15 @@ import static org.apache.hadoop.ozone.admin.nssummary.NSSummaryCLIUtils.printNew
 import static org.apache.hadoop.ozone.admin.nssummary.NSSummaryCLIUtils.printPathNotFound;
 import static org.apache.hadoop.ozone.admin.nssummary.NSSummaryCLIUtils.printSpaces;
 import static org.apache.hadoop.ozone.admin.nssummary.NSSummaryCLIUtils.printWithUnderline;
+
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.node.ArrayNode;
+import java.util.concurrent.Callable;
+import org.apache.commons.io.FileUtils;
+import org.apache.hadoop.hdds.cli.HddsVersionProvider;
+import org.apache.hadoop.hdds.server.JsonUtils;
+import org.apache.hadoop.ozone.shell.ListOptions;
+import picocli.CommandLine;
 
 /**
  * Disk Usage Subcommand.
@@ -79,11 +79,11 @@ public class DiskUsageSubCommand implements Callable {
   private static final int DU_INDENT = 12;
   private static final int PATH_INDENT = 27;
 
-  private StringBuffer url = new StringBuffer();
+  private final StringBuffer url = new StringBuffer();
 
   @Override
   public Void call() throws Exception {
-    if (path == null || path.length() == 0) {
+    if (path == null || path.isEmpty()) {
       printEmptyPathRequest();
       return null;
     }

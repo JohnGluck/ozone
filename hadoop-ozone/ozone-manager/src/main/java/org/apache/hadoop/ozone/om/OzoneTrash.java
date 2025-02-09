@@ -30,15 +30,16 @@ import java.io.IOException;
  */
 public class OzoneTrash extends Trash {
 
-  private TrashPolicy trashPolicy;
+  private final TrashPolicy trashPolicy;
+
   public OzoneTrash(FileSystem fs, Configuration conf, OzoneManager om)
       throws IOException {
     super(fs, conf);
     this.trashPolicy = new TrashPolicyOzone(fs, conf, om);
   }
+
   @Override
   public Runnable getEmptier() throws IOException {
     return this.trashPolicy.getEmptier();
   }
-
 }

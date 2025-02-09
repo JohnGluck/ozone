@@ -28,10 +28,11 @@ public class OpenKeySession {
   @JsonProperty("clientId")
   private final long id;
   private final OmKeyInfo keyInfo;
+
   // the version of the key when it is being opened in this session.
   // a block that has a create version equals to open version means it will
   // be committed only when this open session is closed.
-  private long openVersion;
+  private final long openVersion;
 
   public OpenKeySession(long id, OmKeyInfo info, long version) {
     this.id = id;

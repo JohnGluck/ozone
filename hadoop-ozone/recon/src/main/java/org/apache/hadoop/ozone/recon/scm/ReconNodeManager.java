@@ -18,6 +18,11 @@
 
 package org.apache.hadoop.ozone.recon.scm;
 
+import static java.util.stream.Collectors.toList;
+import static org.apache.hadoop.hdds.protocol.proto.StorageContainerDatanodeProtocolProtos.SCMCommandProto.Type.reregisterCommand;
+
+import com.google.common.annotations.VisibleForTesting;
+import com.google.common.collect.ImmutableSet;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -26,16 +31,14 @@ import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicBoolean;
-
-import com.google.common.annotations.VisibleForTesting;
 import org.apache.hadoop.hdds.conf.OzoneConfiguration;
 import org.apache.hadoop.hdds.protocol.DatanodeDetails;
+import org.apache.hadoop.hdds.protocol.proto.HddsProtos;
 import org.apache.hadoop.hdds.protocol.proto.StorageContainerDatanodeProtocolProtos;
 import org.apache.hadoop.hdds.protocol.proto.StorageContainerDatanodeProtocolProtos.CommandQueueReportProto;
 import org.apache.hadoop.hdds.protocol.proto.StorageContainerDatanodeProtocolProtos.LayoutVersionProto;
 import org.apache.hadoop.hdds.protocol.proto.StorageContainerDatanodeProtocolProtos.NodeReportProto;
 import org.apache.hadoop.hdds.protocol.proto.StorageContainerDatanodeProtocolProtos.PipelineReportsProto;
-import org.apache.hadoop.hdds.protocol.proto.HddsProtos;
 import org.apache.hadoop.hdds.protocol.proto.StorageContainerDatanodeProtocolProtos.SCMCommandProto.Type;
 import org.apache.hadoop.hdds.protocol.proto.StorageContainerDatanodeProtocolProtos.SCMVersionRequestProto;
 import org.apache.hadoop.hdds.scm.ha.SCMContext;
@@ -58,12 +61,6 @@ import org.apache.hadoop.ozone.protocol.commands.ReregisterCommand;
 import org.apache.hadoop.ozone.protocol.commands.SCMCommand;
 import org.apache.hadoop.ozone.recon.ReconContext;
 import org.apache.hadoop.util.Time;
-
-import com.google.common.collect.ImmutableSet;
-
-import static java.util.stream.Collectors.toList;
-import static org.apache.hadoop.hdds.protocol.proto.StorageContainerDatanodeProtocolProtos.SCMCommandProto.Type.reregisterCommand;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -72,8 +69,9 @@ import org.slf4j.LoggerFactory;
  */
 public class ReconNodeManager extends SCMNodeManager {
 
-  public static final Logger LOG = LoggerFactory
-      .getLogger(ReconNodeManager.class);
+  public static final Logger LOG = LoggerFactory.getLogger(ReconNodeManager.class);
+
+  private static final int RECON_STALE_DATANODE_MULTIPLIER = 3;
 
   private Table<UUID, DatanodeDetails> nodeDB;
   private ReconContext reconContext;
@@ -84,11 +82,10 @@ public class ReconNodeManager extends SCMNodeManager {
    * Map that contains mapping between datanodes
    * and their last heartbeat time.
    */
-  private Map<UUID, Long> datanodeHeartbeatMap = new HashMap<>();
-  private Map<UUID, DatanodeDetails> inMemDatanodeDetails = new HashMap<>();
+  private final Map<UUID, Long> datanodeHeartbeatMap = new HashMap<>();
+  private final Map<UUID, DatanodeDetails> inMemDatanodeDetails = new HashMap<>();
 
-  private long reconDatanodeOutdatedTime;
-  private static int reconStaleDatanodeMultiplier = 3;
+  private final long reconDatanodeOutdatedTime;
 
   private static final DatanodeDetails EMPTY_DATANODE_DETAILS =
       DatanodeDetails.newBuilder().setUuid(UUID.randomUUID()).build();
@@ -101,8 +98,8 @@ public class ReconNodeManager extends SCMNodeManager {
                           HDDSLayoutVersionManager scmLayoutVersionManager) {
     super(conf, scmStorageConfig, eventPublisher, networkTopology,
         SCMContext.emptyContext(), scmLayoutVersionManager);
-    this.reconDatanodeOutdatedTime = reconStaleDatanodeMultiplier *
-        HddsServerUtil.getReconHeartbeatInterval(conf);
+
+    this.reconDatanodeOutdatedTime = RECON_STALE_DATANODE_MULTIPLIER * HddsServerUtil.getReconHeartbeatInterval(conf);
     this.nodeDB = nodeDB;
   }
 

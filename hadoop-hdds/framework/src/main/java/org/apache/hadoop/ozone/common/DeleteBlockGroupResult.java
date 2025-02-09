@@ -32,8 +32,9 @@ import java.util.stream.Collectors;
  * Result to delete a group of blocks.
  */
 public class DeleteBlockGroupResult {
-  private String objectKey;
-  private List<DeleteBlockResult> blockResultList;
+  private final String objectKey;
+  private final List<DeleteBlockResult> blockResultList;
+
   public DeleteBlockGroupResult(String objectKey,
       List<DeleteBlockResult> blockResultList) {
     this.objectKey = objectKey;

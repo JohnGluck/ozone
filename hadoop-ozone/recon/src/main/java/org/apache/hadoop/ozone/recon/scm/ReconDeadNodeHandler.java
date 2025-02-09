@@ -20,7 +20,6 @@ package org.apache.hadoop.ozone.recon.scm;
 
 import java.util.List;
 import java.util.Optional;
-
 import org.apache.hadoop.hdds.protocol.DatanodeDetails;
 import org.apache.hadoop.hdds.protocol.proto.HddsProtos.Node;
 import org.apache.hadoop.hdds.scm.container.ContainerManager;
@@ -30,7 +29,6 @@ import org.apache.hadoop.hdds.scm.pipeline.PipelineManager;
 import org.apache.hadoop.hdds.server.events.EventPublisher;
 import org.apache.hadoop.ozone.recon.fsck.ContainerHealthTask;
 import org.apache.hadoop.ozone.recon.spi.StorageContainerServiceProvider;
-import org.apache.hadoop.ozone.recon.tasks.ContainerSizeCountTask;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -39,12 +37,11 @@ import org.slf4j.LoggerFactory;
  */
 public class ReconDeadNodeHandler extends DeadNodeHandler {
 
-  private static final Logger LOG =
-      LoggerFactory.getLogger(ReconDeadNodeHandler.class);
+  private static final Logger LOG = LoggerFactory.getLogger(ReconDeadNodeHandler.class);
 
-  private StorageContainerServiceProvider scmClient;
-  private ContainerHealthTask containerHealthTask;
-  private PipelineSyncTask pipelineSyncTask;
+  private final StorageContainerServiceProvider scmClient;
+  private final ContainerHealthTask containerHealthTask;
+  private final PipelineSyncTask pipelineSyncTask;
 
   public ReconDeadNodeHandler(
       NodeManager nodeManager,

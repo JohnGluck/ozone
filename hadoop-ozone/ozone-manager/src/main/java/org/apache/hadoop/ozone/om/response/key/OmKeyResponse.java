@@ -27,7 +27,7 @@ import org.apache.hadoop.ozone.protocol.proto.OzoneManagerProtocolProtos;
  */
 public abstract class OmKeyResponse extends OMClientResponse {
 
-  private BucketLayout bucketLayout;
+  private final BucketLayout bucketLayout;
 
   public OmKeyResponse(OzoneManagerProtocolProtos.OMResponse omResponse,
       BucketLayout bucketLayoutArg) {

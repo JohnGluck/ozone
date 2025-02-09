@@ -74,7 +74,7 @@ public final class NodeSchemaManager {
     try {
       result = NodeSchemaLoader.getInstance().loadSchemaFromFile(schemaFile);
       allSchema = result.getSchemaList();
-      enforcePrefix = result.isEnforePrefix();
+      enforcePrefix = result.isEnforcePrefix();
       maxLevel = allSchema.size();
     } catch (Throwable e) {
       String msg = "Failed to load schema file:" + schemaFile

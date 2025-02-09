@@ -43,9 +43,9 @@ import io.grpc.stub.StreamObserver;
  */
 public class ControllerService extends ControllerImplBase {
 
-  private long defaultVolumeSize;
+  private final long defaultVolumeSize;
 
-  private OzoneClient ozoneClient;
+  private final OzoneClient ozoneClient;
 
   public ControllerService(OzoneClient ozoneClient, long volumeSize) {
     this.defaultVolumeSize = volumeSize;

@@ -17,21 +17,8 @@
  */
 package org.apache.hadoop.hdds.scm.net;
 
-import org.apache.commons.io.FilenameUtils;
-import org.apache.hadoop.hdds.server.YamlUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
-import org.w3c.dom.Text;
-import org.xml.sax.SAXException;
+import static org.apache.commons.collections.EnumerationUtils.toList;
 
-import javax.xml.XMLConstants;
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -41,10 +28,21 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import  org.apache.hadoop.hdds.scm.net.NodeSchema.LayerType;
-
-import static org.apache.commons.collections.EnumerationUtils.toList;
+import javax.xml.XMLConstants;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import org.apache.commons.io.FilenameUtils;
+import org.apache.hadoop.hdds.scm.net.NodeSchema.LayerType;
+import org.apache.hadoop.hdds.server.YamlUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+import org.w3c.dom.Text;
+import org.xml.sax.SAXException;
 
 /**
  * A Network topology layer schema loading tool that loads user defined network
@@ -81,15 +79,15 @@ public final class NodeSchemaLoader {
    * Class to house keep the result of parsing a network topology schema file.
    */
   public static class NodeSchemaLoadResult {
-    private List<NodeSchema> schemaList;
-    private boolean enforcePrefix;
+    private final List<NodeSchema> schemaList;
+    private final boolean enforcePrefix;
 
     NodeSchemaLoadResult(List<NodeSchema> schemaList, boolean enforcePrefix) {
       this.schemaList = schemaList;
       this.enforcePrefix = enforcePrefix;
     }
 
-    public boolean isEnforePrefix() {
+    public boolean isEnforcePrefix() {
       return enforcePrefix;
     }
 
@@ -407,8 +405,8 @@ public final class NodeSchemaLoader {
             throw new IllegalArgumentException("Topology path doesn't end "
                 + "with LEAF layer");
           }
-          for (int j = 0; j < layerIDs.length; j++) {
-            schemaList.add(schemas.get(layerIDs[j]));
+          for (String layerID : layerIDs) {
+            schemaList.add(schemas.get(layerID));
           }
         } else if (TOPOLOGY_ENFORCE_PREFIX.equalsIgnoreCase(tagName)) {
           enforcePrefix = Boolean.parseBoolean(value);

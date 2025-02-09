@@ -69,14 +69,14 @@ public final class ContainerClientMetrics {
   private MutableCounterLong flushesDuringWrite;
 
 
-  private MutableQuantiles[] listBlockLatency;
-  private MutableQuantiles[] getBlockLatency;
-  private MutableQuantiles[] getCommittedBlockLengthLatency;
-  private MutableQuantiles[] readChunkLatency;
-  private MutableQuantiles[] getSmallFileLatency;
-  private MutableQuantiles[] hsyncLatencyNs;
-  private MutableQuantiles[] omHsyncLatencyNs;
-  private MutableQuantiles[] datanodeHsyncLatencyNs;
+  private final MutableQuantiles[] listBlockLatency;
+  private final MutableQuantiles[] getBlockLatency;
+  private final MutableQuantiles[] getCommittedBlockLengthLatency;
+  private final MutableQuantiles[] readChunkLatency;
+  private final MutableQuantiles[] getSmallFileLatency;
+  private final MutableQuantiles[] hsyncLatencyNs;
+  private final MutableQuantiles[] omHsyncLatencyNs;
+  private final MutableQuantiles[] datanodeHsyncLatencyNs;
   private final Map<PipelineID, MutableCounterLong> writeChunkCallsByPipeline;
   private final Map<PipelineID, MutableCounterLong> writeChunkBytesByPipeline;
   private final Map<UUID, MutableCounterLong> writeChunksCallsByLeaders;

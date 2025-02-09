@@ -29,9 +29,9 @@ import java.util.Set;
  * Report Result class.
  */
 public class StorageReportResult {
-  private SCMNodeStorageStatMap.ReportStatus status;
-  private Set<StorageLocationReport> fullVolumes;
-  private Set<StorageLocationReport> failedVolumes;
+  private final SCMNodeStorageStatMap.ReportStatus status;
+  private final Set<StorageLocationReport> fullVolumes;
+  private final Set<StorageLocationReport> failedVolumes;
 
   StorageReportResult(SCMNodeStorageStatMap.ReportStatus status,
       Set<StorageLocationReport> fullVolumes,

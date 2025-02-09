@@ -48,6 +48,6 @@
 
   <rule ref="category/java/codestyle.xml/UseDiamondOperator" />
 
-  <!--<rule ref="category/java/design.xml/ImmutableField" />-->
+  <rule ref="category/java/design.xml/ImmutableField" />
 
 </ruleset>

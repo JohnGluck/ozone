@@ -17,16 +17,16 @@
  */
 package org.apache.hadoop.hdds.scm.cli.datanode;
 
+import static org.apache.hadoop.hdds.scm.cli.datanode.DecommissionSubCommand.showErrors;
+
+import java.io.IOException;
+import java.util.List;
 import org.apache.hadoop.hdds.cli.HddsVersionProvider;
 import org.apache.hadoop.hdds.scm.DatanodeAdminError;
 import org.apache.hadoop.hdds.scm.cli.ScmSubcommand;
 import org.apache.hadoop.hdds.scm.client.ScmClient;
 import picocli.CommandLine;
 import picocli.CommandLine.Command;
-import java.io.IOException;
-import java.util.List;
-
-import static org.apache.hadoop.hdds.scm.cli.datanode.DecommissionSubCommand.showErrors;
 
 /**
  * Place one or more datanodes into Maintenance Mode.
@@ -44,6 +44,7 @@ public class MaintenanceSubCommand extends ScmSubcommand {
   @CommandLine.Option(names = {"--end"},
       description = "Automatically end maintenance after the given hours. " +
           "By default, maintenance must be ended manually.")
+  @SuppressWarnings("PMD.ImmutableField")
   private int endInHours = 0;
 
   @CommandLine.Option(names = { "--force" },

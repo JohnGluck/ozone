@@ -41,18 +41,14 @@ import java.util.Set;
 @InterfaceAudience.Private
 public final class CodecRegistry {
 
-  private static final Logger LOG =
-      LoggerFactory.getLogger(CodecRegistry.class);
+  private static final Logger LOG = LoggerFactory.getLogger(CodecRegistry.class);
 
-  private static CodecRegistry instance = new CodecRegistry();
-  private Map<String, List<RawErasureCoderFactory>> coderMap;
-  private Map<String, String[]> coderNameMap;
+  private static final CodecRegistry instance = new CodecRegistry();
+  private final Map<String, List<RawErasureCoderFactory>> coderMap = new HashMap<>();
+  private final Map<String, String[]> coderNameMap = new HashMap<>();
 
   private CodecRegistry() {
-    coderMap = new HashMap<>();
-    coderNameMap = new HashMap<>();
-    final ServiceLoader<RawErasureCoderFactory> coderFactories =
-        ServiceLoader.load(RawErasureCoderFactory.class);
+    final ServiceLoader<RawErasureCoderFactory> coderFactories = ServiceLoader.load(RawErasureCoderFactory.class);
     updateCoders(coderFactories);
   }
 
@@ -76,7 +72,7 @@ public final class CodecRegistry {
         LOG.debug("Codec registered: codec = {}, coder = {}",
             coderFactory.getCodecName(), coderFactory.getCoderName());
       } else {
-        Boolean hasConflit = false;
+        boolean hasConflit = false;
         for (RawErasureCoderFactory coder : coders) {
           if (coder.getCoderName().equals(coderFactory.getCoderName())) {
             hasConflit = true;
@@ -118,8 +114,7 @@ public final class CodecRegistry {
    * @return an array of all coder names, null if not exist
    */
   public String[] getCoderNames(String codecName) {
-    String[] coderNames = coderNameMap.get(codecName);
-    return coderNames;
+    return coderNameMap.get(codecName);
   }
 
   /**
@@ -128,8 +123,7 @@ public final class CodecRegistry {
    * @return a list of all coder factories, null if not exist
    */
   public List<RawErasureCoderFactory> getCoders(String codecName) {
-    List<RawErasureCoderFactory> coders = coderMap.get(codecName);
-    return coders;
+    return coderMap.get(codecName);
   }
 
   /**

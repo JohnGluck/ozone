@@ -24,7 +24,7 @@ import java.nio.ByteBuffer;
  */
 public class ECChunk {
 
-  private ByteBuffer chunkBuffer;
+  private final ByteBuffer chunkBuffer;
 
   // TODO: should be in a more general flags
   private boolean allZero = false;

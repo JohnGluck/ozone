@@ -30,10 +30,9 @@ import org.slf4j.LoggerFactory;
  * Recon's handling of Stale node.
  */
 public class ReconStaleNodeHandler extends StaleNodeHandler {
+  private static final Logger LOG = LoggerFactory.getLogger(ReconStaleNodeHandler.class);
 
-  private static final Logger LOG =
-        LoggerFactory.getLogger(ReconStaleNodeHandler.class);
-  private PipelineSyncTask pipelineSyncTask;
+  private final PipelineSyncTask pipelineSyncTask;
 
   public ReconStaleNodeHandler(
       NodeManager nodeManager,

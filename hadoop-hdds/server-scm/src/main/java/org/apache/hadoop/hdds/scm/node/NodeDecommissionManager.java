@@ -63,7 +63,7 @@ public class NodeDecommissionManager {
   private final DatanodeAdminMonitor monitor;
 
   private final NodeManager nodeManager;
-  private ContainerManager containerManager;
+  private final ContainerManager containerManager;
   private final SCMContext scmContext;
   private final boolean useHostnames;
   private Integer maintenanceReplicaMinimum;
@@ -76,7 +76,7 @@ public class NodeDecommissionManager {
       LoggerFactory.getLogger(NodeDecommissionManager.class);
 
   static final class HostDefinition {
-    private String rawHostname;
+    private final String rawHostname;
     private String hostname;
     private int port;
 

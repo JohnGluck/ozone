@@ -49,8 +49,7 @@ import java.util.concurrent.Callable;
 public class StreamingGenerator extends BaseFreonGenerator
     implements Callable<Void> {
 
-  private static final Logger LOG =
-      LoggerFactory.getLogger(StreamingGenerator.class);
+  private static final Logger LOG = LoggerFactory.getLogger(StreamingGenerator.class);
 
   @CommandLine.Option(names = {"--root-dir"},
       description = "Directory where the working directories are created",
@@ -72,7 +71,7 @@ public class StreamingGenerator extends BaseFreonGenerator
 
   private static final String SUB_DIR_NAME = "dir1";
 
-  private ThreadLocal<Integer> counter = new ThreadLocal<>();
+  private final ThreadLocal<Integer> counter = new ThreadLocal<>();
 
   private Timer timer;
 

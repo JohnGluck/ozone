@@ -42,7 +42,7 @@ public final class BasicOmKeyInfo {
   private final ReplicationConfig replicationConfig;
   private final boolean isFile;
   private final String eTag;
-  private String ownerName;
+  private final String ownerName;
 
   private BasicOmKeyInfo(Builder b) {
     this.volumeName = b.volumeName;

@@ -28,7 +28,7 @@ public enum AuditMarker {
   AUTH(MarkerManager.getMarker("AUTH")),
   PERFORMANCE(MarkerManager.getMarker("PERFORMANCE"));
 
-  private Marker marker;
+  private final Marker marker;
 
   AuditMarker(Marker marker) {
     this.marker = marker;

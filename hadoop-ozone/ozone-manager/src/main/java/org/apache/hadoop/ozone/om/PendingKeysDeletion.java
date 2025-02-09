@@ -29,8 +29,8 @@ import java.util.List;
  */
 public class PendingKeysDeletion {
 
-  private HashMap<String, RepeatedOmKeyInfo> keysToModify;
-  private List<BlockGroup> keyBlocksList;
+  private final HashMap<String, RepeatedOmKeyInfo> keysToModify;
+  private final List<BlockGroup> keyBlocksList;
 
   public PendingKeysDeletion(List<BlockGroup> keyBlocksList,
        HashMap<String, RepeatedOmKeyInfo> keysToModify) {

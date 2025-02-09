@@ -16,11 +16,11 @@
  */
 package org.apache.hadoop.ozone.security.acl;
 
+import static org.apache.hadoop.ozone.OzoneConsts.OZONE_URI_DELIMITER;
+
 import org.apache.commons.lang3.StringUtils;
 import org.apache.hadoop.ozone.om.helpers.OmKeyArgs;
 import org.apache.hadoop.ozone.protocol.proto.OzoneManagerProtocolProtos;
-
-import static org.apache.hadoop.ozone.OzoneConsts.OZONE_URI_DELIMITER;
 
 /**
  * Class representing an ozone object.
@@ -37,7 +37,7 @@ public final class OzoneObjInfo extends OzoneObj {
   private final String bucketName;
   private final String name;
 
-  private OzonePrefixPath ozonePrefixPath;
+  private final OzonePrefixPath ozonePrefixPath;
 
   /**
    *

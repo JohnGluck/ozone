@@ -25,7 +25,7 @@ import com.google.common.base.Preconditions;
  */
 public class SCMNodeMetric implements DatanodeMetric<SCMNodeStat, Long>,
     Comparable<SCMNodeMetric> {
-  private SCMNodeStat stat;
+  private final SCMNodeStat stat;
 
   /**
    * Constructs an SCMNode Metric.

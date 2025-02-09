@@ -55,13 +55,12 @@ import com.google.inject.Inject;
  */
 public class ReconTaskControllerImpl implements ReconTaskController {
 
-  private static final Logger LOG =
-      LoggerFactory.getLogger(ReconTaskControllerImpl.class);
+  private static final Logger LOG = LoggerFactory.getLogger(ReconTaskControllerImpl.class);
 
-  private Map<String, ReconOmTask> reconOmTasks;
+  private final Map<String, ReconOmTask> reconOmTasks;
   private ExecutorService executorService;
   private final int threadCount;
-  private Map<String, AtomicInteger> taskFailureCounter = new HashMap<>();
+  private final Map<String, AtomicInteger> taskFailureCounter = new HashMap<>();
   private static final int TASK_FAILURE_THRESHOLD = 2;
   private final ReconTaskStatusUpdaterManager taskStatusUpdaterManager;
 

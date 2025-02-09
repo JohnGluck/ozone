@@ -148,8 +148,7 @@ import static org.apache.hadoop.ozone.s3.util.S3Utils.urlDecode;
 @Path("/{bucket}/{path:.+}")
 public class ObjectEndpoint extends EndpointBase {
 
-  private static final Logger LOG =
-      LoggerFactory.getLogger(ObjectEndpoint.class);
+  private static final Logger LOG = LoggerFactory.getLogger(ObjectEndpoint.class);
 
   private static final ThreadLocal<MessageDigest> E_TAG_PROVIDER;
 
@@ -171,7 +170,7 @@ public class ObjectEndpoint extends EndpointBase {
 
   /*FOR the feature Overriding Response Header
   https://docs.aws.amazon.com/de_de/AmazonS3/latest/API/API_GetObject.html */
-  private Map<String, String> overrideQueryParameter;
+  private final Map<String, String> overrideQueryParameter;
   private int bufferSize;
   private int chunkSize;
   private boolean datastreamEnabled;

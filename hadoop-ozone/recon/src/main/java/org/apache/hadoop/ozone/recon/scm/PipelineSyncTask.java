@@ -45,15 +45,13 @@ import org.slf4j.LoggerFactory;
  * state.
  */
 public class PipelineSyncTask extends ReconScmTask {
+  private static final Logger LOG = LoggerFactory.getLogger(PipelineSyncTask.class);
 
-  private static final Logger LOG =
-      LoggerFactory.getLogger(PipelineSyncTask.class);
+  private final StorageContainerServiceProvider scmClient;
+  private final ReconPipelineManager reconPipelineManager;
+  private final ReconNodeManager nodeManager;
 
-  private StorageContainerServiceProvider scmClient;
-  private ReconPipelineManager reconPipelineManager;
-  private ReconNodeManager nodeManager;
-
-  private ReadWriteLock lock = new ReentrantReadWriteLock(true);
+  private final ReadWriteLock lock = new ReentrantReadWriteLock(true);
   private final long interval;
   private final ReconTaskStatusUpdater taskStatusUpdater;
 

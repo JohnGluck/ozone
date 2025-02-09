@@ -17,34 +17,9 @@
 
 package org.apache.hadoop.hdds.server.http;
 
-import java.util.Map;
-import javax.servlet.http.HttpServlet;
-import java.io.IOException;
-import java.net.InetSocketAddress;
-import java.net.URI;
-import java.util.Optional;
-import java.util.OptionalInt;
-
-import com.google.common.annotations.VisibleForTesting;
-import org.apache.hadoop.conf.Configuration;
-import org.apache.hadoop.hdds.DFSConfigKeysLegacy;
-import org.apache.hadoop.hdds.HddsConfigKeys;
-import org.apache.hadoop.hdds.conf.ConfigurationSource;
-import org.apache.hadoop.hdds.conf.HddsConfServlet;
-import org.apache.hadoop.hdds.conf.HddsPrometheusConfig;
-import org.apache.hadoop.hdds.conf.MutableConfigurationSource;
-import org.apache.hadoop.hdds.utils.LegacyHadoopConfigurationSource;
-import org.apache.hadoop.metrics2.lib.DefaultMetricsSystem;
-import org.apache.hadoop.net.NetUtils;
-import org.apache.hadoop.ozone.OzoneConfigKeys;
-import org.apache.hadoop.ozone.OzoneSecurityUtil;
-import org.apache.hadoop.security.UserGroupInformation;
-import org.apache.hadoop.security.authorize.AccessControlList;
-
-import org.apache.commons.lang3.StringUtils;
+import static org.apache.hadoop.hdds.HddsUtils.createDir;
 import static org.apache.hadoop.hdds.HddsUtils.getHostNameFromConfigKeys;
 import static org.apache.hadoop.hdds.HddsUtils.getPortNumberFromConfigKeys;
-import static org.apache.hadoop.hdds.HddsUtils.createDir;
 import static org.apache.hadoop.hdds.server.ServerUtils.getOzoneMetaDirPath;
 import static org.apache.hadoop.hdds.server.http.HttpConfig.getHttpPolicy;
 import static org.apache.hadoop.ozone.OzoneConfigKeys.OZONE_ADMINISTRATORS;
@@ -59,6 +34,29 @@ import static org.apache.hadoop.ozone.OzoneConfigKeys.OZONE_SERVER_HTTPS_KEYPASS
 import static org.apache.hadoop.ozone.OzoneConfigKeys.OZONE_SERVER_HTTPS_KEYSTORE_PASSWORD_KEY;
 import static org.apache.hadoop.ozone.OzoneConfigKeys.OZONE_SERVER_HTTPS_TRUSTSTORE_PASSWORD_KEY;
 
+import com.google.common.annotations.VisibleForTesting;
+import java.io.IOException;
+import java.net.InetSocketAddress;
+import java.net.URI;
+import java.util.Map;
+import java.util.Optional;
+import java.util.OptionalInt;
+import javax.servlet.http.HttpServlet;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.hadoop.conf.Configuration;
+import org.apache.hadoop.hdds.DFSConfigKeysLegacy;
+import org.apache.hadoop.hdds.HddsConfigKeys;
+import org.apache.hadoop.hdds.conf.ConfigurationSource;
+import org.apache.hadoop.hdds.conf.HddsConfServlet;
+import org.apache.hadoop.hdds.conf.HddsPrometheusConfig;
+import org.apache.hadoop.hdds.conf.MutableConfigurationSource;
+import org.apache.hadoop.hdds.utils.LegacyHadoopConfigurationSource;
+import org.apache.hadoop.metrics2.lib.DefaultMetricsSystem;
+import org.apache.hadoop.net.NetUtils;
+import org.apache.hadoop.ozone.OzoneConfigKeys;
+import org.apache.hadoop.ozone.OzoneSecurityUtil;
+import org.apache.hadoop.security.UserGroupInformation;
+import org.apache.hadoop.security.authorize.AccessControlList;
 import org.eclipse.jetty.webapp.WebAppContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -81,14 +79,12 @@ public abstract class BaseHttpServer {
   private InetSocketAddress httpAddress;
   private InetSocketAddress httpsAddress;
 
-  private HttpConfig.Policy policy;
+  private final HttpConfig.Policy policy;
 
-  private String name;
+  private final String name;
   private PrometheusMetricsSink prometheusMetricsSink;
 
   private boolean prometheusSupport;
-
-  private boolean profilerSupport;
 
   public BaseHttpServer(MutableConfigurationSource conf, String name)
       throws IOException {
@@ -155,8 +151,7 @@ public abstract class BaseHttpServer {
       prometheusSupport = addDefaultApps &&
           conf.getBoolean(HddsConfigKeys.HDDS_PROMETHEUS_ENABLED, true);
 
-      profilerSupport = addDefaultApps &&
-          conf.getBoolean(HddsConfigKeys.HDDS_PROFILER_ENABLED, false);
+      boolean profilerSupport = addDefaultApps && conf.getBoolean(HddsConfigKeys.HDDS_PROFILER_ENABLED, false);
 
       if (prometheusSupport) {
         prometheusMetricsSink = new PrometheusMetricsSink(name);

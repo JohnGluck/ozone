@@ -17,12 +17,14 @@
  */
 package org.apache.hadoop.ozone.recon.api;
 
-import org.apache.commons.lang3.StringUtils;
-import org.apache.hadoop.ozone.om.helpers.OmBucketInfo;
-import org.apache.hadoop.ozone.recon.api.types.BucketObjectDBInfo;
-import org.apache.hadoop.ozone.recon.api.types.BucketsResponse;
-import org.apache.hadoop.ozone.recon.recovery.ReconOMMetadataManager;
+import static org.apache.hadoop.ozone.recon.ReconConstants.DEFAULT_FETCH_COUNT;
+import static org.apache.hadoop.ozone.recon.ReconConstants.RECON_QUERY_LIMIT;
+import static org.apache.hadoop.ozone.recon.ReconConstants.RECON_QUERY_PREVKEY;
+import static org.apache.hadoop.ozone.recon.ReconConstants.RECON_QUERY_VOLUME;
 
+import java.io.IOException;
+import java.util.List;
+import java.util.stream.Collectors;
 import javax.inject.Inject;
 import javax.ws.rs.DefaultValue;
 import javax.ws.rs.GET;
@@ -31,14 +33,11 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import java.io.IOException;
-import java.util.List;
-import java.util.stream.Collectors;
-
-import static org.apache.hadoop.ozone.recon.ReconConstants.DEFAULT_FETCH_COUNT;
-import static org.apache.hadoop.ozone.recon.ReconConstants.RECON_QUERY_LIMIT;
-import static org.apache.hadoop.ozone.recon.ReconConstants.RECON_QUERY_PREVKEY;
-import static org.apache.hadoop.ozone.recon.ReconConstants.RECON_QUERY_VOLUME;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.hadoop.ozone.om.helpers.OmBucketInfo;
+import org.apache.hadoop.ozone.recon.api.types.BucketObjectDBInfo;
+import org.apache.hadoop.ozone.recon.api.types.BucketsResponse;
+import org.apache.hadoop.ozone.recon.recovery.ReconOMMetadataManager;
 
 /**
  * Endpoint to fetch details about buckets.
@@ -49,6 +48,7 @@ import static org.apache.hadoop.ozone.recon.ReconConstants.RECON_QUERY_VOLUME;
 public class BucketEndpoint {
 
   @Inject
+  @SuppressWarnings("PMD.ImmutableField")
   private ReconOMMetadataManager omMetadataManager;
 
   @Inject

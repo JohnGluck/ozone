@@ -87,7 +87,7 @@ public class HadoopDirTreeGenerator extends HadoopBaseFreonGenerator
       defaultValue = "10")
   private int length;
 
-  private AtomicLong totalDirsCnt = new AtomicLong();
+  private final AtomicLong totalDirsCnt = new AtomicLong();
 
   private Timer timer;
 

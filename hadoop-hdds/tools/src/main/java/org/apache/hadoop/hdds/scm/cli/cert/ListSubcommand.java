@@ -17,6 +17,12 @@
  */
 package org.apache.hadoop.hdds.scm.cli.cert;
 
+import static java.lang.System.err;
+
+import com.fasterxml.jackson.core.JsonGenerator;
+import com.fasterxml.jackson.databind.JsonSerializer;
+import com.fasterxml.jackson.databind.SerializerProvider;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import java.io.IOException;
 import java.math.BigInteger;
 import java.security.cert.CertificateException;
@@ -25,22 +31,14 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-
-import com.fasterxml.jackson.core.JsonGenerator;
-import com.fasterxml.jackson.databind.JsonSerializer;
-import com.fasterxml.jackson.databind.SerializerProvider;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import org.apache.hadoop.hdds.cli.HddsVersionProvider;
 import org.apache.hadoop.hdds.protocol.SCMSecurityProtocol;
-
 import org.apache.hadoop.hdds.protocol.proto.HddsProtos;
 import org.apache.hadoop.hdds.security.x509.certificate.utils.CertificateCodec;
 import org.apache.hadoop.hdds.server.JsonUtils;
 import picocli.CommandLine.Command;
 import picocli.CommandLine.Help.Visibility;
 import picocli.CommandLine.Option;
-
-import static java.lang.System.err;
 
 /**
  * This is the handler that process certificate list command.
@@ -129,11 +127,11 @@ public class ListSubcommand extends ScmCertSubcommand {
   }
 
   private static class Certificate {
-    private BigInteger serialNumber;
-    private String validFrom;
-    private String expiry;
-    private Map<String, String> subjectDN = new LinkedHashMap<>();
-    private Map<String, String> issuerDN = new LinkedHashMap<>();;
+    private final BigInteger serialNumber;
+    private final String validFrom;
+    private final String expiry;
+    private final Map<String, String> subjectDN = new LinkedHashMap<>();
+    private final Map<String, String> issuerDN = new LinkedHashMap<>();;
 
     Certificate(X509Certificate cert) {
       serialNumber = cert.getSerialNumber();

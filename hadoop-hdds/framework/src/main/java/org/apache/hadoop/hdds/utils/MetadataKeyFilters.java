@@ -77,9 +77,9 @@ public final class MetadataKeyFilters {
    */
   public static class KeyPrefixFilter implements MetadataKeyFilter {
 
-    private List<String> positivePrefixList = new ArrayList<>();
-    private List<String> negativePrefixList = new ArrayList<>();
-    private boolean atleastOnePositiveMatch;
+    private final List<String> positivePrefixList = new ArrayList<>();
+    private final List<String> negativePrefixList = new ArrayList<>();
+    private boolean atLeastOnePositiveMatch;
     private int keysScanned = 0;
     private int keysHinted = 0;
 
@@ -91,11 +91,11 @@ public final class MetadataKeyFilters {
      * whereas negativePrefixList contains the list of prefixes which are
      * rejected.
      *
-     * @param atleastOnePositiveMatch if positive it requires key to be accepted
+     * @param atLeastOnePositiveMatch if positive it requires key to be accepted
      *                               by atleast one positive filter.
      */
-    public KeyPrefixFilter(boolean atleastOnePositiveMatch) {
-      this.atleastOnePositiveMatch = atleastOnePositiveMatch;
+    public KeyPrefixFilter(boolean atLeastOnePositiveMatch) {
+      this.atLeastOnePositiveMatch = atLeastOnePositiveMatch;
     }
 
     public KeyPrefixFilter addFilter(String keyPrefix) {
@@ -151,7 +151,7 @@ public final class MetadataKeyFilters {
       if (accept) {
         keysHinted++;
         return true;
-      } else if (atleastOnePositiveMatch) {
+      } else if (atLeastOnePositiveMatch) {
         return false;
       }
 

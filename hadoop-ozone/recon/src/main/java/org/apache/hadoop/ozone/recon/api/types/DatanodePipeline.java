@@ -25,10 +25,10 @@ import java.util.UUID;
  * Metadata object that contains pipeline information of a Datanode.
  */
 public class DatanodePipeline {
-  private UUID pipelineID;
-  private String replicationType;
-  private String replicationFactor;
-  private String leaderNode;
+  private final UUID pipelineID;
+  private final String replicationType;
+  private final String replicationFactor;
+  private final String leaderNode;
 
   public DatanodePipeline(UUID pipelineID, ReplicationConfig replicationConfig,
       String leaderNode) {

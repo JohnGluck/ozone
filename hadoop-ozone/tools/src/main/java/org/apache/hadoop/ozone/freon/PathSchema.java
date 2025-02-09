@@ -21,7 +21,7 @@ package org.apache.hadoop.ozone.freon;
  */
 public class PathSchema {
 
-  private String prefix;
+  private final String prefix;
 
   public PathSchema(String prefix) {
     this.prefix = prefix;

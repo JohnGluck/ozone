@@ -34,7 +34,7 @@ public class RocksDBCheckpoint implements DBCheckpoint {
   private static final Logger LOG =
       LoggerFactory.getLogger(RocksDBCheckpoint.class);
 
-  private Path checkpointLocation;
+  private final Path checkpointLocation;
   private long checkpointTimestamp = System.currentTimeMillis();
   private long latestSequenceNumber = -1;
   private long checkpointCreationTimeTaken = 0L;

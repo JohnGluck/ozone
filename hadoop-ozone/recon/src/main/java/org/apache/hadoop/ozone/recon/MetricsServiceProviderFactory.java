@@ -36,11 +36,10 @@ import javax.inject.Singleton;
 @Singleton
 public class MetricsServiceProviderFactory {
 
-  private static final Logger LOG =
-      LoggerFactory.getLogger(MetricsServiceProviderFactory.class);
+  private static final Logger LOG = LoggerFactory.getLogger(MetricsServiceProviderFactory.class);
 
-  private OzoneConfiguration configuration;
-  private ReconUtils reconUtils;
+  private final OzoneConfiguration configuration;
+  private final ReconUtils reconUtils;
 
   @Inject
   public MetricsServiceProviderFactory(OzoneConfiguration configuration,

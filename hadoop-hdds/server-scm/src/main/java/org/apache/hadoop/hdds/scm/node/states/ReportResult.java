@@ -29,9 +29,9 @@ import com.google.common.base.Preconditions;
  * Node2Container/Node2Pipeline and returns Report Result class.
  */
 public final class ReportResult<T> {
-  private ReportStatus status;
-  private Set<T> missingEntries;
-  private Set<T> newEntries;
+  private final ReportStatus status;
+  private final Set<T> missingEntries;
+  private final Set<T> newEntries;
 
   private ReportResult(ReportStatus status,
       Set<T> missingEntries,

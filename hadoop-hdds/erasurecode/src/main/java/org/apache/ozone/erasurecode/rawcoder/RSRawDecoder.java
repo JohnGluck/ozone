@@ -36,7 +36,7 @@ import java.util.Arrays;
 @InterfaceAudience.Private
 public class RSRawDecoder extends RawErasureDecoder {
   //relevant to schema and won't change during decode calls
-  private byte[] encodeMatrix;
+  private final byte[] encodeMatrix;
 
   /**
    * Below are relevant to schema and erased indexes, thus may change during
@@ -52,7 +52,6 @@ public class RSRawDecoder extends RawErasureDecoder {
   private int[] cachedErasedIndexes;
   private int[] validIndexes;
   private int numErasedDataUnits;
-  private boolean[] erasureFlags;
 
   public RSRawDecoder(ECReplicationConfig ecReplicationConfig) {
     super(ecReplicationConfig);
@@ -119,12 +118,9 @@ public class RSRawDecoder extends RawErasureDecoder {
     this.invertMatrix = new byte[getNumAllUnits() * getNumDataUnits()];
     this.gfTables = new byte[getNumAllUnits() * getNumDataUnits() * 32];
 
-    this.erasureFlags = new boolean[getNumAllUnits()];
     this.numErasedDataUnits = 0;
 
-    for (int i = 0; i < erasedIndexes.length; i++) {
-      int index = erasedIndexes[i];
-      erasureFlags[index] = true;
+    for (int index : erasedIndexes) {
       if (index < getNumDataUnits()) {
         numErasedDataUnits++;
       }

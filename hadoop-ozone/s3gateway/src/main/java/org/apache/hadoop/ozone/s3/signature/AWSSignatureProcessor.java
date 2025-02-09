@@ -120,11 +120,7 @@ public class AWSSignatureProcessor implements SignatureProcessor {
    */
   public static class LowerCaseKeyStringMap implements Map<String, String> {
 
-    private Map<String, String> delegate;
-
-    public LowerCaseKeyStringMap() {
-      this.delegate = new HashMap<>();
-    }
+    private final Map<String, String> delegate = new HashMap<>();
 
     public static LowerCaseKeyStringMap fromHeaderMap(
         MultivaluedMap<String,

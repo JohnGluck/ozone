@@ -56,7 +56,7 @@ public class SecretKeyProtocolServerSideTranslatorPB
   private final SecretKeyProtocolScm impl;
   private final StorageContainerManager scm;
 
-  private OzoneProtocolMessageDispatcher<SCMSecretKeyRequest,
+  private final OzoneProtocolMessageDispatcher<SCMSecretKeyRequest,
       SCMSecretKeyResponse, ProtocolMessageEnum> dispatcher;
 
   public SecretKeyProtocolServerSideTranslatorPB(SecretKeyProtocolScm impl,
@@ -64,9 +64,7 @@ public class SecretKeyProtocolServerSideTranslatorPB
       ProtocolMessageMetrics messageMetrics) {
     this.impl = impl;
     this.scm = storageContainerManager;
-    this.dispatcher =
-        new OzoneProtocolMessageDispatcher<>("SCMSecretKeyProtocol",
-            messageMetrics, LOG);
+    this.dispatcher = new OzoneProtocolMessageDispatcher<>("SCMSecretKeyProtocol", messageMetrics, LOG);
   }
 
   @Override

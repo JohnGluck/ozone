@@ -51,22 +51,21 @@ public abstract class BaseFileChecksumHelper {
       LoggerFactory.getLogger(BaseFileChecksumHelper.class);
   private OmKeyInfo keyInfo;
 
-  private OzoneVolume volume;
-  private OzoneBucket bucket;
-  private String keyName;
+  private final OzoneVolume volume;
+  private final OzoneBucket bucket;
+  private final String keyName;
   private final long length;
 
-  private ClientProtocol rpcClient;
-  private OzoneClientConfig.ChecksumCombineMode combineMode;
+  private final ClientProtocol rpcClient;
+  private final OzoneClientConfig.ChecksumCombineMode combineMode;
   private ContainerProtos.ChecksumType checksumType;
 
   private final DataOutputBuffer blockChecksumBuf = new DataOutputBuffer();
-  private XceiverClientFactory xceiverClientFactory;
+  private final XceiverClientFactory xceiverClientFactory;
   private FileChecksum fileChecksum;
   private List<OmKeyLocationInfo> keyLocationInfos;
   private long remaining = 0L;
   private int bytesPerCRC = -1;
-  private long crcPerBlock = 0;
 
   // initialization
   BaseFileChecksumHelper(
@@ -358,6 +357,8 @@ public abstract class BaseFileChecksumHelper {
     //compute file MD5
     final MD5Hash fileMD5 = MD5Hash.digest(getBlockChecksumBuf().getData());
     // assume CRC32 for now
+    long crcPerBlock = 0;
+
     switch (getChecksumType()) {
     case CRC32:
       return new MD5MD5CRC32GzipFileChecksum(getBytesPerCRC(),

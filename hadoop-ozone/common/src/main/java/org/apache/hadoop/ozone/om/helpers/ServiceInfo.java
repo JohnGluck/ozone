@@ -238,7 +238,7 @@ public final class ServiceInfo {
 
     private NodeType node;
     private String host;
-    private List<ServicePort> portList = new ArrayList<>();
+    private final List<ServicePort> portList = new ArrayList<>();
     private OMRoleInfo omRoleInfo;
     private OzoneManagerVersion omVersion;
     private OzoneFsServerDefaults serverDefaults;

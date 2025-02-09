@@ -18,10 +18,14 @@
 
 package org.apache.hadoop.ozone.container.keyvalue.impl;
 
+import static org.apache.hadoop.hdds.protocol.datanode.proto.ContainerProtos.Result.BCSID_MISMATCH;
+import static org.apache.hadoop.hdds.protocol.datanode.proto.ContainerProtos.Result.UNSUPPORTED_REQUEST;
+import static org.apache.hadoop.ozone.OzoneConsts.INCREMENTAL_CHUNK_LIST;
+
+import com.google.common.base.Preconditions;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-
 import org.apache.hadoop.hdds.client.BlockID;
 import org.apache.hadoop.hdds.conf.ConfigurationSource;
 import org.apache.hadoop.hdds.scm.ScmConfigKeys;
@@ -37,13 +41,6 @@ import org.apache.hadoop.ozone.container.keyvalue.KeyValueContainerData;
 import org.apache.hadoop.ozone.container.keyvalue.helpers.BlockUtils;
 import org.apache.hadoop.ozone.container.keyvalue.interfaces.BlockManager;
 import org.apache.hadoop.ozone.container.upgrade.VersionedDatanodeFeatures;
-
-import com.google.common.base.Preconditions;
-
-import static org.apache.hadoop.hdds.protocol.datanode.proto.ContainerProtos.Result.BCSID_MISMATCH;
-import static org.apache.hadoop.hdds.protocol.datanode.proto.ContainerProtos.Result.UNSUPPORTED_REQUEST;
-import static org.apache.hadoop.ozone.OzoneConsts.INCREMENTAL_CHUNK_LIST;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -53,10 +50,9 @@ import org.slf4j.LoggerFactory;
  */
 public class BlockManagerImpl implements BlockManager {
 
-  public static final Logger LOG =
-      LoggerFactory.getLogger(BlockManagerImpl.class);
+  public static final Logger LOG = LoggerFactory.getLogger(BlockManagerImpl.class);
 
-  private ConfigurationSource config;
+  private final ConfigurationSource config;
 
   private static final String DB_NULL_ERR_MSG = "DB cannot be null here";
   public static final String FULL_CHUNK = "full";

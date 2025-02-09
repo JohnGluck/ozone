@@ -33,8 +33,8 @@ import java.nio.ByteBuffer;
  */
 public class ECBlockReconstructedInputStream extends BlockExtendedInputStream {
 
-  private ECReplicationConfig repConfig;
-  private ECBlockReconstructedStripeInputStream stripeReader;
+  private final ECReplicationConfig repConfig;
+  private final ECBlockReconstructedStripeInputStream stripeReader;
   private ByteBuffer[] bufs;
   private final ByteBufferPool byteBufferPool;
   private boolean closed = false;
@@ -74,7 +74,7 @@ public class ECBlockReconstructedInputStream extends BlockExtendedInputStream {
   @Override
   public synchronized int read(ByteBuffer buf) throws IOException {
     ensureNotClosed();
-    if (!hasRemaining()) {
+    if (hasNoRemaining()) {
       return EOF;
     }
     allocateBuffers();
@@ -93,7 +93,7 @@ public class ECBlockReconstructedInputStream extends BlockExtendedInputStream {
       long read = readBufferToDest(b, buf);
       totalRead += read;
     }
-    if (!hasRemaining()) {
+    if (hasNoRemaining()) {
       // We have reached the end of the block. While the block is still open
       // and could be seeked back, it is most likely the block will be closed.
       // KeyInputStream does not call close on the block until all blocks in the
@@ -237,7 +237,7 @@ public class ECBlockReconstructedInputStream extends BlockExtendedInputStream {
     }
   }
 
-  private boolean hasRemaining() {
-    return getRemaining() > 0;
+  private boolean hasNoRemaining() {
+    return getRemaining() <= 0;
   }
 }

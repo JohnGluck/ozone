@@ -29,7 +29,7 @@ import java.io.IOException;
  */
 public class DatanodeStoreSchemaOneImpl extends AbstractDatanodeStore {
 
-  private Table<String, ChunkInfoList> deletedBlocksTable;
+  private final Table<String, ChunkInfoList> deletedBlocksTable;
 
   /**
    * Constructs the metadata store and starts the DB Services.

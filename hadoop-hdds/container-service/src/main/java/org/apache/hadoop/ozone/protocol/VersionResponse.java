@@ -114,7 +114,7 @@ public class VersionResponse {
    */
   public static class Builder {
     private int version;
-    private Map<String, String> values;
+    private final Map<String, String> values;
 
     Builder() {
       values = new HashMap<>();

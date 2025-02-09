@@ -17,7 +17,12 @@
 
 package org.apache.hadoop.ozone.container.common.statemachine;
 
+import static org.apache.hadoop.metrics2.lib.Interns.info;
+
 import com.google.common.base.CaseFormat;
+import java.net.InetSocketAddress;
+import java.util.HashMap;
+import java.util.Map;
 import org.apache.commons.text.WordUtils;
 import org.apache.hadoop.hdds.protocol.proto.StorageContainerDatanodeProtocolProtos.SCMCommandProto;
 import org.apache.hadoop.metrics2.MetricsCollector;
@@ -26,16 +31,9 @@ import org.apache.hadoop.metrics2.MetricsRecordBuilder;
 import org.apache.hadoop.metrics2.MetricsSource;
 import org.apache.hadoop.metrics2.annotation.Metrics;
 import org.apache.hadoop.metrics2.lib.DefaultMetricsSystem;
-import org.apache.hadoop.metrics2.lib.MetricsRegistry;
 import org.apache.hadoop.ozone.OzoneConsts;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.net.InetSocketAddress;
-import java.util.HashMap;
-import java.util.Map;
-
-import static org.apache.hadoop.metrics2.lib.Interns.info;
 
 /**
  * Class contains metrics related to Datanode queues.
@@ -60,9 +58,7 @@ public final class DatanodeQueueMetrics implements MetricsSource {
   public static final String PIPELINE_ACTION_QUEUE_PREFIX =
       "PipelineActionQueue";
 
-  private MetricsRegistry registry;
-
-  private DatanodeStateMachine datanodeStateMachine;
+  private final DatanodeStateMachine datanodeStateMachine;
   private static DatanodeQueueMetrics instance;
 
   private Map<SCMCommandProto.Type, MetricsInfo> stateContextCommandQueueMap;
@@ -72,7 +68,6 @@ public final class DatanodeQueueMetrics implements MetricsSource {
   private Map<InetSocketAddress, MetricsInfo> pipelineActionQueueMap;
 
   public DatanodeQueueMetrics(DatanodeStateMachine datanodeStateMachine) {
-    this.registry = new MetricsRegistry(METRICS_SOURCE_NAME);
     this.datanodeStateMachine = datanodeStateMachine;
 
     initializeQueues();

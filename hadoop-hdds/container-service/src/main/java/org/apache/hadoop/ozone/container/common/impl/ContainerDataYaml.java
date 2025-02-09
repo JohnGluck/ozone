@@ -18,6 +18,10 @@
 
 package org.apache.hadoop.ozone.container.common.impl;
 
+import static org.apache.hadoop.ozone.OzoneConsts.REPLICA_INDEX;
+import static org.apache.hadoop.ozone.container.keyvalue.KeyValueContainerData.KEYVALUE_YAML_TAG;
+
+import com.google.common.base.Preconditions;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -32,22 +36,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
-
 import org.apache.commons.io.IOUtils;
 import org.apache.hadoop.hdds.protocol.datanode.proto.ContainerProtos;
-import org.apache.hadoop.hdds.protocol.datanode.proto.ContainerProtos
-    .ContainerType;
-import org.apache.hadoop.hdds.scm.container.common.helpers
-    .StorageContainerException;
+import org.apache.hadoop.hdds.protocol.datanode.proto.ContainerProtos.ContainerType;
+import org.apache.hadoop.hdds.scm.container.common.helpers.StorageContainerException;
 import org.apache.hadoop.ozone.OzoneConsts;
 import org.apache.hadoop.ozone.container.keyvalue.KeyValueContainerData;
-
-import com.google.common.base.Preconditions;
-
-import static org.apache.hadoop.ozone.OzoneConsts.REPLICA_INDEX;
-import static org.apache.hadoop.ozone.container.keyvalue
-    .KeyValueContainerData.KEYVALUE_YAML_TAG;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.yaml.snakeyaml.DumperOptions;
@@ -229,7 +223,7 @@ public final class ContainerDataYaml {
    */
   private static class ContainerDataRepresenter extends Representer {
 
-    private List<String> yamlFields;
+    private final List<String> yamlFields;
 
     ContainerDataRepresenter(List<String> yamlFields) {
       super(new DumperOptions());

@@ -129,9 +129,9 @@ public class FinalizeUpgradeSubCommand implements Callable<Void> {
 
   private static class UpgradeMonitor implements Callable<Void> {
 
-    private OzoneManagerProtocol client;
-    private String upgradeClientID;
-    private boolean force;
+    private final OzoneManagerProtocol client;
+    private final String upgradeClientID;
+    private final boolean force;
 
     UpgradeMonitor(
         OzoneManagerProtocol client,
@@ -161,7 +161,7 @@ public class FinalizeUpgradeSubCommand implements Callable<Void> {
           return null;
         }
         if (isInprogress(progress.status()) || isDone(progress.status())) {
-          progress.msgs().stream().forEachOrdered(System.out::println);
+          progress.msgs().forEach(System.out::println);
         }
         if (isDone(progress.status())) {
           emitExitMsg();

@@ -27,7 +27,7 @@ public enum AuditLoggerType {
   S3GLOGGER("S3GAudit"),
   OMSYSTEMLOGGER("OMSystemAudit");
 
-  private String type;
+  private final String type;
 
   public String getType() {
     return type;

@@ -65,9 +65,9 @@ public class NodeStatus implements Comparable<NodeStatus> {
     return OUT_OF_SERVICE_STATES;
   }
 
-  private HddsProtos.NodeOperationalState operationalState;
-  private HddsProtos.NodeState health;
-  private long opStateExpiryEpochSeconds;
+  private final HddsProtos.NodeOperationalState operationalState;
+  private final HddsProtos.NodeState health;
+  private final long opStateExpiryEpochSeconds;
 
   public NodeStatus(HddsProtos.NodeOperationalState operationalState,
                     HddsProtos.NodeState health) {

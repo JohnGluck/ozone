@@ -30,7 +30,7 @@ public enum ReplicationFactor {
   /**
    * Integer representation of replication.
    */
-  private int value;
+  private final int value;
 
   /**
    * Initializes ReplicationFactor with value.

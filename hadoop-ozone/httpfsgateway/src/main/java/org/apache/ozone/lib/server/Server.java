@@ -110,8 +110,8 @@ public class Server {
     SHUTTING_DOWN(false, true),
     SHUTDOWN(false, false);
 
-    private boolean settable;
-    private boolean operational;
+    private final boolean settable;
+    private final boolean operational;
 
     /**
      * Status constructor.
@@ -144,13 +144,13 @@ public class Server {
       = "default-log4j.properties";
 
   private Status status;
-  private String name;
-  private String homeDir;
-  private String configDir;
-  private String logDir;
-  private String tempDir;
+  private final String name;
+  private final String homeDir;
+  private final String configDir;
+  private final String logDir;
+  private final String tempDir;
   private Configuration config;
-  private Map<Class<?>, Service> services = new LinkedHashMap<>();
+  private final Map<Class<?>, Service> services = new LinkedHashMap<>();
 
   /**
    * Creates a server instance.

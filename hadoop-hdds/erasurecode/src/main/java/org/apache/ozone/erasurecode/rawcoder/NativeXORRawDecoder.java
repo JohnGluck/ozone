@@ -31,8 +31,7 @@ import java.nio.ByteBuffer;
 @InterfaceAudience.Private
 public class NativeXORRawDecoder extends AbstractNativeRawDecoder {
 
-  private org.apache.hadoop.io.erasurecode.rawcoder.NativeXORRawDecoder
-      hadoopNativeXORRawDecoder;
+  private final org.apache.hadoop.io.erasurecode.rawcoder.NativeXORRawDecoder hadoopNativeXORRawDecoder;
 
   public NativeXORRawDecoder(ECReplicationConfig ecReplicationConfig) {
     super(ecReplicationConfig);

@@ -48,8 +48,8 @@ public class OMCertificateClient extends DefaultCertificateClient {
       LoggerFactory.getLogger(OMCertificateClient.class);
 
   public static final String COMPONENT_NAME = "om";
-  private String serviceId;
-  private String scmID;
+  private final String serviceId;
+  private final String scmID;
   private final String clusterID;
   private final HddsProtos.OzoneManagerDetailsProto omInfo;
 

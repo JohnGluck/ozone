@@ -56,12 +56,12 @@ import org.slf4j.LoggerFactory;
 public class SCMNodeInfo {
 
   private static final Logger LOG = LoggerFactory.getLogger(SCMNodeInfo.class);
-  private String serviceId;
-  private String nodeId;
-  private String blockClientAddress;
-  private String scmClientAddress;
-  private String scmSecurityAddress;
-  private String scmDatanodeAddress;
+  private final String serviceId;
+  private final String nodeId;
+  private final String blockClientAddress;
+  private final String scmClientAddress;
+  private final String scmSecurityAddress;
+  private final String scmDatanodeAddress;
 
   /**
    * Build SCM Node information from configuration.
@@ -180,8 +180,7 @@ public class SCMNodeInfo {
   }
 
   private static String buildAddress(String address, int port) {
-    return new StringBuilder().append(address).append(":")
-        .append(port).toString();
+    return address + ":" + port;
   }
 
   private static int getPort(ConfigurationSource conf,

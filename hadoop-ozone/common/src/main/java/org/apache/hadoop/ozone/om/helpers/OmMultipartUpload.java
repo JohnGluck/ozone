@@ -18,24 +18,23 @@
 
 package org.apache.hadoop.ozone.om.helpers;
 
-import java.time.Instant;
-
-import org.apache.hadoop.hdds.client.ReplicationConfig;
-
 import static org.apache.hadoop.ozone.OzoneConsts.OM_KEY_PREFIX;
+
+import java.time.Instant;
+import org.apache.hadoop.hdds.client.ReplicationConfig;
 
 /**
  * Information about one initialized upload.
  */
 public class OmMultipartUpload {
 
-  private String volumeName;
+  private final String volumeName;
 
-  private String bucketName;
+  private final String bucketName;
 
-  private String keyName;
+  private final String keyName;
 
-  private String uploadId;
+  private final String uploadId;
 
   private Instant creationTime;
 

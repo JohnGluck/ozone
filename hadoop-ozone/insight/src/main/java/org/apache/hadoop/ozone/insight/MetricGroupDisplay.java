@@ -30,17 +30,17 @@ public class MetricGroupDisplay {
   /**
    * List fhe included metrics.
    */
-  private List<MetricDisplay> metrics = new ArrayList<>();
+  private final List<MetricDisplay> metrics = new ArrayList<>();
 
   /**
    * Name of the component which includes the metrics (scm, om,...).
    */
-  private Component component;
+  private final Component component;
 
   /**
    * Human readable description.
    */
-  private String description;
+  private final String description;
 
   public MetricGroupDisplay(Component component, String metricName) {
     this.component = component;

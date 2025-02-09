@@ -68,7 +68,7 @@ public class OFSPath {
   private String bucketName = "";
   private String mountName = "";
   private String keyName = "";
-  private OzoneConfiguration conf;
+  private final OzoneConfiguration conf;
   private static final String OFS_MOUNT_NAME_TMP = "tmp";
   // Hard-code the volume name to tmp for the first implementation
   @VisibleForTesting

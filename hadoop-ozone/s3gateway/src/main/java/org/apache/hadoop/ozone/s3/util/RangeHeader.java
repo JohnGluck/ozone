@@ -24,10 +24,10 @@ package org.apache.hadoop.ozone.s3.util;
  *
  */
 public class RangeHeader {
-  private long startOffset;
-  private long endOffset;
-  private boolean readFull;
-  private boolean inValidRange;
+  private final long startOffset;
+  private final long endOffset;
+  private final boolean readFull;
+  private final boolean inValidRange;
 
 
   /**

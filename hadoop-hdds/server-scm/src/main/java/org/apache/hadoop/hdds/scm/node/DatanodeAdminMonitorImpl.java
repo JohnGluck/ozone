@@ -74,12 +74,12 @@ import java.util.stream.Collectors;
  */
 public class DatanodeAdminMonitorImpl implements DatanodeAdminMonitor {
 
-  private EventPublisher eventQueue;
-  private NodeManager nodeManager;
-  private ReplicationManager replicationManager;
-  private Queue<TrackedNode> pendingNodes = new ArrayDeque<>();
-  private Queue<TrackedNode> cancelledNodes = new ArrayDeque<>();
-  private Set<TrackedNode> trackedNodes = ConcurrentHashMap.newKeySet();
+  private final EventPublisher eventQueue;
+  private final NodeManager nodeManager;
+  private final ReplicationManager replicationManager;
+  private final Queue<TrackedNode> pendingNodes = new ArrayDeque<>();
+  private final Queue<TrackedNode> cancelledNodes = new ArrayDeque<>();
+  private final Set<TrackedNode> trackedNodes = ConcurrentHashMap.newKeySet();
   private NodeDecommissionMetrics metrics;
   private long pipelinesWaitingToClose = 0;
   private long sufficientlyReplicatedContainers = 0;
@@ -132,7 +132,7 @@ public class DatanodeAdminMonitorImpl implements DatanodeAdminMonitor {
     }
   }
 
-  private Map<String, ContainerStateInWorkflow> containerStateByHost;
+  private final Map<String, ContainerStateInWorkflow> containerStateByHost;
 
   private static final Logger LOG =
       LoggerFactory.getLogger(DatanodeAdminMonitorImpl.class);
@@ -205,9 +205,7 @@ public class DatanodeAdminMonitorImpl implements DatanodeAdminMonitor {
    */
   @VisibleForTesting
   public synchronized TrackedNode getSingleTrackedNode(String ip) {
-    Iterator<TrackedNode> iterator = trackedNodes.iterator();
-    while (iterator.hasNext()) {
-      TrackedNode trackedNode = iterator.next();
+    for (TrackedNode trackedNode : trackedNodes) {
       if (trackedNode.getDatanodeDetails().getIpAddress().equals(ip)) {
         return trackedNode;
       }
@@ -484,9 +482,7 @@ public class DatanodeAdminMonitorImpl implements DatanodeAdminMonitor {
 
   @Override
   public Map<String, List<ContainerID>> getContainersPendingReplication(DatanodeDetails dn) {
-    Iterator<TrackedNode> iterator = trackedNodes.iterator();
-    while (iterator.hasNext()) {
-      TrackedNode trackedNode = iterator.next();
+    for (TrackedNode trackedNode : trackedNodes) {
       if (trackedNode.equals(new TrackedNode(dn, 0L))) {
         return trackedNode.getContainersReplicatedOnNode();
       }
@@ -495,13 +491,11 @@ public class DatanodeAdminMonitorImpl implements DatanodeAdminMonitor {
   }
 
   private String replicaDetails(Collection<ContainerReplica> replicas) {
-    StringBuilder sb = new StringBuilder();
-    sb.append("Replicas{");
-    sb.append(replicas.stream()
-        .map(Object::toString)
-        .collect(Collectors.joining(",")));
-    sb.append("}");
-    return sb.toString();
+    return "Replicas{" +
+        replicas.stream()
+            .map(Object::toString)
+            .collect(Collectors.joining(",")) +
+        "}";
   }
 
   private void completeDecommission(DatanodeDetails dn)

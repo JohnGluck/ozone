@@ -17,27 +17,26 @@
  */
 package org.apache.hadoop.ozone.insight.datanode;
 
+import static org.apache.hadoop.ozone.insight.datanode.PipelineComponentUtil.getPipelineIdFromFilters;
+import static org.apache.hadoop.ozone.insight.datanode.PipelineComponentUtil.withDatanodesFromPipeline;
+
 import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-
 import org.apache.hadoop.hdds.conf.OzoneConfiguration;
 import org.apache.hadoop.hdds.scm.client.ScmClient;
 import org.apache.hadoop.ozone.insight.BaseInsightPoint;
 import org.apache.hadoop.ozone.insight.InsightPoint;
 import org.apache.hadoop.ozone.insight.LoggerSource;
 
-import static org.apache.hadoop.ozone.insight.datanode.PipelineComponentUtil.getPipelineIdFromFilters;
-import static org.apache.hadoop.ozone.insight.datanode.PipelineComponentUtil.withDatanodesFromPipeline;
-
 /**
  * Insight definition for datanode/pipeline metrics.
  */
 public class RatisInsight extends BaseInsightPoint implements InsightPoint {
 
-  private OzoneConfiguration conf;
+  private final OzoneConfiguration conf;
 
   public RatisInsight(OzoneConfiguration conf) {
     this.conf = conf;

@@ -19,6 +19,9 @@
 
 package org.apache.hadoop.ozone.om.service;
 
+import static org.apache.hadoop.ozone.OzoneConsts.OLD_QUOTA_DEFAULT;
+import static org.apache.hadoop.ozone.OzoneConsts.OM_KEY_PREFIX;
+
 import com.google.common.util.concurrent.UncheckedExecutionException;
 import com.google.protobuf.ServiceException;
 import java.io.File;
@@ -59,9 +62,6 @@ import org.apache.ratis.protocol.ClientId;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import static org.apache.hadoop.ozone.OzoneConsts.OLD_QUOTA_DEFAULT;
-import static org.apache.hadoop.ozone.OzoneConsts.OM_KEY_PREFIX;
 
 /**
  * Quota repair task.
@@ -445,8 +445,8 @@ public class QuotaRepairTask {
   }
   
   private static class CountPair {
-    private AtomicLong space = new AtomicLong();
-    private AtomicLong namespace = new AtomicLong();
+    private final AtomicLong space = new AtomicLong();
+    private final AtomicLong namespace = new AtomicLong();
 
     public void incrSpace(long val) {
       space.getAndAdd(val);
@@ -474,7 +474,7 @@ public class QuotaRepairTask {
     private long lastRunStartTime = 0;
     private long lastRunFinishedTime = 0;
     private String errorMsg = null;
-    private Map<String, Map<String, Long>> bucketCountDiffMap = new ConcurrentHashMap<>();
+    private final Map<String, Map<String, Long>> bucketCountDiffMap = new ConcurrentHashMap<>();
 
     @Override
     public String toString() {

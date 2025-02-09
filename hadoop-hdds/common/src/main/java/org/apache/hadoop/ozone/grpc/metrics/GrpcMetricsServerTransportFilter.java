@@ -25,7 +25,7 @@ import io.grpc.ServerTransportFilter;
  */
 public class GrpcMetricsServerTransportFilter extends ServerTransportFilter {
 
-  private GrpcMetrics grpcMetrics;
+  private final GrpcMetrics grpcMetrics;
 
   public GrpcMetricsServerTransportFilter(
       GrpcMetrics grpcMetrics) {

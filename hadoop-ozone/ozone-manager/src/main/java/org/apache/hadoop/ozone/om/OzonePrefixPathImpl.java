@@ -16,6 +16,12 @@
  */
 package org.apache.hadoop.ozone.om;
 
+import static org.apache.hadoop.ozone.om.exceptions.OMException.ResultCodes.KEY_NOT_FOUND;
+
+import java.io.IOException;
+import java.util.Iterator;
+import java.util.List;
+import java.util.NoSuchElementException;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.hadoop.ozone.om.exceptions.OMException;
 import org.apache.hadoop.ozone.om.helpers.OmKeyArgs;
@@ -25,25 +31,16 @@ import org.apache.hadoop.ozone.security.acl.OzonePrefixPath;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.IOException;
-import java.util.Iterator;
-import java.util.List;
-import java.util.NoSuchElementException;
-
-import static org.apache.hadoop.ozone.om.exceptions.OMException.ResultCodes.KEY_NOT_FOUND;
-
 /**
  * Implementation of OzonePrefixPath interface.
  */
 public class OzonePrefixPathImpl implements OzonePrefixPath {
   private static final Logger LOG =
       LoggerFactory.getLogger(OzonePrefixPathImpl.class);
-  private String volumeName;
-  private String bucketName;
-  private KeyManager keyManager;
-  // TODO: based on need can make batchSize configurable.
-  private int batchSize = 1000;
-  private OzoneFileStatus pathStatus;
+  private final String volumeName;
+  private final String bucketName;
+  private final KeyManager keyManager;
+  private final OzoneFileStatus pathStatus;
   private boolean checkRecursiveAccess = false;
 
   public OzonePrefixPathImpl(String volumeName, String bucketName,
@@ -93,7 +90,7 @@ public class OzonePrefixPathImpl implements OzonePrefixPath {
 
   class PathIterator implements Iterator<OzoneFileStatus> {
     private Iterator<OzoneFileStatus> currentIterator;
-    private String keyPrefix;
+    private final String keyPrefix;
     private OzoneFileStatus currentValue;
 
     /**
@@ -160,6 +157,8 @@ public class OzonePrefixPathImpl implements OzonePrefixPath {
           .setHeadOp(true)
           .build();
 
+      // TODO: based on need can make batchSize configurable.
+      int batchSize = 1000;
       List<OzoneFileStatus> statuses = keyManager.listStatus(omKeyArgs, false,
           prevKey, batchSize);
 

@@ -28,47 +28,55 @@ public final class ClusterStateResponse {
    * Total count of the pipelines.
    */
   @JsonProperty("pipelines")
+  @SuppressWarnings("PMD.ImmutableField")
   private int pipelines;
 
   /**
    * Total count of datanodes.
    */
   @JsonProperty("totalDatanodes")
+  @SuppressWarnings("PMD.ImmutableField")
   private int totalDatanodes;
 
   /**
    * Count of healthy datanodes.
    */
   @JsonProperty("healthyDatanodes")
+  @SuppressWarnings("PMD.ImmutableField")
   private int healthyDatanodes;
 
   /**
    * Storage Report of the cluster.
    */
   @JsonProperty("storageReport")
+  @SuppressWarnings("PMD.ImmutableField")
   private DatanodeStorageReport storageReport;
 
   /**
    * Total count of containers in the cluster.
    */
   @JsonProperty("containers")
+  @SuppressWarnings("PMD.ImmutableField")
   private int containers;
 
   /**
    * Total count of missing containers in the cluster.
    */
   @JsonProperty("missingContainers")
+  @SuppressWarnings("PMD.ImmutableField")
   private int missingContainers;
 
   /**
    * Total count of open containers in the cluster.
    */
+  @SuppressWarnings("PMD.ImmutableField")
   @JsonProperty("openContainers")
   private int openContainers;
 
   /**
    * Total count of deleted containers in the cluster.
    */
+  @SuppressWarnings("PMD.ImmutableField")
   @JsonProperty("deletedContainers")
   private int deletedContainers;
 
@@ -76,36 +84,43 @@ public final class ClusterStateResponse {
    * Total count of volumes in the cluster.
    */
   @JsonProperty("volumes")
+  @SuppressWarnings("PMD.ImmutableField")
   private long volumes;
 
   /**
    * Total count of buckets in the cluster.
    */
   @JsonProperty("buckets")
+  @SuppressWarnings("PMD.ImmutableField")
   private long buckets;
 
   /**
    * Total count of keys in the cluster.
    */
   @JsonProperty("keys")
+  @SuppressWarnings("PMD.ImmutableField")
   private long keys;
 
   /**
    * Total count of keys marked for deletion in the cluster.
    */
   @JsonProperty("keysPendingDeletion")
+  @SuppressWarnings("PMD.ImmutableField")
   private long keysPendingDeletion;
 
   /**
    * Total count of directories marked for deletion in the cluster.
    */
   @JsonProperty
+  @SuppressWarnings("PMD.ImmutableField")
   private long deletedDirs;
 
   @JsonProperty("scmServiceId")
+  @SuppressWarnings("PMD.ImmutableField")
   private String scmServiceId;
 
   @JsonProperty("omServiceId")
+  @SuppressWarnings("PMD.ImmutableField")
   private String omServiceId;
 
   /**

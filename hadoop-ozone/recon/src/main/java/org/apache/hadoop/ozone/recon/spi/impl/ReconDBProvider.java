@@ -39,8 +39,8 @@ import org.apache.hadoop.hdds.utils.db.Table.KeyValue;
  * Provider for Recon's RDB.
  */
 public class ReconDBProvider {
-  private OzoneConfiguration configuration;
-  private ReconUtils reconUtils;
+  private final OzoneConfiguration configuration;
+  private final ReconUtils reconUtils;
   private DBStore dbStore;
 
   @VisibleForTesting

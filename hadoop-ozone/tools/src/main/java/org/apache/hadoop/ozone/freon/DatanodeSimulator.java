@@ -17,6 +17,36 @@
 package org.apache.hadoop.ozone.freon;
 
 
+import static org.apache.hadoop.hdds.HddsConfigKeys.HDDS_CONTAINER_REPORT_INTERVAL;
+import static org.apache.hadoop.hdds.HddsConfigKeys.HDDS_CONTAINER_REPORT_INTERVAL_DEFAULT;
+import static org.apache.hadoop.hdds.HddsUtils.getReconAddresses;
+import static org.apache.hadoop.hdds.HddsUtils.getSCMAddressForDatanodes;
+import static org.apache.hadoop.hdds.scm.ScmConfigKeys.OZONE_SCM_HEARTBEAT_RPC_TIMEOUT;
+import static org.apache.hadoop.hdds.scm.ScmConfigKeys.OZONE_SCM_HEARTBEAT_RPC_TIMEOUT_DEFAULT;
+import static org.apache.hadoop.hdds.utils.HddsServerUtil.getScmHeartbeatInterval;
+import static org.apache.hadoop.hdds.utils.HddsServerUtil.getScmRpcRetryCount;
+import static org.apache.hadoop.hdds.utils.HddsServerUtil.getScmRpcRetryInterval;
+import static org.apache.hadoop.hdds.utils.HddsVersionInfo.HDDS_VERSION_INFO;
+
+import java.io.File;
+import java.io.IOException;
+import java.net.InetSocketAddress;
+import java.net.UnknownHostException;
+import java.time.Instant;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.Random;
+import java.util.UUID;
+import java.util.concurrent.Callable;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicLong;
+import java.util.concurrent.atomic.AtomicReference;
 import org.apache.commons.lang3.RandomUtils;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.hdds.DatanodeVersion;
@@ -61,37 +91,6 @@ import org.kohsuke.MetaInfServices;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import picocli.CommandLine;
-
-import java.io.File;
-import java.io.IOException;
-import java.net.InetSocketAddress;
-import java.net.UnknownHostException;
-import java.time.Instant;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.Random;
-import java.util.UUID;
-import java.util.concurrent.Callable;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.atomic.AtomicLong;
-import java.util.concurrent.atomic.AtomicReference;
-
-import static org.apache.hadoop.hdds.HddsConfigKeys.HDDS_CONTAINER_REPORT_INTERVAL;
-import static org.apache.hadoop.hdds.HddsConfigKeys.HDDS_CONTAINER_REPORT_INTERVAL_DEFAULT;
-import static org.apache.hadoop.hdds.HddsUtils.getReconAddresses;
-import static org.apache.hadoop.hdds.HddsUtils.getSCMAddressForDatanodes;
-import static org.apache.hadoop.hdds.scm.ScmConfigKeys.OZONE_SCM_HEARTBEAT_RPC_TIMEOUT;
-import static org.apache.hadoop.hdds.scm.ScmConfigKeys.OZONE_SCM_HEARTBEAT_RPC_TIMEOUT_DEFAULT;
-import static org.apache.hadoop.hdds.utils.HddsServerUtil.getScmHeartbeatInterval;
-import static org.apache.hadoop.hdds.utils.HddsServerUtil.getScmRpcRetryCount;
-import static org.apache.hadoop.hdds.utils.HddsServerUtil.getScmRpcRetryInterval;
-import static org.apache.hadoop.hdds.utils.HddsVersionInfo.HDDS_VERSION_INFO;
 
 /**
  * This command simulates a number of datanodes and coordinates with
@@ -139,31 +138,37 @@ public class DatanodeSimulator implements Callable<Void>, FreonSubcommand {
 
   @CommandLine.ParentCommand
   private Freon freonCommand;
+
   @CommandLine.Option(names = {"-t", "--threads"},
       description = "Size of the threadpool running heartbeat.",
       defaultValue = "10")
+  @SuppressWarnings("PMD.ImmutableField")
   private int threadCount = 10;
+
   @CommandLine.Option(names = {"-n", "--nodes"},
       description = "Number of simulated datanode instances.",
       defaultValue = "1")
+  @SuppressWarnings("PMD.ImmutableField")
   private int datanodesCount = 1;
 
   @CommandLine.Option(names = {"-c", "--containers"},
       description = "Number of simulated containers per datanode.",
       defaultValue = "5")
+  @SuppressWarnings("PMD.ImmutableField")
   private int containers = 1;
 
   @CommandLine.Option(names = {"-r", "--reload"},
       description = "Reload the datanodes created by previous simulation run.",
       defaultValue = "true")
+  @SuppressWarnings("PMD.ImmutableField")
   private boolean reload = true;
 
-  private Random random = new Random();
+  private final Random random = new Random();
 
   // stats
-  private AtomicLong totalHeartbeats = new AtomicLong(0);
-  private AtomicLong totalFCRs = new AtomicLong(0);
-  private AtomicLong totalICRs = new AtomicLong(0);
+  private final AtomicLong totalHeartbeats = new AtomicLong(0);
+  private final AtomicLong totalFCRs = new AtomicLong(0);
+  private final AtomicLong totalICRs = new AtomicLong(0);
   private StorageContainerLocationProtocol scmContainerClient;
 
   @Override

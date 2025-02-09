@@ -29,10 +29,9 @@ import java.util.List;
 /**
  * A SCM command asks a datanode to delete a number of blocks.
  */
-public class DeleteBlocksCommand extends
-    SCMCommand<DeleteBlocksCommandProto> {
+public class DeleteBlocksCommand extends SCMCommand<DeleteBlocksCommandProto> {
 
-  private List<DeletedBlocksTransaction> blocksTobeDeleted;
+  private final List<DeletedBlocksTransaction> blocksTobeDeleted;
 
 
   public DeleteBlocksCommand(List<DeletedBlocksTransaction> blocks) {

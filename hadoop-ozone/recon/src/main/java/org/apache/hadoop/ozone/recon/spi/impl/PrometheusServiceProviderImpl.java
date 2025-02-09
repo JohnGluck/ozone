@@ -47,8 +47,7 @@ import static org.apache.hadoop.ozone.recon.ReconServerConfigKeys.OZONE_RECON_ME
  * Implementation of the Prometheus Metrics Service provider.
  */
 @Singleton
-public class PrometheusServiceProviderImpl
-    implements MetricsServiceProvider {
+public class PrometheusServiceProviderImpl implements MetricsServiceProvider {
 
   public static final String PROMETHEUS_INSTANT_QUERY_API = "query";
   public static final String PROMETHEUS_RANGED_QUERY_API = "query_range";
@@ -56,9 +55,9 @@ public class PrometheusServiceProviderImpl
   private static final Logger LOG =
       LoggerFactory.getLogger(PrometheusServiceProviderImpl.class);
 
-  private URLConnectionFactory connectionFactory;
+  private final URLConnectionFactory connectionFactory;
   private final String prometheusEndpoint;
-  private ReconUtils reconUtils;
+  private final ReconUtils reconUtils;
 
   public PrometheusServiceProviderImpl(OzoneConfiguration configuration,
                                        ReconUtils reconUtils) {

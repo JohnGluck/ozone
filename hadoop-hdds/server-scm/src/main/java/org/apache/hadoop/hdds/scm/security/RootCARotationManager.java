@@ -18,9 +18,36 @@
 
 package org.apache.hadoop.hdds.scm.security;
 
+import static org.apache.hadoop.hdds.HddsConfigKeys.HDDS_NEW_KEY_CERT_DIR_NAME_PROGRESS_SUFFIX;
+import static org.apache.hadoop.hdds.HddsConfigKeys.HDDS_NEW_KEY_CERT_DIR_NAME_SUFFIX;
+import static org.apache.hadoop.hdds.HddsConfigKeys.HDDS_X509_DIR_NAME_DEFAULT;
+import static org.apache.hadoop.hdds.scm.ha.SequenceIdGenerator.CERTIFICATE_ID;
+import static org.apache.hadoop.ozone.OzoneConsts.SCM_ROOT_CA_COMPONENT_NAME;
+
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.base.Preconditions;
 import com.google.common.util.concurrent.ThreadFactoryBuilder;
+import java.io.File;
+import java.io.IOException;
+import java.math.BigInteger;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
+import java.security.KeyPair;
+import java.security.cert.CertificateException;
+import java.security.cert.X509Certificate;
+import java.time.Duration;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.ScheduledFuture;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicReference;
 import org.apache.commons.io.FileUtils;
 import org.apache.hadoop.hdds.conf.OzoneConfiguration;
 import org.apache.hadoop.hdds.protocol.proto.HddsProtos;
@@ -43,34 +70,6 @@ import org.apache.hadoop.hdds.security.x509.keys.HDDSKeyGenerator;
 import org.apache.hadoop.hdds.security.x509.keys.KeyStorage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.io.File;
-import java.io.IOException;
-import java.math.BigInteger;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
-import java.security.KeyPair;
-import java.security.cert.CertificateException;
-import java.security.cert.X509Certificate;
-import java.time.Duration;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.ScheduledFuture;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.concurrent.atomic.AtomicReference;
-
-import static org.apache.hadoop.hdds.HddsConfigKeys.HDDS_NEW_KEY_CERT_DIR_NAME_PROGRESS_SUFFIX;
-import static org.apache.hadoop.hdds.HddsConfigKeys.HDDS_NEW_KEY_CERT_DIR_NAME_SUFFIX;
-import static org.apache.hadoop.hdds.HddsConfigKeys.HDDS_X509_DIR_NAME_DEFAULT;
-import static org.apache.hadoop.hdds.scm.ha.SequenceIdGenerator.CERTIFICATE_ID;
-import static org.apache.hadoop.ozone.OzoneConsts.SCM_ROOT_CA_COMPONENT_NAME;
 
 /**
  * Root CA Rotation Service is a service in SCM to control the CA rotation.
@@ -282,11 +281,10 @@ public class RootCARotationManager extends StatefulService {
    *  Task to monitor certificate lifetime and start rotation if needed.
    */
   public class MonitorTask implements Runnable {
-    private SCMCertificateClient certClient;
-    private SCMStorageConfig scmStorageConfig;
+    private final SCMCertificateClient certClient;
+    private final SCMStorageConfig scmStorageConfig;
 
-    public MonitorTask(SCMCertificateClient client,
-                       SCMStorageConfig storageConfig) {
+    public MonitorTask(SCMCertificateClient client, SCMStorageConfig storageConfig) {
       this.certClient = client;
       this.scmStorageConfig = storageConfig;
     }
@@ -352,11 +350,10 @@ public class RootCARotationManager extends StatefulService {
    *  Task to rotate root certificate.
    */
   public class RotationTask implements Runnable {
-    private SCMCertificateClient certClient;
-    private SCMStorageConfig scmStorageConfig;
+    private final SCMCertificateClient certClient;
+    private final SCMStorageConfig scmStorageConfig;
 
-    public RotationTask(SCMCertificateClient client,
-        SCMStorageConfig storageConfig) {
+    public RotationTask(SCMCertificateClient client, SCMStorageConfig storageConfig) {
       this.certClient = client;
       this.scmStorageConfig = storageConfig;
     }
@@ -509,7 +506,7 @@ public class RootCARotationManager extends StatefulService {
    *  Task to generate sub-ca key and certificate.
    */
   public class SubCARotationPrepareTask implements Runnable {
-    private String rootCACertId;
+    private final String rootCACertId;
 
     public SubCARotationPrepareTask(String newRootCertId) {
       this.rootCACertId = newRootCertId;
@@ -647,8 +644,8 @@ public class RootCARotationManager extends StatefulService {
    *  Task to wait the all acks of prepare request.
    */
   public class WaitSubCARotationPrepareAckTask implements Runnable {
-    private String rootCACertId;
-    private X509Certificate rootCACertificate;
+    private final String rootCACertId;
+    private final X509Certificate rootCACertificate;
 
     public WaitSubCARotationPrepareAckTask(X509Certificate rootCACertificate) {
       this.rootCACertificate = rootCACertificate;

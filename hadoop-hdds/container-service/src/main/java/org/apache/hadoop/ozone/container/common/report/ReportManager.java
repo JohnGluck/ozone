@@ -102,8 +102,8 @@ public final class ReportManager {
   public static final class Builder {
 
     private StateContext stateContext;
-    private List<ReportPublisher> reportPublishers;
-    private ReportPublisherFactory publisherFactory;
+    private final List<ReportPublisher> reportPublishers;
+    private final ReportPublisherFactory publisherFactory;
     private String threadNamePrefix = "";
 
 

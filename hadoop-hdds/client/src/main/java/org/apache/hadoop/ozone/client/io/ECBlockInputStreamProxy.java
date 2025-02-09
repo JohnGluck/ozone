@@ -57,9 +57,9 @@ public class ECBlockInputStreamProxy extends BlockExtendedInputStream {
 
   private BlockExtendedInputStream blockReader;
   private boolean reconstructionReader = false;
-  private List<DatanodeDetails> failedLocations = new ArrayList<>();
+  private final List<DatanodeDetails> failedLocations = new ArrayList<>();
   private boolean closed = false;
-  private OzoneClientConfig config;
+  private final OzoneClientConfig config;
 
   /**
    * Given the ECReplicationConfig and the block length, calculate how many

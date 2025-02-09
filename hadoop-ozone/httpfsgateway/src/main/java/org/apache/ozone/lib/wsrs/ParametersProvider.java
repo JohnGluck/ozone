@@ -35,9 +35,9 @@ import java.util.Map;
 @InterfaceAudience.Private
 public class ParametersProvider {
 
-  private String driverParam;
-  private Class<? extends Enum> enumClass;
-  private Map<Enum, Class<Param<?>>[]> paramsDef;
+  private final String driverParam;
+  private final Class<? extends Enum> enumClass;
+  private final Map<Enum, Class<Param<?>>[]> paramsDef;
 
   public ParametersProvider(String driverParam, Class<? extends Enum> enumClass,
                             Map<Enum, Class<Param<?>>[]> paramsDef) {

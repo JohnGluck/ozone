@@ -18,9 +18,10 @@
 
 package org.apache.hadoop.ozone.om.request.s3.multipart;
 
-import org.apache.commons.codec.digest.DigestUtils;
-import org.apache.commons.lang3.StringUtils;
+import static org.apache.hadoop.ozone.om.exceptions.OMException.ResultCodes.NOT_A_FILE;
+import static org.apache.hadoop.ozone.om.lock.OzoneManagerLock.Resource.BUCKET_LOCK;
 
+import jakarta.annotation.Nullable;
 import java.io.IOException;
 import java.nio.file.InvalidPathException;
 import java.nio.file.Paths;
@@ -30,28 +31,28 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.BiFunction;
-
+import org.apache.commons.codec.digest.DigestUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.hadoop.hdds.client.ReplicationConfig;
-import org.apache.hadoop.ozone.om.OzoneConfigUtil;
-import org.apache.hadoop.ozone.om.execution.flowcontrol.ExecutionContext;
-import org.apache.hadoop.ozone.om.request.file.OMFileRequest;
-import org.apache.hadoop.ozone.protocolPB.OMPBHelper;
 import org.apache.hadoop.hdds.utils.db.cache.CacheKey;
 import org.apache.hadoop.hdds.utils.db.cache.CacheValue;
 import org.apache.hadoop.ozone.OzoneConsts;
 import org.apache.hadoop.ozone.audit.OMAction;
 import org.apache.hadoop.ozone.om.OMMetadataManager;
+import org.apache.hadoop.ozone.om.OzoneConfigUtil;
 import org.apache.hadoop.ozone.om.OzoneManager;
 import org.apache.hadoop.ozone.om.exceptions.OMException;
+import org.apache.hadoop.ozone.om.execution.flowcontrol.ExecutionContext;
+import org.apache.hadoop.ozone.om.helpers.BucketLayout;
 import org.apache.hadoop.ozone.om.helpers.KeyValueUtil;
 import org.apache.hadoop.ozone.om.helpers.OmBucketInfo;
 import org.apache.hadoop.ozone.om.helpers.OmDirectoryInfo;
 import org.apache.hadoop.ozone.om.helpers.OmKeyInfo;
-import org.apache.hadoop.ozone.om.helpers.BucketLayout;
 import org.apache.hadoop.ozone.om.helpers.OmKeyLocationInfo;
 import org.apache.hadoop.ozone.om.helpers.OmKeyLocationInfoGroup;
 import org.apache.hadoop.ozone.om.helpers.OmMultipartKeyInfo;
 import org.apache.hadoop.ozone.om.helpers.RepeatedOmKeyInfo;
+import org.apache.hadoop.ozone.om.request.file.OMFileRequest;
 import org.apache.hadoop.ozone.om.request.key.OMKeyRequest;
 import org.apache.hadoop.ozone.om.request.util.OmResponseUtil;
 import org.apache.hadoop.ozone.om.request.validation.RequestFeatureValidator;
@@ -69,15 +70,11 @@ import org.apache.hadoop.ozone.protocol.proto.OzoneManagerProtocolProtos.OMReque
 import org.apache.hadoop.ozone.protocol.proto.OzoneManagerProtocolProtos.OMResponse;
 import org.apache.hadoop.ozone.protocol.proto.OzoneManagerProtocolProtos.PartKeyInfo;
 import org.apache.hadoop.ozone.protocol.proto.OzoneManagerProtocolProtos.Type;
+import org.apache.hadoop.ozone.protocolPB.OMPBHelper;
 import org.apache.hadoop.ozone.security.acl.IAccessAuthorizer.ACLType;
 import org.apache.hadoop.util.Time;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import jakarta.annotation.Nullable;
-
-import static org.apache.hadoop.ozone.om.exceptions.OMException.ResultCodes.NOT_A_FILE;
-import static org.apache.hadoop.ozone.om.lock.OzoneManagerLock.Resource.BUCKET_LOCK;
 
 /**
  * Handle Multipart upload complete request.
@@ -87,7 +84,7 @@ public class S3MultipartUploadCompleteRequest extends OMKeyRequest {
   private static final Logger LOG =
       LoggerFactory.getLogger(S3MultipartUploadCompleteRequest.class);
 
-  private BiFunction<OzoneManagerProtocolProtos.Part, PartKeyInfo, MultipartCommitRequestPart> eTagBasedValidator =
+  private final BiFunction<OzoneManagerProtocolProtos.Part, PartKeyInfo, MultipartCommitRequestPart> eTagBasedValidator =
       (part, partKeyInfo) -> {
         String eTag = part.getETag();
         AtomicReference<String> dbPartETag = new AtomicReference<>();
@@ -103,7 +100,8 @@ public class S3MultipartUploadCompleteRequest extends OMKeyRequest {
             dbPartETag.get(), StringUtils.equals(eTag, dbPartETag.get()) || StringUtils.equals(eTag, dbPartName));
       };
 
-  private BiFunction<OzoneManagerProtocolProtos.Part, PartKeyInfo, MultipartCommitRequestPart> partNameBasedValidator =
+  private final BiFunction<OzoneManagerProtocolProtos.Part, PartKeyInfo, MultipartCommitRequestPart>
+      partNameBasedValidator =
       (part, partKeyInfo) -> {
         String partName = part.getPartName();
         String dbPartName = null;
@@ -155,8 +153,6 @@ public class S3MultipartUploadCompleteRequest extends OMKeyRequest {
 
     String volumeName = keyArgs.getVolumeName();
     String bucketName = keyArgs.getBucketName();
-    final String requestedVolume = volumeName;
-    final String requestedBucket = bucketName;
     String keyName = keyArgs.getKeyName();
     String uploadID = keyArgs.getMultipartUploadID();
     String multipartKey;
@@ -259,7 +255,7 @@ public class S3MultipartUploadCompleteRequest extends OMKeyRequest {
 
       if (multipartKeyInfo == null) {
         throw new OMException(
-            failureMessage(requestedVolume, requestedBucket, keyName),
+            failureMessage(volumeName, bucketName, keyName),
             OMException.ResultCodes.NO_SUCH_MULTIPART_UPLOAD_ERROR);
       }
 
@@ -271,17 +267,17 @@ public class S3MultipartUploadCompleteRequest extends OMKeyRequest {
                   " no parts in OM, parts given to upload are {}", ozoneKey,
               partsList);
           throw new OMException(
-              failureMessage(requestedVolume, requestedBucket, keyName),
+              failureMessage(volumeName, bucketName, keyName),
               OMException.ResultCodes.INVALID_PART);
         }
 
         // First Check for Invalid Part Order.
         List< Integer > partNumbers = new ArrayList<>();
-        int partsListSize = getPartsListSize(requestedVolume,
-                requestedBucket, keyName, ozoneKey, partNumbers, partsList);
+        int partsListSize = getPartsListSize(volumeName,
+            bucketName, keyName, ozoneKey, partNumbers, partsList);
 
         List<OmKeyLocationInfo> partLocationInfos = new ArrayList<>();
-        long dataSize = getMultipartDataSize(requestedVolume, requestedBucket,
+        long dataSize = getMultipartDataSize(volumeName, bucketName,
                 keyName, ozoneKey, partKeyInfoMap, partsListSize,
                 partLocationInfos, partsList, ozoneManager);
 
@@ -337,8 +333,8 @@ public class S3MultipartUploadCompleteRequest extends OMKeyRequest {
 
         omResponse.setCompleteMultiPartUploadResponse(
             MultipartUploadCompleteResponse.newBuilder()
-                .setVolume(requestedVolume)
-                .setBucket(requestedBucket)
+                .setVolume(volumeName)
+                .setBucket(bucketName)
                 .setKey(keyName)
                 .setHash(omKeyInfo.getMetadata().get(OzoneConsts.ETAG)));
 
@@ -352,7 +348,7 @@ public class S3MultipartUploadCompleteRequest extends OMKeyRequest {
         result = Result.SUCCESS;
       } else {
         throw new OMException(
-            failureMessage(requestedVolume, requestedBucket, keyName) +
+            failureMessage(volumeName, bucketName, keyName) +
             " because of empty part list",
             OMException.ResultCodes.INVALID_REQUEST);
       }
@@ -765,11 +761,11 @@ public class S3MultipartUploadCompleteRequest extends OMKeyRequest {
   }
 
   private static class MultipartCommitRequestPart {
-    private String requestPartId;
+    private final String requestPartId;
 
-    private String omPartId;
+    private final String omPartId;
 
-    private boolean isValid;
+    private final boolean isValid;
 
     MultipartCommitRequestPart(String requestPartId, String omPartId, boolean isValid) {
       this.requestPartId = requestPartId;

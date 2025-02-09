@@ -22,8 +22,8 @@ package org.apache.hadoop.ozone.recon.api.types;
  */
 public class UnhealthyContainersSummary {
 
-  private Integer count;
-  private String containerState;
+  private final Integer count;
+  private final String containerState;
 
   public UnhealthyContainersSummary(String containerState, Integer cnt) {
     this.containerState = containerState;

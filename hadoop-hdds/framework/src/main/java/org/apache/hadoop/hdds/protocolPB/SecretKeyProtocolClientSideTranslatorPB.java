@@ -58,16 +58,20 @@ public class SecretKeyProtocolClientSideTranslatorPB implements
    */
   private static final RpcController NULL_RPC_CONTROLLER = null;
   private final BlockingInterface rpcProxy;
-  private SecretKeyProtocolFailoverProxyProvider failoverProxyProvider;
 
   public SecretKeyProtocolClientSideTranslatorPB(
-      SecretKeyProtocolFailoverProxyProvider<? extends BlockingInterface>
-          proxyProvider, Class<? extends BlockingInterface> proxyClazz) {
+      SecretKeyProtocolFailoverProxyProvider<? extends BlockingInterface> proxyProvider,
+      Class<? extends BlockingInterface> proxyClazz
+  ) {
     Preconditions.checkState(proxyProvider != null);
-    this.failoverProxyProvider = proxyProvider;
+
+    SecretKeyProtocolFailoverProxyProvider failoverProxyProvider = proxyProvider;
+
     this.rpcProxy = (BlockingInterface) RetryProxy.create(
-        proxyClazz, failoverProxyProvider,
-        failoverProxyProvider.getRetryPolicy());
+        proxyClazz,
+        failoverProxyProvider,
+        failoverProxyProvider.getRetryPolicy()
+    );
   }
 
   /**
@@ -136,12 +140,13 @@ public class SecretKeyProtocolClientSideTranslatorPB implements
         SCMSecretKeyProtocolProtos.SCMGetCheckAndRotateRequest.newBuilder()
             .setForce(force)
             .build();
-    boolean checkAndRotateStatus =
-        submitRequest(Type.CheckAndRotate, builder ->
-            builder.setCheckAndRotateRequest(request))
-            .getCheckAndRotateResponseProto().getStatus();
 
-    return checkAndRotateStatus;
+    return submitRequest(
+        Type.CheckAndRotate,
+        builder -> builder.setCheckAndRotateRequest(request)
+    )
+        .getCheckAndRotateResponseProto()
+        .getStatus();
   }
 
   @Override

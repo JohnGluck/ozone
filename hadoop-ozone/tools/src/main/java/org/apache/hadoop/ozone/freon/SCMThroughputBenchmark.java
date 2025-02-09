@@ -16,6 +16,31 @@
  */
 package org.apache.hadoop.ozone.freon;
 
+import static org.apache.hadoop.hdds.scm.ScmConfigKeys.OZONE_SCM_DATANODE_PORT_DEFAULT;
+import static org.apache.hadoop.hdds.scm.ScmConfigKeys.OZONE_SCM_DATANODE_PORT_KEY;
+import static org.apache.hadoop.hdds.utils.HddsServerUtil.getScmRpcRetryCount;
+import static org.apache.hadoop.hdds.utils.HddsServerUtil.getScmRpcRetryInterval;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.InetSocketAddress;
+import java.nio.charset.StandardCharsets;
+import java.time.Duration;
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Queue;
+import java.util.Random;
+import java.util.UUID;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicLong;
+import java.util.stream.Collectors;
 import org.apache.commons.lang3.time.DurationFormatUtils;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.hdds.cli.HddsVersionProvider;
@@ -23,14 +48,14 @@ import org.apache.hadoop.hdds.client.RatisReplicationConfig;
 import org.apache.hadoop.hdds.client.ReplicationConfig;
 import org.apache.hadoop.hdds.conf.OzoneConfiguration;
 import org.apache.hadoop.hdds.protocol.DatanodeDetails;
-import org.apache.hadoop.hdds.protocol.proto.HddsProtos.ReplicationType;
 import org.apache.hadoop.hdds.protocol.proto.HddsProtos.ReplicationFactor;
+import org.apache.hadoop.hdds.protocol.proto.HddsProtos.ReplicationType;
 import org.apache.hadoop.hdds.protocol.proto.StorageContainerDatanodeProtocolProtos.ContainerReplicaProto;
-import org.apache.hadoop.hdds.protocol.proto.StorageContainerDatanodeProtocolProtos.SCMHeartbeatRequestProto;
 import org.apache.hadoop.hdds.protocol.proto.StorageContainerDatanodeProtocolProtos.ContainerReportsProto;
 import org.apache.hadoop.hdds.protocol.proto.StorageContainerDatanodeProtocolProtos.MetadataStorageReportProto;
 import org.apache.hadoop.hdds.protocol.proto.StorageContainerDatanodeProtocolProtos.NodeReportProto;
 import org.apache.hadoop.hdds.protocol.proto.StorageContainerDatanodeProtocolProtos.PipelineReportsProto;
+import org.apache.hadoop.hdds.protocol.proto.StorageContainerDatanodeProtocolProtos.SCMHeartbeatRequestProto;
 import org.apache.hadoop.hdds.protocol.proto.StorageContainerDatanodeProtocolProtos.SCMRegisteredResponseProto;
 import org.apache.hadoop.hdds.protocol.proto.StorageContainerDatanodeProtocolProtos.StorageReportProto;
 import org.apache.hadoop.hdds.protocol.proto.StorageContainerDatanodeProtocolProtos.StorageTypeProto;
@@ -63,32 +88,6 @@ import org.kohsuke.MetaInfServices;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import picocli.CommandLine;
-
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.InetSocketAddress;
-import java.nio.charset.StandardCharsets;
-import java.time.Duration;
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Queue;
-import java.util.Random;
-import java.util.UUID;
-import java.util.concurrent.Callable;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.TimeoutException;
-import java.util.concurrent.atomic.AtomicInteger;
-import java.util.concurrent.atomic.AtomicLong;
-import java.util.stream.Collectors;
-
-import static org.apache.hadoop.hdds.scm.ScmConfigKeys.OZONE_SCM_DATANODE_PORT_DEFAULT;
-import static org.apache.hadoop.hdds.scm.ScmConfigKeys.OZONE_SCM_DATANODE_PORT_KEY;
-import static org.apache.hadoop.hdds.utils.HddsServerUtil.getScmRpcRetryCount;
-import static org.apache.hadoop.hdds.utils.HddsServerUtil.getScmRpcRetryInterval;
 
 /**
  * Benchmark for scm throughput.
@@ -133,41 +132,49 @@ public final class SCMThroughputBenchmark implements Callable<Void>, FreonSubcom
           "(AllocateBlocks, AllocateContainers, ProcessReports).",
       required = true,
       defaultValue = "")
+  @SuppressWarnings("PMD.ImmutableField")
   private String benchmarkType = "";
 
   @CommandLine.Option(names = {"--num-blocks"},
       description = "Number of blocks.",
       defaultValue = "1000")
+  @SuppressWarnings("PMD.ImmutableField")
   private int numBlocks = 1000;
 
   @CommandLine.Option(names = {"--block-size"},
       description = "Block size.",
       defaultValue = "4096")
+  @SuppressWarnings("PMD.ImmutableField")
   private long blockSize = 4096;
 
   @CommandLine.Option(names = {"--num-containers"},
       description = "Number of containers.",
       defaultValue = "100")
+  @SuppressWarnings("PMD.ImmutableField")
   private int numContainers = 100;
 
   @CommandLine.Option(names = {"--num-datanodes"},
       description = "Number of fake datanodes.",
       defaultValue = "10")
+  @SuppressWarnings("PMD.ImmutableField")
   private int numDatanodes = 10;
 
   @CommandLine.Option(names = {"--num-threads"},
       description = "Number of scm client threads.",
       defaultValue = "4")
+  @SuppressWarnings("PMD.ImmutableField")
   private int numThreads = 4;
 
   @CommandLine.Option(names = {"--num-heartbeats"},
       description = "Number of heartbeats that carries reports.",
       defaultValue = "4")
+  @SuppressWarnings("PMD.ImmutableField")
   private int numHeartbeats = 4;
 
   @CommandLine.Option(names = {"--scmHost", "--scm-host"},
       required = true,
       description = "The leader scm host x.x.x.x.")
+  @SuppressWarnings("PMD.ImmutableField")
   private String scm;
 
   @CommandLine.Mixin
@@ -354,9 +361,9 @@ public final class SCMThroughputBenchmark implements Callable<Void>, FreonSubcom
     private long startTime;
     private long execTime;
     private String formattedTime;
-    private int numThreads;
-    private Queue<Runnable> taskQueue;
-    private ExecutorService executor;
+    private final int numThreads;
+    private final Queue<Runnable> taskQueue;
+    private final ExecutorService executor;
 
     ThroughputBenchmark(int threads) {
       this.numThreads = threads;
@@ -436,11 +443,11 @@ public final class SCMThroughputBenchmark implements Callable<Void>, FreonSubcom
 
     private final ReplicationConfig replicationConfig;
     private final ExcludeList excludeList = new ExcludeList();
-    private AtomicLong totalBlockCounter;
-    private AtomicLong succBlockCounter;
-    private AtomicLong failBlockCounter;
-    private int totalBlocks;
-    private long blockSize;
+    private final AtomicLong totalBlockCounter;
+    private final AtomicLong succBlockCounter;
+    private final AtomicLong failBlockCounter;
+    private final int totalBlocks;
+    private final long blockSize;
 
     BlockBenchmark(int threads, int blocks, long blockSize) {
       super(threads);
@@ -533,10 +540,10 @@ public final class SCMThroughputBenchmark implements Callable<Void>, FreonSubcom
    */
   private class ContainerBenchmark extends ThroughputBenchmark {
 
-    private AtomicInteger totalContainerCounter;
-    private AtomicInteger succContainerCounter;
-    private AtomicInteger failContainerCounter;
-    private int totalContainers;
+    private final AtomicInteger totalContainerCounter;
+    private final AtomicInteger succContainerCounter;
+    private final AtomicInteger failContainerCounter;
+    private final int totalContainers;
 
     ContainerBenchmark(int threads, int containers) {
       super(threads);
@@ -620,17 +627,17 @@ public final class SCMThroughputBenchmark implements Callable<Void>, FreonSubcom
     private static final String REPORT_SUCC_KEY = REPORT_PREFIX + "successful";
     private static final String REPORT_FAIL_KEY = REPORT_PREFIX + "failed";
 
-    private AtomicInteger succReportSendCounter;
-    private AtomicInteger failReportSendCounter;
+    private final AtomicInteger succReportSendCounter;
+    private final AtomicInteger failReportSendCounter;
     private int reportSuccProcessedOnRegister;
     private int reportFailProcessedOnRegister;
     private int succReportsProcessed;
     private int failReportsProcessed;
-    private int numReports;
-    private int numReportRounds;
+    private final int numReports;
+    private final int numReportRounds;
     private int totalContainers;
     private int containersPerReport;
-    private List<ContainerInfo> containers;
+    private final List<ContainerInfo> containers;
 
     ReportBenchmark(int threads, int containers, int rounds) {
       super(threads);
@@ -766,8 +773,8 @@ public final class SCMThroughputBenchmark implements Callable<Void>, FreonSubcom
 
     private class ReportTask implements Runnable {
 
-      private FakeDatanode datanode;
-      private int rounds;
+      private final FakeDatanode datanode;
+      private final int rounds;
 
       ReportTask(FakeDatanode datanode, int rounds) {
         this.datanode = datanode;
@@ -794,7 +801,7 @@ public final class SCMThroughputBenchmark implements Callable<Void>, FreonSubcom
    * of a normal Datanode, but does not have real daemons.
    */
   private class FakeDatanode {
-    private DatanodeDetails datanodeDetails;
+    private final DatanodeDetails datanodeDetails;
     private ContainerReportsProto containerReport;
 
     FakeDatanode() {

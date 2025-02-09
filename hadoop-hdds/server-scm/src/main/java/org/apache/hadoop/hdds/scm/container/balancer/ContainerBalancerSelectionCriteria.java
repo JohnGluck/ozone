@@ -44,18 +44,17 @@ import java.util.TreeSet;
  * selecting datanodes that containers will move to.
  */
 public class ContainerBalancerSelectionCriteria {
-  private static final Logger LOG =
-      LoggerFactory.getLogger(ContainerBalancerSelectionCriteria.class);
+  private static final Logger LOG = LoggerFactory.getLogger(ContainerBalancerSelectionCriteria.class);
 
-  private ContainerBalancerConfiguration balancerConfiguration;
-  private NodeManager nodeManager;
-  private ReplicationManager replicationManager;
-  private ContainerManager containerManager;
-  private Map<ContainerID, DatanodeDetails> containerToSourceMap;
+  private final ContainerBalancerConfiguration balancerConfiguration;
+  private final NodeManager nodeManager;
+  private final ReplicationManager replicationManager;
+  private final ContainerManager containerManager;
+  private final Map<ContainerID, DatanodeDetails> containerToSourceMap;
   private Set<ContainerID> excludeContainers;
-  private Set<ContainerID> excludeContainersDueToFailure;
-  private FindSourceStrategy findSourceStrategy;
-  private Map<DatanodeDetails, NavigableSet<ContainerID>> setMap;
+  private final Set<ContainerID> excludeContainersDueToFailure;
+  private final FindSourceStrategy findSourceStrategy;
+  private final Map<DatanodeDetails, NavigableSet<ContainerID>> setMap;
 
   public ContainerBalancerSelectionCriteria(
       ContainerBalancerConfiguration balancerConfiguration,

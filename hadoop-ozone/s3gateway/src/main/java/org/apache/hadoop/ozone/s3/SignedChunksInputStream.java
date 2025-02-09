@@ -31,10 +31,9 @@ import java.util.regex.Pattern;
  */
 public class SignedChunksInputStream extends InputStream {
 
-  private Pattern signatureLinePattern =
-      Pattern.compile("([0-9A-Fa-f]+);chunk-signature=.*");
+  private static final Pattern SIGNATURE_LINE_PATTERN = Pattern.compile("([0-9A-Fa-f]+);chunk-signature=.*");
 
-  private InputStream originalStream;
+  private final InputStream originalStream;
 
   /**
    * Numer of following databits. If zero, the signature line should be parsed.
@@ -120,12 +119,12 @@ public class SignedChunksInputStream extends InputStream {
       curr = next;
     }
     String signatureLine = buf.toString().trim();
-    if (signatureLine.length() == 0) {
+    if (signatureLine.isEmpty()) {
       return -1;
     }
 
     //parse the data length.
-    Matcher matcher = signatureLinePattern.matcher(signatureLine);
+    Matcher matcher = SIGNATURE_LINE_PATTERN.matcher(signatureLine);
     if (matcher.matches()) {
       return Integer.parseInt(matcher.group(1), 16);
     } else {

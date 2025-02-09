@@ -24,11 +24,11 @@ import java.util.List;
  * Represent class which has info of Keys to be deleted from Client.
  */
 public class OmDeleteKeys {
+  private final String volume;
 
-  private String volume;
-  private String bucket;
+  private final String bucket;
 
-  private List<String> keyNames;
+  private final List<String> keyNames;
 
 
   public OmDeleteKeys(String volume, String bucket, List<String> keyNames) {

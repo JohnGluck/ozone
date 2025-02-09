@@ -30,17 +30,18 @@ import java.util.List;
  */
 public class OmMultipartUploadListParts {
 
-  private ReplicationConfig replicationConfig;
+  private final ReplicationConfig replicationConfig;
 
   //When a list is truncated, this element specifies the last part in the list,
   // as well as the value to use for the part-number-marker request parameter
   // in a subsequent request.
-  private int nextPartNumberMarker;
- // Indicates whether the returned list of parts is truncated. A true value
+  private final int nextPartNumberMarker;
+
+  // Indicates whether the returned list of parts is truncated. A true value
  // indicates that the list was truncated.
  // A list can be truncated if the number of parts exceeds the limit
  // returned in the MaxParts element.
-  private boolean truncated;
+  private final boolean truncated;
 
   private final List<OmPartInfo> partInfoList = new ArrayList<>();
 

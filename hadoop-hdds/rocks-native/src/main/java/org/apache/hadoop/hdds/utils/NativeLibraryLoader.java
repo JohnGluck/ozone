@@ -50,7 +50,7 @@ public class NativeLibraryLoader {
   private static final String OS = System.getProperty("os.name").toLowerCase();
 
   public static final String NATIVE_LIB_TMP_DIR = "native.lib.tmp.dir";
-  private Map<String, Boolean> librariesLoaded;
+  private final Map<String, Boolean> librariesLoaded;
   private static volatile NativeLibraryLoader instance;
 
   public NativeLibraryLoader(final Map<String, Boolean> librariesLoaded) {

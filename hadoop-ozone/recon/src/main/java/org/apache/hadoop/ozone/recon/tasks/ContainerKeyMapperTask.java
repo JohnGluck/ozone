@@ -60,11 +60,10 @@ import com.google.inject.Inject;
  * the container -&gt; Key reverse mapping.
  */
 public class ContainerKeyMapperTask implements ReconOmTask {
+  private static final Logger LOG = LoggerFactory.getLogger(ContainerKeyMapperTask.class);
 
-  private static final Logger LOG =
-      LoggerFactory.getLogger(ContainerKeyMapperTask.class);
+  private final ReconContainerMetadataManager reconContainerMetadataManager;
 
-  private ReconContainerMetadataManager reconContainerMetadataManager;
   private final long containerKeyFlushToDBMaxThreshold;
 
   @Inject

@@ -27,7 +27,7 @@ import java.util.List;
  */
 public class DBUpdatesWrapper {
 
-  private List<byte[]> dataList = new ArrayList<>();
+  private final List<byte[]> dataList = new ArrayList<>();
   private long currentSequenceNumber = -1;
   private long latestSequenceNumber = -1;
   private boolean isDBUpdateSuccess = true;

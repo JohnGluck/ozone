@@ -18,6 +18,16 @@
 
 package org.apache.hadoop.ozone.freon;
 
+import static org.apache.hadoop.ozone.conf.OzoneServiceConfig.DEFAULT_SHUTDOWN_HOOK_PRIORITY;
+
+import com.codahale.metrics.Histogram;
+import com.codahale.metrics.Snapshot;
+import com.codahale.metrics.UniformReservoir;
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.PropertyAccessor;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectWriter;
+import com.google.common.annotations.VisibleForTesting;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -37,7 +47,9 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.function.LongSupplier;
-
+import org.apache.commons.codec.digest.DigestUtils;
+import org.apache.commons.lang3.RandomStringUtils;
+import org.apache.commons.lang3.time.DurationFormatUtils;
 import org.apache.hadoop.hdds.HddsConfigKeys;
 import org.apache.hadoop.hdds.StringUtils;
 import org.apache.hadoop.hdds.cli.HddsVersionProvider;
@@ -56,18 +68,6 @@ import org.apache.hadoop.ozone.client.io.OzoneOutputStream;
 import org.apache.hadoop.ozone.util.ShutdownHookManager;
 import org.apache.hadoop.util.Time;
 import org.apache.hadoop.util.VersionInfo;
-
-import com.codahale.metrics.Histogram;
-import com.codahale.metrics.Snapshot;
-import com.codahale.metrics.UniformReservoir;
-import com.fasterxml.jackson.annotation.JsonAutoDetect;
-import com.fasterxml.jackson.annotation.PropertyAccessor;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.ObjectWriter;
-import com.google.common.annotations.VisibleForTesting;
-import org.apache.commons.codec.digest.DigestUtils;
-import org.apache.commons.lang3.RandomStringUtils;
-import org.apache.commons.lang3.time.DurationFormatUtils;
 import org.kohsuke.MetaInfServices;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -75,8 +75,6 @@ import picocli.CommandLine.Command;
 import picocli.CommandLine.Mixin;
 import picocli.CommandLine.Option;
 import picocli.CommandLine.ParentCommand;
-
-import static org.apache.hadoop.ozone.conf.OzoneServiceConfig.DEFAULT_SHUTDOWN_HOOK_PRIORITY;
 
 /**
  * Data generator tool to generate as much keys as possible.
@@ -123,18 +121,21 @@ public final class RandomKeyGenerator implements Callable<Void>, FreonSubcommand
       description = "number of threads to be launched for the run. Full name " +
           "--numOfThreads will be removed in later versions.",
       defaultValue = "10")
+  @SuppressWarnings("PMD.ImmutableField")
   private int numOfThreads = 10;
 
   @Option(names = {"--num-of-volumes", "--numOfVolumes"},
       description = "specifies number of Volumes to be created in offline " +
           "mode. Full name --numOfVolumes will be removed in later versions.",
       defaultValue = "10")
+  @SuppressWarnings("PMD.ImmutableField")
   private int numOfVolumes = 10;
 
   @Option(names = {"--num-of-buckets", "--numOfBuckets"},
       description = "specifies number of Buckets to be created per Volume. " +
           "Full name --numOfBuckets will be removed in later versions.",
       defaultValue = "1000")
+  @SuppressWarnings("PMD.ImmutableField")
   private int numOfBuckets = 1000;
 
   @Option(
@@ -143,6 +144,7 @@ public final class RandomKeyGenerator implements Callable<Void>, FreonSubcommand
           " name --numOfKeys will be removed in later versions.",
       defaultValue = "500000"
   )
+  @SuppressWarnings("PMD.ImmutableField")
   private int numOfKeys = 500000;
 
   @Option(
@@ -153,6 +155,7 @@ public final class RandomKeyGenerator implements Callable<Void>, FreonSubcommand
       defaultValue = "10KB",
       converter = StorageSizeConverter.class
   )
+  @SuppressWarnings("PMD.ImmutableField")
   private StorageSize keySize;
 
   @Option(
@@ -160,12 +163,14 @@ public final class RandomKeyGenerator implements Callable<Void>, FreonSubcommand
       description = "Specifies whether to validate keys after writing. Full" +
           " name --validateWrites will be removed in later versions."
   )
+  @SuppressWarnings("PMD.ImmutableField")
   private boolean validateWrites = false;
 
   @Option(names = {"--num-of-validate-threads", "--numOfValidateThreads"},
       description = "number of threads to be launched for validating keys." +
           "Full name --numOfValidateThreads will be removed in later versions.",
       defaultValue = "1")
+  @SuppressWarnings("PMD.ImmutableField")
   private int numOfValidateThreads = 1;
 
   @Option(
@@ -174,6 +179,7 @@ public final class RandomKeyGenerator implements Callable<Void>, FreonSubcommand
           "--bufferSize will be removed in later versions.",
       defaultValue = "4096"
   )
+  @SuppressWarnings("PMD.ImmutableField")
   private int bufferSize = 4096;
 
   @Option(
@@ -189,6 +195,7 @@ public final class RandomKeyGenerator implements Callable<Void>, FreonSubcommand
       names = "--om-service-id",
       description = "OM Service ID"
   )
+  @SuppressWarnings("PMD.ImmutableField")
   private String omServiceID = null;
 
   @Option(
@@ -196,6 +203,7 @@ public final class RandomKeyGenerator implements Callable<Void>, FreonSubcommand
       description = "Specifies whether to clean the random generated " +
           "volumes, buckets and keys."
   )
+  @SuppressWarnings("PMD.ImmutableField")
   private boolean cleanObjects = false;
 
   private ReplicationConfig replicationConfig;
@@ -237,7 +245,7 @@ public final class RandomKeyGenerator implements Callable<Void>, FreonSubcommand
   private AtomicLong writeValidationFailureCount;
 
   private BlockingQueue<KeyValidate> validationQueue;
-  private ArrayList<Histogram> histograms = new ArrayList<>();
+  private final ArrayList<Histogram> histograms = new ArrayList<>();
 
   private OzoneConfiguration ozoneConfiguration;
   private ProgressBar progressbar;
@@ -659,17 +667,17 @@ public final class RandomKeyGenerator implements Callable<Void>, FreonSubcommand
     /**
      * Bucket name.
      */
-    private OzoneBucket bucket;
+    private final OzoneBucket bucket;
 
     /**
      * Key name.
      */
-    private String keyName;
+    private final String keyName;
 
     /**
      * Digest of this key's full value.
      */
-    private byte[] digest;
+    private final byte[] digest;
 
     /**
      * Constructs a new ozone keyValidate.
@@ -908,22 +916,22 @@ public final class RandomKeyGenerator implements Callable<Void>, FreonSubcommand
 
   private final class FreonJobInfo {
 
-    private String status;
+    private final String status;
     private String gitBaseRevision;
-    private String jobStartTime;
-    private int numOfVolumes;
-    private int numOfBuckets;
-    private int numOfKeys;
-    private int numOfThreads;
-    private String dataWritten;
+    private final String jobStartTime;
+    private final int numOfVolumes;
+    private final int numOfBuckets;
+    private final int numOfKeys;
+    private final int numOfThreads;
+    private final String dataWritten;
     private String execTime;
-    private String replication;
-    private String replicationType;
+    private final String replication;
+    private final String replicationType;
 
-    private long keySize;
-    private int bufferSize;
+    private final long keySize;
+    private final int bufferSize;
 
-    private String totalThroughputPerSecond;
+    private final String totalThroughputPerSecond;
 
     private String meanVolumeCreateTime;
     private String deviationVolumeCreateTime;

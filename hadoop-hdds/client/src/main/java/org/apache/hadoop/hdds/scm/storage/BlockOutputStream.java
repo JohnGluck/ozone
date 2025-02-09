@@ -17,6 +17,15 @@
  */
 
 package org.apache.hadoop.hdds.scm.storage;
+
+import static org.apache.hadoop.hdds.DatanodeVersion.COMBINED_PUTBLOCK_WRITECHUNK_RPC;
+import static org.apache.hadoop.hdds.scm.storage.ContainerProtocolCalls.putBlockAsync;
+import static org.apache.hadoop.hdds.scm.storage.ContainerProtocolCalls.writeChunkAsync;
+import static org.apache.hadoop.ozone.OzoneConsts.INCREMENTAL_CHUNK_LIST;
+import static org.apache.hadoop.ozone.util.MetricUtil.captureLatencyNs;
+
+import com.google.common.annotations.VisibleForTesting;
+import com.google.common.base.Preconditions;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.nio.BufferOverflowException;
@@ -31,13 +40,12 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Supplier;
-
 import org.apache.hadoop.hdds.client.BlockID;
 import org.apache.hadoop.hdds.protocol.DatanodeDetails;
 import org.apache.hadoop.hdds.protocol.datanode.proto.ContainerProtos;
 import org.apache.hadoop.hdds.protocol.datanode.proto.ContainerProtos.BlockData;
-import org.apache.hadoop.hdds.protocol.datanode.proto.ContainerProtos.ContainerCommandResponseProto;
 import org.apache.hadoop.hdds.protocol.datanode.proto.ContainerProtos.ChunkInfo;
+import org.apache.hadoop.hdds.protocol.datanode.proto.ContainerProtos.ContainerCommandResponseProto;
 import org.apache.hadoop.hdds.protocol.datanode.proto.ContainerProtos.KeyValue;
 import org.apache.hadoop.hdds.scm.ContainerClientMetrics;
 import org.apache.hadoop.hdds.scm.OzoneClientConfig;
@@ -54,16 +62,6 @@ import org.apache.hadoop.ozone.common.OzoneChecksumException;
 import org.apache.hadoop.security.token.Token;
 import org.apache.hadoop.security.token.TokenIdentifier;
 import org.apache.hadoop.util.DirectBufferPool;
-
-import com.google.common.annotations.VisibleForTesting;
-import com.google.common.base.Preconditions;
-
-import static org.apache.hadoop.hdds.DatanodeVersion.COMBINED_PUTBLOCK_WRITECHUNK_RPC;
-import static org.apache.hadoop.hdds.scm.storage.ContainerProtocolCalls.putBlockAsync;
-import static org.apache.hadoop.hdds.scm.storage.ContainerProtocolCalls.writeChunkAsync;
-import static org.apache.hadoop.ozone.OzoneConsts.INCREMENTAL_CHUNK_LIST;
-import static org.apache.hadoop.ozone.util.MetricUtil.captureLatencyNs;
-
 import org.apache.hadoop.util.Time;
 import org.apache.ratis.thirdparty.com.google.protobuf.ByteString;
 import org.slf4j.Logger;
@@ -96,18 +94,18 @@ public class BlockOutputStream extends OutputStream {
   public static final KeyValue FULL_CHUNK_KV =
       KeyValue.newBuilder().setKey(FULL_CHUNK).build();
 
-  private AtomicReference<BlockID> blockID;
+  private final AtomicReference<BlockID> blockID;
   // planned block full size
-  private long blockSize;
-  private AtomicBoolean eofSent = new AtomicBoolean(false);
+  private final long blockSize;
+  private final AtomicBoolean eofSent = new AtomicBoolean(false);
   private final AtomicReference<ChunkInfo> previousChunkInfo
       = new AtomicReference<>();
 
   private final BlockData.Builder containerBlockData;
   private volatile XceiverClientFactory xceiverClientFactory;
   private XceiverClientSpi xceiverClient;
-  private OzoneClientConfig config;
-  private StreamBufferArgs streamBufferArgs;
+  private final OzoneClientConfig config;
+  private final StreamBufferArgs streamBufferArgs;
 
   private int chunkIndex;
   private final AtomicLong chunkOffset = new AtomicLong();
@@ -140,7 +138,7 @@ public class BlockOutputStream extends OutputStream {
   private final Checksum checksum;
 
   //number of buffers used before doing a flush/putBlock.
-  private int flushPeriod;
+  private final int flushPeriod;
   //bytes remaining to write in the current buffer.
   private int currentBufferRemaining;
   //current buffer allocated to write
@@ -149,13 +147,12 @@ public class BlockOutputStream extends OutputStream {
   // different from currentBuffer. We need this to calculate checksum.
   private ByteBuffer lastChunkBuffer;
   private long lastChunkOffset;
-  private final Token<? extends TokenIdentifier> token;
   private final String tokenString;
-  private int replicationIndex;
-  private Pipeline pipeline;
+  private final int replicationIndex;
+  private final Pipeline pipeline;
   private final ContainerClientMetrics clientMetrics;
-  private boolean allowPutBlockPiggybacking;
-  private boolean supportIncrementalChunkList;
+  private final boolean allowPutBlockPiggybacking;
+  private final boolean supportIncrementalChunkList;
 
   private CompletableFuture<Void> lastFlushFuture;
   private CompletableFuture<Void> allPendingFlushFutures = CompletableFuture.completedFuture(null);
@@ -211,9 +208,7 @@ public class BlockOutputStream extends OutputStream {
     }
     this.xceiverClient = xceiverClientManager.acquireClient(pipeline);
     this.bufferPool = bufferPool;
-    this.token = token;
-    this.tokenString = (this.token == null) ? null :
-        this.token.encodeToUrlString();
+    this.tokenString = (token == null) ? null : token.encodeToUrlString();
 
     //number of buffers used before doing a flush
     currentBuffer = null;
@@ -273,12 +268,13 @@ public class BlockOutputStream extends OutputStream {
       return false;
     }
 
-    if (!allDataNodesSupportPiggybacking()) {
+    if (allDataNodesSupportPiggybacking()) {
       // Not all datanodes support piggybacking and incremental chunk list.
+      return true;
+    } else {
       LOG.debug("Unable to enable PutBlock piggybacking because not all datanodes support piggybacking");
       return false;
     }
-    return confEnablePutblockPiggybacking;
   }
 
   private boolean allDataNodesSupportPiggybacking() {
@@ -831,7 +827,7 @@ public class BlockOutputStream extends OutputStream {
     } else {
       LOG.debug("Previous request had already failed with {} " +
               "so subsequent request also encounters " +
-              "Storage Container Exception {}", ioe, e);
+              "Storage Container Exception", ioe, e);
     }
     return getIoException();
   }
@@ -1105,11 +1101,15 @@ public class BlockOutputStream extends OutputStream {
           lastChunkBuffer.put(bb);
           bb.position(origPos).limit(origLimit);
         } catch (BufferOverflowException e) {
-          LOG.error("appending from " + copyStart + " for len=" + copyLen +
-              ". lastChunkBuffer remaining=" + lastChunkBuffer.remaining() +
-              " pos=" + lastChunkBuffer.position() +
-              " limit=" + lastChunkBuffer.limit() +
-              " capacity=" + lastChunkBuffer.capacity());
+          LOG.error(
+              "appending from {} for len={}. lastChunkBuffer remaining={} pos={} limit={} capacity={}",
+              copyStart,
+              copyLen,
+              lastChunkBuffer.remaining(),
+              lastChunkBuffer.position(),
+              lastChunkBuffer.limit(),
+              lastChunkBuffer.capacity()
+          );
           throw e;
         }
 

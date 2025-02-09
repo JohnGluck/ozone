@@ -17,14 +17,17 @@
  */
 package org.apache.hadoop.ozone.container.replication;
 
+import static org.apache.hadoop.hdds.conf.ConfigTag.DATANODE;
+import static org.apache.hadoop.hdds.conf.ConfigTag.MANAGEMENT;
+import static org.apache.hadoop.hdds.conf.ConfigTag.SCM;
+
+import com.google.common.annotations.VisibleForTesting;
+import com.google.common.util.concurrent.ThreadFactoryBuilder;
 import java.io.IOException;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
-
-import com.google.common.annotations.VisibleForTesting;
-import com.google.common.util.concurrent.ThreadFactoryBuilder;
 import org.apache.hadoop.hdds.conf.Config;
 import org.apache.hadoop.hdds.conf.ConfigGroup;
 import org.apache.hadoop.hdds.conf.ConfigType;
@@ -34,7 +37,6 @@ import org.apache.hadoop.hdds.security.x509.certificate.client.CertificateClient
 import org.apache.hadoop.hdds.tracing.GrpcServerInterceptor;
 import org.apache.hadoop.ozone.OzoneConsts;
 import org.apache.hadoop.ozone.container.ozoneimpl.ContainerController;
-
 import org.apache.ratis.thirdparty.io.grpc.Server;
 import org.apache.ratis.thirdparty.io.grpc.ServerInterceptors;
 import org.apache.ratis.thirdparty.io.grpc.netty.GrpcSslContexts;
@@ -44,30 +46,25 @@ import org.apache.ratis.thirdparty.io.netty.handler.ssl.SslContextBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import static org.apache.hadoop.hdds.conf.ConfigTag.DATANODE;
-import static org.apache.hadoop.hdds.conf.ConfigTag.MANAGEMENT;
-import static org.apache.hadoop.hdds.conf.ConfigTag.SCM;
-
 /**
  * Separated network server for server2server container replication.
  */
 public class ReplicationServer {
-
-  private static final Logger LOG =
-      LoggerFactory.getLogger(ReplicationServer.class);
+  private static final Logger LOG = LoggerFactory.getLogger(ReplicationServer.class);
 
   private Server server;
 
-  private SecurityConfig secConf;
+  private final SecurityConfig secConf;
 
-  private CertificateClient caClient;
+  private final CertificateClient caClient;
 
-  private ContainerController controller;
+  private final ContainerController controller;
 
   private int port;
+
   private final ContainerImporter importer;
 
-  private ThreadPoolExecutor executor;
+  private final ThreadPoolExecutor executor;
 
   public ReplicationServer(ContainerController controller,
       ReplicationConfig replicationConfig, SecurityConfig secConf,

@@ -54,7 +54,7 @@ public class DeletedBlockLogStateManagerImpl
       LoggerFactory.getLogger(DeletedBlockLogStateManagerImpl.class);
 
   private Table<Long, DeletedBlocksTransaction> deletedTable;
-  private ContainerManager containerManager;
+  private final ContainerManager containerManager;
   private final DBTransactionBuffer transactionBuffer;
   private final Set<Long> deletingTxIDs;
   private final Set<Long> skippingRetryTxIDs;
@@ -78,9 +78,9 @@ public class DeletedBlockLogStateManagerImpl
     return new TableIterator<Long, TypedTable.KeyValue<Long,
         DeletedBlocksTransaction>>() {
 
-      private TableIterator<Long,
-          ? extends Table.KeyValue<Long, DeletedBlocksTransaction>> iter =
+      private final TableIterator<Long, ? extends Table.KeyValue<Long, DeletedBlocksTransaction>> iter =
           deletedTable.iterator();
+
       private TypedTable.KeyValue<Long, DeletedBlocksTransaction> nextTx;
 
       {
@@ -153,7 +153,7 @@ public class DeletedBlockLogStateManagerImpl
       }
 
       @Override
-      public void removeFromDB() throws IOException {
+      public void removeFromDB() {
         throw new UnsupportedOperationException("read-only");
       }
     };

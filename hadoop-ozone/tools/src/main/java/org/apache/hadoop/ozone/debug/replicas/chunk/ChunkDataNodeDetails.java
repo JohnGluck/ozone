@@ -21,8 +21,8 @@ package org.apache.hadoop.ozone.debug.replicas.chunk;
  * Class that gives datanode details on which the chunk is present.
  */
 public class ChunkDataNodeDetails {
-  private String ipAddress;
-  private String hostName;
+  private final String ipAddress;
+  private final String hostName;
 
   public ChunkDataNodeDetails(String ipAddress, String hostName) {
     this.ipAddress = ipAddress;

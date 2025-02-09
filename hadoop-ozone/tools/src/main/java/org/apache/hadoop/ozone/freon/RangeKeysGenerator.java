@@ -33,8 +33,6 @@ import org.apache.hadoop.hdds.conf.StorageSize;
 import org.apache.hadoop.ozone.client.OzoneClient;
 import org.apache.hadoop.ozone.client.io.OzoneOutputStream;
 import org.kohsuke.MetaInfServices;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import picocli.CommandLine;
 
 /**
@@ -48,9 +46,6 @@ import picocli.CommandLine;
 @MetaInfServices(FreonSubcommand.class)
 public class RangeKeysGenerator extends BaseFreonGenerator
         implements Callable<Void> {
-
-  private static final Logger LOG =
-          LoggerFactory.getLogger(RangeKeysGenerator.class);
 
   @CommandLine.Option(names = {"-v", "--volume"},
           description = "Name of the volume which contains the test data. " +
@@ -96,6 +91,7 @@ public class RangeKeysGenerator extends BaseFreonGenerator
           names = "--om-service-id",
           description = "OM Service ID"
   )
+  @SuppressWarnings("PMD.ImmutableField")
   private String omServiceID = null;
   private KeyGeneratorUtil kg;
   private int clientCount;

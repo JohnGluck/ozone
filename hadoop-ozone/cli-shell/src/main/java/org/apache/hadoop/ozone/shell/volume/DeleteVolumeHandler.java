@@ -55,19 +55,21 @@ public class DeleteVolumeHandler extends VolumeHandler {
       description = "Delete volume recursively"
   )
   private boolean bRecursive;
+
   @CommandLine.Option(names = {"-t", "--threads", "--thread"},
       description = "Number of threads used to execute recursive delete")
+  @SuppressWarnings("PMD.ImmutableField")
   private int threadNo = 10;
+
   @CommandLine.Option(names = {"-y", "--yes"},
       description = "Continue without interactive user confirmation")
   private boolean yes;
-  private ExecutorService executor;
-  private List<String> bucketIdList = new ArrayList<>();
-  private AtomicInteger cleanedBucketCounter =
-      new AtomicInteger();
+
+  private final List<String> bucketIdList = new ArrayList<>();
+  private final AtomicInteger cleanedBucketCounter = new AtomicInteger();
   private int totalBucketCount;
   private OzoneVolume vol;
-  private AtomicInteger numberOfBucketsCleaned = new AtomicInteger(0);
+  private final AtomicInteger numberOfBucketsCleaned = new AtomicInteger(0);
   private volatile Throwable exception;
   private static final int MAX_KEY_DELETE_BATCH_SIZE = 1000;
   private String omServiceId;
@@ -110,8 +112,7 @@ public class DeleteVolumeHandler extends VolumeHandler {
   private void deleteVolumeRecursive()
       throws InterruptedException {
     // Get all the buckets for given volume
-    Iterator<? extends OzoneBucket> bucketIterator =
-        vol.listBuckets(null);
+    Iterator<? extends OzoneBucket> bucketIterator = vol.listBuckets(null);
 
     while (bucketIterator.hasNext()) {
       OzoneBucket bucket = bucketIterator.next();
@@ -216,7 +217,8 @@ public class DeleteVolumeHandler extends VolumeHandler {
   }
 
   private void doCleanBuckets() throws InterruptedException {
-    executor = Executors.newFixedThreadPool(threadNo);
+    ExecutorService executor = Executors.newFixedThreadPool(threadNo);
+
     for (int i = 0; i < threadNo; i++) {
       executor.execute(new BucketCleaner());
     }

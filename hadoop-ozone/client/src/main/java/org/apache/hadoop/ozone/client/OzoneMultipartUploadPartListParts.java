@@ -30,18 +30,20 @@ import java.util.List;
  */
 public class OzoneMultipartUploadPartListParts {
 
-  private ReplicationConfig replicationConfig;
+  private final ReplicationConfig replicationConfig;
 
   //When a list is truncated, this element specifies the last part in the list,
   // as well as the value to use for the part-number-marker request parameter
   // in a subsequent request.
-  private int nextPartNumberMarker;
+  private final int nextPartNumberMarker;
+
   // Indicates whether the returned list of parts is truncated. A true value
   // indicates that the list was truncated.
   // A list can be truncated if the number of parts exceeds the limit
   // returned in the MaxParts element.
-  private boolean truncated;
-  private List<PartInfo> partInfoList = new ArrayList<>();
+  private final boolean truncated;
+
+  private final List<PartInfo> partInfoList = new ArrayList<>();
 
   @Deprecated
   public OzoneMultipartUploadPartListParts(ReplicationType type,
@@ -106,8 +108,7 @@ public class OzoneMultipartUploadPartListParts {
     private final long size;
     private final String eTag;
 
-    public PartInfo(int number, String name, long time, long size,
-                    String eTag) {
+    public PartInfo(int number, String name, long time, long size, String eTag) {
       this.partNumber = number;
       this.partName = name;
       this.modificationTime = time;

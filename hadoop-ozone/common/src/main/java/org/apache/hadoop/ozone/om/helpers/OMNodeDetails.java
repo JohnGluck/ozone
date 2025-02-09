@@ -43,7 +43,7 @@ import static org.apache.hadoop.ozone.om.OMConfigKeys.OZONE_OM_RATIS_PORT_KEY;
  * This class stores OM node details.
  */
 public final class OMNodeDetails extends NodeDetails {
-  private int rpcPort;
+  private final int rpcPort;
   private boolean isDecommissioned = false;
 
   /**

@@ -607,10 +607,10 @@ public class BasicRootedOzoneFileSystem extends FileSystem {
    * To be used only by recursiveBucketDelete().
    */
   private class DeleteIteratorWithFSO extends OzoneListingIterator {
-    private final OzoneBucket bucket;
     private final BasicRootedOzoneClientAdapterImpl adapterImpl;
-    private boolean recursive;
-    private Path f;
+    private final boolean recursive;
+    private final Path f;
+
     DeleteIteratorWithFSO(Path f, boolean recursive)
         throws IOException {
       super(f, true);
@@ -620,9 +620,8 @@ public class BasicRootedOzoneFileSystem extends FileSystem {
       OFSPath ofsPath = new OFSPath(f,
           ozoneConfiguration);
       adapterImpl = (BasicRootedOzoneClientAdapterImpl) adapter;
-      this.bucket = adapterImpl.getBucket(ofsPath, false);
-      LOG.debug("Deleting bucket with name {} is via DeleteIteratorWithFSO.",
-          bucket.getName());
+      OzoneBucket bucket = adapterImpl.getBucket(ofsPath, false);
+      LOG.debug("Deleting bucket with name {} is via DeleteIteratorWithFSO.", bucket.getName());
     }
 
     @Override
@@ -642,15 +641,14 @@ public class BasicRootedOzoneFileSystem extends FileSystem {
   }
 
   private class DeleteIteratorFactory {
-    private Path path;
-    private boolean recursive;
-    private OFSPath ofsPath;
+    private final Path path;
+    private final boolean recursive;
+    private final OFSPath ofsPath;
 
     DeleteIteratorFactory(Path f, boolean recursive) {
       this.path = f;
       this.recursive = recursive;
-      this.ofsPath = new OFSPath(f,
-          ozoneConfiguration);
+      this.ofsPath = new OFSPath(f, ozoneConfiguration);
     }
 
     OzoneListingIterator getDeleteIterator()
@@ -920,7 +918,7 @@ public class BasicRootedOzoneFileSystem extends FileSystem {
   @Override
   public FileStatus[] listStatus(Path f) throws IOException {
     return TracingUtil.executeInNewSpan("ofs listStatus",
-        () -> convertFileStatusArr(listStatusAdapter(f, true)));
+        () -> convertFileStatusArr(listStatusAdapter(f)));
   }
 
   private FileStatus[] convertFileStatusArr(
@@ -934,7 +932,7 @@ public class BasicRootedOzoneFileSystem extends FileSystem {
   }
 
   
-  private List<FileStatusAdapter> listStatusAdapter(Path f, boolean lite) throws IOException {
+  private List<FileStatusAdapter> listStatusAdapter(Path f) throws IOException {
     incrementCounter(Statistic.INVOCATION_LIST_STATUS, 1);
     statistics.incrementReadOps(1);
     LOG.trace("listStatus() path:{}", f);
@@ -946,7 +944,7 @@ public class BasicRootedOzoneFileSystem extends FileSystem {
     do {
       tmpStatusList =
           adapter.listStatus(pathToKey(f), false, startPath,
-              numEntries, uri, workingDir, getUsername(), lite);
+              numEntries, uri, workingDir, getUsername(), true);
       entriesAdded = 0;
       if (!tmpStatusList.isEmpty()) {
         if (startPath.isEmpty() || !statuses.getLast().getPath().toString()
@@ -1215,10 +1213,10 @@ public class BasicRootedOzoneFileSystem extends FileSystem {
     private final Function<FileStatus, T> transformFunc;
     private List<FileStatus> thisListing;
     private int i;
-    private Path p;
+    private final Path p;
     private T curStat = null;
     private String startPath = "";
-    private boolean lite;
+    private final boolean lite;
 
     /**
      * Constructor to initialize OzoneFileStatusIterator.
@@ -1235,7 +1233,7 @@ public class BasicRootedOzoneFileSystem extends FileSystem {
       this.transformFunc = transformFunc;
       // fetch the first batch of entries in the directory
       thisListing = listFileStatus(p, startPath, lite);
-      if (thisListing != null && !thisListing.isEmpty()) {
+      if (!thisListing.isEmpty()) {
         startPath = pathToKey(
             thisListing.get(thisListing.size() - 1).getPath());
         LOG.debug("Got {} file status, next start path {}",
@@ -1274,7 +1272,7 @@ public class BasicRootedOzoneFileSystem extends FileSystem {
         if (startPath != null && (!thisListing.isEmpty())) {
           // current listing is exhausted & fetch a new listing
           thisListing = listFileStatus(p, startPath, lite);
-          if (thisListing != null && !thisListing.isEmpty()) {
+          if (!thisListing.isEmpty()) {
             startPath = pathToKey(
                 thisListing.get(thisListing.size() - 1).getPath());
             LOG.debug("Got {} file status, next start path {}",
@@ -1399,7 +1397,7 @@ public class BasicRootedOzoneFileSystem extends FileSystem {
     private final FileStatusAdapter status;
     private String pathKey;
     private Iterator<BasicKeyInfo> keyIterator = null;
-    private boolean isFSO;
+    private final boolean isFSO;
 
     OzoneListingIterator(Path path, boolean isFSO)
         throws IOException {
@@ -1457,7 +1455,7 @@ public class BasicRootedOzoneFileSystem extends FileSystem {
             ofsPath.getNonKeyPathNoPrefixDelim() + OZONE_URI_DELIMITER;
         if (isFSO) {
           List<FileStatusAdapter> fileStatuses;
-          fileStatuses = listStatusAdapter(path, true);
+          fileStatuses = listStatusAdapter(path);
           for (FileStatusAdapter fileStatus : fileStatuses) {
             String keyName =
                 new OFSPath(fileStatus.getPath().toString(),
@@ -1479,7 +1477,7 @@ public class BasicRootedOzoneFileSystem extends FileSystem {
             //  full path outside AdapterImpl. - Maybe a refactor later.
             String keyPath = ofsPathPrefix + key.getName();
             LOG.trace("iterating key path: {}", keyPath);
-            if (!key.getName().equals("")) {
+            if (!key.getName().isEmpty()) {
               keyPathList.add(keyPath);
             }
             if (keyPathList.size() >= batchSize) {
@@ -1580,7 +1578,7 @@ public class BasicRootedOzoneFileSystem extends FileSystem {
     }
     // f is a directory
     long[] summary = {0, 0, 0, 1};
-    for (FileStatusAdapter s : listStatusAdapter(f, true)) {
+    for (FileStatusAdapter s : listStatusAdapter(f)) {
       long length = s.getLength();
       long spaceConsumed = s.getDiskConsumed();
       ContentSummary c = s.isDir() ? getContentSummary(s.getPath()) :

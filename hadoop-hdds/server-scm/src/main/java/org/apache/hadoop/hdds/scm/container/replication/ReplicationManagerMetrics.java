@@ -16,10 +16,16 @@
  */
 package org.apache.hadoop.hdds.scm.container.replication;
 
+import static org.apache.hadoop.hdds.protocol.proto.HddsProtos.LifeCycleState;
+
 import com.google.common.base.CaseFormat;
+import java.util.Collections;
+import java.util.LinkedHashMap;
+import java.util.Map;
 import org.apache.hadoop.hdds.client.ReplicationType;
 import org.apache.hadoop.hdds.protocol.proto.HddsProtos;
 import org.apache.hadoop.hdds.scm.container.ReplicationManagerReport;
+import org.apache.hadoop.hdds.scm.container.ReplicationManagerReport.HealthState;
 import org.apache.hadoop.metrics2.MetricsCollector;
 import org.apache.hadoop.metrics2.MetricsInfo;
 import org.apache.hadoop.metrics2.MetricsRecordBuilder;
@@ -28,17 +34,9 @@ import org.apache.hadoop.metrics2.annotation.Metric;
 import org.apache.hadoop.metrics2.annotation.Metrics;
 import org.apache.hadoop.metrics2.lib.DefaultMetricsSystem;
 import org.apache.hadoop.metrics2.lib.Interns;
-import org.apache.hadoop.metrics2.lib.MetricsRegistry;
 import org.apache.hadoop.metrics2.lib.MutableCounterLong;
 import org.apache.hadoop.metrics2.lib.MutableRate;
 import org.apache.hadoop.ozone.OzoneConsts;
-
-import java.util.Collections;
-import java.util.LinkedHashMap;
-import java.util.Map;
-
-import static org.apache.hadoop.hdds.protocol.proto.HddsProtos.LifeCycleState;
-import org.apache.hadoop.hdds.scm.container.ReplicationManagerReport.HealthState;
 
 /**
  * Class contains metrics related to ReplicationManager.
@@ -146,8 +144,6 @@ public final class ReplicationManagerMetrics implements MetricsSource {
       " reaching the cluster inflight replication limit.")
   private MutableCounterLong pendingReplicationLimitReachedTotal;
 
-  private MetricsRegistry registry;
-
   private final ReplicationManager replicationManager;
 
   //EC Metrics
@@ -214,7 +210,6 @@ public final class ReplicationManagerMetrics implements MetricsSource {
 
 
   public ReplicationManagerMetrics(ReplicationManager manager) {
-    this.registry = new MetricsRegistry(METRICS_SOURCE_NAME);
     this.replicationManager = manager;
   }
 

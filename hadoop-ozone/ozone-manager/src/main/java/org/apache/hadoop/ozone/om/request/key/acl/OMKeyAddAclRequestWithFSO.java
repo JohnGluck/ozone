@@ -45,9 +45,7 @@ import java.util.Map;
  * Handle add Acl request for bucket for prefix layout.
  */
 public class OMKeyAddAclRequestWithFSO extends OMKeyAclRequestWithFSO {
-
-  private static final Logger LOG =
-      LoggerFactory.getLogger(OMKeyAddAclRequestWithFSO.class);
+  private static final Logger LOG = LoggerFactory.getLogger(OMKeyAddAclRequestWithFSO.class);
 
   @Override
   public OzoneManagerProtocolProtos.OMRequest preExecute(
@@ -61,9 +59,9 @@ public class OMKeyAddAclRequestWithFSO extends OMKeyAclRequestWithFSO {
         .setUserInfo(getUserInfo()).build();
   }
 
-  private String path;
-  private List<OzoneAcl> ozoneAcls;
-  private OzoneObj obj;
+  private final String path;
+  private final List<OzoneAcl> ozoneAcls;
+  private final OzoneObj obj;
 
   public OMKeyAddAclRequestWithFSO(
       OzoneManagerProtocolProtos.OMRequest omReq, BucketLayout bucketLayout) {

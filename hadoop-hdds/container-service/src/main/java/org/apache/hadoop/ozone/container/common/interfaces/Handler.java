@@ -18,11 +18,12 @@
 
 package org.apache.hadoop.ozone.container.common.interfaces;
 
+import static org.apache.hadoop.ozone.container.common.interfaces.Container.ScanResult;
+
+import com.google.common.annotations.VisibleForTesting;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-
-import com.google.common.annotations.VisibleForTesting;
 import org.apache.hadoop.hdds.conf.ConfigurationSource;
 import org.apache.hadoop.hdds.protocol.datanode.proto.ContainerProtos;
 import org.apache.hadoop.hdds.protocol.datanode.proto.ContainerProtos.ContainerCommandRequestProto;
@@ -40,8 +41,6 @@ import org.apache.hadoop.ozone.container.keyvalue.KeyValueHandler;
 import org.apache.hadoop.ozone.container.keyvalue.TarContainerPacker;
 import org.apache.ratis.statemachine.StateMachine;
 
-import static org.apache.hadoop.ozone.container.common.interfaces.Container.ScanResult;
-
 /**
  * Dispatcher sends ContainerCommandRequests to Handler. Each Container Type
  * should have an implementation for Handler.
@@ -55,7 +54,7 @@ public abstract class Handler {
   protected String clusterId;
   protected final ContainerMetrics metrics;
   protected String datanodeId;
-  private IncrementalReportSender<Container> icrSender;
+  private final IncrementalReportSender<Container> icrSender;
 
   protected Handler(ConfigurationSource config, String datanodeId,
       ContainerSet contSet, VolumeSet volumeSet,

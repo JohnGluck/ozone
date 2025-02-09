@@ -26,18 +26,22 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public class CountStats {
   /** Total number of volumes under root, -1 for other types. */
   @JsonProperty("numVolume")
+  @SuppressWarnings("PMD.ImmutableField")
   private int numVolume;
 
   /** Total number of buckets for root/volume, -1 for other types. */
   @JsonProperty("numBucket")
+  @SuppressWarnings("PMD.ImmutableField")
   private int numBucket;
 
   /** Total number of directories for all types except key, -1 for key. */
   @JsonProperty("numDir")
+  @SuppressWarnings("PMD.ImmutableField")
   private int numTotalDir;
 
   /** Total number of keys. */
   @JsonProperty("numKey")
+  @SuppressWarnings("PMD.ImmutableField")
   private long numTotalKey;
 
   public CountStats(int numVolume, int numBucket,

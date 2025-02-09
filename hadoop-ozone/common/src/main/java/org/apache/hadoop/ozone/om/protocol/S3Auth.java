@@ -21,17 +21,14 @@ package org.apache.hadoop.ozone.om.protocol;
  * S3Auth wraps the data needed for S3 Authentication.
  */
 public class S3Auth {
-  private String stringToSign;
-  private String signature;
-  private String accessID;
+  private final String stringToSign;
+  private final String signature;
+  private final String accessID;
   public static final String S3_AUTH_CHECK = "ozone.s3.auth.check";
   // User principal to be used for KMS encryption and decryption
   private String userPrincipal;
 
-  public S3Auth(final String stringToSign,
-                final String signature,
-                final String accessID,
-                final String userPrincipal) {
+  public S3Auth(String stringToSign, String signature, String accessID, String userPrincipal) {
     this.stringToSign = stringToSign;
     this.signature = signature;
     this.accessID = accessID;

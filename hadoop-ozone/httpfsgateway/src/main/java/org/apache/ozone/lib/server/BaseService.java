@@ -29,7 +29,7 @@ import java.util.Map;
  */
 @InterfaceAudience.Private
 public abstract class BaseService implements Service {
-  private String prefix;
+  private final String prefix;
   private Server server;
   private Configuration serviceConfig;
 

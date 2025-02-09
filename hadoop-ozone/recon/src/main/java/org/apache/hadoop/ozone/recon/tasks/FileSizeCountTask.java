@@ -52,11 +52,10 @@ import org.slf4j.LoggerFactory;
  * fileSize DB.
  */
 public class FileSizeCountTask implements ReconOmTask {
-  private static final Logger LOG =
-      LoggerFactory.getLogger(FileSizeCountTask.class);
+  private static final Logger LOG = LoggerFactory.getLogger(FileSizeCountTask.class);
 
-  private FileCountBySizeDao fileCountBySizeDao;
-  private DSLContext dslContext;
+  private final FileCountBySizeDao fileCountBySizeDao;
+  private final DSLContext dslContext;
 
   @Inject
   public FileSizeCountTask(FileCountBySizeDao fileCountBySizeDao,
@@ -301,9 +300,9 @@ public class FileSizeCountTask implements ReconOmTask {
   }
 
   private static class FileSizeCountKey {
-    private String volume;
-    private String bucket;
-    private Long fileSizeUpperBound;
+    private final String volume;
+    private final String bucket;
+    private final Long fileSizeUpperBound;
 
     FileSizeCountKey(String volume, String bucket,
                      Long fileSizeUpperBound) {

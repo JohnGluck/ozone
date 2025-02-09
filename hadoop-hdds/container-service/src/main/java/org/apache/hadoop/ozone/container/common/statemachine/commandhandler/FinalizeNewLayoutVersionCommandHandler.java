@@ -43,7 +43,7 @@ public class FinalizeNewLayoutVersionCommandHandler implements CommandHandler {
   private static final Logger LOG =
       LoggerFactory.getLogger(FinalizeNewLayoutVersionCommandHandler.class);
 
-  private AtomicLong invocationCount = new AtomicLong(0);
+  private final AtomicLong invocationCount = new AtomicLong(0);
   private final MutableRate opsLatencyMs;
 
   /**

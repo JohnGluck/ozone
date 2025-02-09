@@ -55,12 +55,14 @@ public class OmRPCLoadGenerator extends BaseFreonGenerator
                   "Specifies the size of payload in KB in RPC request. " +
                           "Max size is 2097151 KB",
           defaultValue = "0")
+  @SuppressWarnings("PMD.ImmutableField")
   private int payloadReqSizeKB = 0;
 
   @Option(names = {"--clients"},
       description =
           "Number of clients, defaults 1.",
       defaultValue = "1")
+  @SuppressWarnings("PMD.ImmutableField")
   private int clientsCount = 1;
 
   @Option(names = {"--payload-resp"},
@@ -68,11 +70,13 @@ public class OmRPCLoadGenerator extends BaseFreonGenerator
                   "Specifies the size of payload in KB in RPC response. " +
                           "Max size is 2097151 KB",
           defaultValue = "0")
+  @SuppressWarnings("PMD.ImmutableField")
   private int payloadRespSizeKB = 0;
 
   @Option(names = {"--ratis"},
       description = "Write to Ratis log, skip flag for read-only EchoRPC " +
           "request")
+  @SuppressWarnings("PMD.ImmutableField")
   private boolean writeToRatis = false;
 
   @Override

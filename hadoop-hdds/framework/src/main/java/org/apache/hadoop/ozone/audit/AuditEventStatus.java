@@ -24,7 +24,7 @@ public enum AuditEventStatus {
   SUCCESS("SUCCESS"),
   FAILURE("FAILURE");
 
-  private String status;
+  private final String status;
 
   AuditEventStatus(String status) {
     this.status = status;

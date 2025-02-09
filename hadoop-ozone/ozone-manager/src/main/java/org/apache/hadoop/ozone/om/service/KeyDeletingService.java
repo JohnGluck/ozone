@@ -96,10 +96,10 @@ public class KeyDeletingService extends AbstractKeyDeletingService {
   private final Map<String, Long> exclusiveReplicatedSizeMap;
   private final Set<String> completedExclusiveSizeSet;
   private final Map<String, String> snapshotSeekMap;
-  private AtomicBoolean isRunningOnAOS;
+  private final AtomicBoolean isRunningOnAOS;
   private final boolean deepCleanSnapshots;
   private final SnapshotChainManager snapshotChainManager;
-  private DeletingServiceMetrics metrics;
+  private final DeletingServiceMetrics metrics;
 
   public KeyDeletingService(OzoneManager ozoneManager,
       ScmBlockLocationProtocol scmClient,

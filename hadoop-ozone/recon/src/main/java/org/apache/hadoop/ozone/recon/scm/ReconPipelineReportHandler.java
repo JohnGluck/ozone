@@ -19,8 +19,6 @@
 package org.apache.hadoop.ozone.recon.scm;
 
 import java.io.IOException;
-import java.util.concurrent.TimeoutException;
-
 import org.apache.hadoop.hdds.conf.ConfigurationSource;
 import org.apache.hadoop.hdds.protocol.DatanodeDetails;
 import org.apache.hadoop.hdds.protocol.proto.StorageContainerDatanodeProtocolProtos.PipelineReport;
@@ -41,11 +39,9 @@ import org.slf4j.LoggerFactory;
  * Recon's implementation of Pipeline Report handler.
  */
 public class ReconPipelineReportHandler extends PipelineReportHandler {
+  private static final Logger LOG = LoggerFactory.getLogger(ReconPipelineReportHandler.class);
 
-  private static final Logger LOG = LoggerFactory.getLogger(
-      ReconPipelineReportHandler.class);
-
-  private StorageContainerServiceProvider scmServiceProvider;
+  private final StorageContainerServiceProvider scmServiceProvider;
 
   public ReconPipelineReportHandler(SafeModeManager scmSafeModeManager,
       PipelineManager pipelineManager,
@@ -59,7 +55,7 @@ public class ReconPipelineReportHandler extends PipelineReportHandler {
   @Override
   protected void processPipelineReport(PipelineReport report,
       DatanodeDetails dn, EventPublisher publisher)
-      throws IOException, TimeoutException {
+      throws IOException {
     ReconPipelineManager reconPipelineManager =
         (ReconPipelineManager)getPipelineManager();
 
